@@ -219,23 +219,167 @@ single-file distribution for mirrors, cloud transfer, and reproducible snapshots
 
 ## 6. Networks
 
-This project currently fetches snow observations from AWDB network codes:
+All networks in this section are accessible via the
+[USDA NRCS AWDB REST API](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html)
+and provide daily SNWD and/or WTEQ observations.
 
-- `SNTL` (SNOTEL)
-- `SNTLT` (SNOLite)
-- `MSNT`
-- `SCAN`
-- `COOP`
+Networks with only periodic/manual records (for example, CCSS snow courses and
+NRCS manual snow courses that do not report daily values) are not included in
+the daily archive and are outside the current scope.
 
-The architecture is client-oriented rather than AWDB-only. The two pipeline
-scripts accept a client selection argument and are designed to remain stable as
-new clients are added under `clients/`.
+The architecture is client-oriented rather than AWDB-only. Pipeline scripts are
+designed to remain stable as new clients are added under `clients/`.
 
-### AWDB Data Access Notes
+### 6.1 SNOTEL (SNTL)
 
-- API: `https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html`
-- Daily retrieval uses batched requests to respect AWDB service limits.
-- Snow variables `WTEQ` and `SNWD` are normalized to cm within the client.
+**Data source:** USDA NRCS National Water and Climate Center (NWCC)  
+**Stations in archive:** ~865  
+**Coverage:** Western United States (AK, AZ, CA, CO, ID, MT, NV, NM, OR, UT,
+WA, WY) and some Canadian provinces (BC, AB, YK)  
+**Period of record:** ~1978 - present  
+**Temporal resolution:** Daily (and sub-daily / hourly)  
+**Variables:** SWE (WTEQ), snow depth (SNWD), precipitation, air temperature,
+soil moisture, and more
+
+SNOTEL (SNOw TELemetry) is the primary automated snow monitoring network in the
+western United States, operated by the NRCS NWCC. Established in the mid-1970s,
+the network now comprises over 900 automated, solar-powered stations installed
+at remote, high-elevation mountain watersheds. Data are transmitted via
+meteor-burst telemetry to a central database (AWDB / WCIS) several times per
+day. SNOTEL is the backbone of operational snowpack monitoring and water supply
+forecasting across the western U.S. and is widely used for climate research.
+
+**Links**
+- Network home: https://www.nrcs.usda.gov/programs-initiatives/snotel-snow-telemetry
+- Interactive map: https://nwcc-apps.sc.egov.usda.gov/imap/
+- Report generator: https://wcc.sc.egov.usda.gov/reportGenerator/
+- Temperature bias correction (air temp only): https://www.wcc.nrcs.usda.gov/ftpref/support/air_temp_bias/nrcs_air_temp_unbias.html
+
+#### Data Sources And Access Methods
+
+| Tool / Source | Type | Language | Description | Link |
+|---|---|---|---|---|
+| AWDB REST API v1 | Primary API | Any | Modern JSON REST API. Full metadata, all elements, all durations. Recommended for new projects. | [Swagger docs](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html) - [Demo notebooks](https://github.com/nrcs-nwcc/iow_awdb_rest_api_demo) |
+| AWDB SOAP API | Legacy API | Any | Older XML/SOAP web service. Full feature parity with REST API but more verbose. Still active and used by many existing tools. | [Reference](https://www.nrcs.usda.gov/wps/portal/wcc/home/dataAccessHelp/webService/webServiceReference/) - [User guide (PDF)](https://www.nrcs.usda.gov/sites/default/files/2023-03/AWDB%20Web%20Service%20User%20Guide.pdf) |
+| CUAHSI WaterOneFlow | Standards API | Any | WaterML-based service exposing SNOTEL via CUAHSI HydroPortal. Useful for interoperability with CUAHSI ecosystem. | [WSDL endpoint](https://hydroportal.cuahsi.org/Snotel/cuahsi_1_1.asmx?WSDL) |
+| metloom | Python package | Python | Unified interface to SNOTEL, CDEC, USGS, and others. Returns GeoDataFrames indexed on datetime + station. | [GitHub](https://github.com/M3Works/metloom) - [Docs](https://metloom.readthedocs.io/) |
+| ulmo | Python package | Python | Hydrology/climate data access library including CUAHSI WOF (for SNOTEL). Older but still functional. | [GitHub](https://github.com/ulmo-dev/ulmo) - [Docs](https://ulmo.readthedocs.io/) |
+| snotelr | R package | R | R interface to SNOTEL via AWDB. Includes snow phenology extraction. | [CRAN](https://cran.r-project.org/package=snotelr) - [GitHub](https://github.com/bluegreen-labs/snotelr) |
+| soilDB::fetchSCAN | R package | R | Unified R interface to SCAN and SNOTEL via AWDB. Covers soil moisture sensors in addition to snow. | [Docs](https://ncss-tech.github.io/AQP/soilDB/fetchSCAN-demo.html) - [CRAN](https://cran.r-project.org/package=soilDB) |
+| climata | Python package | Python | Lightweight Python AWDB/SNOTEL access. Low maintenance (last release 2017). | [GitHub](https://github.com/heigeo/climata) - [PyPI](https://pypi.org/project/climata/) |
+
+**Pros of AWDB REST API (used in this project)**
+- Modern JSON, no XML parsing
+- Batch queries (up to 500k values per call)
+- Supports all elements, durations, networks, and normals
+- Active development by NRCS
+
+**Cons of AWDB REST API**
+- 500,000 value limit per request (requires batching for long time series)
+- No public SLA; occasional downtime
+- Rate limiting is not explicitly documented but can be observed under heavy load
+
+### 6.2 SNOLite (SNTLT)
+
+**Data source:** USDA NRCS NWCC  
+**Stations in archive:** ~44  
+**Coverage:** Western United States  
+**Period of record:** ~2011 - present  
+**Temporal resolution:** Daily  
+**Variables:** SWE (WTEQ), snow depth (SNWD), precipitation, temperature
+
+SNOLite (or SnowLite) stations use a simplified, lower-cost sensor package
+compared to full SNOTEL sites. They are intended to extend coverage into areas
+where full SNOTEL infrastructure is not cost-effective. SNOLite stations are
+stored in AWDB under the `SNTLT` network code and are accessible via the same
+APIs as SNOTEL. Data quality and sensor redundancy are generally lower than
+full SNTL stations.
+
+**Access methods:** Same as SNOTEL. All AWDB-based tools (REST API, SOAP,
+metloom, soilDB) support `SNTLT` stations transparently.
+
+### 6.3 Manual SNOTEL (MSNT)
+
+**Data source:** USDA NRCS NWCC  
+**Stations in archive:** ~173  
+**Coverage:** Western United States and Canada (BC, AB)  
+**Period of record:** Varies widely; some from the 1960s  
+**Temporal resolution:** Daily (telemetered observations)  
+**Variables:** SWE (WTEQ), snow depth (SNWD)
+
+Manual SNOTEL (`MSNT`) stations represent older or transitional sites that feed
+into the AWDB database but may use legacy telemetry or data entry methods.
+Despite the manual label, they are stored with daily temporal resolution in
+AWDB. Many are historical records from retired sites or predecessor networks
+that predate the current automated SNOTEL system. Data density and quality can
+vary significantly by station.
+
+**Access methods:** Same as SNOTEL. All AWDB tooling supports `MSNT` stations.
+
+### 6.4 Soil Climate Analysis Network (SCAN)
+
+**Data source:** USDA NRCS NWCC  
+**Stations in archive:** ~23 with daily SNWD/WTEQ  
+**Coverage:** Nationwide (contiguous U.S.)  
+**Period of record:** ~2000 - present  
+**Temporal resolution:** Daily (and hourly)  
+**Variables:** Soil moisture (multiple depths), soil temperature, air
+temperature, precipitation, SWE (WTEQ), snow depth (SNWD), wind
+
+SCAN is a national network of automated stations focused primarily on soil
+climate monitoring (soil moisture and temperature at multiple depths), though
+many sites also measure snowpack where snow is present. SCAN is operated by
+NRCS in cooperation with USDA ARS and university partners. Unlike SNOTEL, which
+is concentrated at high-elevation western sites, SCAN spans the full
+continental U.S. including the Southeast, Midwest, and East. Not all SCAN
+stations are in snowy climates; only a subset report meaningful daily
+SNWD/WTEQ and are included in this archive.
+
+**Links**
+- Network home: https://www.wcc.nrcs.usda.gov/scan/
+- Station map: https://www.wcc.nrcs.usda.gov/scan/app/station-map
+
+#### Data Sources And Access Methods
+
+| Tool / Source | Type | Language | Description | Link |
+|---|---|---|---|---|
+| AWDB REST API v1 | Primary API | Any | Same API as SNOTEL. SCAN stations use network code `SCAN`. Supports all elements including soil sensors. | [Swagger docs](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html) |
+| soilDB::fetchSCAN | R package | R | Purpose-built R interface to SCAN (and SNOTEL). Returns named lists by sensor type and handles multi-depth soil sensor disambiguation. | [Tutorial](https://ncss-tech.github.io/AQP/soilDB/fetchSCAN-demo.html) - [CRAN](https://cran.r-project.org/package=soilDB) |
+| metloom | Python package | Python | Supports SCAN stations via AWDB. Returns GeoDataFrames. | [GitHub](https://github.com/M3Works/metloom) |
+
+**Note on SCAN vs. SNOTEL via soilDB:** `fetchSCAN()` in soilDB supports both
+`SCAN` and `SNTL`/`SNTLT` network codes. `SCAN_site_metadata()` can return a
+unified metadata table for both networks, which is useful for cross-network
+analysis in R workflows.
+
+### 6.5 NWS Cooperative Observer Network (COOP)
+
+**Data source:** NOAA National Weather Service / USDA NRCS (mirrored in AWDB)  
+**Stations in archive:** ~23 with daily SNWD/WTEQ in AWDB  
+**Coverage:** Western United States  
+**Period of record:** Varies; some records extend back to the early 1900s  
+**Temporal resolution:** Daily  
+**Variables:** Snow depth (SNWD), SWE (WTEQ at some sites), temperature,
+precipitation
+
+The NWS Cooperative Observer Program (COOP) is a nationwide volunteer weather
+observation network with over 8,500 active stations, some with records dating
+to the 1890s. A subset of COOP stations in AWDB also report snow-relevant
+elements (SNWD, WTEQ), generally in mountainous western states. Those are the
+stations included here. The much larger COOP network outside AWDB is managed by
+NOAA and accessible via GHCND.
+
+**Links**
+- NOAA COOP: https://www.weather.gov/coop/
+- GHCND (full COOP + global): https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily
+
+#### Data Sources And Access Methods
+
+| Tool / Source | Type | Language | Description | Link |
+|---|---|---|---|---|
+| AWDB REST API v1 | API | Any | For the AWDB-mirrored COOP subset. Uses network code `COOP`. | [Swagger docs](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html) |
+| NOAA GHCND / CDO | API | Any | Full COOP network (and global stations). Authoritative source for long COOP records outside AWDB. | [CDO API](https://www.ncei.noaa.gov/cdo-web/webservices/v2) |
+| meteostat | Python package | Python | Wraps GHCND and other sources for global daily station data access. | [GitHub](https://github.com/meteostat/meteostat-python) |
 
 ---
 
