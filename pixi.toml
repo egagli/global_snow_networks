@@ -1,0 +1,41 @@
+[workspace]
+name = "global-snow-point-obs"
+version = "0.1.0"
+description = "Archive and access tools for global snow point observations (SWE, snow depth) from AWDB and other sources."
+authors = ["your-name <your@email.com>"]
+channels = ["conda-forge"]
+platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
+
+[dependencies]
+python = ">=3.12"
+ipykernel = "*"
+numpy = ">=1.26"
+pandas = ">=2.2"
+xarray = ">=2024.6"
+zarr = ">=3.0"                   # v3 required for BloscCodec
+numcodecs = ">=0.13"
+geopandas = ">=1.0"
+shapely = ">=2.0"
+requests = ">=2.31"
+tqdm = ">=4.66"
+folium = ">=0.17"                # for interactive station maps
+
+[feature.dev.dependencies]
+jupyter = "*"
+matplotlib = ">=3.8"
+pytest = ">=8.0"
+ruff = ">=0.4"
+
+[environments]
+default = { solve-group = "default" }
+dev = { features = ["dev"], solve-group = "default" }
+
+[tasks]
+fetch-stations  = "python 01_get_stations_geojson.py"
+init-zarr       = "python 02_init_zarr.py"
+fetch-data      = "python 03_fetch_zarr.py"
+fetch-data-all  = "python 03_fetch_zarr.py --until-complete"
+inspect         = "python 04_inspect_zarr.py"
+live-map        = "python 05_generate_live_map.py"
+fetch-all       = { depends-on = ["fetch-stations", "init-zarr", "fetch-data"] }
+map             = { depends-on = ["inspect", "live-map"], description = "Generate live SWE map after data fetch complete" }
