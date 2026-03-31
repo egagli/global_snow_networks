@@ -25,7 +25,7 @@ CSV schema (all clients)
 - ``snwd_cm``: Snow depth in centimetres.
   AWDB: SNWD element (inches × 2.54, converted by AWDBClient).
   CDEC: sensor 18 (Snow Depth), inches × 2.54.
-  DataBC: not available from ASWS daily CSV (MSS only, not stored here).
+  DataBC ASWS: SD.csv / SD_Archive.csv value in cm (16:00 UTC reading).
 
 Data flags are not stored in CSV files.  Use the respective client's
 ``get_data(include_flags=True)`` method if flag information is needed.
@@ -355,8 +355,8 @@ def refresh_databc(
     """Refresh DataBC ASWS station CSVs.
 
     ``stations`` is a list of (feature_index, location_id) tuples.
-    SWE is available from SWDaily.csv (mm → cm).
-    Snow depth is not available from the daily ASWS CSV.
+    SWE is fetched from SWDaily.csv (mm → cm).
+    Snow depth is fetched from SD.csv / SD_Archive.csv (cm).
     """
     if not stations:
         return
@@ -365,37 +365,70 @@ def refresh_databc(
     location_ids = [lid for _, lid in stations]
     idx_by_id = {lid: idx for idx, lid in stations}
 
+    n = len(location_ids)
     print(
-        f"  [DataBC] Loading daily SWE for {len(location_ids)} ASWS stations...",
+        f"  [DataBC] Loading daily SWE for {n} ASWS stations...",
         end=" ",
         flush=True,
     )
     try:
-        df_all = client.get_asws_daily_data(
+        df_swe = client.get_asws_daily_data(
             location_ids=location_ids,
             archive=True,
         )
+        print(f"ok ({len(df_swe)} rows)")
     except DataBCError as exc:
         stats.failed_batches += 1
         print(f"FAILED ({exc})")
-        return
+        df_swe = pd.DataFrame(columns=["date", "location_id", "swe_mm"])
+
+    print(
+        f"  [DataBC] Loading daily snow depth for {n} ASWS stations...",
+        end=" ",
+        flush=True,
+    )
+    try:
+        df_sd = client.get_asws_sd_data(
+            location_ids=location_ids,
+            archive=True,
+        )
+        print(f"ok ({len(df_sd)} rows)")
+    except DataBCError as exc:
+        print(f"FAILED ({exc}) — snow depth will be empty")
+        df_sd = pd.DataFrame(columns=["date", "location_id", "snwd_cm"])
 
     stats.fetched += len(location_ids)
     updated = 0
-    for lid, grp in df_all.groupby("location_id"):
-        lid_str = str(lid)
+
+    for lid_str in location_ids:
         feat_idx = idx_by_id.get(lid_str)
         if feat_idx is None:
             continue
 
-        # Convert mm → cm for wteq_cm; snwd_cm not available
-        df_out = pd.DataFrame(
-            {
-                "date": grp["date"].values,
-                "wteq_cm": (grp["swe_mm"] / 10.0).round(2).values,
-                "snwd_cm": [None] * len(grp),
-            }
+        swe_grp = (
+            df_swe[df_swe["location_id"] == lid_str]
+            if not df_swe.empty else pd.DataFrame(columns=["date", "swe_mm"])
+        )
+        sd_grp = (
+            df_sd[df_sd["location_id"] == lid_str]
+            if not df_sd.empty else pd.DataFrame(columns=["date", "snwd_cm"])
+        )
+
+        # Merge on date
+        df_out = pd.merge(
+            swe_grp[["date", "swe_mm"]],
+            sd_grp[["date", "snwd_cm"]],
+            on="date",
+            how="outer",
         ).sort_values("date")
+
+        df_out["wteq_cm"] = (
+            pd.to_numeric(df_out["swe_mm"], errors="coerce") / 10.0
+        ).round(2)
+        df_out["snwd_cm"] = pd.to_numeric(
+            df_out.get("snwd_cm"), errors="coerce"
+        ).round(2)
+        df_out = df_out[["date", "wteq_cm", "snwd_cm"]]
 
         if df_out.empty:
             stats.skipped_empty += 1
@@ -416,7 +449,7 @@ def refresh_databc(
         stats.by_client["databc"] = stats.by_client.get("databc", 0) + 1
         updated += 1
 
-    print(f"updated {updated}")
+    print(f"  [DataBC] updated {updated} station CSVs")
 
 
 # ── Main ──────────────────────────────────────────────────────────────────────
