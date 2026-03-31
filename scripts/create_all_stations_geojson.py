@@ -592,77 +592,86 @@ def main() -> None:
 
     # ── AWDB ──────────────────────────────────────────────────────────────────
     if not args.skip_awdb:
-        awdb_all, awdb_daily = run_awdb_workflow(bias_table)
-        write_geojson(
-            AWDB_GEOJSON_OUT,
-            awdb_all,
-            {
-                "generated": today,
-                "source": "USDA NRCS AWDB REST API v1",
-                "client": "awdb",
-                "networks": AWDB_NETWORKS,
-                "description": (
-                    "All AWDB stations with daily WTEQ and/or SNWD. "
-                    "Includes full element inventory."
-                ),
-                "total": len(awdb_all),
-            },
-        )
-        all_daily_features.extend(awdb_daily)
-        print(
-            f"[AWDB] {len(awdb_daily):,} daily stations added to merged GeoJSON"
-        )
+        try:
+            awdb_all, awdb_daily = run_awdb_workflow(bias_table)
+            write_geojson(
+                AWDB_GEOJSON_OUT,
+                awdb_all,
+                {
+                    "generated": today,
+                    "source": "USDA NRCS AWDB REST API v1",
+                    "client": "awdb",
+                    "networks": AWDB_NETWORKS,
+                    "description": (
+                        "All AWDB stations with daily WTEQ and/or SNWD. "
+                        "Includes full element inventory."
+                    ),
+                    "total": len(awdb_all),
+                },
+            )
+            all_daily_features.extend(awdb_daily)
+            print(
+                f"[AWDB] {len(awdb_daily):,} daily stations added to merged GeoJSON"
+            )
+        except Exception as exc:
+            logging.warning("[AWDB] Workflow failed, skipping: %s", exc)
 
     # ── CDEC ──────────────────────────────────────────────────────────────────
     if not args.skip_cdec:
-        cdec_all, cdec_daily = run_cdec_workflow()
-        write_geojson(
-            CDEC_GEOJSON_OUT,
-            cdec_all,
-            {
-                "generated": today,
-                "source": "CDEC — California Data Exchange Center (CA DWR)",
-                "client": "cdec",
-                "description": (
-                    "All CDEC stations with snow sensors (3, 18, 82), "
-                    "including manual snow courses (periodic) and "
-                    "automated snow pillows (daily). "
-                    "Only stations with daily SWE or depth appear in "
-                    "snow_stations.geojson."
-                ),
-                "total": len(cdec_all),
-            },
-        )
-        all_daily_features.extend(cdec_daily)
-        print(
-            f"[CDEC] {len(cdec_daily):,} daily stations added to merged GeoJSON"
-        )
+        try:
+            cdec_all, cdec_daily = run_cdec_workflow()
+            write_geojson(
+                CDEC_GEOJSON_OUT,
+                cdec_all,
+                {
+                    "generated": today,
+                    "source": "CDEC — California Data Exchange Center (CA DWR)",
+                    "client": "cdec",
+                    "description": (
+                        "All CDEC stations with snow sensors (3, 18, 82), "
+                        "including manual snow courses (periodic) and "
+                        "automated snow pillows (daily). "
+                        "Only stations with daily SWE or depth appear in "
+                        "snow_stations.geojson."
+                    ),
+                    "total": len(cdec_all),
+                },
+            )
+            all_daily_features.extend(cdec_daily)
+            print(
+                f"[CDEC] {len(cdec_daily):,} daily stations added to merged GeoJSON"
+            )
+        except Exception as exc:
+            logging.warning("[CDEC] Workflow failed, skipping: %s", exc)
 
     # ── DataBC ────────────────────────────────────────────────────────────────
     if not args.skip_databc:
-        databc_all, databc_daily = run_databc_workflow()
-        write_geojson(
-            DATABC_GEOJSON_OUT,
-            databc_all,
-            {
-                "generated": today,
-                "source": (
-                    "BC Data Catalogue — BC Ministry of Environment "
-                    "(BC OpenMaps WFS)"
-                ),
-                "client": "databc",
-                "description": (
-                    "All BC snow survey stations: ASWS (automated, daily SWE) "
-                    "and MSS (manual snow courses, periodic). "
-                    "Only ASWS stations appear in snow_stations.geojson."
-                ),
-                "total": len(databc_all),
-            },
-        )
-        all_daily_features.extend(databc_daily)
-        print(
-            f"[DataBC] {len(databc_daily):,} daily stations added to merged GeoJSON"
-        )
+        try:
+            databc_all, databc_daily = run_databc_workflow()
+            write_geojson(
+                DATABC_GEOJSON_OUT,
+                databc_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "BC Data Catalogue — BC Ministry of Environment "
+                        "(BC OpenMaps WFS)"
+                    ),
+                    "client": "databc",
+                    "description": (
+                        "All BC snow survey stations: ASWS (automated, daily SWE) "
+                        "and MSS (manual snow courses, periodic). "
+                        "Only ASWS stations appear in snow_stations.geojson."
+                    ),
+                    "total": len(databc_all),
+                },
+            )
+            all_daily_features.extend(databc_daily)
+            print(
+                f"[DataBC] {len(databc_daily):,} daily stations added to merged GeoJSON"
+            )
+        except Exception as exc:
+            logging.warning("[DataBC] Workflow failed, skipping: %s", exc)
 
     # ── Write merged snow_stations.geojson ────────────────────────────────────
     print("=" * 60)
