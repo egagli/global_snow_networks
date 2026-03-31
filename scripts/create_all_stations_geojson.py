@@ -405,7 +405,7 @@ def cdec_station_to_feature(station: dict) -> dict:
         "Operator": station.get("operator", "")
         or station.get("measuring_agency", ""),
         "client": "cdec",
-        "networkCode": "CDEC",
+        "networkCode": "CCSS",
         "notes": "",
         "is_snow_course": station.get("is_snow_course", False),
         "is_snow_pillow": station.get("is_snow_pillow", False),
@@ -485,9 +485,9 @@ def databc_station_to_feature(station: dict) -> dict:
         "state": "BC",
         "Operator": station.get("operator", "BC Ministry of Environment"),
         "client": "databc",
-        "networkCode": stype,
+        "networkCode": "BCSS",
         "notes": "",
-        "station_type": stype,
+        "station_type": stype,  # "ASWS" or "MSS" — distinguishes automated vs manual
         "status": station.get("status", ""),
         "isActive": str(station.get("status", "")).lower() == "active",
         "station_url": station.get("station_url", ""),
@@ -496,7 +496,7 @@ def databc_station_to_feature(station: dict) -> dict:
 
     if stype == "ASWS":
         props["has_daily_swe"] = True
-        props["variables_daily"] = "swe_mm"
+        props["variables_daily"] = "swe_mm, snwd_cm"
         camera = station.get("camera_url")
         if camera:
             props["station_image_url"] = camera

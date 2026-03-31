@@ -386,6 +386,8 @@ def process_station_from_csv(
         "url": _clean_meta_text(meta.get("station_url")),
         "img": _clean_meta_text(meta.get("station_image_url")),
         "net": network,
+        "op": _clean_meta_text(meta.get("operator")),
+        "cli": _clean_meta_text(meta.get("client")),
         "st": state_code,
         "elev_m": meta.get("elevation"),
         "bdate": bdate,
@@ -484,11 +486,13 @@ select:focus{outline:none;border-color:#4af}
 #network-legend{background:rgba(255,255,255,0.92);border:1px solid #bbb;
     border-radius:4px;padding:8px 10px;font-size:11px;min-width:120px}
 #network-legend h3{font-size:12px;margin-bottom:5px;color:#333}
-.nlrow{display:flex;align-items:center;gap:6px;margin:2px 0}
+.nlrow{display:flex;align-items:center;gap:6px;margin:2px 0;cursor:pointer;
+  padding:1px 3px;border-radius:3px;user-select:none;transition:background 0.12s}
+.nlrow:hover{background:rgba(0,0,0,0.07)}
+.nlrow.net-off{opacity:0.38}
+.nlrow .net-label{font-size:11px;color:#333;white-space:nowrap;flex:1}
+.nlrow .net-count{font-size:10px;color:#888;margin-left:2px}
 .nshape{width:14px;height:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.net-cb-label{display:flex;align-items:center;gap:3px;font-size:11px;color:#dde;
-              cursor:pointer;white-space:nowrap;user-select:none}
-.net-cb-label input[type=checkbox]{accent-color:#4af;cursor:pointer}
 #date-slider-wrap{display:flex;flex-direction:column;align-items:stretch;
                   width:min(860px, calc(100vw - 40px));margin:7px auto 0;gap:2px}
 #date-slider-title{font-size:10px;font-weight:600;color:#cfe5fb;text-align:center;line-height:1.2;margin-bottom:2px}
@@ -580,10 +584,6 @@ select:focus{outline:none;border-color:#4af}
           <option value="n7100">1971-2000 Normal</option>
         </select>
       </div>
-      <div class="ctl-group" id="network-filter-group">
-        <span class="ctl-label">Networks:</span>
-        <span id="network-checkboxes" style="display:flex;flex-wrap:wrap;gap:6px"></span>
-      </div>
     </div>
   </div>
   <div id="main-area">
@@ -591,14 +591,7 @@ select:focus{outline:none;border-color:#4af}
       <div id="legend-stack">
         <div id="network-legend">
           <h3>Network</h3>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><circle cx="6" cy="6" r="5" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>SNTL</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><polygon points="6,1 11,11 1,11" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>SNTLT</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><polygon points="6,0.8 11.2,4.6 9.2,10.7 2.8,10.7 0.8,4.6" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>MSNT</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><polygon points="6,0.8 10.5,3.4 10.5,8.6 6,11.2 1.5,8.6 1.5,3.4" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>SCAN</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><rect x="1" y="1" width="10" height="10" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>MPRC</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><polygon points="6,0.5 11.5,6 6,11.5 0.5,6" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>SNOW</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><rect x="4.2" y="1" width="3.6" height="10" fill="#666" stroke="#fff" stroke-width="0.5"/><rect x="1" y="4.2" width="10" height="3.6" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>COOP</div>
-          <div class="nlrow"><div class="nshape"><svg width="12" height="12"><polygon points="1,1 11,1 6,11" fill="#666" stroke="#fff" stroke-width="0.5"/></svg></div>CCSS</div>
+          <div id="network-legend-rows"></div>
         </div>
       <div id="legend">
         <h3>% of Normal</h3>
@@ -675,10 +668,23 @@ const STATE_NAMES = {
 };
 
 const NET_LABELS = {
-  SNTL:"SNOTEL (NRCS)", SNTLT:"SNOTEL Telemetry", MPRC:"Manual Snow Course (NRCS)",
-  SNOW:"Manual Snow Course (NRCS)", MSNT:"Manual SNOTEL (NRCS)",
-  SCAN:"SCAN (NRCS)", COOP:"COOP (NOAA/NRCS)",
-  CCSS:"CCSS (CA DWR / CDEC)",
+  SNTL:"SNOTEL", SNTLT:"SNOTEL Lite", MSNT:"Manual SNOTEL",
+  MPRC:"Manual", SNOW:"Manual",
+  SCAN:"SCAN", COOP:"COOP",
+  CCSS:"CCSS", BCSS:"BC Snow Survey",
+};
+
+// SVG shape markup for each network code (12×12 viewBox)
+const NET_SHAPES = {
+  SNTL:'<circle cx="6" cy="6" r="5" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  SNTLT:'<polygon points="6,1 11,11 1,11" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  MSNT:'<polygon points="6,0.8 11.2,4.6 9.2,10.7 2.8,10.7 0.8,4.6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  SCAN:'<polygon points="6,0.8 10.5,3.4 10.5,8.6 6,11.2 1.5,8.6 1.5,3.4" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  MPRC:'<rect x="1" y="1" width="10" height="10" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  SNOW:'<polygon points="6,0.5 11.5,6 6,11.5 0.5,6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  COOP:'<rect x="4.2" y="1" width="3.6" height="10" fill="#666" stroke="#fff" stroke-width="0.5"/><rect x="1" y="4.2" width="10" height="3.6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  CCSS:'<polygon points="1,1 11,1 6,11" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  BCSS:'<polygon points="6,0.5 10.9,3.6 10.9,8.4 6,11.5 1.1,8.4 1.1,3.6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -922,6 +928,9 @@ function buildIcon(network, measurementType, color, isSelected) {
     case "CCSS":
       inner = `<polygon points="${regularPolygonPoints(3, 90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
       break;
+    case "BCSS":
+      inner = `<polygon points="${regularPolygonPoints(6, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
+      break;
     case "MPRC":
       inner = `<rect x="${sw/2}" y="${sw/2}" width="${sz-sw}" height="${sz-sw}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
       break;
@@ -1161,6 +1170,11 @@ function onMarkerClick(code) {
       + `<img id="station-photo" src="${photoUrl}" alt="${s.name} station photo" loading="lazy" referrerpolicy="no-referrer">`
       + `<div id="station-photo-credit">Photo credit: <a href="${photoUrl}" target="_blank" rel="noopener noreferrer">NRCS</a></div>`
       + `</div>`;
+  } else if (s.net === "BCSS" && s.img) {
+    stationPhotoHtml = `<div id="station-photo-wrap">`
+      + `<img id="station-photo" src="${s.img}" alt="${s.name} station photo" loading="lazy" referrerpolicy="no-referrer">`
+      + `<div id="station-photo-credit">Photo: <a href="${s.img}" target="_blank" rel="noopener noreferrer">BC Ministry of Environment</a></div>`
+      + `</div>`;
   }
 
   // SWE + snow depth lines
@@ -1194,12 +1208,16 @@ function onMarkerClick(code) {
          + `<br><span style="font-size:11px;color:#555">data date: ${dataDate} (no normal available)</span></div>`;
   }
 
+  const operatorStr = s.op || "—";
+  const clientStr = s.cli || "—";
   const info = document.getElementById("station-info");
   info.innerHTML = `
     <h2>${s.name}</h2>
     ${stationPhotoHtml}
     <div class="info-row"><span class="info-key">Code:</span><span>${code}</span></div>
     <div class="info-row"><span class="info-key">Network:</span><span>${netLabel}</span></div>
+    <div class="info-row"><span class="info-key">Operator:</span><span>${operatorStr}</span></div>
+    <div class="info-row"><span class="info-key">Client:</span><span>${clientStr}</span></div>
     <div class="info-row"><span class="info-key">State:</span><span>${stateName}</span></div>
     <div class="info-row"><span class="info-key">Elevation:</span><span>${elevStr}</span></div>
     <div class="info-row"><span class="info-key">Daily variables:</span><span style="font-size:11px">${s.vars_d||"—"}</span></div>
@@ -1812,38 +1830,53 @@ document.getElementById("chart-btn-snwd").addEventListener("click", () => {
   if (st.selectedCode) loadChart(st.selectedCode, "SNWD");
 });
 
-// ─── Network filter ────────────────────────────────────────────────────────────
+// ─── Network legend (interactive filter) ─────────────────────────────────────
 function initNetworkFilter() {
-  const container = document.getElementById("network-checkboxes");
-  const netOrder = ["SNTL","SNTLT","MSNT","MPRC","SNOW","SCAN","COOP","CCSS"];
+  const container = document.getElementById("network-legend-rows");
+  const netOrder = [
+    "SNTL","SNTLT","MSNT","MPRC","SNOW","SCAN","COOP","CCSS","BCSS"
+  ];
   const available = MAP_META.available_networks;
-  // Sort by netOrder first, then alphabetically for any unknown networks
-  const sorted = available.slice().sort((a,b) => {
+
+  // Count stations per network from SD
+  const netCounts = {};
+  for (const s of Object.values(SD)) {
+    netCounts[s.net] = (netCounts[s.net] || 0) + 1;
+  }
+
+  // Sort by netOrder first, then alphabetically
+  const sorted = available.slice().sort((a, b) => {
     const ia = netOrder.indexOf(a), ib = netOrder.indexOf(b);
     if (ia !== -1 && ib !== -1) return ia - ib;
     if (ia !== -1) return -1;
     if (ib !== -1) return 1;
     return a.localeCompare(b);
   });
+
   for (const net of sorted) {
-    const label = document.createElement("label");
-    label.className = "net-cb-label";
-    const cb = document.createElement("input");
-    cb.type = "checkbox";
-    cb.checked = true;
-    cb.dataset.net = net;
-    cb.addEventListener("change", () => {
-      if (cb.checked) st.visibleNetworks.add(net);
-      else st.visibleNetworks.delete(net);
+    const shapeSvg = NET_SHAPES[net]
+      || '<circle cx="6" cy="6" r="5" fill="#666" stroke="#fff" stroke-width="0.5"/>';
+    const label = NET_LABELS[net] || net;
+    const count = netCounts[net] || 0;
+
+    const row = document.createElement("div");
+    row.className = "nlrow";
+    row.dataset.net = net;
+    row.innerHTML = `<div class="nshape"><svg width="12" height="12">${shapeSvg}</svg></div>`
+      + `<span class="net-label">${label}</span>`
+      + `<span class="net-count">(${count})</span>`;
+    row.addEventListener("click", () => {
+      const on = st.visibleNetworks.has(net);
+      if (on) {
+        st.visibleNetworks.delete(net);
+        row.classList.add("net-off");
+      } else {
+        st.visibleNetworks.add(net);
+        row.classList.remove("net-off");
+      }
       recolorAll();
     });
-    label.appendChild(cb);
-    label.appendChild(document.createTextNode(NET_LABELS[net] ? NET_LABELS[net].split(" ")[0] : net));
-    container.appendChild(label);
-  }
-  // Hide the group entirely if only one network present
-  if (available.length <= 1) {
-    document.getElementById("network-filter-group").style.display = "none";
+    container.appendChild(row);
   }
 }
 
@@ -2005,6 +2038,10 @@ def main() -> None:
             "network": network,
             "state": _clean_meta_text(row.get("state")),
             "elevation": row.get("elevation_m") or row.get("elevation"),
+            "operator": _clean_meta_text(
+                row.get("Operator") or row.get("operator")
+            ),
+            "client": _clean_meta_text(row.get("client")),
             "variables_daily": _clean_meta_text(row.get("variables_daily")),
             "variables_hourly": _clean_meta_text(row.get("variables_hourly")),
             "station_url": _clean_meta_text(row.get("station_url")),
