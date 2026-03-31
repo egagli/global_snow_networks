@@ -1,7 +1,7 @@
 # global_snow_networks
 
 A Python toolkit for archiving and accessing daily snow point observations from
-the USDA NRCS Air and Water Database (AWDB) and additional networks over time.
+multiple networks and data sources.
 
 The current storage strategy is CSV-first:
 
@@ -22,9 +22,10 @@ Python, R, GIS tools, and command-line workflows.
 4. [Live Map](#4-live-map)
 5. [Data Model](#5-data-model)
 6. [Networks](#6-networks)
-7. [Usage Examples](#7-usage-examples)
-8. [Known Metadata Caveat](#8-known-metadata-caveat)
-9. [License and Citation](#9-license-and-citation)
+7. [Data Access Methods and Design Philosophy](#7-data-access-methods-and-design-philosophy)
+8. [Usage Examples](#8-usage-examples)
+9. [Known Caveats](#9-known-caveats)
+10. [License and Citation](#10-license-and-citation)
 
 ---
 
@@ -34,16 +35,25 @@ Python, R, GIS tools, and command-line workflows.
 global_snow_networks/
 ├── pixi.toml                              # Environment + task definitions
 ├── README.md                              # This file
-├── snow_stations.geojson                  # Station inventory + metadata
+├── snow_stations.geojson                  # Merged daily-only station inventory
 ├── scripts/
-│   ├── create_all_stations_geojson.py     # Build station GeoJSON from client
+│   ├── create_all_stations_geojson.py     # Build station GeoJSONs from all clients
 │   ├── get_all_stations_data.py           # Refresh CSVs + archive + date fields
 │   └── generate_live_map.py               # Build map HTML + chart JSON payloads
 │
 ├── clients/
 │   ├── __init__.py
-│   ├── awdb_client.py                     # AWDB REST API client
-│   └── README.md                          # Client API docs + extension guidance
+│   ├── awdb_client.py                     # Compatibility shim (→ clients/awdb/)
+│   ├── README.md                          # Client API docs
+│   ├── awdb/
+│   │   ├── awdb_client.py                 # AWDB REST API client
+│   │   └── awdb_stations.geojson          # All AWDB snow stations (generated)
+│   ├── cdec/
+│   │   ├── cdec_client.py                 # CDEC (California) client
+│   │   └── cdec_stations.geojson          # All CDEC snow stations (generated)
+│   └── databc/
+│       ├── databc_client.py               # BC Data Catalogue client
+│       └── databc_stations.geojson        # All BC snow stations (generated)
 │
 ├── data/
 │   ├── stations/
@@ -73,14 +83,15 @@ pixi shell
 
 ## 3. Pipeline Overview
 
-The pipeline is intentionally split into two explicit stages:
+The pipeline is split into explicit stages:
 
 ```bash
-# Stage 1: Create fresh station inventory metadata
+# Stage 1: Build station GeoJSON inventories for all clients
+#   Writes per-client GeoJSONs (clients/*/..._stations.geojson)
+#   and the merged daily-only snow_stations.geojson
 pixi run fetch-stations
 
-# Stage 2: Fetch/update station CSVs, update GeoJSON record dates,
-# and build tar.xz bundle
+# Stage 2: Fetch/update station CSVs and update GeoJSON record dates
 pixi run fetch-data
 
 # Stage 3: Build the interactive live map and per-station chart payloads
@@ -90,20 +101,24 @@ pixi run live-map
 pixi run update-all
 ```
 
-### 3.1 Stage 1: Create Station GeoJSON
+Individual clients can also be skipped during station fetching:
+
+```bash
+python -m scripts.create_all_stations_geojson --skip-cdec --skip-databc
+```
+
+### 3.1 Stage 1: Create Station GeoJSONs
 
 Script: `scripts/create_all_stations_geojson.py`
 
 What it does:
 
-1. Queries supported network groups from the selected client (currently AWDB).
-2. Filters to stations with daily snow observations (WTEQ and/or SNWD).
-3. Pulls full station metadata for variable inventories and descriptors.
-4. Writes `snow_stations.geojson` with per-station properties such as:
-    - station identifiers (`code`, triplet mapping)
-    - location/elevation/state/network metadata
-    - daily/hourly variable inventories
-    - station page/image URLs for SNOTEL/SNOLite when available
+1. Fetches the NRCS air temperature bias correction table (live JSON endpoint).
+2. Queries each configured client for station locations and metadata.
+3. For each client, writes a per-client GeoJSON with **all stations and all
+   available metadata** (including periodic snow course sites).
+4. Writes `snow_stations.geojson` — a merged inventory of only those stations
+   with at least one **daily** SWE or snow depth observation.
 
 ### 3.2 Stage 2: Refresh Per-Station CSV Data
 
@@ -112,67 +127,34 @@ Script: `scripts/get_all_stations_data.py`
 What it does:
 
 1. Reads stations from `snow_stations.geojson`.
-2. Pulls fresh daily observations via the selected client (currently AWDB).
-3. Writes/replaces station CSVs atomically only on successful station fetch.
-4. Updates date fields in the GeoJSON from the refreshed CSV content:
-    - `earliest_record_date`
-    - `latest_record_date`
-    - `updated_date`
-5. Writes `data/all_station_csvs.tar.xz` containing all station CSVs.
-
-### 3.3 Daily Automation
-
-Workflow: `.github/workflows/daily_station_update.yml`
-
-Daily job sequence:
-
-1. install environment
-2. run `scripts/create_all_stations_geojson.py`
-3. run `scripts/get_all_stations_data.py`
-4. run `scripts/generate_live_map.py`
-5. commit/push changed artifacts to `main` when there are updates
+2. Routes each station to the appropriate client based on its `client` field.
+3. Writes/replaces station CSVs atomically on successful fetch.
+4. Updates date fields in the GeoJSON from the refreshed CSV content.
+5. Writes `data/all_station_csvs.tar.xz`.
 
 ---
 
 ## 4. Live Map
 
-The project includes the same interactive map experience as the prior workflow,
-now driven by per-station CSV data instead of Zarr.
+The project includes an interactive map experience driven by per-station CSV data.
 
-Generator script:
-
-- `scripts/generate_live_map.py`
+Generator script: `scripts/generate_live_map.py`
 
 Primary outputs:
-
 - `live_swe_map.html`
 - `charts/*.json` (per-station chart payloads loaded by the popup chart panel)
 
-Feature parity goals:
-
-- interactive station markers and popups
-- variable toggling (WTEQ/SNWD)
-- period-of-record and normal-period comparisons
-- date slider behavior for current water year
-- same basemap and chart style from prior implementation template
+Features:
+- Interactive station markers and popups
+- Variable toggling (WTEQ/SNWD)
+- Period-of-record and normal-period comparisons
+- Date slider behavior for current water year
 
 ### View on GitHub Pages
 
-This repository is configured to publish static map outputs on GitHub Pages.
+Configure GitHub repository Settings → Pages → Deploy from branch `main` / root.
 
-Required repo setting:
-
-1. GitHub repository Settings
-2. Pages
-3. Build and deployment source: `Deploy from a branch`
-4. Branch: `main` and folder: `/ (root)`
-
-Then the map is available at:
-
-- `https://<owner>.github.io/global_snow_networks/live_swe_map.html`
-
-The `.nojekyll` file is included so Pages serves static files directly, and
-relative chart fetches from `charts/*.json` work correctly.
+Map URL: `https://<owner>.github.io/global_snow_networks/live_swe_map.html`
 
 ---
 
@@ -180,23 +162,55 @@ relative chart fetches from `charts/*.json` work correctly.
 
 ### 5.1 Station Inventory: `snow_stations.geojson`
 
-`snow_stations.geojson` is the metadata index for the archive and includes:
+`snow_stations.geojson` is the **daily-only** merged metadata index.
 
-- geometry (point lat/lon)
-- station identity and source keys
-- network/state/county/huc/elevation
-- available variables (`variables_daily`, `variables_hourly`, `elementCodes`)
-- freshness and linkage fields (`csv_path`, refresh timestamp)
-- record-date summary fields updated from CSV content
+**Common fields across all clients:**
 
-Identifier conventions:
+| Field | Description |
+| --- | --- |
+| `code` | Native station identifier (e.g. `303_CO_SNTL`, `QUA`, `1A01P`) |
+| `name` | Station name |
+| `latitude`, `longitude` | WGS-84 coordinates |
+| `elevation_m` | Elevation in metres |
+| `Operator` | Operating agency |
+| `client` | Source client: `"awdb"`, `"cdec"`, `"databc"` |
+| `networkCode` | Network label (SNTL, SNTLT, CDEC, ASWS, …) |
+| `state` | State or province code |
+| `isActive` | Boolean active status |
+| `beginDate`, `endDate` | Period of record from source metadata |
+| `notes` | Any notable caveats (e.g. SNOTEL air temp bias status) |
+| `station_url` | URL to station information page |
+| `station_image_url` | Station photo URL (where available) |
+| `metadata_fetched_at` | Date the metadata was fetched |
 
-- `code`: underscore format (`303_CO_SNTL`)
-- `awdb_station_triplet`: colon format (`303:CO:SNTL`)
+**AWDB-specific additional fields:** `awdb_station_triplet`, `stationId`,
+`county`, `huc`, `snowElements`, `elementCodes`, `variables_daily`,
+`variables_hourly`.
+
+**CDEC-specific additional fields:** `is_snow_course`, `is_snow_pillow`,
+`sensors`, `river_basin`, `april1_avg_swe_in`, `course_number`.
+
+**DataBC-specific additional fields:** `station_type` (ASWS or MSS),
+`status`.
+
+#### Duplicate stations
+
+The same physical station may appear in `snow_stations.geojson` more than once
+if it is accessible via multiple clients.  For example, some BC snow survey
+stations and California CCSS stations appear in both AWDB (`MSNT` network) and
+their respective native clients (DataBC, CDEC).  Each entry has a distinct
+`client` field.  Downstream consumers can de-duplicate by matching on
+`latitude`/`longitude`/`name`, or filter to a preferred client.
+
+#### Per-client GeoJSONs
+
+The per-client GeoJSONs in `clients/*/` contain **all** stations from each
+source — including manual snow course sites that have only periodic
+measurements and are excluded from `snow_stations.geojson`.  These files
+carry all available source metadata and serve as a complete reference for each
+data source.
 
 ### 5.2 Station CSVs: `data/stations/*.csv`
-
-Each station CSV currently follows this schema:
 
 | Column | Type | Description |
 | --- | --- | --- |
@@ -205,187 +219,327 @@ Each station CSV currently follows this schema:
 | `snwd_cm` | float or null | Snow depth in cm |
 
 Notes:
-
-- Units are centimeters (metric-first normalization in `AWDBClient`).
-- Missing values are represented as empty/null values.
-- A station may have one variable populated more consistently than the other.
+- All values are in centimetres (metric-first normalisation).
+- Missing observations are represented as null/empty.
+- CDEC: `wteq_cm` uses sensor 82 (SNO ADJ) preferentially; falls back to
+  sensor 3 (raw SWE) if sensor 82 is not available.
+- DataBC ASWS: `snwd_cm` is always null — snow depth is not available from
+  the automated daily CSV.
+- Data flags are not stored in CSVs.  Use the respective client's
+  `get_data(include_flags=True)` for flag information.
 
 ### 5.3 Bulk Archive: `data/all_station_csvs.tar.xz`
 
-The tarball contains all station CSVs under `stations/` to support efficient
-single-file distribution for mirrors, cloud transfer, and reproducible snapshots.
+All station CSVs are bundled under `stations/` for single-file distribution.
 
 ---
 
 ## 6. Networks
 
-All networks in this section are accessible via the
-[USDA NRCS AWDB REST API](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html)
-and provide daily SNWD and/or WTEQ observations.
-
-Networks with only periodic/manual records (for example, CCSS snow courses and
-NRCS manual snow courses that do not report daily values) are not included in
-the daily archive and are outside the current scope.
-
-The architecture is client-oriented rather than AWDB-only. Pipeline scripts are
-designed to remain stable as new clients are added under `clients/`.
-
 ### 6.1 SNOTEL (SNTL)
 
-**Data source:** USDA NRCS National Water and Climate Center (NWCC)  
-**Stations in archive:** ~865  
+**Data source:** USDA NRCS National Water and Climate Center (NWCC)
+**Client:** `awdb`
+**Stations in archive:** ~865
 **Coverage:** Western United States (AK, AZ, CA, CO, ID, MT, NV, NM, OR, UT,
-WA, WY) and some Canadian provinces (BC, AB, YK)  
-**Period of record:** ~1978 - present  
-**Temporal resolution:** Daily (and sub-daily / hourly)  
+WA, WY) and some Canadian provinces (BC, AB, YK)
+**Period of record:** ~1978 – present
+**Temporal resolution:** Daily and hourly
 **Variables:** SWE (WTEQ), snow depth (SNWD), precipitation, air temperature,
 soil moisture, and more
+**Operator:** USDA NRCS
 
-SNOTEL (SNOw TELemetry) is the primary automated snow monitoring network in the
-western United States, operated by the NRCS NWCC. Established in the mid-1970s,
-the network now comprises over 900 automated, solar-powered stations installed
-at remote, high-elevation mountain watersheds. Data are transmitted via
-meteor-burst telemetry to a central database (AWDB / WCIS) several times per
-day. SNOTEL is the backbone of operational snowpack monitoring and water supply
-forecasting across the western U.S. and is widely used for climate research.
+SNOTEL (SNOw TELemetry) is the primary automated snow monitoring network in
+the western United States. Established in the mid-1970s, the network comprises
+over 900 automated, solar-powered stations installed at remote, high-elevation
+mountain watersheds. Data are transmitted via meteor-burst telemetry to a
+central database (AWDB/WCIS) several times per day.
+
+**Air temperature bias correction:** NRCS has identified a warm bias in SNOTEL
+air temperature sensors at many sites. A correction programme is in progress.
+The `notes` field in `snow_stations.geojson` indicates whether a correction
+has been applied for each SNOTEL station. Status is fetched at runtime from:
+https://www.wcc.nrcs.usda.gov/ftpref/support/air_temp_bias/nrcs_air_temp_unbias.html
 
 **Links**
 - Network home: https://www.nrcs.usda.gov/programs-initiatives/snotel-snow-telemetry
 - Interactive map: https://nwcc-apps.sc.egov.usda.gov/imap/
 - Report generator: https://wcc.sc.egov.usda.gov/reportGenerator/
-- Temperature bias correction (air temp only): https://www.wcc.nrcs.usda.gov/ftpref/support/air_temp_bias/nrcs_air_temp_unbias.html
 
-#### Data Sources And Access Methods
+#### Data Sources and Access Methods
 
-| Tool / Source | Type | Language | Description | Link |
-|---|---|---|---|---|
-| AWDB REST API v1 | Primary API | Any | Modern JSON REST API. Full metadata, all elements, all durations. Recommended for new projects. | [Swagger docs](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html) - [Demo notebooks](https://github.com/nrcs-nwcc/iow_awdb_rest_api_demo) |
-| AWDB SOAP API | Legacy API | Any | Older XML/SOAP web service. Full feature parity with REST API but more verbose. Still active and used by many existing tools. | [Reference](https://www.nrcs.usda.gov/wps/portal/wcc/home/dataAccessHelp/webService/webServiceReference/) - [User guide (PDF)](https://www.nrcs.usda.gov/sites/default/files/2023-03/AWDB%20Web%20Service%20User%20Guide.pdf) |
-| CUAHSI WaterOneFlow | Standards API | Any | WaterML-based service exposing SNOTEL via CUAHSI HydroPortal. Useful for interoperability with CUAHSI ecosystem. | [WSDL endpoint](https://hydroportal.cuahsi.org/Snotel/cuahsi_1_1.asmx?WSDL) |
-| metloom | Python package | Python | Unified interface to SNOTEL, CDEC, USGS, and others. Returns GeoDataFrames indexed on datetime + station. | [GitHub](https://github.com/M3Works/metloom) - [Docs](https://metloom.readthedocs.io/) |
-| ulmo | Python package | Python | Hydrology/climate data access library including CUAHSI WOF (for SNOTEL). Older but still functional. | [GitHub](https://github.com/ulmo-dev/ulmo) - [Docs](https://ulmo.readthedocs.io/) |
-| snotelr | R package | R | R interface to SNOTEL via AWDB. Includes snow phenology extraction. | [CRAN](https://cran.r-project.org/package=snotelr) - [GitHub](https://github.com/bluegreen-labs/snotelr) |
-| soilDB::fetchSCAN | R package | R | Unified R interface to SCAN and SNOTEL via AWDB. Covers soil moisture sensors in addition to snow. | [Docs](https://ncss-tech.github.io/AQP/soilDB/fetchSCAN-demo.html) - [CRAN](https://cran.r-project.org/package=soilDB) |
-| climata | Python package | Python | Lightweight Python AWDB/SNOTEL access. Low maintenance (last release 2017). | [GitHub](https://github.com/heigeo/climata) - [PyPI](https://pypi.org/project/climata/) |
-
-**Pros of AWDB REST API (used in this project)**
-- Modern JSON, no XML parsing
-- Batch queries (up to 500k values per call)
-- Supports all elements, durations, networks, and normals
-- Active development by NRCS
-
-**Cons of AWDB REST API**
-- 500,000 value limit per request (requires batching for long time series)
-- No public SLA; occasional downtime
-- Rate limiting is not explicitly documented but can be observed under heavy load
+| Tool / Source | Type | Description |
+|---|---|---|
+| AWDB REST API v1 | Primary API | Modern JSON REST API. Full metadata, all elements. **Used by this project.** |
+| AWDB SOAP API | Legacy API | Older XML/SOAP service. Full feature parity. |
+| metloom | Python | Unified interface to SNOTEL, CDEC, USGS, and others. |
+| snotelr | R | R interface to SNOTEL via AWDB. |
+| soilDB::fetchSCAN | R | Unified R interface to SCAN and SNOTEL. |
 
 ### 6.2 SNOLite (SNTLT)
 
-**Data source:** USDA NRCS NWCC  
-**Stations in archive:** ~44  
-**Coverage:** Western United States  
-**Period of record:** ~2011 - present  
-**Temporal resolution:** Daily  
-**Variables:** SWE (WTEQ), snow depth (SNWD), precipitation, temperature
+**Data source:** USDA NRCS NWCC | **Client:** `awdb`
+**Stations:** ~44 | **Coverage:** Western U.S. | **Period:** ~2011 – present
+**Operator:** USDA NRCS
 
-SNOLite (or SnowLite) stations use a simplified, lower-cost sensor package
-compared to full SNOTEL sites. They are intended to extend coverage into areas
-where full SNOTEL infrastructure is not cost-effective. SNOLite stations are
-stored in AWDB under the `SNTLT` network code and are accessible via the same
-APIs as SNOTEL. Data quality and sensor redundancy are generally lower than
-full SNTL stations.
-
-**Access methods:** Same as SNOTEL. All AWDB-based tools (REST API, SOAP,
-metloom, soilDB) support `SNTLT` stations transparently.
+Lower-cost sensor packages extending coverage where full SNOTEL infrastructure
+is not cost-effective. Accessible via all AWDB-based tools using network code
+`SNTLT`.
 
 ### 6.3 Manual SNOTEL (MSNT)
 
-**Data source:** USDA NRCS NWCC  
-**Stations in archive:** ~173  
-**Coverage:** Western United States and Canada (BC, AB)  
-**Period of record:** Varies widely; some from the 1960s  
-**Temporal resolution:** Daily (telemetered observations)  
-**Variables:** SWE (WTEQ), snow depth (SNWD)
+**Data source:** USDA NRCS NWCC | **Client:** `awdb`
+**Stations:** ~173 | **Coverage:** Western U.S. and Canada (BC, AB)
+**Period:** Varies, some from the 1960s | **Operator:** USDA NRCS
 
-Manual SNOTEL (`MSNT`) stations represent older or transitional sites that feed
-into the AWDB database but may use legacy telemetry or data entry methods.
-Despite the manual label, they are stored with daily temporal resolution in
-AWDB. Many are historical records from retired sites or predecessor networks
-that predate the current automated SNOTEL system. Data density and quality can
-vary significantly by station.
-
-**Access methods:** Same as SNOTEL. All AWDB tooling supports `MSNT` stations.
+Historical and transitional sites stored with daily temporal resolution in
+AWDB. Includes some BC provincial snow survey stations (see [Known Caveats](#9-known-caveats)).
 
 ### 6.4 Soil Climate Analysis Network (SCAN)
 
-**Data source:** USDA NRCS NWCC  
-**Stations in archive:** ~23 with daily SNWD/WTEQ  
-**Coverage:** Nationwide (contiguous U.S.)  
-**Period of record:** ~2000 - present  
-**Temporal resolution:** Daily (and hourly)  
-**Variables:** Soil moisture (multiple depths), soil temperature, air
-temperature, precipitation, SWE (WTEQ), snow depth (SNWD), wind
+**Data source:** USDA NRCS NWCC | **Client:** `awdb`
+**Stations:** ~23 with daily SNWD/WTEQ | **Coverage:** Nationwide (CONUS)
+**Operator:** USDA NRCS/ARS
 
-SCAN is a national network of automated stations focused primarily on soil
-climate monitoring (soil moisture and temperature at multiple depths), though
-many sites also measure snowpack where snow is present. SCAN is operated by
-NRCS in cooperation with USDA ARS and university partners. Unlike SNOTEL, which
-is concentrated at high-elevation western sites, SCAN spans the full
-continental U.S. including the Southeast, Midwest, and East. Not all SCAN
-stations are in snowy climates; only a subset report meaningful daily
-SNWD/WTEQ and are included in this archive.
-
-**Links**
-- Network home: https://www.wcc.nrcs.usda.gov/scan/
-- Station map: https://www.wcc.nrcs.usda.gov/scan/app/station-map
-
-#### Data Sources And Access Methods
-
-| Tool / Source | Type | Language | Description | Link |
-|---|---|---|---|---|
-| AWDB REST API v1 | Primary API | Any | Same API as SNOTEL. SCAN stations use network code `SCAN`. Supports all elements including soil sensors. | [Swagger docs](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html) |
-| soilDB::fetchSCAN | R package | R | Purpose-built R interface to SCAN (and SNOTEL). Returns named lists by sensor type and handles multi-depth soil sensor disambiguation. | [Tutorial](https://ncss-tech.github.io/AQP/soilDB/fetchSCAN-demo.html) - [CRAN](https://cran.r-project.org/package=soilDB) |
-| metloom | Python package | Python | Supports SCAN stations via AWDB. Returns GeoDataFrames. | [GitHub](https://github.com/M3Works/metloom) |
-
-**Note on SCAN vs. SNOTEL via soilDB:** `fetchSCAN()` in soilDB supports both
-`SCAN` and `SNTL`/`SNTLT` network codes. `SCAN_site_metadata()` can return a
-unified metadata table for both networks, which is useful for cross-network
-analysis in R workflows.
+National network focused on soil climate monitoring. Only a subset report
+meaningful daily snowpack and are included in this archive.
 
 ### 6.5 NWS Cooperative Observer Network (COOP)
 
-**Data source:** NOAA National Weather Service / USDA NRCS (mirrored in AWDB)  
-**Stations in archive:** ~23 with daily SNWD/WTEQ in AWDB  
-**Coverage:** Western United States  
-**Period of record:** Varies; some records extend back to the early 1900s  
-**Temporal resolution:** Daily  
-**Variables:** Snow depth (SNWD), SWE (WTEQ at some sites), temperature,
-precipitation
+**Data source:** NOAA NWS (mirrored in AWDB) | **Client:** `awdb`
+**Stations:** ~23 with daily SNWD/WTEQ | **Operator:** NOAA NWS
 
-The NWS Cooperative Observer Program (COOP) is a nationwide volunteer weather
-observation network with over 8,500 active stations, some with records dating
-to the 1890s. A subset of COOP stations in AWDB also report snow-relevant
-elements (SNWD, WTEQ), generally in mountainous western states. Those are the
-stations included here. The much larger COOP network outside AWDB is managed by
-NOAA and accessible via GHCND.
+Subset of the nationwide COOP volunteer observer network that also reports
+snow-relevant elements in AWDB.
 
-**Links**
-- NOAA COOP: https://www.weather.gov/coop/
-- GHCND (full COOP + global): https://www.ncei.noaa.gov/products/land-based-station/global-historical-climatology-network-daily
+### 6.6 California Cooperative Snow Surveys (CCSS)
 
-#### Data Sources And Access Methods
+**Data sources:** CDEC (California Data Exchange Center) and AWDB
+**Clients:** `cdec` and `awdb` (MSNT network)
+**Coverage:** California mountain ranges (Sierra Nevada, Cascades, etc.)
+**Operator:** California Department of Water Resources (CA DWR)
 
-| Tool / Source | Type | Language | Description | Link |
-|---|---|---|---|---|
-| AWDB REST API v1 | API | Any | For the AWDB-mirrored COOP subset. Uses network code `COOP`. | [Swagger docs](https://wcc.sc.egov.usda.gov/awdbRestApi/swagger-ui/index.html) |
-| NOAA GHCND / CDO | API | Any | Full COOP network (and global stations). Authoritative source for long COOP records outside AWDB. | [CDO API](https://www.ncei.noaa.gov/cdo-web/webservices/v2) |
-| meteostat | Python package | Python | Wraps GHCND and other sources for global daily station data access. | [GitHub](https://github.com/meteostat/meteostat-python) |
+The California Cooperative Snow Surveys programme, operated by CA DWR, is
+California's primary snow monitoring system. It includes two types of sites:
+
+#### Automated snow pillows (daily)
+
+Automated snow pillow stations measure SWE continuously and report daily
+values. These stations are included in `snow_stations.geojson`.
+
+**SWE variables (CDEC sensor numbers):**
+- **Sensor 3 (SNOW WC):** Raw telemetered reading from the snow pillow load
+  cell (SWE, inches).
+- **Sensor 82 (SNO ADJ):** Quality-controlled, calibration-offset-corrected
+  version of sensor 3. This is the **preferred SWE variable** and is stored
+  as `wteq_cm` in per-station CSVs. Carries the `r` (revised) data flag.
+- **Sensor 18 (SNOW DP):** Ultrasonic snow depth sensor (inches → `snwd_cm`).
+
+Sensor 82 is a revised version of sensor 3 — both represent SWE from the same
+snow pillow — with calibration offsets applied. When both are available,
+sensor 82 is always used in preference.
+
+#### Manual snow courses (periodic)
+
+Snow course sites are visited manually by surveyors, typically monthly from
+January through May. They record snow depth and SWE by weighing snow cores.
+**These sites are NOT included in `snow_stations.geojson`** (no daily data)
+but appear in `clients/cdec/cdec_stations.geojson` with full metadata
+including the `april1_avg_swe_in` (April 1 climatological average).
+
+**Station URL format:** `https://cdec.water.ca.gov/dynamicapp/staMeta?station_id={ID}`
+
+#### Comparison: CDEC vs. AWDB for CCSS
+
+| Feature | CDEC (`cdec` client) | AWDB (`awdb` client, MSNT) |
+|---|---|---|
+| SWE variable | Sensor 82 (SNO ADJ) — adjusted | WTEQ — may be sensor 3 (raw) |
+| Snow depth | Sensor 18 (SNOW DP) | SNWD |
+| Snow courses | Yes (periodic, in per-client GeoJSON) | Some under MSNT |
+| Data flags | Yes (sensor-level flags: r, o, e, …) | Yes (element-level) |
+| Hourly data | Yes (sensor 3, 18) | Yes |
+| API type | JSON data service + HTML scraping | JSON REST API |
+| Station URLs | cdec.water.ca.gov/dynamicapp/staMeta | wcc.sc.egov.usda.gov/nwcc/site |
+
+**Pros of CDEC:**
+- Authoritative source for CA DWR data; sensor 82 (SNO ADJ) is the official
+  adjusted product
+- Includes full snow course inventory and April 1 normals
+- Data flags available at the individual value level
+
+**Cons of CDEC:**
+- No bulk data API; HTML scraping required for station metadata
+- No structured JSON for station list (staSearch is HTML only)
+- Monthly aggregates not available for snow sensors (daily only)
+- Station metadata requires per-station HTTP requests for full sensor inventory
+
+**Pros of AWDB for CCSS stations:**
+- Consistent REST API with batch queries
+- Normalised metadata across all networks in one place
+- Supports all durations (daily, hourly, monthly, semimonthly, annual)
+
+**Cons of AWDB for CCSS stations:**
+- CCSS stations labelled as MSNT, which is semantically misleading
+- May serve raw (sensor 3) rather than adjusted (sensor 82) SWE values
+- Not all CCSS snow courses are represented
+
+### 6.7 BC Snow Survey
+
+**Data sources:** BC Data Catalogue (DataBC) and AWDB
+**Clients:** `databc` and `awdb` (MSNT network)
+**Coverage:** British Columbia, Canada
+**Operator:** BC Ministry of Environment (BC ENV)
+
+The BC River Forecast Centre (RFC) operates BC's snow survey network,
+comprising automated snow weather stations (ASWS) and manual snow course sites
+(MSS).
+
+#### Automated Snow Weather Stations — ASWS (daily)
+
+ASWS stations are automated snow pillow sites with location IDs ending in `P`
+(e.g. `1A01P`, `1E08P`). They report daily SWE. These are included in
+`snow_stations.geojson`.
+
+**Variables (ASWS):**
+- `swe_mm` → `wteq_cm` in CSVs (SWE in mm from SWDaily.csv, converted ÷10)
+- Snow depth not available from the daily ASWS CSV (`snwd_cm` = null)
+
+**Station URL format:**
+`https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/{ID}/Interval/Latest`
+
+**Camera feeds:** A small subset of ASWS stations (~6–8) have live camera URLs
+stored in the WFS `CAMERA_URL` field (third-party webcam feeds). These are
+included as `station_image_url` in the GeoJSON where available.
+
+#### Manual Snow Survey Sites — MSS (periodic)
+
+Manual snow course sites have location IDs that do NOT end in `P`
+(e.g. `1A06A`, `1A10`). Survey visits occur monthly during the snow season.
+**MSS sites are NOT in `snow_stations.geojson`** but appear in
+`clients/databc/databc_stations.geojson`.
+
+**Variables (MSS):**
+- `swe_mm` (Water Equiv., mm) — snow water equivalent
+- `snwd_cm` (Snow Depth, cm) — measured snow depth
+- `density_pct` — density percentage
+- `snow_line_m` — elevation of snow line
+
+#### Comparison: DataBC vs. AWDB for BC Snow Survey
+
+| Feature | DataBC (`databc` client) | AWDB (`awdb` client, MSNT) |
+|---|---|---|
+| ASWS daily SWE | Yes — SWDaily.csv (mm) | Yes — WTEQ element |
+| MSS surveys (periodic) | Yes — allmss CSV files | Some under MSNT |
+| Snow depth (ASWS) | No (not in daily CSV) | SNWD element |
+| Survey metadata | Snow depth, density, snow line | WTEQ only |
+| Station IDs | Native BC IDs (e.g. `1A01P`) | AWDB triplet (e.g. `1A01P:BC:MSNT`) |
+| Data flags | MSS survey code field | Yes (element-level) |
+| API type | WFS GeoJSON + CSV files | JSON REST API |
+| Station page | AQRT portal | NRCS site page |
+
+**Pros of DataBC:**
+- Authoritative BC government data source
+- Includes full MSS survey data (depth, density, snow line) back to ~1950
+- Both ASWS and MSS station locations available as WFS GeoJSON
+- Open Government Licence
+
+**Cons of DataBC:**
+- No snow depth from ASWS daily CSV (available from MSS surveys only)
+- ASWS data is wide-format CSV requiring reshaping
+- Two readings per day (00:00 and 16:00 UTC); 16:00 UTC used as daily value
+- No per-value data flags for ASWS data
+
+**Pros of AWDB for BC stations:**
+- Consistent REST API and triplet format
+- SNWD (snow depth) available daily alongside WTEQ
+- Supports hourly and other durations
+
+**Cons of AWDB for BC stations:**
+- BC snow survey stations labelled as MSNT (misleading)
+- Not all BC stations are represented in AWDB
 
 ---
 
-## 7. Usage Examples
+## 7. Data Access Methods and Design Philosophy
 
-### 7.1 Rebuild the Archive Locally
+### 7.1 Client architecture
+
+Each data source has a dedicated client module under `clients/`:
+
+```
+clients/awdb/awdb_client.py    → AWDBClient
+clients/cdec/cdec_client.py    → CDECClient
+clients/databc/databc_client.py → DataBCClient
+```
+
+**Invariants across all clients:**
+- Return plain Python objects (dicts / lists); callers choose pandas/xarray.
+- Metric-first: all values in SI units (centimetres for SWE and snow depth).
+- Missing values normalised to `None` / `NaN`.
+- Errors raise `{Client}Error(Exception)` with descriptive messages.
+- `get_data(..., include_flags=True)` adds a `flag` key to each value record.
+
+### 7.2 Variables and flags
+
+Each client module exposes:
+- **`SENSORS` / `VARIABLES`** — dict mapping variable codes to metadata
+  (name, units, description).
+- **`DATA_FLAGS`** — dict mapping flag codes to human-readable descriptions.
+- **`DURATION_CODES`** — dict mapping duration codes to names.
+
+These are importable for documentation and downstream use:
+
+```python
+from clients.cdec import CDECClient
+from clients.cdec.cdec_client import SENSORS, DATA_FLAGS
+
+print(SENSORS[82])
+# {'name': 'Snow Water Content (Adjusted)', 'short_name': 'SNO ADJ', ...}
+```
+
+### 7.3 Snow course / periodic data
+
+Clients can retrieve all available intervals including periodic snow course
+measurements.  Example — CDEC monthly (note: monthly aggregation unavailable
+for sensors 3/18/82; use daily with sparse records):
+
+```python
+client = CDECClient()
+courses = client.get_snow_courses()  # CCSS course list
+data = client.get_data(
+    station_ids=["QUA", "BLC"],
+    sensors=[82],
+    duration="D",
+    begin_date="1981-10-01",
+)
+```
+
+For BC snow courses (periodic survey data):
+
+```python
+client = DataBCClient()
+df = client.get_mss_survey_data(
+    location_ids=["1A06A", "1A10"],
+    archive=True,
+    include_flags=True,   # includes survey_code quality flag
+)
+```
+
+### 7.4 CSV storage scope
+
+**Per-station CSVs (`data/stations/*.csv`) contain only:**
+- Daily SWE (`wteq_cm`)
+- Daily snow depth (`snwd_cm`)
+
+Snow course/periodic data, hourly data, other variables (temperature,
+precipitation, soil moisture), and data flags are NOT stored in CSVs.  Use
+the client APIs directly for those.
+
+---
+
+## 8. Usage Examples
+
+### 8.1 Rebuild the archive locally
 
 ```bash
 pixi run fetch-stations
@@ -393,58 +547,133 @@ pixi run fetch-data
 pixi run live-map
 ```
 
-### 7.2 Inspect Station Inventory in Python
+### 8.2 Inspect station inventory in Python
 
 ```python
 import geopandas as gpd
 
 gdf = gpd.read_file("snow_stations.geojson")
-print(gdf[["code", "networkCode", "state", "earliest_record_date", "latest_record_date"]].head())
+# Filter to a single client
+cdec = gdf[gdf["client"] == "cdec"]
+print(cdec[["code", "name", "Operator", "has_daily_swe"]].head())
 ```
 
-### 7.3 Read One Station CSV in Python
+### 8.3 Read one station CSV
 
 ```python
 import pandas as pd
 
 df = pd.read_csv("data/stations/303_CO_SNTL.csv", parse_dates=["date"])
-print(df.tail())
 print(df[["wteq_cm", "snwd_cm"]].describe())
 ```
 
-### 7.4 Load Bulk Archive
+### 8.4 Load bulk archive
 
 ```bash
 tar -xJf data/all_station_csvs.tar.xz -C /tmp
 ls /tmp/stations | head
 ```
 
+### 8.5 Fetch CDEC station data with flags
+
+```python
+from clients.cdec import CDECClient
+from clients.cdec.cdec_client import SENSORS, DATA_FLAGS
+
+client = CDECClient()
+
+# Get full sensor inventory for a station
+meta = client.get_metadata("QUA")
+print(meta["sensor_inventory"])
+
+# Fetch data with quality flags
+data = client.get_data(
+    station_ids=["QUA"],
+    sensors=[82, 18],
+    duration="D",
+    begin_date="2023-10-01",
+    end_date="2024-09-30",
+    include_flags=True,
+)
+# data[0]["data"][0]["values"][0] → {"date": "2023-10-01", "value": 5.08, "flag": "r"}
+```
+
+### 8.6 Fetch BC snow survey data
+
+```python
+from clients.databc import DataBCClient
+
+client = DataBCClient()
+
+# List all automated stations
+asws = client.get_asws_stations(active_only=True)
+print(len(asws), "active ASWS stations")
+
+# Get daily SWE for current + archive season
+df = client.get_asws_daily_data(
+    location_ids=["1A01P", "1E08P"],
+    archive=True,
+)
+print(df.head())
+
+# Get snow course survey data for BC MSS stations
+df_surveys = client.get_mss_survey_data(archive=True)
+print(df_surveys.columns.tolist())
+```
+
 ---
 
-## 8. Known Metadata Caveat
+## 9. Known Caveats
 
-AWDB network labels can be semantically misleading for some station groups.
+### 9.1 AWDB network label semantics
 
-Examples:
+AWDB network codes can be semantically misleading:
 
-- Some British Columbia Snow Survey stations appear under `MSNT`
-  (often described as "Manual SNOTEL"), which does not reflect their actual
-  operating program context.
-- Some CCSS-related stations also appear with `MSNT` labels.
+- Some BC snow survey stations appear under `MSNT` ("Manual SNOTEL"), which
+  does not reflect their actual operating programme.
+- Some California CCSS stations also appear under `MSNT`.
 
-Current behavior in this repository:
+This project preserves source-provided AWDB network codes exactly to avoid
+introducing ambiguity.  The `client` field in `snow_stations.geojson`
+distinguishes data sources; `networkCode` reflects what AWDB reports.
 
-- preserve source-provided AWDB network codes exactly
-- document the caveat so downstream users do not over-interpret label semantics
+### 9.2 Duplicate stations
+
+The same physical station may appear multiple times in `snow_stations.geojson`
+if accessible via more than one client.  This is intentional — each entry
+reflects a distinct data access path with potentially different variables,
+QC levels, or metadata.  De-duplicate by spatial proximity + name matching
+if a single-entry view is needed.
+
+### 9.3 DataBC ASWS snow depth
+
+Daily ASWS SWE is available from BC DataBC's SWDaily.csv.  **Snow depth is not
+provided in the daily automated CSV.**  Snow depth from BC is available only
+from the periodic manual snow survey data (MSS), accessible via
+`DataBCClient.get_mss_survey_data()`.
+
+### 9.4 CDEC monthly data unavailability
+
+CDEC's JSON data service does not return monthly aggregates for snow sensors
+3, 18, or 82.  Use daily duration (`"D"`) for all CDEC snow data retrieval.
 
 ---
 
-## 9. License and Citation
+## 10. License and Citation
 
 Data accessed from AWDB is public domain (U.S. Government).
+BC snow survey data is published under the Open Government Licence — British
+Columbia.
+CDEC data is published by CA DWR.
 
-Suggested citation for source data:
+Suggested citations for source data:
 
 > USDA Natural Resources Conservation Service (NRCS). Air and Water Database
 > (AWDB) REST API v1. National Water and Climate Center, Portland, OR.
 > <https://wcc.sc.egov.usda.gov/awdbRestApi/>
+
+> California Department of Water Resources (CA DWR). California Data Exchange
+> Center (CDEC). <https://cdec.water.ca.gov>
+
+> BC Ministry of Environment. BC Snow Survey Network. BC Data Catalogue.
+> <https://catalogue.data.gov.bc.ca>
