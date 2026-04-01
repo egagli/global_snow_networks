@@ -5,7 +5,7 @@ multiple networks and data sources.
 
 The current storage strategy is CSV-first:
 
-- a station inventory in GeoJSON (`snow_stations.geojson`)
+- a station inventory in GeoJSON (`all_daily_snow_stations.geojson`)
 - one CSV time-series file per station (`data/stations/*.csv`)
 - a compressed bundle for bulk transfer (`data/all_station_csvs.tar.xz`)
 
@@ -35,7 +35,7 @@ Python, R, GIS tools, and command-line workflows.
 global_snow_networks/
 ├── pixi.toml                              # Environment + task definitions
 ├── README.md                              # This file
-├── snow_stations.geojson                  # Merged daily-only station inventory
+├── all_daily_snow_stations.geojson                  # Merged daily-only station inventory
 ├── scripts/
 │   ├── create_all_stations_geojson.py     # Build station GeoJSONs from all clients
 │   ├── get_all_stations_data.py           # Refresh CSVs + archive + date fields
@@ -88,7 +88,7 @@ The pipeline is split into explicit stages:
 ```bash
 # Stage 1: Build station GeoJSON inventories for all clients
 #   Writes per-client GeoJSONs (clients/*/..._stations.geojson)
-#   and the merged daily-only snow_stations.geojson
+#   and the merged daily-only all_daily_snow_stations.geojson
 pixi run fetch-stations
 
 # Stage 2: Fetch/update station CSVs and update GeoJSON record dates
@@ -117,7 +117,7 @@ What it does:
 2. Queries each configured client for station locations and metadata.
 3. For each client, writes a per-client GeoJSON with **all stations and all
    available metadata** (including periodic snow course sites).
-4. Writes `snow_stations.geojson` — a merged inventory of only those stations
+4. Writes `all_daily_snow_stations.geojson` — a merged inventory of only those stations
    with at least one **daily** SWE or snow depth observation.
 
 ### 3.2 Stage 2: Refresh Per-Station CSV Data
@@ -126,7 +126,7 @@ Script: `scripts/get_all_stations_data.py`
 
 What it does:
 
-1. Reads stations from `snow_stations.geojson`.
+1. Reads stations from `all_daily_snow_stations.geojson`.
 2. Routes each station to the appropriate client based on its `client` field.
 3. Writes/replaces station CSVs atomically on successful fetch.
 4. Updates date fields in the GeoJSON from the refreshed CSV content.
@@ -160,9 +160,9 @@ Map URL: `https://<owner>.github.io/global_snow_networks/live_swe_map.html`
 
 ## 5. Data Model
 
-### 5.1 Station Inventory: `snow_stations.geojson`
+### 5.1 Station Inventory: `all_daily_snow_stations.geojson`
 
-`snow_stations.geojson` is the **daily-only** merged metadata index.
+`all_daily_snow_stations.geojson` is the **daily-only** merged metadata index.
 
 **Common fields across all clients:**
 
@@ -195,7 +195,7 @@ Map URL: `https://<owner>.github.io/global_snow_networks/live_swe_map.html`
 
 #### Duplicate stations
 
-The same physical station may appear in `snow_stations.geojson` more than once
+The same physical station may appear in `all_daily_snow_stations.geojson` more than once
 if it is accessible via multiple clients.  For example, some BC snow survey
 stations and California CCSS stations appear in both AWDB (`MSNT` network) and
 their respective native clients (DataBC, CDEC).  Each entry has a distinct
@@ -206,7 +206,7 @@ their respective native clients (DataBC, CDEC).  Each entry has a distinct
 
 The per-client GeoJSONs in `clients/*/` contain **all** stations from each
 source — including manual snow course sites that have only periodic
-measurements and are excluded from `snow_stations.geojson`.  These files
+measurements and are excluded from `all_daily_snow_stations.geojson`.  These files
 carry all available source metadata and serve as a complete reference for each
 data source.
 
@@ -256,7 +256,7 @@ central database (AWDB/WCIS) several times per day.
 
 **Air temperature bias correction:** NRCS has identified a warm bias in SNOTEL
 air temperature sensors at many sites. A correction programme is in progress.
-The `notes` field in `snow_stations.geojson` indicates whether a correction
+The `notes` field in `all_daily_snow_stations.geojson` indicates whether a correction
 has been applied for each SNOTEL station. Status is fetched at runtime from:
 https://www.wcc.nrcs.usda.gov/ftpref/support/air_temp_bias/nrcs_air_temp_unbias.html
 
@@ -324,7 +324,7 @@ California's primary snow monitoring system. It includes two types of sites:
 #### Automated snow pillows (daily)
 
 Automated snow pillow stations measure SWE continuously and report daily
-values. These stations are included in `snow_stations.geojson`.
+values. These stations are included in `all_daily_snow_stations.geojson`.
 
 **SWE variables (CDEC sensor numbers):**
 - **Sensor 3 (SNOW WC):** Raw telemetered reading from the snow pillow load
@@ -342,7 +342,7 @@ sensor 82 is always used in preference.
 
 Snow course sites are visited manually by surveyors, typically monthly from
 January through May. They record snow depth and SWE by weighing snow cores.
-**These sites are NOT included in `snow_stations.geojson`** (no daily data)
+**These sites are NOT included in `all_daily_snow_stations.geojson`** (no daily data)
 but appear in `clients/cdec/cdec_stations.geojson` with full metadata
 including the `april1_avg_swe_in` (April 1 climatological average).
 
@@ -397,7 +397,7 @@ comprising automated snow weather stations (ASWS) and manual snow course sites
 
 ASWS stations are automated snow pillow and weather sites with location IDs
 ending in `P` (e.g. `1A01P`, `1E08P`). They report hourly observations for
-a full meteorological suite and are included in `snow_stations.geojson`.
+a full meteorological suite and are included in `all_daily_snow_stations.geojson`.
 
 **Variables (ASWS) — sourced from the public BC env.gov.bc.ca CSV directory:**
 
@@ -436,7 +436,7 @@ images are displayed in the live map station popup.
 
 Manual snow course sites have location IDs that do NOT end in `P`
 (e.g. `1A06A`, `1A10`). Survey visits occur monthly during the snow season.
-**MSS sites are NOT in `snow_stations.geojson`** but appear in
+**MSS sites are NOT in `all_daily_snow_stations.geojson`** but appear in
 `clients/databc/databc_stations.geojson`.
 
 **Variables (MSS):**
@@ -580,7 +580,7 @@ pixi run live-map
 ```python
 import geopandas as gpd
 
-gdf = gpd.read_file("snow_stations.geojson")
+gdf = gpd.read_file("all_daily_snow_stations.geojson")
 # Filter to a single client
 cdec = gdf[gdf["client"] == "cdec"]
 print(cdec[["code", "name", "Operator", "has_daily_swe"]].head())
@@ -662,12 +662,12 @@ AWDB network codes can be semantically misleading:
 - Some California CCSS stations also appear under `MSNT`.
 
 This project preserves source-provided AWDB network codes exactly to avoid
-introducing ambiguity.  The `client` field in `snow_stations.geojson`
+introducing ambiguity.  The `client` field in `all_daily_snow_stations.geojson`
 distinguishes data sources; `networkCode` reflects what AWDB reports.
 
 ### 9.2 Duplicate stations
 
-The same physical station may appear multiple times in `snow_stations.geojson`
+The same physical station may appear multiple times in `all_daily_snow_stations.geojson`
 if accessible via more than one client.  This is intentional — each entry
 reflects a distinct data access path with potentially different variables,
 QC levels, or metadata.  De-duplicate by spatial proximity + name matching
