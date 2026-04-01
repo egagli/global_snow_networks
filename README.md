@@ -223,8 +223,7 @@ Notes:
 - Missing observations are represented as null/empty.
 - CDEC: `wteq_cm` uses sensor 82 (SNO ADJ) preferentially; falls back to
   sensor 3 (raw SWE) if sensor 82 is not available.
-- DataBC ASWS: `snwd_cm` is always null — snow depth is not available from
-  the automated daily CSV.
+- DataBC ASWS: `snwd_cm` sourced from SD.csv / SD_Archive.csv (16:00 UTC reading).
 - Data flags are not stored in CSVs.  Use the respective client's
   `get_data(include_flags=True)` for flag information.
 
@@ -396,20 +395,42 @@ comprising automated snow weather stations (ASWS) and manual snow course sites
 
 #### Automated Snow Weather Stations — ASWS (daily)
 
-ASWS stations are automated snow pillow sites with location IDs ending in `P`
-(e.g. `1A01P`, `1E08P`). They report daily SWE. These are included in
-`snow_stations.geojson`.
+ASWS stations are automated snow pillow and weather sites with location IDs
+ending in `P` (e.g. `1A01P`, `1E08P`). They report hourly observations for
+a full meteorological suite and are included in `snow_stations.geojson`.
 
-**Variables (ASWS):**
-- `swe_mm` → `wteq_cm` in CSVs (SWE in mm from SWDaily.csv, converted ÷10)
-- Snow depth not available from the daily ASWS CSV (`snwd_cm` = null)
+**Variables (ASWS) — sourced from the public BC env.gov.bc.ca CSV directory:**
+
+| Variable | Units | CSV file | Archive |
+|---|---|---|---|
+| `swe_mm` | mm | SWDaily.csv (daily) / SW.csv (hourly) | Yes |
+| `snwd_cm` | cm | SD.csv | Yes |
+| `air_temp_degc` | °C | TA.csv | Yes |
+| `precip_cumul_mm` | mm | PC.csv | Yes |
+| `baro_press_hpa` | hPa | PA.csv | No (current season only) |
+| `wind_dir_deg` | ° | UD.csv | No |
+| `wind_spd_kmh` | km/h | US.csv | No |
+| `wind_spd_peak_kmh` | km/h | UP.csv | No |
+| `wind_run_km` | km | UR.csv | No |
+| `rh_pct` | % | XR.csv | No |
+
+The **16:00 UTC reading** is used as the canonical daily value (~08:00 PST /
+09:00 PDT) for all variables.  Only `swe_mm` (`wteq_cm` in CSVs) and
+`snwd_cm` are stored in the per-station CSV archive; use the client directly
+for other variables.
+
+**Per-station CSVs:** `wteq_cm` = `swe_mm ÷ 10`.  `snwd_cm` is stored
+directly.  All other ASWS variables are available via the client but not
+stored in the daily CSV archive.
 
 **Station URL format:**
 `https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/{ID}/Interval/Latest`
 
-**Camera feeds:** A small subset of ASWS stations (~6–8) have live camera URLs
-stored in the WFS `CAMERA_URL` field (third-party webcam feeds). These are
-included as `station_image_url` in the GeoJSON where available.
+**Station images:** Each ASWS station has a photo hosted on the BC Ministry
+of Environment AQRT portal (`bcmoe-prod.aquaticinformatics.net`).  The
+`station_image_url` GeoJSON field contains a direct `GetFileById` URL fetched
+during `fetch-stations` via `DataBCClient.get_station_image_url()`.  These
+images are displayed in the live map station popup.
 
 #### Manual Snow Survey Sites — MSS (periodic)
 
@@ -429,22 +450,29 @@ Manual snow course sites have location IDs that do NOT end in `P`
 | Feature | DataBC (`databc` client) | AWDB (`awdb` client, MSNT) |
 |---|---|---|
 | ASWS daily SWE | Yes — SWDaily.csv (mm) | Yes — WTEQ element |
+| ASWS snow depth | Yes — SD.csv (cm) | SNWD element |
+| ASWS air temperature | Yes — TA.csv (°C, archived) | TOBS element |
+| ASWS precipitation | Yes — PC.csv (mm, archived) | PREC element |
+| ASWS wind / humidity / pressure | Yes — UD/US/UP/UR/XR.csv (current season) | Not available |
 | MSS surveys (periodic) | Yes — allmss CSV files | Some under MSNT |
-| Snow depth (ASWS) | No (not in daily CSV) | SNWD element |
-| Survey metadata | Snow depth, density, snow line | WTEQ only |
+| Survey metadata | Depth, density, snow line | WTEQ only |
 | Station IDs | Native BC IDs (e.g. `1A01P`) | AWDB triplet (e.g. `1A01P:BC:MSNT`) |
+| Station photos | Yes — via AQRT BCMOE portal | No |
 | Data flags | MSS survey code field | Yes (element-level) |
-| API type | WFS GeoJSON + CSV files | JSON REST API |
+| API type | WFS GeoJSON + public CSV files | JSON REST API |
 | Station page | AQRT portal | NRCS site page |
 
 **Pros of DataBC:**
 - Authoritative BC government data source
+- Full meteorological suite from ASWS (SWE, depth, temperature, precip, wind, humidity, pressure)
 - Includes full MSS survey data (depth, density, snow line) back to ~1950
 - Both ASWS and MSS station locations available as WFS GeoJSON
+- Station photos available via AQRT BCMOE portal
 - Open Government Licence
 
 **Cons of DataBC:**
-- No snow depth from ASWS daily CSV (available from MSS surveys only)
+
+- Wind/humidity/pressure (PA, UD, US, UP, UR, XR) have no archive — current season only
 - ASWS data is wide-format CSV requiring reshaping
 - Two readings per day (00:00 and 16:00 UTC); 16:00 UTC used as daily value
 - No per-value data flags for ASWS data
@@ -645,12 +673,14 @@ reflects a distinct data access path with potentially different variables,
 QC levels, or metadata.  De-duplicate by spatial proximity + name matching
 if a single-entry view is needed.
 
-### 9.3 DataBC ASWS snow depth
+### 9.3 DataBC ASWS met variables with no archive
 
-Daily ASWS SWE is available from BC DataBC's SWDaily.csv.  **Snow depth is not
-provided in the daily automated CSV.**  Snow depth from BC is available only
-from the periodic manual snow survey data (MSS), accessible via
-`DataBCClient.get_mss_survey_data()`.
+Daily SWE (SWDaily.csv), snow depth (SD.csv), air temperature (TA.csv), and
+cumulative precipitation (PC.csv) have full historical archives.  Wind
+direction, wind speed, wind gust, wind run, relative humidity, and barometric
+pressure (UD, US, UP, UR, XR, PA) are available from the current season only —
+no archive files exist for these variables.  For historical met analysis at BC
+ASWS stations, contact BC Ministry of Environment or use the AQRT portal.
 
 ### 9.4 CDEC monthly data unavailability
 
