@@ -36,6 +36,10 @@ fetch-stations  = "python -m scripts.create_all_stations_geojson"
 fetch-data      = "python -m scripts.get_all_stations_data"
 live-map        = "python -m scripts.generate_live_map"
 update-all      = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
+test            = "pytest tests/ -v"
+test-awdb       = "pytest tests/test_awdb_client.py -v"
+test-cdec       = "pytest tests/test_cdec_client.py -v"
+test-databc     = "pytest tests/test_databc_client.py -v"
 
 [pypi-dependencies]
 playwright = ">=1.58.0, <2"
