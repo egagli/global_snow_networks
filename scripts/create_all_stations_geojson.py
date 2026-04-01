@@ -564,6 +564,12 @@ def cdec_station_to_feature(station: dict) -> dict:
     props["data_variables"] = data_vars
     props["dailySWE"] = _has_daily_type(data_vars, "swe")
     props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+    daily_names = [
+        dv["name"] for dv in data_vars
+        if dv.get("interval", "").lower() in _DAILY_INTERVALS
+    ]
+    if daily_names:
+        props["variables_daily"] = ", ".join(daily_names)
 
     return make_feature(lon, lat, props)
 
@@ -645,6 +651,12 @@ def databc_station_to_feature(station: dict) -> dict:
     props["data_variables"] = data_vars
     props["dailySWE"] = _has_daily_type(data_vars, "swe")
     props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+    daily_names = [
+        dv["name"] for dv in data_vars
+        if dv.get("interval", "").lower() in _DAILY_INTERVALS
+    ]
+    if daily_names:
+        props["variables_daily"] = ", ".join(daily_names)
 
     return make_feature(lon, lat, props)
 
