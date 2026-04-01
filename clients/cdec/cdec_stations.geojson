@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-03-31",
+    "generated": "2026-04-01",
     "source": "CDEC \u2014 California Data Exchange Center (CA DWR)",
     "client": "cdec",
     "description": "All CDEC stations with snow sensors (3, 18, 82), including manual snow courses (periodic) and automated snow pillows (daily). Only stations with daily SWE or depth appear in snow_stations.geojson.",
