@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-03-31",
+    "generated": "2026-04-01",
     "source": "BC Data Catalogue \u2014 BC Ministry of Environment (BC OpenMaps WFS)",
     "client": "databc",
     "description": "All BC snow survey stations: ASWS (automated, daily SWE) and MSS (manual snow courses, periodic). Only ASWS stations appear in snow_stations.geojson.",
@@ -34,7 +34,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A01P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/673"
       }
     },
     {
@@ -63,7 +65,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A02P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/628"
       }
     },
     {
@@ -92,7 +96,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A03P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/629"
       }
     },
     {
@@ -121,7 +127,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A05P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/627"
       }
     },
     {
@@ -150,7 +158,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A12P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/700"
       }
     },
     {
@@ -179,7 +189,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/630"
       }
     },
     {
@@ -208,7 +220,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A15P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/631"
       }
     },
     {
@@ -237,7 +251,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/656"
       }
     },
     {
@@ -266,7 +282,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A19P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/632"
       }
     },
     {
@@ -295,7 +313,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B01P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -324,7 +343,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B02P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -353,7 +373,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -382,7 +403,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C05P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/708"
       }
     },
     {
@@ -411,7 +434,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C12P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/697"
       }
     },
     {
@@ -440,7 +465,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/680"
       }
     },
     {
@@ -469,7 +496,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -498,7 +526,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C18P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -527,7 +556,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C20P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/633"
       }
     },
     {
@@ -556,7 +587,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C22AP/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -585,7 +617,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C23P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/634"
       }
     },
     {
@@ -614,7 +648,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C29P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/657"
       }
     },
     {
@@ -643,7 +679,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C32P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/427"
       }
     },
     {
@@ -673,6 +711,7 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
         "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3%CDJ7%F6uq%AD%F4%CB%8A4%F0%0Bq%AD%F2uq%2C%F7u%094%04%00"
       }
     },
@@ -702,7 +741,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C40P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/716"
       }
     },
     {
@@ -731,7 +772,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C41P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1382"
       }
     },
     {
@@ -760,7 +803,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C43P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/682"
       }
     },
     {
@@ -789,7 +834,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C44P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -818,7 +864,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C45P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -847,7 +894,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D06P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/663"
       }
     },
     {
@@ -876,7 +925,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/710"
       }
     },
     {
@@ -905,7 +956,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D09P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/719"
       }
     },
     {
@@ -934,7 +987,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D11P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -963,7 +1017,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D12P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -992,7 +1047,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1021,7 +1077,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D15P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1050,7 +1107,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D16P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1079,7 +1137,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/636"
       }
     },
     {
@@ -1108,7 +1168,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D18P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1137,7 +1198,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D19P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/659"
       }
     },
     {
@@ -1166,7 +1229,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E02P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/635"
       }
     },
     {
@@ -1195,7 +1260,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E03AP/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1224,7 +1290,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1391"
       }
     },
     {
@@ -1253,7 +1321,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/637"
       }
     },
     {
@@ -1282,7 +1352,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E11P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1311,7 +1382,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/639"
       }
     },
     {
@@ -1340,7 +1413,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F03P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/638"
       }
     },
     {
@@ -1370,6 +1445,7 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
         "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%9D%E5X%0E%00"
       }
     },
@@ -1399,7 +1475,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F04P2/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1428,7 +1505,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F06P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/641"
       }
     },
     {
@@ -1457,7 +1536,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A06P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/709"
       }
     },
     {
@@ -1486,7 +1567,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1515,7 +1597,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A18P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/702"
       }
     },
     {
@@ -1544,7 +1628,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A21P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/706"
       }
     },
     {
@@ -1573,7 +1659,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A27P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1602,7 +1689,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A30P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/681"
       }
     },
     {
@@ -1632,7 +1721,8 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
-        "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3%CB%0A-%F7%0FI6%F2%CDr%AD%F2sq%AD%F2uq%2C%F7u%F15%04%00"
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/678"
       }
     },
     {
@@ -1661,7 +1751,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A32P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/718"
       }
     },
     {
@@ -1690,7 +1782,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A33P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/693"
       }
     },
     {
@@ -1719,7 +1813,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A34P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/699"
       }
     },
     {
@@ -1748,7 +1844,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A35P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/691"
       }
     },
     {
@@ -1777,7 +1875,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B02AP/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1806,7 +1905,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B06P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/683"
       }
     },
     {
@@ -1835,7 +1936,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/717"
       }
     },
     {
@@ -1864,7 +1967,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/694"
       }
     },
     {
@@ -1893,7 +1998,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C09P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/713"
       }
     },
     {
@@ -1922,7 +2029,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C09Q/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -1951,7 +2059,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/642"
       }
     },
     {
@@ -1980,7 +2090,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/692"
       }
     },
     {
@@ -2009,7 +2121,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C21P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/688"
       }
     },
     {
@@ -2038,7 +2152,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D05P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/643"
       }
     },
     {
@@ -2067,7 +2183,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D07AP/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/687"
       }
     },
     {
@@ -2096,7 +2214,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/690"
       }
     },
     {
@@ -2125,7 +2245,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/644"
       }
     },
     {
@@ -2155,7 +2277,8 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
-        "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%5D%95%5E%0E%00"
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/645"
       }
     },
     {
@@ -2184,7 +2307,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D15P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/701"
       }
     },
     {
@@ -2213,7 +2338,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D16P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -2242,7 +2368,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E07P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/647"
       }
     },
     {
@@ -2271,7 +2399,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F01AP/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/658"
       }
     },
     {
@@ -2300,7 +2430,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F03AP/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/954"
       }
     },
     {
@@ -2329,7 +2461,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F05P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/646"
       }
     },
     {
@@ -2359,7 +2493,8 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
-        "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%5D%15j%00%00"
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/652"
       }
     },
     {
@@ -2388,7 +2523,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F09P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/661"
       }
     },
     {
@@ -2417,7 +2554,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/664"
       }
     },
     {
@@ -2446,7 +2585,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F18P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/648"
       }
     },
     {
@@ -2475,7 +2616,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F19P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/649"
       }
     },
     {
@@ -2504,7 +2647,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F26P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1433"
       }
     },
     {
@@ -2533,7 +2678,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G03P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/651"
       }
     },
     {
@@ -2562,7 +2709,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G06P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/955"
       }
     },
     {
@@ -2591,7 +2740,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A09P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -2620,7 +2770,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -2650,6 +2801,7 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
         "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%1D%12X%0E%00"
       }
     },
@@ -2679,7 +2831,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A20P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/684"
       }
     },
     {
@@ -2708,7 +2862,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A22P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/650"
       }
     },
     {
@@ -2737,7 +2893,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A24P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/666"
       }
     },
     {
@@ -2766,7 +2924,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A25P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/668"
       }
     },
     {
@@ -2795,7 +2955,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A28P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/670"
       }
     },
     {
@@ -2824,7 +2986,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A29P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -2853,7 +3016,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/721"
       }
     },
     {
@@ -2882,7 +3047,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B23P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1390"
       }
     },
     {
@@ -2911,7 +3078,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B24P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/653"
       }
     },
     {
@@ -2940,7 +3109,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B25P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -2970,7 +3140,8 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
-        "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%9D%E5X%01%00"
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/667"
       }
     },
     {
@@ -2999,7 +3170,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B27P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3028,7 +3200,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/669"
       }
     },
     {
@@ -3058,7 +3232,8 @@
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
         "variables_daily": "swe_mm, snwd_cm",
-        "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3%CB%8A4%F4sq%AD%F4%0F%894%F0%0Bq%AD%F2uq%2C%F7u%094%00%00"
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/722"
       }
     },
     {
@@ -3087,7 +3262,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A03P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/720"
       }
     },
     {
@@ -3116,7 +3293,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A04P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/724"
       }
     },
     {
@@ -3145,7 +3324,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A09P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/726"
       }
     },
     {
@@ -3174,7 +3355,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3202,7 +3384,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A12P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/725"
       }
     },
     {
@@ -3231,7 +3415,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A13P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/704"
       }
     },
     {
@@ -3260,7 +3446,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A18P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/712"
       }
     },
     {
@@ -3289,7 +3477,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A20P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/711"
       }
     },
     {
@@ -3318,7 +3508,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A27P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1389"
       }
     },
     {
@@ -3347,7 +3539,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A29P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3376,7 +3569,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A30P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/685"
       }
     },
     {
@@ -3405,7 +3600,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A31P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/689"
       }
     },
     {
@@ -3434,7 +3631,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A33P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/715"
       }
     },
     {
@@ -3463,7 +3662,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A34P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/686"
       }
     },
     {
@@ -3492,7 +3693,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A35P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/695"
       }
     },
     {
@@ -3521,7 +3724,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A36P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/714"
       }
     },
     {
@@ -3550,7 +3755,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A37P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/703"
       }
     },
     {
@@ -3579,7 +3786,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A38P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/696"
       }
     },
     {
@@ -3608,7 +3817,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A39P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3637,7 +3847,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A40P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3666,7 +3877,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B02P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/698"
       }
     },
     {
@@ -3695,7 +3908,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B12P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3724,7 +3938,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B15P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/665"
       }
     },
     {
@@ -3753,7 +3969,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B16P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/672"
       }
     },
     {
@@ -3782,7 +4000,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/671"
       }
     },
     {
@@ -3811,7 +4031,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B18P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3840,7 +4061,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C01P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/723"
       }
     },
     {
@@ -3869,7 +4092,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C09P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/953"
       }
     },
     {
@@ -3898,7 +4123,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C11P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3927,7 +4153,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3956,7 +4183,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C20P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -3985,7 +4213,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C21P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4014,7 +4243,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C22P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4043,7 +4273,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D08P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4072,7 +4303,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D10P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4101,7 +4333,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D11P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/675"
       }
     },
     {
@@ -4130,7 +4364,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D13P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4159,7 +4394,9 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D14P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct",
+        "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/952"
       }
     },
     {
@@ -4188,7 +4425,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D16P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4217,7 +4455,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D17P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
@@ -4246,7 +4485,8 @@
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E01P/Interval/Latest",
         "metadata_fetched_at": "2026-04-01",
         "has_daily_swe": true,
-        "variables_daily": "swe_mm, snwd_cm"
+        "variables_daily": "swe_mm, snwd_cm",
+        "variables_available": "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, baro_press_hpa, wind_dir_deg, wind_spd_kmh, wind_spd_peak_kmh, wind_run_km, rh_pct"
       }
     },
     {
