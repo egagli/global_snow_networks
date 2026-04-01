@@ -497,9 +497,15 @@ def databc_station_to_feature(station: dict) -> dict:
     if stype == "ASWS":
         props["has_daily_swe"] = True
         props["variables_daily"] = "swe_mm, snwd_cm"
-        camera = station.get("camera_url")
-        if camera:
-            props["station_image_url"] = camera
+        props["variables_available"] = (
+            "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, "
+            "baro_press_hpa, wind_dir_deg, wind_spd_kmh, "
+            "wind_spd_peak_kmh, wind_run_km, rh_pct"
+        )
+        # Prefer AQRT-fetched station image over WFS camera URL
+        img = station.get("station_image_url") or station.get("camera_url")
+        if img:
+            props["station_image_url"] = img
     else:
         props["has_daily_swe"] = False
         props["variables_daily"] = ""
@@ -507,13 +513,23 @@ def databc_station_to_feature(station: dict) -> dict:
     return make_feature(lon, lat, props)
 
 
-def run_databc_workflow() -> tuple[list[dict], list[dict]]:
+def run_databc_workflow(
+    fetch_images: bool = True,
+) -> tuple[list[dict], list[dict]]:
     """
     Fetch DataBC stations.
 
     Returns (all_features, daily_features).
     ``all_features``   — all DataBC stations (ASWS + MSS).
     ``daily_features`` — only ASWS stations (have daily SWE).
+
+    Parameters
+    ----------
+    fetch_images : bool
+        If True (default), fetch station photo URLs from the AQRT BCMOE
+        portal for each ASWS station.  This adds ~2 HTTP requests per
+        station (~300 requests total) and may take 2–5 minutes.
+        Pass ``--skip-station-images`` on the command line to disable.
     """
     client = DataBCClient()
 
@@ -533,6 +549,27 @@ def run_databc_workflow() -> tuple[list[dict], list[dict]]:
     except Exception as exc:
         logger.error("DataBC MSS fetch failed: %s", exc)
         mss = []
+
+    if fetch_images and asws:
+        print(
+            f"[DataBC] Fetching station image URLs for {len(asws):,} "
+            f"ASWS stations (AQRT BCMOE portal)..."
+        )
+        found = 0
+        for sta in asws:
+            lid = sta["location_id"]
+            try:
+                img_url = client.get_station_image_url(lid)
+                if img_url:
+                    sta["station_image_url"] = img_url
+                    found += 1
+            except Exception as exc:
+                logger.debug(
+                    "Image URL fetch failed for %s: %s", lid, exc
+                )
+        print(f"  Found images for {found}/{len(asws)} ASWS stations")
+    elif not fetch_images:
+        print("[DataBC] Skipping station image URL fetch (--skip-station-images)")
 
     all_stations = asws + mss
     all_features = [databc_station_to_feature(s) for s in all_stations]
@@ -575,6 +612,14 @@ def main() -> None:
         "--skip-databc",
         action="store_true",
         help="Skip DataBC client",
+    )
+    ap.add_argument(
+        "--skip-station-images",
+        action="store_true",
+        help=(
+            "Skip fetching ASWS station photo URLs from the AQRT BCMOE portal. "
+            "Saves ~2-5 minutes but omits station_image_url for BC Snow Survey stations."
+        ),
     )
     args = ap.parse_args()
 
@@ -647,7 +692,9 @@ def main() -> None:
     # ── DataBC ────────────────────────────────────────────────────────────────
     if not args.skip_databc:
         try:
-            databc_all, databc_daily = run_databc_workflow()
+            databc_all, databc_daily = run_databc_workflow(
+                fetch_images=not args.skip_station_images,
+            )
             write_geojson(
                 DATABC_GEOJSON_OUT,
                 databc_all,
