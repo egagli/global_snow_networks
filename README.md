@@ -537,10 +537,10 @@ for sensors 3/18/82; use daily with sparse records):
 ```python
 client = CDECClient()
 courses = client.get_snow_courses()  # CCSS course list
-data = client.get_data(
+records = client.get_data(
     station_ids=["QUA", "BLC"],
-    sensors=[82],
-    duration="D",
+    variables=["swe"],
+    interval="daily",
     begin_date="1981-10-01",
 )
 ```
@@ -618,15 +618,17 @@ meta = client.get_metadata("QUA")
 print(meta["sensor_inventory"])
 
 # Fetch data with quality flags
-data = client.get_data(
+records = client.get_data(
     station_ids=["QUA"],
-    sensors=[82, 18],
-    duration="D",
+    variables=["swe", "snwd"],
+    interval="daily",
     begin_date="2023-10-01",
     end_date="2024-09-30",
     include_flags=True,
 )
-# data[0]["data"][0]["values"][0] → {"date": "2023-10-01", "value": 5.08, "flag": "r"}
+# records[0] → {"station_id": "QUA", "date": "2023-10-01",
+#               "variable": "SNO ADJ", "type": "swe",
+#               "value": 5.08, "units": "cm", "interval": "daily", "flag": "r"}
 ```
 
 ### 8.6 Fetch BC snow survey data
