@@ -51,8 +51,17 @@ from typing import Any
 import requests
 
 from clients.awdb import AWDBClient
+from clients.awdb.awdb_client import (
+    VARIABLES as AWDB_VARIABLES,
+    _AWDB_DURATION_TO_INTERVAL,
+)
 from clients.cdec import CDECClient
+from clients.cdec.cdec_client import (
+    SENSORS as CDEC_SENSORS,
+    _CDEC_DURATION_TO_INTERVAL,
+)
 from clients.databc import DataBCClient
+from clients.databc.databc_client import VARIABLES as DATABC_VARIABLES
 
 logging.basicConfig(
     level=logging.INFO,
@@ -96,6 +105,129 @@ AWDB_NETWORK_OPERATOR: dict[str, str] = {
     "SCAN": "USDA NRCS/ARS",
     "COOP": "NOAA NWS",
 }
+
+
+# Intervals that qualify a variable for inclusion in all_daily_snow_stations
+_DAILY_INTERVALS = {"daily", "sub_daily", "hourly"}
+
+
+def _has_daily_type(data_variables: list[dict], type_str: str) -> bool:
+    """Return True if any entry in data_variables has the given type and a
+    qualifying daily interval."""
+    return any(
+        dv.get("type") == type_str
+        and dv.get("interval", "").lower() in _DAILY_INTERVALS
+        for dv in data_variables
+    )
+
+
+def _awdb_data_variables(station: dict) -> list[dict]:
+    """Build the data_variables list for an AWDB station from stationElements."""
+    seen: set[tuple] = set()
+    dvars: list[dict] = []
+    for el in station.get("stationElements", []):
+        code = str(el.get("elementCode") or "").strip()
+        if not code:
+            continue
+        dur_name = str(el.get("durationName") or "DAILY").upper()
+        interval = _AWDB_DURATION_TO_INTERVAL.get(dur_name, dur_name.lower())
+        key = (code, interval)
+        if key in seen:
+            continue
+        seen.add(key)
+        var_info = AWDB_VARIABLES.get(code, {})
+        units = (
+            "cm" if code in {"WTEQ", "SNWD"}
+            else el.get("originalUnitCode", "")
+        )
+        dvars.append({
+            "name": code,
+            "type": var_info.get("type", "other"),
+            "interval": interval,
+            "units": units,
+            "description": var_info.get("description", ""),
+            "notes": var_info.get("notes", ""),
+        })
+    return dvars
+
+
+def _cdec_data_variables(station: dict) -> list[dict]:
+    """Build the data_variables list for a CDEC station from its sensor list."""
+    dvars: list[dict] = []
+    sensors = station.get("sensors", [])
+    for sensor in sensors:
+        # sensor may be an int (sensor num) or a dict
+        if isinstance(sensor, int):
+            snum = sensor
+            durations = ["D"]
+        elif isinstance(sensor, dict):
+            snum = int(sensor.get("sensor_num", 0) or 0)
+            raw_dur = sensor.get("duration_codes") or sensor.get(
+                "durations", ["D"]
+            )
+            durations = (
+                raw_dur if isinstance(raw_dur, list) else [raw_dur]
+            )
+        else:
+            continue
+        sinfo = CDEC_SENSORS.get(snum, {})
+        if not sinfo:
+            continue
+        for dur in durations:
+            interval = _CDEC_DURATION_TO_INTERVAL.get(str(dur), "daily")
+            dvars.append({
+                "name": sinfo.get("short_name", str(snum)),
+                "type": sinfo.get("type", "other"),
+                "interval": interval,
+                "units": "cm",
+                "description": sinfo.get("description", ""),
+                "notes": sinfo.get("notes", ""),
+            })
+    # Snow courses have only periodic SWE (no sensors listed)
+    if not dvars and station.get("is_snow_course"):
+        dvars.append({
+            "name": "SWE (manual)",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "in",
+            "description": "Manually measured snow water equivalent.",
+            "notes": "Snow course — periodic survey only.",
+        })
+    return dvars
+
+
+def _databc_data_variables(station: dict) -> list[dict]:
+    """Build the data_variables list for a DataBC station."""
+    station_type = station.get("station_type", "ASWS")
+    dvars: list[dict] = []
+    for key, vinfo in DATABC_VARIABLES.items():
+        source = vinfo.get("source", "")
+        # Assign interval based on source and station type
+        if "ASWS" in source and station_type == "ASWS":
+            if "daily" in source.lower() or "SWDaily" in source:
+                interval = "daily"
+            elif "hourly" in source.lower() or (
+                "SW.csv" in source and "SWDaily" not in source
+            ):
+                interval = "hourly"
+            else:
+                interval = "daily"
+            # Variables with no archive (current season only) — still daily
+        elif "MSS" in source and station_type == "MSS":
+            interval = "periodic"
+        else:
+            continue
+        # Convert swe_mm units note: returned as cm by get_data()
+        units = "cm" if key == "swe_mm" else vinfo.get("units", "")
+        dvars.append({
+            "name": key,
+            "type": vinfo.get("type", "other"),
+            "interval": interval,
+            "units": units,
+            "description": vinfo.get("description", ""),
+            "notes": vinfo.get("notes", ""),
+        })
+    return dvars
 
 
 # ── Air temperature bias correction ──────────────────────────────────────────
@@ -296,6 +428,11 @@ def awdb_station_to_feature(
         props["variables_daily"] = ", ".join(daily_vars)
         props["variables_hourly"] = ", ".join(hourly_vars)
 
+    data_vars = _awdb_data_variables(station)
+    props["data_variables"] = data_vars
+    props["dailySWE"] = _has_daily_type(data_vars, "swe")
+    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+
     return make_feature(lon, lat, props)
 
 
@@ -423,6 +560,11 @@ def cdec_station_to_feature(station: dict) -> dict:
         "metadata_fetched_at": date.today().isoformat(),
     }
 
+    data_vars = _cdec_data_variables(station)
+    props["data_variables"] = data_vars
+    props["dailySWE"] = _has_daily_type(data_vars, "swe")
+    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+
     return make_feature(lon, lat, props)
 
 
@@ -459,9 +601,8 @@ def run_cdec_workflow() -> tuple[list[dict], list[dict]]:
 
     all_features = [cdec_station_to_feature(s) for s in stations]
     daily_features = [
-        cdec_station_to_feature(s)
-        for s in stations
-        if s.get("has_daily_swe") or s.get("has_daily_snwd")
+        f for f in all_features
+        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
     ]
 
     return all_features, daily_features
@@ -495,20 +636,15 @@ def databc_station_to_feature(station: dict) -> dict:
     }
 
     if stype == "ASWS":
-        props["has_daily_swe"] = True
-        props["variables_daily"] = "swe_mm, snwd_cm"
-        props["variables_available"] = (
-            "swe_mm, snwd_cm, air_temp_degc, precip_cumul_mm, "
-            "baro_press_hpa, wind_dir_deg, wind_spd_kmh, "
-            "wind_spd_peak_kmh, wind_run_km, rh_pct"
-        )
         # Prefer AQRT-fetched station image over WFS camera URL
         img = station.get("station_image_url") or station.get("camera_url")
         if img:
             props["station_image_url"] = img
-    else:
-        props["has_daily_swe"] = False
-        props["variables_daily"] = ""
+
+    data_vars = _databc_data_variables(station)
+    props["data_variables"] = data_vars
+    props["dailySWE"] = _has_daily_type(data_vars, "swe")
+    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
 
     return make_feature(lon, lat, props)
 
@@ -574,12 +710,9 @@ def run_databc_workflow(
     all_stations = asws + mss
     all_features = [databc_station_to_feature(s) for s in all_stations]
 
-    # Only ASWS stations have daily SWE for the all-stations GeoJSON
     daily_features = [
-        databc_station_to_feature(s)
-        for s in asws
-        if str(s.get("status", "")).lower() in ("active", "")
-        or s.get("status") is None
+        f for f in all_features
+        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
     ]
 
     return all_features, daily_features

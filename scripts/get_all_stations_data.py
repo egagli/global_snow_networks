@@ -57,14 +57,9 @@ DEFAULT_ARCHIVE = REPO_ROOT / "data" / "all_station_csvs.tar.xz"
 
 # AWDB batching
 AWDB_BATCH = 5
-AWDB_ELEMENTS = ["WTEQ", "SNWD"]
 
-# CDEC sensors: 82 = preferred SWE (SNO ADJ), 3 = raw SWE, 18 = snow depth
-CDEC_SWE_SENSORS = [82, 3]
-CDEC_DEPTH_SENSOR = 18
-
-# DataBC: only ASWS stations get daily CSVs (MSS is periodic)
-_DATABC_BATCH = 50  # stations per DataBC data fetch
+# CDEC batching
+CDEC_BATCH = 20
 
 
 @dataclass
@@ -138,26 +133,30 @@ def build_archive(data_dir: Path, archive_path: Path) -> int:
     return len(csv_files)
 
 
-# ── AWDB refresh ──────────────────────────────────────────────────────────────
+# ── Shared helpers ────────────────────────────────────────────────────────────
 
-def _awdb_response_to_df(station_data: dict) -> pd.DataFrame:
-    rows: dict[str, dict[str, Any]] = {}
-    for block in station_data.get("data", []):
-        element = block.get("stationElement", {}).get("elementCode")
-        if element not in AWDB_ELEMENTS:
+def _station_records_to_df(station_records: list[dict]) -> pd.DataFrame:
+    """Convert flat standardized records for one station to {date, wteq_cm, snwd_cm}."""
+    by_date: dict[str, dict[str, Any]] = {}
+    for r in station_records:
+        d = str(r.get("date") or "")[:10]
+        if not d:
             continue
-        col = f"{element.lower()}_cm"
-        for rec in block.get("values", []):
-            d = str(rec.get("date") or "")[:10]
-            if not d:
-                continue
-            if d not in rows:
-                rows[d] = {"date": d, "wteq_cm": None, "snwd_cm": None}
-            rows[d][col] = rec.get("value")
-    if not rows:
+        t = r.get("type", "")
+        v = r.get("value")
+        if d not in by_date:
+            by_date[d] = {"date": d, "wteq_cm": None, "snwd_cm": None}
+        if t == "swe":
+            by_date[d]["wteq_cm"] = v
+        elif t == "snwd":
+            by_date[d]["snwd_cm"] = v
+    if not by_date:
         return pd.DataFrame(columns=["date", "wteq_cm", "snwd_cm"])
-    df = pd.DataFrame(rows.values()).sort_values("date")
+    df = pd.DataFrame(by_date.values()).sort_values("date")
     return df[["date", "wteq_cm", "snwd_cm"]]
+
+
+# ── AWDB refresh ──────────────────────────────────────────────────────────────
 
 
 def refresh_awdb(
@@ -184,10 +183,10 @@ def refresh_awdb(
             flush=True,
         )
         try:
-            response = client.get_data(
-                triplets=triplets,
-                elements=AWDB_ELEMENTS,
-                duration="DAILY",
+            records = client.get_data(
+                station_ids=triplets,
+                variables=["swe", "snwd"],
+                interval="daily",
                 begin_date="1800-01-01",
                 end_date=date.today().isoformat(),
             )
@@ -196,19 +195,20 @@ def refresh_awdb(
             print(f"FAILED ({exc})")
             continue
 
-        stats.fetched += len(response)
-        by_triplet = {
-            r.get("stationTriplet"): r
-            for r in response
-            if r.get("stationTriplet")
-        }
+        # Group flat records by station_id for efficient per-station lookup
+        by_triplet: dict[str, list[dict]] = {}
+        for r in records:
+            sid = str(r.get("station_id") or "")
+            if sid:
+                by_triplet.setdefault(sid, []).append(r)
+        stats.fetched += len(by_triplet)
 
         updated = 0
         for feat_idx, code, triplet in batch:
-            payload = by_triplet.get(triplet)
-            if not payload:
+            station_recs = by_triplet.get(triplet)
+            if not station_recs:
                 continue
-            df = _awdb_response_to_df(payload)
+            df = _station_records_to_df(station_recs)
             if df.empty:
                 stats.skipped_empty += 1
                 continue
@@ -232,48 +232,6 @@ def refresh_awdb(
 
 # ── CDEC refresh ──────────────────────────────────────────────────────────────
 
-def _cdec_response_to_df(station_data: dict) -> pd.DataFrame:
-    """Convert CDECClient.get_data() response for one station to a DataFrame."""
-    # Prefer sensor 82 (SNO ADJ) for SWE; fall back to sensor 3
-    swe_values: dict[str, float | None] = {}
-    snwd_values: dict[str, float | None] = {}
-    swe_sensor_found = None
-
-    for block in station_data.get("data", []):
-        elem = block.get("stationElement", {})
-        sensor_num = elem.get("sensorNum")
-        for rec in block.get("values", []):
-            d = str(rec.get("date") or "")[:10]
-            if not d:
-                continue
-            v = rec.get("value")
-            if sensor_num in CDEC_SWE_SENSORS:
-                # Prefer 82 over 3: only overwrite if 82 or no entry yet
-                if (
-                    sensor_num == 82
-                    or (sensor_num == 3 and d not in swe_values)
-                ):
-                    swe_values[d] = v
-                    swe_sensor_found = sensor_num
-            elif sensor_num == CDEC_DEPTH_SENSOR:
-                snwd_values[d] = v
-
-    all_dates = sorted(set(swe_values) | set(snwd_values))
-    if not all_dates:
-        return pd.DataFrame(columns=["date", "wteq_cm", "snwd_cm"])
-
-    rows = [
-        {
-            "date": d,
-            "wteq_cm": swe_values.get(d),
-            "snwd_cm": snwd_values.get(d),
-        }
-        for d in all_dates
-    ]
-    df = pd.DataFrame(rows)
-    return df[["date", "wteq_cm", "snwd_cm"]]
-
-
 def refresh_cdec(
     stations: list[tuple[int, str]],
     features: list[dict],
@@ -286,15 +244,13 @@ def refresh_cdec(
     ``stations`` is a list of (feature_index, station_id) tuples.
     """
     client = CDECClient()
-    sensors = CDEC_SWE_SENSORS + [CDEC_DEPTH_SENSOR]
-    batch_size = 20
     station_ids = [sid for _, sid in stations]
     idx_by_id = {sid: idx for idx, sid in stations}
-    total_batches = (len(station_ids) + batch_size - 1) // batch_size
+    total_batches = (len(station_ids) + CDEC_BATCH - 1) // CDEC_BATCH
 
-    for start in range(0, len(station_ids), batch_size):
-        batch = station_ids[start: start + batch_size]
-        batch_no = start // batch_size + 1
+    for start in range(0, len(station_ids), CDEC_BATCH):
+        batch = station_ids[start: start + CDEC_BATCH]
+        batch_no = start // CDEC_BATCH + 1
         print(
             f"  [CDEC] Batch {batch_no}/{total_batches} "
             f"({len(batch)} stations)...",
@@ -302,10 +258,10 @@ def refresh_cdec(
             flush=True,
         )
         try:
-            response = client.get_data(
+            records = client.get_data(
                 station_ids=batch,
-                sensors=sensors,
-                duration="D",
+                variables=["swe", "snwd"],
+                interval="daily",
                 begin_date="1900-01-01",
                 end_date=date.today().isoformat(),
             )
@@ -314,14 +270,21 @@ def refresh_cdec(
             print(f"FAILED ({exc})")
             continue
 
-        stats.fetched += len(response)
+        # Group flat records by station_id
+        by_station: dict[str, list[dict]] = {}
+        for r in records:
+            sid = str(r.get("station_id") or "").strip().upper()
+            if sid:
+                by_station.setdefault(sid, []).append(r)
+        stats.fetched += len(by_station)
+
         updated = 0
-        for sta_data in response:
-            sid = str(sta_data.get("stationId") or "").strip().upper()
+        for sid in batch:
             feat_idx = idx_by_id.get(sid)
             if feat_idx is None:
                 continue
-            df = _cdec_response_to_df(sta_data)
+            station_recs = by_station.get(sid, [])
+            df = _station_records_to_df(station_recs)
             if df.empty:
                 stats.skipped_empty += 1
                 continue
@@ -367,76 +330,44 @@ def refresh_databc(
 
     n = len(location_ids)
     print(
-        f"  [DataBC] Loading daily SWE for {n} ASWS stations...",
+        f"  [DataBC] Loading daily SWE + snow depth for {n} ASWS stations...",
         end=" ",
         flush=True,
     )
     try:
-        df_swe = client.get_asws_daily_data(
-            location_ids=location_ids,
-            archive=True,
+        records = client.get_data(
+            station_ids=location_ids,
+            variables=["swe", "snwd"],
+            interval="daily",
         )
-        print(f"ok ({len(df_swe)} rows)")
+        print(f"ok ({len(records)} records)")
     except DataBCError as exc:
         stats.failed_batches += 1
         print(f"FAILED ({exc})")
-        df_swe = pd.DataFrame(columns=["date", "location_id", "swe_mm"])
+        records = []
 
-    print(
-        f"  [DataBC] Loading daily snow depth for {n} ASWS stations...",
-        end=" ",
-        flush=True,
-    )
-    try:
-        df_sd = client.get_asws_sd_data(
-            location_ids=location_ids,
-            archive=True,
-        )
-        print(f"ok ({len(df_sd)} rows)")
-    except DataBCError as exc:
-        print(f"FAILED ({exc}) — snow depth will be empty")
-        df_sd = pd.DataFrame(columns=["date", "location_id", "snwd_cm"])
-
+    # Group flat records by station_id
+    by_station: dict[str, list[dict]] = {}
+    for r in records:
+        sid = str(r.get("station_id") or "")
+        if sid:
+            by_station.setdefault(sid, []).append(r)
     stats.fetched += len(location_ids)
-    updated = 0
 
+    updated = 0
     for lid_str in location_ids:
         feat_idx = idx_by_id.get(lid_str)
         if feat_idx is None:
             continue
 
-        swe_grp = (
-            df_swe[df_swe["location_id"] == lid_str]
-            if not df_swe.empty else pd.DataFrame(columns=["date", "swe_mm"])
-        )
-        sd_grp = (
-            df_sd[df_sd["location_id"] == lid_str]
-            if not df_sd.empty else pd.DataFrame(columns=["date", "snwd_cm"])
-        )
-
-        # Merge on date
-        df_out = pd.merge(
-            swe_grp[["date", "swe_mm"]],
-            sd_grp[["date", "snwd_cm"]],
-            on="date",
-            how="outer",
-        ).sort_values("date")
-
-        df_out["wteq_cm"] = (
-            pd.to_numeric(df_out["swe_mm"], errors="coerce") / 10.0
-        ).round(2)
-        df_out["snwd_cm"] = pd.to_numeric(
-            df_out.get("snwd_cm"), errors="coerce"
-        ).round(2)
-        df_out = df_out[["date", "wteq_cm", "snwd_cm"]]
-
-        if df_out.empty:
+        df = _station_records_to_df(by_station.get(lid_str, []))
+        if df.empty:
             stats.skipped_empty += 1
             continue
 
         csv_path = station_csv_path(data_dir, lid_str)
-        write_csv_atomically(csv_path, df_out)
-        earliest, latest, upd = compute_record_dates(df_out)
+        write_csv_atomically(csv_path, df)
+        earliest, latest, upd = compute_record_dates(df)
         update_geojson_dates(
             features[feat_idx],
             earliest,
