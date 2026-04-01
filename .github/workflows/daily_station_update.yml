@@ -37,7 +37,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           for f in \
-            snow_stations.geojson \
+            all_daily_snow_stations.geojson \
             live_swe_map.html \
             .nojekyll \
             clients/awdb/awdb_stations.geojson \

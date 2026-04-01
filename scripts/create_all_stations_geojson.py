@@ -13,7 +13,7 @@ Three things are written per run:
      - ``clients/cdec/cdec_stations.geojson``
      - ``clients/databc/databc_stations.geojson``
 
-2. **``snow_stations.geojson``** (repo root) — the merged, daily-only
+2. **``all_daily_snow_stations.geojson``** (repo root) — the merged, daily-only
    inventory used by the data pipeline and live map.  Includes stations
    from all clients that have at least one **daily** SWE or snow depth
    observation.
@@ -64,7 +64,7 @@ logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Output paths
-ALL_STATIONS_OUT = REPO_ROOT / "snow_stations.geojson"
+ALL_STATIONS_OUT = REPO_ROOT / "all_daily_snow_stations.geojson"
 AWDB_GEOJSON_OUT = REPO_ROOT / "clients" / "awdb" / "awdb_stations.geojson"
 CDEC_GEOJSON_OUT = REPO_ROOT / "clients" / "cdec" / "cdec_stations.geojson"
 DATABC_GEOJSON_OUT = (
@@ -307,7 +307,7 @@ def run_awdb_workflow(
 
     ``all_features``   — all AWDB stations with any snow element (for
                          clients/awdb/awdb_stations.geojson).
-    ``daily_features`` — filtered to daily WTEQ/SNWD (for snow_stations.geojson).
+    ``daily_features`` — filtered to daily WTEQ/SNWD (for all_daily_snow_stations.geojson).
     """
     client = AWDBClient()
 
@@ -596,7 +596,7 @@ def main() -> None:
     ap.add_argument(
         "--output",
         default=str(ALL_STATIONS_OUT),
-        help="Path for the merged all-stations GeoJSON (default: snow_stations.geojson)",
+        help="Path for the merged all-stations GeoJSON (default: all_daily_snow_stations.geojson)",
     )
     ap.add_argument(
         "--skip-awdb",
@@ -677,7 +677,7 @@ def main() -> None:
                         "including manual snow courses (periodic) and "
                         "automated snow pillows (daily). "
                         "Only stations with daily SWE or depth appear in "
-                        "snow_stations.geojson."
+                        "all_daily_snow_stations.geojson."
                     ),
                     "total": len(cdec_all),
                 },
@@ -708,7 +708,7 @@ def main() -> None:
                     "description": (
                         "All BC snow survey stations: ASWS (automated, daily SWE) "
                         "and MSS (manual snow courses, periodic). "
-                        "Only ASWS stations appear in snow_stations.geojson."
+                        "Only ASWS stations appear in all_daily_snow_stations.geojson."
                     ),
                     "total": len(databc_all),
                 },
@@ -720,10 +720,10 @@ def main() -> None:
         except Exception as exc:
             logging.warning("[DataBC] Workflow failed, skipping: %s", exc)
 
-    # ── Write merged snow_stations.geojson ────────────────────────────────────
+    # ── Write merged all_daily_snow_stations.geojson ────────────────────────────────────
     print("=" * 60)
     print(
-        f"Writing merged snow_stations.geojson "
+        f"Writing merged all_daily_snow_stations.geojson "
         f"({len(all_daily_features):,} features)"
     )
     clients_used = sorted(

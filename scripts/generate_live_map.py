@@ -27,7 +27,7 @@ from utils import day_of_water_year, water_year
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-GEOJSON_PATH = REPO_ROOT / "snow_stations.geojson"
+GEOJSON_PATH = REPO_ROOT / "all_daily_snow_stations.geojson"
 CSV_DIR = REPO_ROOT / "data" / "stations"
 OUTPUT_HTML = REPO_ROOT / "live_swe_map.html"
 CHARTS_DIR = REPO_ROOT / "charts"
@@ -460,6 +460,7 @@ select:focus{outline:none;border-color:#4af}
 #station-photo{width:auto;max-width:100%;height:220px;object-fit:contain;border-radius:4px;
                border:1px solid #ccd;display:block}
 #station-photo-credit{font-size:10px;color:#666;margin-top:2px}
+#station-photo-no-img{font-size:12px;color:#888;font-style:italic;padding:8px 0}
 #station-info .info-row{display:flex;gap:4px}
 #station-info .info-key{color:#555;min-width:120px;font-weight:500}
 #station-info .swe-line{margin:6px 0;padding:6px 8px;border-radius:4px;background:#e8f0fe}
@@ -1163,18 +1164,14 @@ function onMarkerClick(code) {
   const stationUrl = s.url || "";
 
   let stationPhotoHtml = "";
-  if ((s.net === "SNTL" || s.net === "SNTLT") && /^\\d+_/.test(code)) {
-    const siteNum = code.split("_")[0];
-    const photoUrl = `https://www.wcc.nrcs.usda.gov/siteimages/${siteNum}.jpg`;
-    stationPhotoHtml = `<div id="station-photo-wrap">`
-      + `<img id="station-photo" src="${photoUrl}" alt="${s.name} station photo" loading="lazy" referrerpolicy="no-referrer">`
-      + `<div id="station-photo-credit">Photo credit: <a href="${photoUrl}" target="_blank" rel="noopener noreferrer">NRCS</a></div>`
-      + `</div>`;
-  } else if (s.net === "BCSS" && s.img) {
+  if (s.img) {
+    const operator = s.op || "Station Operator";
     stationPhotoHtml = `<div id="station-photo-wrap">`
       + `<img id="station-photo" src="${s.img}" alt="${s.name} station photo" loading="lazy" referrerpolicy="no-referrer">`
-      + `<div id="station-photo-credit">Photo: <a href="${s.img}" target="_blank" rel="noopener noreferrer">BC Ministry of Environment</a></div>`
+      + `<div id="station-photo-credit">Photo credit: <a href="${s.img}" target="_blank" rel="noopener noreferrer">${operator}</a></div>`
       + `</div>`;
+  } else {
+    stationPhotoHtml = `<div id="station-photo-wrap"><div id="station-photo-no-img">No station image available</div></div>`;
   }
 
   // SWE + snow depth lines
@@ -1919,21 +1916,6 @@ def build_html(map_meta: dict, station_data: dict, generated_at: str) -> str:
             'src="https://cdn.plot.ly/plotly-basic-2.30.0.min.js"></script>'
         ),
         asset_tags["plotly_js"],
-    )
-    html = html.replace(
-        (
-            "if ((s.net === \"SNTL\" || s.net === \"SNTLT\") "
-            "&& /^\\\\d+_/.test(code)) {"
-        ),
-        "if (s.img) {",
-    )
-    html = html.replace("const siteNum = code.split(\"_\")[0];", "")
-    html = html.replace(
-        (
-            "const photoUrl = "
-            "`https://www.wcc.nrcs.usda.gov/siteimages/${siteNum}.jpg`;"
-        ),
-        "const photoUrl = s.img;",
     )
     html = html.replace(
         "const scale = 100;  // m → cm",

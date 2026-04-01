@@ -3,7 +3,7 @@
 get_all_stations_data.py
 ========================
 Refresh per-station CSV files from all configured clients and update station
-date fields in snow_stations.geojson.
+date fields in all_daily_snow_stations.geojson.
 
 Workflow
 --------
@@ -51,7 +51,7 @@ from clients.databc import DataBCClient, DataBCError
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-DEFAULT_GEOJSON = REPO_ROOT / "snow_stations.geojson"
+DEFAULT_GEOJSON = REPO_ROOT / "all_daily_snow_stations.geojson"
 DEFAULT_DATA_DIR = REPO_ROOT / "data" / "stations"
 DEFAULT_ARCHIVE = REPO_ROOT / "data" / "all_station_csvs.tar.xz"
 
