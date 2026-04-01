@@ -18,6 +18,8 @@ lxml = ">=5.0"
 tqdm = ">=4.66"
 fsspec = ">=2026.3.0,<2027"
 aiohttp = ">=3.13.4,<4"
+beautifulsoup4 = ">=4.14.3,<5"
+playwright = ">=1.58.2,<2"
 
 [feature.dev.dependencies]
 jupyter = "*"
@@ -34,3 +36,6 @@ fetch-stations  = "python -m scripts.create_all_stations_geojson"
 fetch-data      = "python -m scripts.get_all_stations_data"
 live-map        = "python -m scripts.generate_live_map"
 update-all      = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
+
+[pypi-dependencies]
+playwright = ">=1.58.0, <2"
