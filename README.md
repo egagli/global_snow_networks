@@ -182,10 +182,13 @@ Map URL: `https://<owner>.github.io/global_snow_networks/live_swe_map.html`
 | `station_url` | URL to station information page |
 | `station_image_url` | Station photo URL (where available) |
 | `metadata_fetched_at` | Date the metadata was fetched |
+| `data_variables` | List of variable dicts `{name, type, interval, units, description, notes}` |
+| `dailySWE` | `true` if station has daily SWE observations |
+| `dailySnowDepth` | `true` if station has daily snow depth observations |
+| `variables_daily` | Comma-separated list of daily variable names (derived from `data_variables`) |
 
 **AWDB-specific additional fields:** `awdb_station_triplet`, `stationId`,
-`county`, `huc`, `snowElements`, `elementCodes`, `variables_daily`,
-`variables_hourly`.
+`county`, `huc`, `snowElements`, `elementCodes`, `variables_hourly`.
 
 **CDEC-specific additional fields:** `is_snow_course`, `is_snow_pillow`,
 `sensors`, `river_basin`, `april1_avg_swe_in`, `course_number`.
@@ -583,7 +586,7 @@ import geopandas as gpd
 gdf = gpd.read_file("all_daily_snow_stations.geojson")
 # Filter to a single client
 cdec = gdf[gdf["client"] == "cdec"]
-print(cdec[["code", "name", "Operator", "has_daily_swe"]].head())
+print(cdec[["code", "name", "Operator", "dailySWE", "dailySnowDepth"]].head())
 ```
 
 ### 8.3 Read one station CSV
