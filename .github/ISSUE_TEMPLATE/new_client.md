@@ -39,6 +39,7 @@ not mock responses.
 - [ ] Determine the station-list endpoint / file format (JSON, CSV, WFS, …).
 - [ ] Fetch a sample station list and print 3–5 representative records in
   a notebook cell.
+- [ ] Search for webpages for individual station in the network to find extra metadata, station urls, and station image urls.
 - [ ] Identify all available variables, these could be different across different stations in the network (sensor names, units, element codes).
 - [ ] Determine available temporal resolutions (daily, hourly, periodic).
 - [ ] Identify any station-type distinctions (e.g. automated vs. manual).
