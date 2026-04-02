@@ -39,7 +39,7 @@ not mock responses.
 - [ ] Determine the station-list endpoint / file format (JSON, CSV, WFS, …).
 - [ ] Fetch a sample station list and print 3–5 representative records in
   a notebook cell.
-- [ ] Identify all available variables (sensor names, units, element codes).
+- [ ] Identify all available variables, these could be different across different stations in the network (sensor names, units, element codes).
 - [ ] Determine available temporal resolutions (daily, hourly, periodic).
 - [ ] Identify any station-type distinctions (e.g. automated vs. manual).
 - [ ] Document the data endpoint(s) and any required parameters
@@ -170,7 +170,7 @@ In `scripts/create_all_stations_geojson.py`:
   | `networkCode` | Short network code shown on map |
   | `notes` | Free-text notes |
   | `station_url` | Link to station metadata page |
-  | `station_image_url` | Station photo URL (if available; omit if not) |
+  | `station_image_url` | Station photo URL, usually available on each station's metadata page (if available; omit if not) |
   | `data_variables` | Output of `_<network>_data_variables(station)` |
   | `dailySWE` | `_has_daily_type(data_vars, "swe")` |
   | `dailySnowDepth` | `_has_daily_type(data_vars, "snwd")` |
