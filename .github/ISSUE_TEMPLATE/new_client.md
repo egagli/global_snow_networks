@@ -29,9 +29,9 @@ the rest by exploring the API / data portal directly.
 
 ## Implementation checklist
 
-Work through these steps **in order**.  Mark each task complete before
+Please implement the following network and client following the implementation checklist. Work through these steps **in order**.  Mark each task complete before
 moving to the next.  Run all test code against the **live API** — do
-not mock responses.
+not mock responses.  The network overview provided is just a very rough approximation of what to expect, it could be completely wrong our outdated. Please do your own research, and if you find a better way to utilize or access the data, please do so. For example, if daily SWE is available and we said it doesn't exist, prefer your own research and implement it. Or if the API example we gave you doesn't work as well as another, you can prefer your own research and testing and go the other way.
 
 ### 1. Explore the API / data format
 
