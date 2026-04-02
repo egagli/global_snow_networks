@@ -86,7 +86,6 @@ SNOW_ELEMENTS = ["WTEQ", "SNWD"]
 
 # Batching parameters for AWDB
 API_BATCH = 150
-FULL_META_BATCH = 10
 
 # NRCS air temp bias correction JSON
 BIAS_CORRECTION_URL = (
@@ -485,28 +484,18 @@ def run_awdb_workflow(
 
     print("[AWDB] Fetching full metadata for variable inventories")
     eligible = [s["stationTriplet"] for s in snow_metadata]
-    full_meta: list[dict] = []
-    full_batches = [
-        eligible[i: i + FULL_META_BATCH]
-        for i in range(0, len(eligible), FULL_META_BATCH)
-    ]
-    for i, batch in enumerate(full_batches, 1):
-        print(
-            f"  Full meta batch {i}/{len(full_batches)} "
-            f"({len(batch)} triplets)...",
-            end=" ",
-            flush=True,
-        )
-        params = {
-            "stationTriplets": ",".join(batch),
-            "returnStationElements": "true",
-            "returnForecastPointMetadata": "true",
-            "returnReservoirMetadata": "true",
-            "activeOnly": "false",
-        }
-        results = client._get("stations", params)
-        full_meta.extend(results)
-        print(f"fetched {len(results)}")
+    print(
+        f"  Requesting {len(eligible):,} triplets with adaptive fallback batching..."
+    )
+    full_meta = client.get_metadata(
+        triplets=eligible,
+        elements="*",
+        durations="*",
+        include_forecast_point=True,
+        include_reservoir=True,
+        active_only=False,
+    )
+    print(f"  Fetched {len(full_meta):,} full-metadata station records")
 
     # Per-client GeoJSON: all stations with full metadata
     all_features = [
