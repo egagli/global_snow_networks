@@ -24,6 +24,10 @@ CDEC_COURSE = ["HNT"]             # Huntington Lake snow course
 DATABC_ASWS = ["1A01P", "1E08P"]  # Tupper, Yellowhead
 DATABC_MSS = ["1A06A", "1A10"]    # Tupper Creek MSS sites
 
+# NVE station IDs (Norwegian snow pillow / hydrological stations)
+NVE_SWE_STATIONS = ["2.11.0", "12.228.0"]  # Filefjell, Leirskardalen
+NVE_SNWD_STATION = ["2.11.0"]              # Filefjell — has snow depth too
+
 # Date window for data tests (known-good winter period)
 TEST_BEGIN = "2024-01-01"
 TEST_END = "2024-01-15"
@@ -32,6 +36,7 @@ TEST_END = "2024-01-15"
 BBOX_COLORADO = (-109.1, 36.9, -102.0, 41.1)
 BBOX_NORTHERN_CA = (-122.5, 38.5, -119.5, 41.5)
 BBOX_BC_INTERIOR = (-120.5, 49.5, -119.0, 51.0)
+BBOX_NORWAY = (4.5, 57.5, 31.5, 71.5)
 
 # Required record keys for standardized get_data() output
 RECORD_KEYS = {"station_id", "date", "variable", "type", "value", "units", "interval"}
