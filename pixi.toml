@@ -40,6 +40,7 @@ test            = "pytest tests/ -v"
 test-awdb       = "pytest tests/test_awdb_client.py -v"
 test-cdec       = "pytest tests/test_cdec_client.py -v"
 test-databc     = "pytest tests/test_databc_client.py -v"
+test-nve        = "pytest tests/test_nve_client.py -v"
 
 [pypi-dependencies]
 playwright = ">=1.58.0, <2"
