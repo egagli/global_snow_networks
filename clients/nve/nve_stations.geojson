@@ -1,0 +1,11 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generated": "2026-04-03",
+    "source": "NVE HydAPI v1 \u2014 https://hydapi.nve.no/api/v1",
+    "client": "nve",
+    "description": "All NVE (Norwegian Water Resources and Energy Directorate) snow monitoring stations with SWE (parameter 2002) and/or snow depth (parameter 2001). Daily automated measurements.",
+    "total": 0
+  },
+  "features": []
+}
