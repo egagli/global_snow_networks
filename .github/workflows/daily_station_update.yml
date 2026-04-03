@@ -21,6 +21,8 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.3
 
       - name: Create station GeoJSONs
+        env:
+          NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
         run: pixi run fetch-stations
 
       - name: Commit station GeoJSONs
@@ -115,6 +117,8 @@ jobs:
 
       - name: Fetch NVE station data
         continue-on-error: true
+        env:
+          NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
         run: pixi run fetch-data-nve
 
       - uses: actions/upload-artifact@v4
