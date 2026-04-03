@@ -5,51 +5,178 @@ on:
     - cron: "30 7 * * *"
   workflow_dispatch:
 
-permissions:
-  contents: write
-
 jobs:
-  update:
+  # ── Stage 1: build station GeoJSONs and commit them ───────────────────────
+  create-stations-geojson:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write
+    outputs:
+      sha: ${{ steps.push.outputs.sha }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Install pixi
-        uses: prefix-dev/setup-pixi@v0.8.3
+      - uses: prefix-dev/setup-pixi@v0.8.3
 
-      - name: Create station geojson
+      - name: Create station GeoJSONs
         run: pixi run fetch-stations
 
-      - name: Refresh station CSV data and archive
-        continue-on-error: true
-        run: pixi run fetch-data
-
-      - name: Build live map
-        continue-on-error: true
-        run: pixi run live-map
-
-      - name: Commit and push changes
+      - name: Commit station GeoJSONs
+        id: push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          for f in \
+          git add \
             all_daily_snow_stations.geojson \
-            live_swe_map.html \
-            .nojekyll \
             clients/awdb/awdb_stations.geojson \
             clients/cdec/cdec_stations.geojson \
             clients/databc/databc_stations.geojson \
-            charts \
-            data; do
-            [ -e "$f" ] && git add "$f" || true
-          done
+            clients/nve/nve_stations.geojson
+          if git diff --cached --quiet; then
+            echo "No changes to station GeoJSONs"
+          else
+            git commit -m "chore: update station geojsons"
+            git push
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+  # ── Stage 2: fetch each network in parallel ────────────────────────────────
+  fetch-awdb:
+    needs: create-stations-geojson
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Fetch AWDB station data
+        continue-on-error: true
+        run: pixi run fetch-data-awdb
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: station-csvs-awdb
+          path: data/stations/
+          if-no-files-found: warn
+
+  fetch-cdec:
+    needs: create-stations-geojson
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Fetch CDEC station data
+        continue-on-error: true
+        run: pixi run fetch-data-cdec
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: station-csvs-cdec
+          path: data/stations/
+          if-no-files-found: warn
+
+  fetch-databc:
+    needs: create-stations-geojson
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Fetch DataBC station data
+        continue-on-error: true
+        run: pixi run fetch-data-databc
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: station-csvs-databc
+          path: data/stations/
+          if-no-files-found: warn
+
+  fetch-nve:
+    needs: create-stations-geojson
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Fetch NVE station data
+        continue-on-error: true
+        run: pixi run fetch-data-nve
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: station-csvs-nve
+          path: data/stations/
+          if-no-files-found: warn
+
+  # ── Stage 3: merge artifacts, update GeoJSON dates, build archive, commit ──
+  finalize:
+    needs:
+      - create-stations-geojson
+      - fetch-awdb
+      - fetch-cdec
+      - fetch-databc
+      - fetch-nve
+    # Run even if some fetch jobs failed so partial data is still committed.
+    if: always() && needs.create-stations-geojson.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+          fetch-depth: 0
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Download all station CSV artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: station-csvs-*
+          path: data/stations/
+          merge-multiple: true
+
+      - name: Update GeoJSON dates and build archive
+        run: pixi run finalize-data
+
+      - name: Commit and push station data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
           fi
-          git commit -m "chore: daily station + map refresh"
+          git commit -m "chore: daily station data refresh"
           git push
+
+  # ── Stage 4: run CI and deploy map (after data is committed) ───────────────
+  run-tests:
+    needs: finalize
+    if: needs.finalize.result == 'success' || needs.finalize.result == 'skipped'
+    uses: ./.github/workflows/ci.yml
+
+  build-and-deploy:
+    needs: finalize
+    if: needs.finalize.result == 'success' || needs.finalize.result == 'skipped'
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    uses: ./.github/workflows/deploy-pages.yml

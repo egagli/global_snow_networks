@@ -62,6 +62,7 @@ from clients.cdec.cdec_client import (
 )
 from clients.databc import DataBCClient
 from clients.databc.databc_client import VARIABLES as DATABC_VARIABLES
+from clients.nve import NVEClient
 
 logging.basicConfig(
     level=logging.INFO,
@@ -79,6 +80,7 @@ CDEC_GEOJSON_OUT = REPO_ROOT / "clients" / "cdec" / "cdec_stations.geojson"
 DATABC_GEOJSON_OUT = (
     REPO_ROOT / "clients" / "databc" / "databc_stations.geojson"
 )
+NVE_GEOJSON_OUT = REPO_ROOT / "clients" / "nve" / "nve_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON
 AWDB_NETWORKS = ["SNTL", "SNTLT", "MSNT", "SCAN", "COOP"]
@@ -719,6 +721,110 @@ def run_databc_workflow(
     return all_features, daily_features
 
 
+# ── NVE workflow ──────────────────────────────────────────────────────────────
+
+def _nve_data_variables(station: dict) -> list[dict]:
+    """Build data_variables for an NVE station from its parameter list."""
+    param_ids = station.get("parameters", [])
+    dvars: list[dict] = []
+    if 2002 in param_ids:  # SWE (mm, returned as cm)
+        dvars.append({
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "daily",
+            "units": "cm",
+            "description": (
+                "Snow water equivalent from automated snow pillow. "
+                "Native API unit is mm; returned here in cm (÷ 10)."
+            ),
+            "notes": "Parameter ID 2002. Native units: mm.",
+        })
+    if 2001 in param_ids:  # Snow depth (cm)
+        dvars.append({
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from automated sensor. Native unit cm.",
+            "notes": "Parameter ID 2001. Native units: cm.",
+        })
+    return dvars
+
+
+def nve_station_to_feature(station: dict) -> dict:
+    """Convert an NVE station dict to a GeoJSON feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+
+    props: dict[str, Any] = {
+        "code": sid,
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "Operator": "NVE",
+        "client": "nve",
+        "networkCode": "NVE",
+        "notes": "",
+        "status": station.get("status", ""),
+        "isActive": station.get("status") == "Active",
+        "station_url": station.get("station_url", ""),
+        "drainage_basin_key": station.get("drainage_basin_key", ""),
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+
+    data_vars = _nve_data_variables(station)
+    props["data_variables"] = data_vars
+    props["dailySWE"] = _has_daily_type(data_vars, "swe")
+    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+    daily_names = [
+        dv["name"] for dv in data_vars
+        if dv.get("interval", "").lower() in _DAILY_INTERVALS
+    ]
+    if daily_names:
+        props["variables_daily"] = ", ".join(daily_names)
+
+    return make_feature(lon, lat, props)
+
+
+def run_nve_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch NVE snow stations and return (all_features, daily_features).
+
+    ``all_features``   — all NVE stations with snow parameters (SWE and/or
+                         snow depth) for clients/nve/nve_stations.geojson.
+    ``daily_features`` — filtered to stations with daily SWE or depth.
+    """
+    client = NVEClient()
+
+    print("=" * 60)
+    print("[NVE] Fetching snow station list (parameters 2001, 2002)")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total NVE snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("NVE station fetch failed: %s", exc)
+        return [], []
+
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    swe_count = sum(1 for s in stations if 2002 in s.get("parameters", []))
+    snwd_count = sum(1 for s in stations if 2001 in s.get("parameters", []))
+    print(
+        f"  Active: {active}  |  With SWE: {swe_count}  "
+        f"|  With snow depth: {snwd_count}"
+    )
+
+    all_features = [nve_station_to_feature(s) for s in stations]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -754,6 +860,11 @@ def main() -> None:
             "Skip fetching ASWS station photo URLs from the AQRT BCMOE portal. "
             "Saves ~2-5 minutes but omits station_image_url for BC Snow Survey stations."
         ),
+    )
+    ap.add_argument(
+        "--skip-nve",
+        action="store_true",
+        help="Skip NVE client",
     )
     args = ap.parse_args()
 
@@ -854,6 +965,32 @@ def main() -> None:
         except Exception as exc:
             logging.warning("[DataBC] Workflow failed, skipping: %s", exc)
 
+    # ── NVE ───────────────────────────────────────────────────────────────────
+    if not args.skip_nve:
+        try:
+            nve_all, nve_daily = run_nve_workflow()
+            write_geojson(
+                NVE_GEOJSON_OUT,
+                nve_all,
+                {
+                    "generated": today,
+                    "source": "NVE HydAPI v1 — https://hydapi.nve.no/api/v1",
+                    "client": "nve",
+                    "description": (
+                        "All NVE (Norwegian Water Resources and Energy Directorate) "
+                        "snow monitoring stations with SWE (parameter 2002) and/or "
+                        "snow depth (parameter 2001). Daily automated measurements."
+                    ),
+                    "total": len(nve_all),
+                },
+            )
+            all_daily_features.extend(nve_daily)
+            print(
+                f"[NVE] {len(nve_daily):,} daily stations added to merged GeoJSON"
+            )
+        except Exception as exc:
+            logging.warning("[NVE] Workflow failed, skipping: %s", exc)
+
     # ── Write merged all_daily_snow_stations.geojson ────────────────────────────────────
     print("=" * 60)
     print(
@@ -882,7 +1019,8 @@ def main() -> None:
             "durations": ["DAILY"],
             "description": (
                 "Merged inventory of all snow stations with daily SWE or "
-                "snow depth. Stations from multiple clients may represent "
+                "snow depth from AWDB (US), CDEC (California), DataBC (BC, Canada), "
+                "and NVE (Norway). Stations from multiple clients may represent "
                 "the same physical site — use the 'client' field to "
                 "distinguish data sources. See per-client GeoJSONs in "
                 "clients/*/  for complete metadata including periodic "

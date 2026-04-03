@@ -48,6 +48,7 @@ import pandas as pd
 from clients.awdb import AWDBClient, AWDBError
 from clients.cdec import CDECClient, CDECError
 from clients.databc import DataBCClient, DataBCError
+from clients.nve import NVEClient, NVEError
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -383,6 +384,152 @@ def refresh_databc(
     print(f"  [DataBC] updated {updated} station CSVs")
 
 
+# ── NVE refresh ───────────────────────────────────────────────────────────────
+
+def refresh_nve(
+    stations: list[tuple[int, str]],
+    features: list[dict],
+    data_dir: Path,
+    refreshed_at_utc: str,
+    stats: RefreshStats,
+) -> None:
+    """Refresh NVE station CSVs.
+
+    ``stations`` is a list of (feature_index, station_id) tuples.
+    NVE fetches per station+parameter; all IDs are passed in one call.
+    """
+    if not stations:
+        return
+
+    client = NVEClient()
+    station_ids = [sid for _, sid in stations]
+    idx_by_id = {sid: idx for idx, sid in stations}
+
+    n = len(station_ids)
+    print(
+        f"  [NVE] Fetching daily SWE + snow depth for {n} stations...",
+        end=" ",
+        flush=True,
+    )
+    try:
+        records = client.get_data(
+            station_ids=station_ids,
+            variables=["swe", "snwd"],
+            interval="daily",
+            begin_date="1800-01-01",
+            end_date=date.today().isoformat(),
+        )
+        print(f"ok ({len(records)} records)")
+    except NVEError as exc:
+        stats.failed_batches += 1
+        print(f"FAILED ({exc})")
+        records = []
+
+    # Group flat records by station_id
+    by_station: dict[str, list[dict]] = {}
+    for r in records:
+        sid = str(r.get("station_id") or "")
+        if sid:
+            by_station.setdefault(sid, []).append(r)
+    stats.fetched += len(by_station)
+
+    updated = 0
+    for sid in station_ids:
+        feat_idx = idx_by_id.get(sid)
+        if feat_idx is None:
+            continue
+        df = _station_records_to_df(by_station.get(sid, []))
+        if df.empty:
+            stats.skipped_empty += 1
+            continue
+        csv_path = station_csv_path(data_dir, sid)
+        write_csv_atomically(csv_path, df)
+        earliest, latest, upd = compute_record_dates(df)
+        update_geojson_dates(
+            features[feat_idx],
+            earliest,
+            latest,
+            upd,
+            f"stations/{sid}.csv",
+            refreshed_at_utc,
+        )
+        stats.updated_csvs += 1
+        stats.by_client["nve"] = stats.by_client.get("nve", 0) + 1
+        updated += 1
+
+    print(f"  [NVE] updated {updated} station CSVs")
+
+
+# ── Finalize from existing CSVs ───────────────────────────────────────────────
+
+def finalize_from_csvs(
+    geojson_path: Path,
+    data_dir: Path,
+    archive_path: Path,
+) -> None:
+    """Update GeoJSON date metadata from existing CSVs, then build archive.
+
+    Used by the ``--finalize-only`` mode after parallel per-network jobs have
+    written their CSVs as GitHub Actions artifacts and those artifacts have
+    been downloaded into ``data_dir``.
+    """
+    if not geojson_path.exists():
+        raise FileNotFoundError(f"GeoJSON not found: {geojson_path}")
+
+    with geojson_path.open("r", encoding="utf-8") as f:
+        geojson = json.load(f)
+
+    features = geojson.get("features", [])
+    refreshed_at_utc = datetime.now(timezone.utc).isoformat(
+        timespec="seconds"
+    )
+    updated = 0
+
+    for feat in features:
+        props = feat.get("properties", {})
+        code = str(props.get("code") or "")
+        if not code:
+            continue
+        csv_path = station_csv_path(data_dir, code)
+        if not csv_path.exists():
+            continue
+        try:
+            df = pd.read_csv(csv_path)
+        except Exception as exc:
+            print(f"  Warning: could not read CSV for {code}: {exc}")
+            continue
+        if df.empty:
+            continue
+        earliest, latest, upd = compute_record_dates(df)
+        update_geojson_dates(
+            feat,
+            earliest,
+            latest,
+            upd,
+            f"stations/{code}.csv",
+            refreshed_at_utc,
+        )
+        updated += 1
+
+    print(f"Updated GeoJSON dates for {updated} stations")
+
+    geojson.setdefault("metadata", {})
+    geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
+    geojson["metadata"]["csv_elements"] = ["wteq_cm", "snwd_cm"]
+    geojson["metadata"]["csv_units"] = {
+        "wteq_cm": "cm", "snwd_cm": "cm"
+    }
+
+    with geojson_path.open("w", encoding="utf-8") as f:
+        json.dump(geojson, f, indent=2)
+    print(f"GeoJSON updated: {geojson_path}")
+
+    archived_count = build_archive(
+        data_dir=data_dir, archive_path=archive_path
+    )
+    print(f"Archive: {archived_count} files → {archive_path}")
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -404,11 +551,35 @@ def main() -> None:
         default=str(DEFAULT_ARCHIVE),
         help="Output tar.xz archive path",
     )
+    ap.add_argument(
+        "--network",
+        choices=["awdb", "cdec", "databc", "nve"],
+        default=None,
+        help=(
+            "Only refresh this network's stations. "
+            "Skips archive building and GeoJSON date update — "
+            "intended for parallel per-network GitHub Actions jobs."
+        ),
+    )
+    ap.add_argument(
+        "--finalize-only",
+        action="store_true",
+        help=(
+            "Skip all network fetching. Update GeoJSON dates from "
+            "existing CSVs and build archive. Used after parallel "
+            "per-network jobs have uploaded their CSVs as artifacts."
+        ),
+    )
     args = ap.parse_args()
 
     geojson_path = Path(args.geojson)
     data_dir = Path(args.data_dir)
     archive_path = Path(args.archive)
+
+    # ── Finalize-only mode ────────────────────────────────────────────────────
+    if args.finalize_only:
+        finalize_from_csvs(geojson_path, data_dir, archive_path)
+        return
 
     if not geojson_path.exists():
         raise FileNotFoundError(f"GeoJSON not found: {geojson_path}")
@@ -422,6 +593,7 @@ def main() -> None:
     awdb_stations: list[tuple[int, str, str]] = []
     cdec_stations: list[tuple[int, str]] = []
     databc_stations: list[tuple[int, str]] = []
+    nve_stations: list[tuple[int, str]] = []
 
     for idx, feat in enumerate(features):
         props = feat.get("properties", {})
@@ -440,35 +612,68 @@ def main() -> None:
             cdec_stations.append((idx, code))
         elif client_name == "databc":
             databc_stations.append((idx, code))
+        elif client_name == "nve":
+            nve_stations.append((idx, code))
 
-    total = len(awdb_stations) + len(cdec_stations) + len(databc_stations)
+    # Restrict to the requested network when --network is given
+    network = args.network
+    run_awdb = (network in (None, "awdb")) and bool(awdb_stations)
+    run_cdec = (network in (None, "cdec")) and bool(cdec_stations)
+    run_databc = (network in (None, "databc")) and bool(databc_stations)
+    run_nve = (network in (None, "nve")) and bool(nve_stations)
+
+    total = sum([
+        len(awdb_stations) if run_awdb else 0,
+        len(cdec_stations) if run_cdec else 0,
+        len(databc_stations) if run_databc else 0,
+        len(nve_stations) if run_nve else 0,
+    ])
+
     print("=" * 70)
-    print("Refreshing station CSVs — multi-client")
+    if network:
+        print(f"Refreshing station CSVs — {network.upper()} only")
+    else:
+        print("Refreshing station CSVs — multi-client")
     print(
-        f"  AWDB: {len(awdb_stations):,}  "
-        f"CDEC: {len(cdec_stations):,}  "
-        f"DataBC: {len(databc_stations):,}  "
+        f"  AWDB: {len(awdb_stations) if run_awdb else 'skip'}  "
+        f"CDEC: {len(cdec_stations) if run_cdec else 'skip'}  "
+        f"DataBC: {len(databc_stations) if run_databc else 'skip'}  "
+        f"NVE: {len(nve_stations) if run_nve else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
 
-    refreshed_at_utc = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    refreshed_at_utc = datetime.now(timezone.utc).isoformat(
+        timespec="seconds"
+    )
     stats = RefreshStats()
 
-    if awdb_stations:
+    if run_awdb:
         refresh_awdb(
             awdb_stations, features, data_dir, refreshed_at_utc, stats
         )
-    if cdec_stations:
+    if run_cdec:
         refresh_cdec(
             cdec_stations, features, data_dir, refreshed_at_utc, stats
         )
-    if databc_stations:
+    if run_databc:
         refresh_databc(
             databc_stations, features, data_dir, refreshed_at_utc, stats
         )
+    if run_nve:
+        refresh_nve(
+            nve_stations, features, data_dir, refreshed_at_utc, stats
+        )
 
-    # Update GeoJSON metadata
+    # In per-network mode: CSVs written, skip GeoJSON update and archive.
+    # The downstream finalize job handles those via --finalize-only.
+    if network:
+        print(f"\n[{network.upper()}] CSVs written to {data_dir}")
+        print(f"  updated: {stats.updated_csvs:,}  "
+              f"failed: {stats.failed_batches:,}")
+        return
+
+    # Update GeoJSON metadata (full run only)
     geojson.setdefault("metadata", {})
     geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
     geojson["metadata"]["csv_elements"] = ["wteq_cm", "snwd_cm"]
@@ -477,7 +682,9 @@ def main() -> None:
     with geojson_path.open("w", encoding="utf-8") as f:
         json.dump(geojson, f, indent=2)
 
-    archived_count = build_archive(data_dir=data_dir, archive_path=archive_path)
+    archived_count = build_archive(
+        data_dir=data_dir, archive_path=archive_path
+    )
 
     print("\n" + "=" * 70)
     print("Refresh summary")
