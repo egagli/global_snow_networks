@@ -15,4 +15,6 @@ jobs:
           environments: dev
 
       - name: Run tests
+        env:
+          NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
         run: pixi run -e dev test
