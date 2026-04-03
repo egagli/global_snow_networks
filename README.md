@@ -154,7 +154,7 @@ Features:
 
 Configure GitHub repository Settings → Pages → Deploy from branch `main` / root.
 
-Map URL: `https://<owner>.github.io/global_snow_networks/live_swe_map.html`
+Map URL: `https://egagli.github.io/global_snow_networks/`
 
 ---
 
