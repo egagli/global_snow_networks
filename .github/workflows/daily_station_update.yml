@@ -164,7 +164,7 @@ jobs:
             exit 0
           fi
           git commit -m "chore: daily station data refresh"
-          git push
+          git push origin HEAD:main
 
   # ── Stage 4: run CI and deploy map (after data is committed) ───────────────
   run-tests:
