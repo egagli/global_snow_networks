@@ -416,7 +416,7 @@ def refresh_nve(
             station_ids=station_ids,
             variables=["swe", "snwd"],
             interval="daily",
-            begin_date="1800-01-01",
+            begin_date="1950-01-01",
             end_date=date.today().isoformat(),
         )
         print(f"ok ({len(records)} records)")
