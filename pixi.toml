@@ -32,15 +32,20 @@ default = { solve-group = "default" }
 dev = { features = ["dev"], solve-group = "default" }
 
 [tasks]
-fetch-stations  = "python -m scripts.create_all_stations_geojson"
-fetch-data      = "python -m scripts.get_all_stations_data"
-live-map        = "python -m scripts.generate_live_map"
-update-all      = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
-test            = "pytest tests/ -v"
-test-awdb       = "pytest tests/test_awdb_client.py -v"
-test-cdec       = "pytest tests/test_cdec_client.py -v"
-test-databc     = "pytest tests/test_databc_client.py -v"
-test-nve        = "pytest tests/test_nve_client.py -v"
+fetch-stations   = "python -m scripts.create_all_stations_geojson"
+fetch-data       = "python -m scripts.get_all_stations_data"
+fetch-data-awdb  = "python -m scripts.get_all_stations_data --network awdb"
+fetch-data-cdec  = "python -m scripts.get_all_stations_data --network cdec"
+fetch-data-databc = "python -m scripts.get_all_stations_data --network databc"
+fetch-data-nve   = "python -m scripts.get_all_stations_data --network nve"
+finalize-data    = "python -m scripts.get_all_stations_data --finalize-only"
+live-map         = "python -m scripts.generate_live_map"
+update-all       = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
+test             = "pytest tests/ -v"
+test-awdb        = "pytest tests/test_awdb_client.py -v"
+test-cdec        = "pytest tests/test_cdec_client.py -v"
+test-databc      = "pytest tests/test_databc_client.py -v"
+test-nve         = "pytest tests/test_nve_client.py -v"
 
 [pypi-dependencies]
 playwright = ">=1.58.0, <2"
