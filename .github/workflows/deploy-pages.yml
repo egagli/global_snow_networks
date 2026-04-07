@@ -33,6 +33,7 @@ jobs:
           mkdir -p _site
           cp live_swe_map.html _site/index.html
           touch _site/.nojekyll
+          [ -d charts ] && cp -r charts _site/charts || true
 
       - uses: actions/upload-pages-artifact@v3
         with:
