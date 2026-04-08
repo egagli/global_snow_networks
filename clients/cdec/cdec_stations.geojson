@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-04-07",
+    "generated": "2026-04-08",
     "source": "CDEC \u2014 California Data Exchange Center (CA DWR)",
     "client": "cdec",
     "description": "All CDEC stations with snow sensors (3, 18, 82), including manual snow courses (periodic) and automated snow pillows (daily). Only stations with daily SWE or depth appear in all_daily_snow_stations.geojson.",
@@ -44,7 +44,7 @@
         "april1_avg_swe_in": 16.8,
         "course_number": "430",
         "measuring_agency": "Calaveras Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -109,7 +109,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CW2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -177,7 +177,7 @@
         "april1_avg_swe_in": 27.0,
         "course_number": "426",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -242,7 +242,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DP2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -310,7 +310,7 @@
         "april1_avg_swe_in": 29.5,
         "course_number": "78",
         "measuring_agency": "Nevada Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -375,7 +375,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BRB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -443,7 +443,7 @@
         "april1_avg_swe_in": 20.6,
         "course_number": "171",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -508,7 +508,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BNK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -573,7 +573,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BUK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -638,7 +638,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BKY",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -706,7 +706,7 @@
         "april1_avg_swe_in": 28.9,
         "course_number": "107",
         "measuring_agency": "El Dorado Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -774,7 +774,7 @@
         "april1_avg_swe_in": 45.8,
         "course_number": "65",
         "measuring_agency": "CA Dept of Water Resources/DFM-Hydro-Water Supply Fcasting",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -842,7 +842,7 @@
         "april1_avg_swe_in": 14.7,
         "course_number": "30",
         "measuring_agency": "Big Valley Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -907,7 +907,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CRL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -975,7 +975,7 @@
         "april1_avg_swe_in": 18.2,
         "course_number": "373",
         "measuring_agency": "Calaveras Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1043,7 +1043,7 @@
         "april1_avg_swe_in": 48.3,
         "course_number": "323",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1111,7 +1111,7 @@
         "april1_avg_swe_in": 10.6,
         "course_number": "434",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1176,7 +1176,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HNT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1241,7 +1241,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IRN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1306,7 +1306,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IS3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1371,7 +1371,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=JHN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1436,7 +1436,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=KNM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1504,7 +1504,7 @@
         "april1_avg_swe_in": 34.3,
         "course_number": "77",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1569,7 +1569,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LS2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1634,7 +1634,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MN1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1702,7 +1702,7 @@
         "april1_avg_swe_in": 18.1,
         "course_number": "245",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1767,7 +1767,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MOM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1835,7 +1835,7 @@
         "april1_avg_swe_in": 16.3,
         "course_number": "290",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1903,7 +1903,7 @@
         "april1_avg_swe_in": 7.8,
         "course_number": "343",
         "measuring_agency": "Lassen Volcanic National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -1968,7 +1968,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=NRT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2036,7 +2036,7 @@
         "april1_avg_swe_in": 13.8,
         "course_number": "46",
         "measuring_agency": "Eagle Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2101,7 +2101,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=NC2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2166,7 +2166,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=YCA",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2231,7 +2231,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SDF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2299,7 +2299,7 @@
         "april1_avg_swe_in": 29.4,
         "course_number": "432",
         "measuring_agency": "Calaveras Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2364,7 +2364,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SWF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2432,7 +2432,7 @@
         "april1_avg_swe_in": 18.1,
         "course_number": "422",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2495,7 +2495,7 @@
           3
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=PTL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2547,7 +2547,7 @@
         "april1_avg_swe_in": 35.2,
         "course_number": "183",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2615,7 +2615,7 @@
         "april1_avg_swe_in": 33.5,
         "course_number": "158",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2683,7 +2683,7 @@
         "april1_avg_swe_in": 11.0,
         "course_number": "259",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2747,7 +2747,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RTL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2807,7 +2807,7 @@
         "april1_avg_swe_in": 13.0,
         "course_number": "103",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2875,7 +2875,7 @@
         "april1_avg_swe_in": 40.6,
         "course_number": "389",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -2943,7 +2943,7 @@
         "april1_avg_swe_in": 34.0,
         "course_number": "229",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3011,7 +3011,7 @@
         "april1_avg_swe_in": 22.2,
         "course_number": "258",
         "measuring_agency": "Kern River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3079,7 +3079,7 @@
         "april1_avg_swe_in": 27.1,
         "course_number": "226",
         "measuring_agency": "Kings River Water Association",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3147,7 +3147,7 @@
         "april1_avg_swe_in": 27.2,
         "course_number": "232",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3215,7 +3215,7 @@
         "april1_avg_swe_in": 35.9,
         "course_number": "331",
         "measuring_agency": "El Dorado Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3283,7 +3283,7 @@
         "april1_avg_swe_in": 40.1,
         "course_number": "138",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3348,7 +3348,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LTM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3413,7 +3413,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MBV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3478,7 +3478,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FL2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3543,7 +3543,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FP1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3611,7 +3611,7 @@
         "april1_avg_swe_in": 9.2,
         "course_number": "100",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3676,7 +3676,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GIN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3741,7 +3741,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=VDM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3809,7 +3809,7 @@
         "april1_avg_swe_in": 35.9,
         "course_number": "114",
         "measuring_agency": "Placer County Water Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3873,7 +3873,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=PDP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3930,7 +3930,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SSL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -3995,7 +3995,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SFM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4060,7 +4060,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TCA",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4128,7 +4128,7 @@
         "april1_avg_swe_in": 34.3,
         "course_number": "53",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4196,7 +4196,7 @@
         "april1_avg_swe_in": 19.3,
         "course_number": "255",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4261,7 +4261,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WHW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4326,7 +4326,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CXS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4394,7 +4394,7 @@
         "april1_avg_swe_in": 34.8,
         "course_number": "193",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4462,7 +4462,7 @@
         "april1_avg_swe_in": 39.6,
         "course_number": "133",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4530,7 +4530,7 @@
         "april1_avg_swe_in": 30.9,
         "course_number": "192",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4595,7 +4595,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DDR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4663,7 +4663,7 @@
         "april1_avg_swe_in": 32.3,
         "course_number": "184",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4731,7 +4731,7 @@
         "april1_avg_swe_in": 33.9,
         "course_number": "292",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4799,7 +4799,7 @@
         "april1_avg_swe_in": 19.7,
         "course_number": "58",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4864,7 +4864,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=49M",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4929,7 +4929,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=ADM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -4997,7 +4997,7 @@
         "april1_avg_swe_in": 31.4,
         "course_number": "189",
         "measuring_agency": "Southern California Edison Company, Bishop",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5065,7 +5065,7 @@
         "april1_avg_swe_in": 2.1,
         "course_number": "354",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5133,7 +5133,7 @@
         "april1_avg_swe_in": 21.4,
         "course_number": "134",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5198,7 +5198,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BSM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5262,7 +5262,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BTA",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5319,7 +5319,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BGM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5387,7 +5387,7 @@
         "april1_avg_swe_in": 21.3,
         "course_number": "386",
         "measuring_agency": "Calaveras Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5455,7 +5455,7 @@
         "april1_avg_swe_in": 31.1,
         "course_number": "416",
         "measuring_agency": "Calaveras Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5520,7 +5520,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BLC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5585,7 +5585,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BC2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5653,7 +5653,7 @@
         "april1_avg_swe_in": 20.7,
         "course_number": "83",
         "measuring_agency": "Nevada Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5721,7 +5721,7 @@
         "april1_avg_swe_in": 17.6,
         "course_number": "56",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5788,7 +5788,7 @@
         "april1_avg_swe_in": 44.7,
         "course_number": "809",
         "measuring_agency": "CA Dept of Water Resources/State Water Project",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5845,7 +5845,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CMM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5910,7 +5910,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=KSP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -5978,7 +5978,7 @@
         "april1_avg_swe_in": 17.2,
         "course_number": "85",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6043,7 +6043,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MN3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6108,7 +6108,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MRM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6176,7 +6176,7 @@
         "april1_avg_swe_in": 27.8,
         "course_number": "48",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6244,7 +6244,7 @@
         "april1_avg_swe_in": 21.6,
         "course_number": "15",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6312,7 +6312,7 @@
         "april1_avg_swe_in": 35.4,
         "course_number": "194",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6380,7 +6380,7 @@
         "april1_avg_swe_in": 14.9,
         "course_number": "280",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6445,7 +6445,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RP3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6510,7 +6510,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SAS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6575,7 +6575,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=7UP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6643,7 +6643,7 @@
         "april1_avg_swe_in": 42.0,
         "course_number": "388",
         "measuring_agency": "South Feather Water and Power Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6711,7 +6711,7 @@
         "april1_avg_swe_in": 28.6,
         "course_number": "391",
         "measuring_agency": "South Feather Water and Power Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6779,7 +6779,7 @@
         "april1_avg_swe_in": 15.6,
         "course_number": "2",
         "measuring_agency": "Goosenest Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6844,7 +6844,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MHP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6912,7 +6912,7 @@
         "april1_avg_swe_in": 51.2,
         "course_number": "66",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -6977,7 +6977,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GRV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7045,7 +7045,7 @@
         "april1_avg_swe_in": 44.6,
         "course_number": "21",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7110,7 +7110,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=UWD",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7175,7 +7175,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WC3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7240,7 +7240,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WMD",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7308,7 +7308,7 @@
         "april1_avg_swe_in": 30.1,
         "course_number": "316",
         "measuring_agency": "Sacramento Municipal Utility District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7376,7 +7376,7 @@
         "april1_avg_swe_in": 12.0,
         "course_number": "17",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7444,7 +7444,7 @@
         "april1_avg_swe_in": 30.1,
         "course_number": "32",
         "measuring_agency": "Doublehead Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7512,7 +7512,7 @@
         "april1_avg_swe_in": 38.3,
         "course_number": "19",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7577,7 +7577,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=VGL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7645,7 +7645,7 @@
         "april1_avg_swe_in": 25.8,
         "course_number": "45",
         "measuring_agency": "Eagle Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7710,7 +7710,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SDS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7775,7 +7775,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SQC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7843,7 +7843,7 @@
         "april1_avg_swe_in": 43.8,
         "course_number": "318",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7911,7 +7911,7 @@
         "april1_avg_swe_in": 31.0,
         "course_number": "233",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -7979,7 +7979,7 @@
         "april1_avg_swe_in": 26.7,
         "course_number": "289",
         "measuring_agency": "CA Dept of Water Resources/DFM-Hydro-Water Supply Fcasting",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8044,7 +8044,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=THM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8112,7 +8112,7 @@
         "april1_avg_swe_in": 12.0,
         "course_number": "423",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8177,7 +8177,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CWD",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8245,7 +8245,7 @@
         "april1_avg_swe_in": 14.2,
         "course_number": "251",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8310,7 +8310,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DRR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8378,7 +8378,7 @@
         "april1_avg_swe_in": 11.0,
         "course_number": "249",
         "measuring_agency": "Western Divide Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8446,7 +8446,7 @@
         "april1_avg_swe_in": 30.8,
         "course_number": "365",
         "measuring_agency": "CA Dept of Water Resources/DFM-Hydro-Water Supply Fcasting",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8514,7 +8514,7 @@
         "april1_avg_swe_in": 20.5,
         "course_number": "26",
         "measuring_agency": "McCloud Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8579,7 +8579,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BEG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8647,7 +8647,7 @@
         "april1_avg_swe_in": 27.0,
         "course_number": "398",
         "measuring_agency": "Kings River Water Association",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8712,7 +8712,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BGP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8777,7 +8777,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BRG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8845,7 +8845,7 @@
         "april1_avg_swe_in": 44.0,
         "course_number": "159",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8913,7 +8913,7 @@
         "april1_avg_swe_in": 33.6,
         "course_number": "23",
         "measuring_agency": "McCloud Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -8978,7 +8978,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BCY",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9043,7 +9043,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CPF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9108,7 +9108,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HYC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9176,7 +9176,7 @@
         "april1_avg_swe_in": 26.5,
         "course_number": "185",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9244,7 +9244,7 @@
         "april1_avg_swe_in": 35.4,
         "course_number": "115",
         "measuring_agency": "Tahoe National Forest Headquarters",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9309,7 +9309,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IDC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9374,7 +9374,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IDP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9439,7 +9439,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=JKM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9504,7 +9504,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=ALI",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9572,7 +9572,7 @@
         "april1_avg_swe_in": 32.0,
         "course_number": "110",
         "measuring_agency": "Placerville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9640,7 +9640,7 @@
         "april1_avg_swe_in": 28.1,
         "course_number": "5",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9705,7 +9705,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MPN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9770,7 +9770,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MSK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9838,7 +9838,7 @@
         "april1_avg_swe_in": 23.6,
         "course_number": "20",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9906,7 +9906,7 @@
         "april1_avg_swe_in": 20.7,
         "course_number": "120",
         "measuring_agency": "Central Sierra Snow Lab",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -9974,7 +9974,7 @@
         "april1_avg_swe_in": 25.0,
         "course_number": "180",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10042,7 +10042,7 @@
         "april1_avg_swe_in": 24.3,
         "course_number": "113",
         "measuring_agency": "CA Dept of Water Resources/DFM-Hydro-Water Supply Fcasting",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10107,7 +10107,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SHN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10172,7 +10172,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SRF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10240,7 +10240,7 @@
         "april1_avg_swe_in": 18.9,
         "course_number": "213",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10308,7 +10308,7 @@
         "april1_avg_swe_in": 40.4,
         "course_number": "363",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10376,7 +10376,7 @@
         "april1_avg_swe_in": 24.0,
         "course_number": "204",
         "measuring_agency": "Bass Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10444,7 +10444,7 @@
         "april1_avg_swe_in": 24.4,
         "course_number": "234",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10512,7 +10512,7 @@
         "april1_avg_swe_in": 7.4,
         "course_number": "211",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10580,7 +10580,7 @@
         "april1_avg_swe_in": 27.6,
         "course_number": "187",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10645,7 +10645,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=KIB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10713,7 +10713,7 @@
         "april1_avg_swe_in": 15.0,
         "course_number": "435",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10778,7 +10778,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FP2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10843,7 +10843,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GRM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10908,7 +10908,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HSF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -10973,7 +10973,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=VRV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11041,7 +11041,7 @@
         "april1_avg_swe_in": 52.7,
         "course_number": "131",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11109,7 +11109,7 @@
         "april1_avg_swe_in": 31.3,
         "course_number": "13",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11177,7 +11177,7 @@
         "april1_avg_swe_in": 29.8,
         "course_number": "227",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11245,7 +11245,7 @@
         "april1_avg_swe_in": 23.6,
         "course_number": "236",
         "measuring_agency": "Kings River Water Association",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11313,7 +11313,7 @@
         "april1_avg_swe_in": 10.4,
         "course_number": "247",
         "measuring_agency": "Western Divide Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11377,7 +11377,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BYC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11434,7 +11434,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TES",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11502,7 +11502,7 @@
         "april1_avg_swe_in": 18.4,
         "course_number": "252",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11567,7 +11567,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SNM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11632,7 +11632,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SPS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11697,7 +11697,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SQ1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11762,7 +11762,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SQV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11827,7 +11827,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=STW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11892,7 +11892,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TCC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -11957,7 +11957,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TUN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12022,7 +12022,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=ULP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12086,7 +12086,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BYT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12143,7 +12143,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BSK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12211,7 +12211,7 @@
         "april1_avg_swe_in": 35.1,
         "course_number": "441",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12276,7 +12276,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CTS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12344,7 +12344,7 @@
         "april1_avg_swe_in": 14.0,
         "course_number": "27",
         "measuring_agency": "McCloud Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12412,7 +12412,7 @@
         "april1_avg_swe_in": 31.0,
         "course_number": "9",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12477,7 +12477,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DRL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12545,7 +12545,7 @@
         "april1_avg_swe_in": 16.6,
         "course_number": "212",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12610,7 +12610,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=EP5",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12678,7 +12678,7 @@
         "april1_avg_swe_in": 43.2,
         "course_number": "68",
         "measuring_agency": "Nevada Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12746,7 +12746,7 @@
         "april1_avg_swe_in": 22.8,
         "course_number": "4",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12814,7 +12814,7 @@
         "april1_avg_swe_in": 37.4,
         "course_number": "11",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12879,7 +12879,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BP1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -12947,7 +12947,7 @@
         "april1_avg_swe_in": 32.8,
         "course_number": "222",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13015,7 +13015,7 @@
         "april1_avg_swe_in": 37.3,
         "course_number": "417",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13080,7 +13080,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BKH",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13145,7 +13145,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BUN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13213,7 +13213,7 @@
         "april1_avg_swe_in": 15.0,
         "course_number": "237",
         "measuring_agency": "Kings River Water Association",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13278,7 +13278,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IH4",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13346,7 +13346,7 @@
         "april1_avg_swe_in": 26.9,
         "course_number": "360",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13414,7 +13414,7 @@
         "april1_avg_swe_in": 47.4,
         "course_number": "368",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13479,7 +13479,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SMO",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13547,7 +13547,7 @@
         "april1_avg_swe_in": 32.9,
         "course_number": "276",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13615,7 +13615,7 @@
         "april1_avg_swe_in": 15.4,
         "course_number": "63",
         "measuring_agency": "Covelo Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13683,7 +13683,7 @@
         "april1_avg_swe_in": 43.6,
         "course_number": "10",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13748,7 +13748,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RVN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13812,7 +13812,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RBB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13872,7 +13872,7 @@
         "april1_avg_swe_in": 9.8,
         "course_number": "210",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -13937,7 +13937,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LLY",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14002,7 +14002,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LOL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14067,7 +14067,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LUM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14135,7 +14135,7 @@
         "april1_avg_swe_in": 42.1,
         "course_number": "205",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14200,7 +14200,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=OMN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14265,7 +14265,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MDW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14333,7 +14333,7 @@
         "april1_avg_swe_in": 5.5,
         "course_number": "198",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14401,7 +14401,7 @@
         "april1_avg_swe_in": 48.3,
         "course_number": "427",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14466,7 +14466,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GNF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14531,7 +14531,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GOL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14596,7 +14596,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GKS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14664,7 +14664,7 @@
         "april1_avg_swe_in": 19.8,
         "course_number": "254",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14729,7 +14729,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HLF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14797,7 +14797,7 @@
         "april1_avg_swe_in": 6.6,
         "course_number": "265",
         "measuring_agency": "Kern River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14865,7 +14865,7 @@
         "april1_avg_swe_in": 29.6,
         "course_number": "22",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14933,7 +14933,7 @@
         "april1_avg_swe_in": 43.1,
         "course_number": "384",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -14998,7 +14998,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SBL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15063,7 +15063,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SGR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15131,7 +15131,7 @@
         "april1_avg_swe_in": 13.5,
         "course_number": "3",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15196,7 +15196,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=THV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15264,7 +15264,7 @@
         "april1_avg_swe_in": 42.3,
         "course_number": "364",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15329,7 +15329,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TK2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15397,7 +15397,7 @@
         "april1_avg_swe_in": 23.0,
         "course_number": "161",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15465,7 +15465,7 @@
         "april1_avg_swe_in": 35.5,
         "course_number": "224",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15530,7 +15530,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FDC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15595,7 +15595,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HOR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15659,7 +15659,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WLV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15719,7 +15719,7 @@
         "april1_avg_swe_in": 30.1,
         "course_number": "157",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15784,7 +15784,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DNF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15849,7 +15849,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DFL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15917,7 +15917,7 @@
         "april1_avg_swe_in": 17.5,
         "course_number": "371",
         "measuring_agency": "Placer County Water Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -15982,7 +15982,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DNR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16050,7 +16050,7 @@
         "april1_avg_swe_in": 22.6,
         "course_number": "140",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16115,7 +16115,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=EBB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16179,7 +16179,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=ALP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16239,7 +16239,7 @@
         "april1_avg_swe_in": 25.4,
         "course_number": "62",
         "measuring_agency": "Covelo Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16304,7 +16304,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BV2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16372,7 +16372,7 @@
         "april1_avg_swe_in": 14.5,
         "course_number": "172",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16437,7 +16437,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BFL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16505,7 +16505,7 @@
         "april1_avg_swe_in": 16.0,
         "course_number": "257",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16573,7 +16573,7 @@
         "april1_avg_swe_in": 7.6,
         "course_number": "28",
         "measuring_agency": "Big Valley Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16641,7 +16641,7 @@
         "april1_avg_swe_in": 12.7,
         "course_number": "261",
         "measuring_agency": "Kern River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16706,7 +16706,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CDS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16774,7 +16774,7 @@
         "april1_avg_swe_in": 33.8,
         "course_number": "196",
         "measuring_agency": "Bass Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16842,7 +16842,7 @@
         "april1_avg_swe_in": 35.8,
         "course_number": "197",
         "measuring_agency": "Bass Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16907,7 +16907,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CSF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -16972,7 +16972,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HZS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17040,7 +17040,7 @@
         "april1_avg_swe_in": 28.3,
         "course_number": "244",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17104,7 +17104,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HMB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17161,7 +17161,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HBS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17226,7 +17226,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IDN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17291,7 +17291,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LPT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17356,7 +17356,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LOS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17421,7 +17421,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=STE",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17489,7 +17489,7 @@
         "april1_avg_swe_in": 31.1,
         "course_number": "178",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17554,7 +17554,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LVM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17619,7 +17619,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MED",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17684,7 +17684,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MTM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17749,7 +17749,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BID",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17817,7 +17817,7 @@
         "april1_avg_swe_in": 10.6,
         "course_number": "55",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17882,7 +17882,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=NC1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -17950,7 +17950,7 @@
         "april1_avg_swe_in": 47.7,
         "course_number": "97",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18018,7 +18018,7 @@
         "april1_avg_swe_in": 31.4,
         "course_number": "287",
         "measuring_agency": "Southern California Edison Company, Bishop",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18086,7 +18086,7 @@
         "april1_avg_swe_in": 17.8,
         "course_number": "275",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18151,7 +18151,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=PSN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18216,7 +18216,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LVN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18284,7 +18284,7 @@
         "april1_avg_swe_in": 34.1,
         "course_number": "338",
         "measuring_agency": "Sacramento Municipal Utility District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18352,7 +18352,7 @@
         "april1_avg_swe_in": 29.5,
         "course_number": "320",
         "measuring_agency": "CA Dept of Water Resources/DFM-Hydro-Water Supply Fcasting",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18417,7 +18417,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MNF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18482,7 +18482,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MRI",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18547,7 +18547,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MRL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18615,7 +18615,7 @@
         "april1_avg_swe_in": 3.1,
         "course_number": "387",
         "measuring_agency": "Eagle Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18683,7 +18683,7 @@
         "april1_avg_swe_in": 42.3,
         "course_number": "76",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18751,7 +18751,7 @@
         "april1_avg_swe_in": 28.9,
         "course_number": "282",
         "measuring_agency": "Southern California Edison Company, Bishop",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18819,7 +18819,7 @@
         "april1_avg_swe_in": 9.2,
         "course_number": "333",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18884,7 +18884,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=UTY",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -18948,7 +18948,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=VVL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19008,7 +19008,7 @@
         "april1_avg_swe_in": 20.8,
         "course_number": "169",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19076,7 +19076,7 @@
         "april1_avg_swe_in": 12.6,
         "course_number": "59",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19144,7 +19144,7 @@
         "april1_avg_swe_in": 32.3,
         "course_number": "89",
         "measuring_agency": "Nevada Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19209,7 +19209,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WWC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19277,7 +19277,7 @@
         "april1_avg_swe_in": 21.6,
         "course_number": "14",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19342,7 +19342,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WHC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19410,7 +19410,7 @@
         "april1_avg_swe_in": 27.7,
         "course_number": "74",
         "measuring_agency": "Yuba River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19478,7 +19478,7 @@
         "april1_avg_swe_in": 11.8,
         "course_number": "35",
         "measuring_agency": "Big Valley Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19546,7 +19546,7 @@
         "april1_avg_swe_in": 44.0,
         "course_number": "12",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19611,7 +19611,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SST",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19679,7 +19679,7 @@
         "april1_avg_swe_in": 20.9,
         "course_number": "139",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19744,7 +19744,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SLL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19812,7 +19812,7 @@
         "april1_avg_swe_in": 42.8,
         "course_number": "164",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19880,7 +19880,7 @@
         "april1_avg_swe_in": 53.4,
         "course_number": "390",
         "measuring_agency": "Yuba Water Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -19948,7 +19948,7 @@
         "april1_avg_swe_in": 31.2,
         "course_number": "33",
         "measuring_agency": "Hat Creek Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20013,7 +20013,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HRK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20077,7 +20077,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=OWW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20134,7 +20134,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HUL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20199,7 +20199,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FLE",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20262,7 +20262,7 @@
           3
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SS1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20314,7 +20314,7 @@
         "april1_avg_swe_in": 34.4,
         "course_number": "345",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20378,7 +20378,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DSS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20435,7 +20435,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DRN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20500,7 +20500,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=EGP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20568,7 +20568,7 @@
         "april1_avg_swe_in": 25.1,
         "course_number": "52",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20636,7 +20636,7 @@
         "april1_avg_swe_in": 8.3,
         "course_number": "355",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20704,7 +20704,7 @@
         "april1_avg_swe_in": 2.2,
         "course_number": "137",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20769,7 +20769,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BIM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20833,7 +20833,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BMW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20890,7 +20890,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BIP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -20958,7 +20958,7 @@
         "april1_avg_swe_in": 29.5,
         "course_number": "307",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21026,7 +21026,7 @@
         "april1_avg_swe_in": 1.7,
         "course_number": "41",
         "measuring_agency": "Hat Creek Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21094,7 +21094,7 @@
         "april1_avg_swe_in": 22.2,
         "course_number": "372",
         "measuring_agency": "Yuba River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21162,7 +21162,7 @@
         "april1_avg_swe_in": 31.1,
         "course_number": "299",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21230,7 +21230,7 @@
         "april1_avg_swe_in": 24.7,
         "course_number": "80",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21298,7 +21298,7 @@
         "april1_avg_swe_in": 39.5,
         "course_number": "344",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21363,7 +21363,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HYV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21428,7 +21428,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HVN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21496,7 +21496,7 @@
         "april1_avg_swe_in": 18.4,
         "course_number": "199",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21561,7 +21561,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IS4",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21629,7 +21629,7 @@
         "april1_avg_swe_in": 19.7,
         "course_number": "361",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21694,7 +21694,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LDV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21762,7 +21762,7 @@
         "april1_avg_swe_in": 56.3,
         "course_number": "96",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21830,7 +21830,7 @@
         "april1_avg_swe_in": 34.3,
         "course_number": "369",
         "measuring_agency": "Placer County Water Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21895,7 +21895,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MNT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -21963,7 +21963,7 @@
         "april1_avg_swe_in": 28.2,
         "course_number": "182",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22027,7 +22027,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MDL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22087,7 +22087,7 @@
         "april1_avg_swe_in": 18.8,
         "course_number": "145",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22155,7 +22155,7 @@
         "april1_avg_swe_in": 33.6,
         "course_number": "177",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22223,7 +22223,7 @@
         "april1_avg_swe_in": 35.2,
         "course_number": "132",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22288,7 +22288,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=PSC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22353,7 +22353,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=PET",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22421,7 +22421,7 @@
         "april1_avg_swe_in": 22.9,
         "course_number": "397",
         "measuring_agency": "Kings River Water Association",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22486,7 +22486,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=PSR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22554,7 +22554,7 @@
         "april1_avg_swe_in": 18.8,
         "course_number": "143",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22618,7 +22618,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RBP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22678,7 +22678,7 @@
         "april1_avg_swe_in": 17.1,
         "course_number": "256",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22743,7 +22743,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LLM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22808,7 +22808,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LBD",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22873,7 +22873,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LMW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -22941,7 +22941,7 @@
         "april1_avg_swe_in": 1.9,
         "course_number": "37",
         "measuring_agency": "Hat Creek Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23009,7 +23009,7 @@
         "april1_avg_swe_in": 17.5,
         "course_number": "239",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23074,7 +23074,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GNM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23142,7 +23142,7 @@
         "april1_avg_swe_in": 12.4,
         "course_number": "246",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23207,7 +23207,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GNG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23275,7 +23275,7 @@
         "april1_avg_swe_in": 4.0,
         "course_number": "136",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23340,7 +23340,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=UTM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23408,7 +23408,7 @@
         "april1_avg_swe_in": 29.1,
         "course_number": "186",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23476,7 +23476,7 @@
         "april1_avg_swe_in": 32.4,
         "course_number": "101",
         "measuring_agency": "Lake Tahoe Basin Management Unit",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23544,7 +23544,7 @@
         "april1_avg_swe_in": 10.2,
         "course_number": "154",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23612,7 +23612,7 @@
         "april1_avg_swe_in": 7.5,
         "course_number": "31",
         "measuring_agency": "Hat Creek Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23680,7 +23680,7 @@
         "april1_avg_swe_in": 31.2,
         "course_number": "25",
         "measuring_agency": "McCloud Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23745,7 +23745,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TCT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23813,7 +23813,7 @@
         "april1_avg_swe_in": 17.9,
         "course_number": "122",
         "measuring_agency": "Placer County Water Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23881,7 +23881,7 @@
         "april1_avg_swe_in": 22.6,
         "course_number": "347",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -23949,7 +23949,7 @@
         "april1_avg_swe_in": 28.4,
         "course_number": "181",
         "measuring_agency": "Southern California Edison Company, Bishop",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24017,7 +24017,7 @@
         "april1_avg_swe_in": 33.3,
         "course_number": "106",
         "measuring_agency": "El Dorado Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24085,7 +24085,7 @@
         "april1_avg_swe_in": 16.8,
         "course_number": "168",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24153,7 +24153,7 @@
         "april1_avg_swe_in": 12.1,
         "course_number": "438",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24218,7 +24218,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RCC",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24283,7 +24283,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SDW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24348,7 +24348,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LLX",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24413,7 +24413,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FLV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24478,7 +24478,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=KUB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24543,7 +24543,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CLI",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24611,7 +24611,7 @@
         "april1_avg_swe_in": 22.2,
         "course_number": "200",
         "measuring_agency": "Bass Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24679,7 +24679,7 @@
         "april1_avg_swe_in": 21.8,
         "course_number": "188",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24747,7 +24747,7 @@
         "april1_avg_swe_in": 12.3,
         "course_number": "221",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24812,7 +24812,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DSF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24880,7 +24880,7 @@
         "april1_avg_swe_in": 27.4,
         "course_number": "308",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -24948,7 +24948,7 @@
         "april1_avg_swe_in": 32.3,
         "course_number": "69",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25016,7 +25016,7 @@
         "april1_avg_swe_in": 30.5,
         "course_number": "286",
         "measuring_agency": "Southern California Edison Company, Bishop",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25081,7 +25081,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=EMV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25149,7 +25149,7 @@
         "april1_avg_swe_in": 37.2,
         "course_number": "279",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25214,7 +25214,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FLL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25282,7 +25282,7 @@
         "april1_avg_swe_in": 28.2,
         "course_number": "346",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25350,7 +25350,7 @@
         "april1_avg_swe_in": 17.6,
         "course_number": "218",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25418,7 +25418,7 @@
         "april1_avg_swe_in": 32.2,
         "course_number": "223",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25483,7 +25483,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BLA",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25548,7 +25548,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CTM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25616,7 +25616,7 @@
         "april1_avg_swe_in": 26.3,
         "course_number": "142",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25684,7 +25684,7 @@
         "april1_avg_swe_in": 45.2,
         "course_number": "162",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25752,7 +25752,7 @@
         "april1_avg_swe_in": 39.1,
         "course_number": "166",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25820,7 +25820,7 @@
         "april1_avg_swe_in": 6.0,
         "course_number": "127",
         "measuring_agency": "Pacific Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25888,7 +25888,7 @@
         "april1_avg_swe_in": 24.2,
         "course_number": "201",
         "measuring_agency": "Bass Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -25956,7 +25956,7 @@
         "april1_avg_swe_in": 25.2,
         "course_number": "348",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26024,7 +26024,7 @@
         "april1_avg_swe_in": 14.3,
         "course_number": "324",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26089,7 +26089,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LVT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26157,7 +26157,7 @@
         "april1_avg_swe_in": 32.4,
         "course_number": "54",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26225,7 +26225,7 @@
         "april1_avg_swe_in": 51.6,
         "course_number": "18",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26290,7 +26290,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=NLS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26358,7 +26358,7 @@
         "april1_avg_swe_in": 36.4,
         "course_number": "243",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26426,7 +26426,7 @@
         "april1_avg_swe_in": 38.3,
         "course_number": "167",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26494,7 +26494,7 @@
         "april1_avg_swe_in": 32.6,
         "course_number": "1",
         "measuring_agency": "Mount Shasta Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26559,7 +26559,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SCT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26627,7 +26627,7 @@
         "april1_avg_swe_in": 32.3,
         "course_number": "396",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26695,7 +26695,7 @@
         "april1_avg_swe_in": 47.7,
         "course_number": "67",
         "measuring_agency": "Pacific Gas and Electric Company, Auburn",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26763,7 +26763,7 @@
         "april1_avg_swe_in": 12.2,
         "course_number": "209",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26831,7 +26831,7 @@
         "april1_avg_swe_in": 13.5,
         "course_number": "260",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26896,7 +26896,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LVS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -26964,7 +26964,7 @@
         "april1_avg_swe_in": 19.2,
         "course_number": "208",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27029,7 +27029,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FRN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27097,7 +27097,7 @@
         "april1_avg_swe_in": 1.4,
         "course_number": "353",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27162,7 +27162,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GCM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27227,7 +27227,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HGM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27292,7 +27292,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=UWH",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27357,7 +27357,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=VRG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27425,7 +27425,7 @@
         "april1_avg_swe_in": 43.1,
         "course_number": "163",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27493,7 +27493,7 @@
         "april1_avg_swe_in": 29.3,
         "course_number": "179",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27561,7 +27561,7 @@
         "april1_avg_swe_in": 21.8,
         "course_number": "173",
         "measuring_agency": "Summit Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27626,7 +27626,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CNP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27694,7 +27694,7 @@
         "april1_avg_swe_in": 17.8,
         "course_number": "109",
         "measuring_agency": "Amador Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27762,7 +27762,7 @@
         "april1_avg_swe_in": 44.1,
         "course_number": "176",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27830,7 +27830,7 @@
         "april1_avg_swe_in": 25.8,
         "course_number": "152",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27895,7 +27895,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SPT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -27960,7 +27960,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TRD",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28025,7 +28025,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TKS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28093,7 +28093,7 @@
         "april1_avg_swe_in": 27.2,
         "course_number": "440",
         "measuring_agency": "CA Dept of Water Resources/DFM-Hydro-SMN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28157,7 +28157,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DPK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28213,7 +28213,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TST",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28270,7 +28270,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CWF",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28334,7 +28334,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SVB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28393,7 +28393,7 @@
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FLK",
         "course_number": "442",
         "measuring_agency": "Yosemite National Park",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28458,7 +28458,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=KUP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28523,7 +28523,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CWM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28591,7 +28591,7 @@
         "april1_avg_swe_in": 18.5,
         "course_number": "253",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28656,7 +28656,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DAG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28724,7 +28724,7 @@
         "april1_avg_swe_in": 26.7,
         "course_number": "191",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28792,7 +28792,7 @@
         "april1_avg_swe_in": 15.3,
         "course_number": "298",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28860,7 +28860,7 @@
         "april1_avg_swe_in": 26.8,
         "course_number": "108",
         "measuring_agency": "Placerville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28925,7 +28925,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BCH",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -28993,7 +28993,7 @@
         "april1_avg_swe_in": 31.6,
         "course_number": "225",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29061,7 +29061,7 @@
         "april1_avg_swe_in": 12.0,
         "course_number": "219",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29129,7 +29129,7 @@
         "april1_avg_swe_in": 22.3,
         "course_number": "250",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29197,7 +29197,7 @@
         "april1_avg_swe_in": 21.7,
         "course_number": "284",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29265,7 +29265,7 @@
         "april1_avg_swe_in": 33.6,
         "course_number": "129",
         "measuring_agency": "Pacific Gas and Electric Company, Angels Camp",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29330,7 +29330,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BWY",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29395,7 +29395,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CNM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29463,7 +29463,7 @@
         "april1_avg_swe_in": 18.6,
         "course_number": "262",
         "measuring_agency": "Kern River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29527,7 +29527,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CSL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29584,7 +29584,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CHP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29652,7 +29652,7 @@
         "april1_avg_swe_in": 5.6,
         "course_number": "429",
         "measuring_agency": "Nevada Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29720,7 +29720,7 @@
         "april1_avg_swe_in": 2.9,
         "course_number": "61",
         "measuring_agency": "Eagle Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29788,7 +29788,7 @@
         "april1_avg_swe_in": 21.6,
         "course_number": "202",
         "measuring_agency": "Bass Lake Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29853,7 +29853,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CTH",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29921,7 +29921,7 @@
         "april1_avg_swe_in": 27.4,
         "course_number": "75",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -29989,7 +29989,7 @@
         "april1_avg_swe_in": 25.4,
         "course_number": "230",
         "measuring_agency": "Pacific Gas and Electric Company, Auberry",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30057,7 +30057,7 @@
         "april1_avg_swe_in": 34.4,
         "course_number": "16",
         "measuring_agency": "Weaverville Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30122,7 +30122,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HLV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30187,7 +30187,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=INN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30252,7 +30252,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=IS2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30317,7 +30317,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=JNM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30385,7 +30385,7 @@
         "april1_avg_swe_in": 36.6,
         "course_number": "190",
         "measuring_agency": "Southern California Edison Company, Big Creek",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30453,7 +30453,7 @@
         "april1_avg_swe_in": 39.8,
         "course_number": "49",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30521,7 +30521,7 @@
         "april1_avg_swe_in": 26.4,
         "course_number": "311",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30589,7 +30589,7 @@
         "april1_avg_swe_in": 28.9,
         "course_number": "206",
         "measuring_agency": "City of Los Angeles; Dept of Water and Power",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30657,7 +30657,7 @@
         "april1_avg_swe_in": 38.2,
         "course_number": "334",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30725,7 +30725,7 @@
         "april1_avg_swe_in": 10.8,
         "course_number": "214",
         "measuring_agency": "CA Dept of Water Resources",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30793,7 +30793,7 @@
         "april1_avg_swe_in": 11.4,
         "course_number": "248",
         "measuring_agency": "CA Dept of Forestry and Fire Protection",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30861,7 +30861,7 @@
         "april1_avg_swe_in": 31.4,
         "course_number": "99",
         "measuring_agency": "Lake Tahoe Basin Management Unit",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30925,7 +30925,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SCN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -30982,7 +30982,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=QUA",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31050,7 +31050,7 @@
         "april1_avg_swe_in": 18.8,
         "course_number": "264",
         "measuring_agency": "Sequoia and Kings Canyon National Parks",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31118,7 +31118,7 @@
         "april1_avg_swe_in": 12.4,
         "course_number": "322",
         "measuring_agency": "Pacific Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31183,7 +31183,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=RCK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31248,7 +31248,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LOG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31316,7 +31316,7 @@
         "april1_avg_swe_in": 77.0,
         "course_number": "47",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31381,7 +31381,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FOR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31449,7 +31449,7 @@
         "april1_avg_swe_in": 35.3,
         "course_number": "281",
         "measuring_agency": "Southern California Edison Company, Bishop",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31517,7 +31517,7 @@
         "april1_avg_swe_in": 23.4,
         "course_number": "277",
         "measuring_agency": "South Feather Water and Power Agency",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31585,7 +31585,7 @@
         "april1_avg_swe_in": 26.8,
         "course_number": "359",
         "measuring_agency": "CA Dept of Water Resources/Beckwourth",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31653,7 +31653,7 @@
         "april1_avg_swe_in": 21.0,
         "course_number": "51",
         "measuring_agency": "Pacific Gas and Electric Company, Rogers Flat",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31721,7 +31721,7 @@
         "april1_avg_swe_in": 5.1,
         "course_number": "104",
         "measuring_agency": "Natural Resources Conservation Service",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31789,7 +31789,7 @@
         "april1_avg_swe_in": 40.4,
         "course_number": "64",
         "measuring_agency": "Nevada Irrigation District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31854,7 +31854,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=WTM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31922,7 +31922,7 @@
         "april1_avg_swe_in": 29.7,
         "course_number": "34",
         "measuring_agency": "Hat Creek Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -31987,7 +31987,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MD1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32052,7 +32052,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SXV",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32117,7 +32117,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SLI",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32182,7 +32182,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SMM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32247,7 +32247,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SFK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32312,7 +32312,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SLK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32377,7 +32377,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SPI",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32442,7 +32442,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=STL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32507,7 +32507,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SMP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32575,7 +32575,7 @@
         "april1_avg_swe_in": 24.6,
         "course_number": "285",
         "measuring_agency": "Salmon/Scott River Ranger District",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32640,7 +32640,7 @@
           82
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=TMR",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32704,7 +32704,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SVG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32759,7 +32759,7 @@
           3
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=SS2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW WC",
@@ -32806,7 +32806,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MPG",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -32853,7 +32853,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BTP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -32900,7 +32900,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DOL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -32947,7 +32947,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=DGH",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -32994,7 +32994,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33041,7 +33041,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT4",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33088,7 +33088,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT5",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33135,7 +33135,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G05",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33182,7 +33182,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BSN",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33229,7 +33229,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH8",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33276,7 +33276,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BUB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33323,7 +33323,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GR2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33370,7 +33370,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=ERY",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33417,7 +33417,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CMW",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33464,7 +33464,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH4",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33511,7 +33511,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33558,7 +33558,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=UMT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33605,7 +33605,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G02",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33652,7 +33652,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G08",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33699,7 +33699,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G10",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33746,7 +33746,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH7",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33793,7 +33793,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT6",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33840,7 +33840,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G04",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33887,7 +33887,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G06",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33934,7 +33934,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GRB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -33981,7 +33981,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BU1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34028,7 +34028,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=HEM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34075,7 +34075,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CVM",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34122,7 +34122,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34169,7 +34169,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT7",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34216,7 +34216,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LMT",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34263,7 +34263,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FCL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34310,7 +34310,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G03",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34357,7 +34357,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G07",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34404,7 +34404,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G09",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34451,7 +34451,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GR3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34498,7 +34498,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CFL",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34545,7 +34545,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=UCB",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34592,7 +34592,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34639,7 +34639,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH5",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34686,7 +34686,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GYP",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34733,7 +34733,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT8",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34780,7 +34780,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT0",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34827,7 +34827,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=G01",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34874,7 +34874,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=LBH",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34921,7 +34921,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GR1",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -34968,7 +34968,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BU3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35015,7 +35015,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MLK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35062,7 +35062,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=FRS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35109,7 +35109,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=JMS",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35156,7 +35156,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35203,7 +35203,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=MAK",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35250,7 +35250,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH6",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35297,7 +35297,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH9",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35344,7 +35344,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=BU2",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35391,7 +35391,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=GH3",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
@@ -35438,7 +35438,7 @@
           18
         ],
         "station_url": "https://cdec.water.ca.gov/dynamicapp/staMeta?station_id=CT9",
-        "metadata_fetched_at": "2026-04-07",
+        "metadata_fetched_at": "2026-04-08",
         "data_variables": [
           {
             "name": "SNOW DP",
