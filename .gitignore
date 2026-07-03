@@ -1,0 +1,19 @@
+# Python bytecode
+__pycache__/
+*.py[cod]
+
+# Tool caches
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Pixi environments (also self-ignored via .pixi/.gitignore)
+.pixi/
+
+# Editor / workspace files
+*.code-workspace
+.vscode/
+.idea/
+
+# OS
+.DS_Store
