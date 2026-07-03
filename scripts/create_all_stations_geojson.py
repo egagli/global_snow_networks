@@ -794,19 +794,6 @@ def run_databc_workflow(
 
 # ── NVE workflow ──────────────────────────────────────────────────────────────
 
-# Generous bounding box for Norwegian territory: mainland, Svalbard and
-# Jan Mayen (lon_min, lat_min, lon_max, lat_max).
-_NORWAY_REGION_BBOX = (-12.0, 55.0, 35.0, 82.0)
-
-
-def _in_norway_region(lat: float | None, lon: float | None) -> bool:
-    """True if the coordinates plausibly lie in Norwegian territory."""
-    if lat is None or lon is None:
-        return False
-    lon_min, lat_min, lon_max, lat_max = _NORWAY_REGION_BBOX
-    return lat_min <= lat <= lat_max and lon_min <= lon <= lon_max
-
-
 def _nve_data_variables(station: dict) -> list[dict]:
     """Build data_variables for an NVE station from its parameter list.
 
@@ -849,6 +836,14 @@ def nve_station_to_feature(station: dict) -> dict:
     lat = station.get("latitude")
     lon = station.get("longitude")
 
+    notes = ""
+    if station.get("coordinates_overridden"):
+        notes = (
+            "Coordinates corrected by client: HydAPI reports a position "
+            "~60° of longitude west of the station's actual location "
+            "(Nepal cooperation station)."
+        )
+
     props: dict[str, Any] = {
         "code": sid,
         "name": station.get("name", ""),
@@ -858,7 +853,7 @@ def nve_station_to_feature(station: dict) -> dict:
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "",
+        "notes": notes,
         "status": station.get("status", ""),
         "isActive": station.get("status") == "Active",
         "station_url": station.get("station_url", ""),
@@ -908,33 +903,9 @@ def run_nve_workflow() -> tuple[list[dict], list[dict]]:
     )
 
     all_features = [nve_station_to_feature(s) for s in stations]
-
-    # NVE also operates cooperation stations abroad (drainage-basin group
-    # 1977.* in Nepal: Langtang, Mustang, ...) whose HydAPI coordinates
-    # are corrupt (longitudes ~60° west of reality, some latitudes wrong
-    # too — they render in Africa).  Keep them in the per-client GeoJSON
-    # (with a note) but exclude them from the daily inventory, which
-    # requires trustworthy locations.
-    for f in all_features:
-        p = f["properties"]
-        if not _in_norway_region(p.get("latitude"), p.get("longitude")):
-            note = (
-                "Excluded from all_daily_snow_stations.geojson: coordinates "
-                "reported by HydAPI are outside the Norway region and known "
-                "to be unreliable (foreign cooperation station)."
-            )
-            p["notes"] = f"{p['notes']} {note}".strip() if p.get("notes") else note
-            print(
-                f"  [NVE] excluding {p.get('code')} ({p.get('name')}) from "
-                f"daily inventory: lat={p.get('latitude')} lon={p.get('longitude')}"
-            )
-
     daily_features = [
         f for f in all_features
-        if (f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth"))
-        and _in_norway_region(
-            f["properties"].get("latitude"), f["properties"].get("longitude")
-        )
+        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
     ]
     print(f"  Daily stations: {len(daily_features):,}")
 

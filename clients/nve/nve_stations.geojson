@@ -27845,7 +27845,7 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          25.57043,
+          85.57043,
           28.19214
         ]
       },
@@ -27853,11 +27853,11 @@
         "code": "1977.1.1",
         "name": "Langtang - Lower",
         "latitude": 28.19214,
-        "longitude": 25.57043,
+        "longitude": 85.57043,
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "Excluded from all_daily_snow_stations.geojson: coordinates reported by HydAPI are outside the Norway region and known to be unreliable (foreign cooperation station).",
+        "notes": "Coordinates corrected by client: HydAPI reports a position ~60\u00b0 of longitude west of the station's actual location (Nepal cooperation station).",
         "status": "Active",
         "isActive": true,
         "station_url": "https://sildre.nve.no/station/1977.1.1",
@@ -27883,7 +27883,7 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          25.5625,
+          85.5625,
           28.15441
         ]
       },
@@ -27891,11 +27891,11 @@
         "code": "1977.1.4",
         "name": "Langtang - GangaLa",
         "latitude": 28.15441,
-        "longitude": 25.5625,
+        "longitude": 85.5625,
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "Excluded from all_daily_snow_stations.geojson: coordinates reported by HydAPI are outside the Norway region and known to be unreliable (foreign cooperation station).",
+        "notes": "Coordinates corrected by client: HydAPI reports a position ~60\u00b0 of longitude west of the station's actual location (Nepal cooperation station).",
         "status": "Active",
         "isActive": true,
         "station_url": "https://sildre.nve.no/station/1977.1.4",
@@ -27941,7 +27941,7 @@
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "Excluded from all_daily_snow_stations.geojson: coordinates reported by HydAPI are outside the Norway region and known to be unreliable (foreign cooperation station).",
+        "notes": "",
         "status": "Active",
         "isActive": true,
         "station_url": "https://sildre.nve.no/station/1977.1.5",
@@ -27978,7 +27978,7 @@
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "Excluded from all_daily_snow_stations.geojson: coordinates reported by HydAPI are outside the Norway region and known to be unreliable (foreign cooperation station).",
+        "notes": "",
         "status": "Active",
         "isActive": true,
         "station_url": "https://sildre.nve.no/station/1977.1.6",
@@ -28003,7 +28003,7 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          24.54465,
+          84.54465,
           28.13995
         ]
       },
@@ -28011,11 +28011,11 @@
         "code": "1977.2.1",
         "name": "Mustang - Upper Snow Station",
         "latitude": 28.13995,
-        "longitude": 24.54465,
+        "longitude": 84.54465,
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "Excluded from all_daily_snow_stations.geojson: coordinates reported by HydAPI are outside the Norway region and known to be unreliable (foreign cooperation station).",
+        "notes": "Coordinates corrected by client: HydAPI reports a position ~60\u00b0 of longitude west of the station's actual location (Nepal cooperation station).",
         "status": "Active",
         "isActive": true,
         "station_url": "https://sildre.nve.no/station/1977.2.1",
@@ -28049,7 +28049,7 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          24.54485,
+          84.54485,
           28.13093
         ]
       },
@@ -28057,11 +28057,11 @@
         "code": "1977.2.2",
         "name": "Mustang - Lower snow station 4320mas",
         "latitude": 28.13093,
-        "longitude": 24.54485,
+        "longitude": 84.54485,
         "Operator": "NVE",
         "client": "nve",
         "networkCode": "NVE",
-        "notes": "Excluded from all_daily_snow_stations.geojson: coordinates reported by HydAPI are outside the Norway region and known to be unreliable (foreign cooperation station).",
+        "notes": "Coordinates corrected by client: HydAPI reports a position ~60\u00b0 of longitude west of the station's actual location (Nepal cooperation station).",
         "status": "Active",
         "isActive": true,
         "station_url": "https://sildre.nve.no/station/1977.2.2",
