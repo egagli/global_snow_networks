@@ -804,16 +804,21 @@ instantaneous/hourly only and are excluded from
 
 ### 9.6 Stations with invalid coordinates
 
-Two classes of stations are excluded from `all_daily_snow_stations.geojson`
-(but retained in the per-client GeoJSONs):
-
 - **Null-island placeholders** — e.g. CDEC's `TST` ("SNOW SURVEYS TEST
-  STATION") sits at latitude/longitude (0, 0).
-- **NVE foreign cooperation stations** (drainage-basin group `1977.*`:
-  Langtang and Mustang, Nepal) — the coordinates served by HydAPI are
-  corrupt (longitudes ~60° west of reality; some latitudes wrong too),
-  so the stations would render in Africa.  They carry an explanatory
-  `notes` entry in `clients/nve/nve_stations.geojson`.
+  STATION") sits at latitude/longitude (0, 0).  Features with missing or
+  (0, 0) coordinates are excluded from `all_daily_snow_stations.geojson`
+  (but retained in the per-client GeoJSONs).
+- **NVE Nepal cooperation stations** (drainage-basin group `1977.*`:
+  Langtang and Mustang, SnowAMP project with ICIMOD/DHM) — HydAPI serves
+  longitudes exactly 60° west of reality, which would render them in
+  Africa.  The NVE client detects the known-wrong positions and falls
+  back to hardcoded corrected coordinates (the Langtang positions are
+  corroborated by the SnowAMP literature; the Mustang ones apply the
+  same +60° correction but are unverified).  Corrected stations carry an
+  explanatory `notes` entry.  If HydAPI ever starts reporting a position
+  close to the correction, the upstream value is used.  Two river gauges
+  in the group (`1977.1.5`, `1977.1.6`) have unfixable coordinates but
+  no daily snow data, so they never reach the daily inventory.
 
 ---
 

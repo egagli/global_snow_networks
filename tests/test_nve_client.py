@@ -129,6 +129,31 @@ def test_enrich_station_empty_series_list():
     assert sta["daily_parameters"] == []
 
 
+def test_enrich_station_coordinate_override_applied():
+    """Known-wrong HydAPI coords (Nepal stations) fall back to overrides."""
+    raw = _raw_station([])
+    raw.update(stationId="1977.1.4", latitude=28.15441, longitude=25.5625)
+    sta = _enrich_station(raw)
+    assert sta["coordinates_overridden"] is True
+    assert sta["longitude"] == 85.5625, "longitude must be corrected +60°"
+    assert sta["latitude"] == 28.15441
+
+
+def test_enrich_station_coordinate_override_skipped_when_upstream_fixed():
+    """If HydAPI starts reporting the correct position, keep upstream."""
+    raw = _raw_station([])
+    raw.update(stationId="1977.1.4", latitude=28.15441, longitude=85.5625)
+    sta = _enrich_station(raw)
+    assert sta["coordinates_overridden"] is False
+    assert sta["longitude"] == 85.5625
+
+
+def test_enrich_station_no_override_for_normal_station():
+    sta = _enrich_station(_raw_station([]))
+    assert sta["coordinates_overridden"] is False
+    assert sta["latitude"] == 61.18
+
+
 # ── _reference_windows (offline) ──────────────────────────────────────────────
 
 def test_reference_windows_no_dates_means_latest_only():
