@@ -51,9 +51,12 @@ global_snow_networks/
 │   ├── cdec/
 │   │   ├── cdec_client.py                 # CDEC (California) client
 │   │   └── cdec_stations.geojson          # All CDEC snow stations (generated)
-│   └── databc/
-│       ├── databc_client.py               # BC Data Catalogue client
-│       └── databc_stations.geojson        # All BC snow stations (generated)
+│   ├── databc/
+│   │   ├── databc_client.py               # BC Data Catalogue client
+│   │   └── databc_stations.geojson        # All BC snow stations (generated)
+│   └── nve/
+│       ├── nve_client.py                  # NVE HydAPI (Norway) client
+│       └── nve_stations.geojson           # All NVE snow stations (generated)
 │
 ├── data/
 │   ├── stations/
@@ -78,6 +81,19 @@ pixi install
 # optional interactive shell
 pixi shell
 ```
+
+### NVE API key
+
+The NVE HydAPI (Norway) requires a free API key.  Register at
+<https://hydapi.nve.no/> and set it before running the pipeline:
+
+```bash
+export NVE_API_KEY="your-key"
+```
+
+In GitHub Actions the key is provided via the `NVE_API_KEY` repository
+secret.  Without a key the NVE client logs a warning and all NVE requests
+fail with HTTP 401 (other clients are unaffected).
 
 ---
 
@@ -171,7 +187,7 @@ Map URL: `https://egagli.github.io/global_snow_networks/`
 | `latitude`, `longitude` | WGS-84 coordinates |
 | `elevation_m` | Elevation in metres |
 | `Operator` | Operating agency |
-| `client` | Source client: `"awdb"`, `"cdec"`, `"databc"` |
+| `client` | Source client: `"awdb"`, `"cdec"`, `"databc"`, `"nve"` |
 | `networkCode` | Network label (SNTL, SNTLT, CDEC, ASWS, …) |
 | `state` | State or province code |
 | `isActive` | Boolean active status |
@@ -193,6 +209,8 @@ Map URL: `https://egagli.github.io/global_snow_networks/`
 
 **DataBC-specific additional fields:** `station_type` (ASWS or MSS),
 `status`.
+
+**NVE-specific additional fields:** `status`, `drainage_basin_key`.
 
 #### Duplicate stations
 
@@ -487,6 +505,61 @@ Manual snow course sites have location IDs that do NOT end in `P`
 - BC snow survey stations labelled as MSNT (misleading)
 - Not all BC stations are represented in AWDB
 
+### 6.8 Norway Snow Pillow Network (NVE)
+
+**Data source:** NVE HydAPI (hydapi.nve.no)
+**Client:** `nve`
+**Stations in archive:** ~31 with daily SWE and/or snow depth
+(~1,880 NVE stations carry a snow parameter at some resolution)
+**Coverage:** Norway
+**Period of record:** ~1970 – present (most stations from the 2000s)
+**Temporal resolution:** Instantaneous, hourly, and daily
+**Operator:** Norwegian Water Resources and Energy Directorate (NVE)
+
+NVE (Norges vassdrags- og energidirektorat) operates Norway's national
+hydrological monitoring network, including automated snow pillow stations.
+Data are served by the HydAPI REST service (JSON, API key required — see
+[Installation](#2-installation)).
+
+**Snow parameters (NVE parameter IDs):**
+
+| Parameter | Name | Native units | Stored as |
+|---|---|---|---|
+| **2003** | Snøens vannekvivalent (SWE) | m | `wteq_cm` (× 100) |
+| **2002** | Snødybde (snow depth) | cm | `snwd_cm` (as-is) |
+
+> ⚠️ Parameter **2001** is *Markfuktighet* (soil water, %) — it is **not**
+> a snow parameter despite its neighbouring ID.
+
+**Quality codes** (`quality` field, via `get_data(include_flags=True)`):
+0 = unknown, 1 = uncontrolled, 2 = primary controlled,
+3 = secondary controlled.
+
+**Data quality filtering:** the NVE archive contains occasional glitches
+that pass NVE's own quality control (e.g. ~145 m SWE readings flagged
+"secondary controlled").  The client normalises physically implausible
+values (negative or > 15 m) to null.
+
+**Rate limit:** 5 requests/second per API key.  The client spaces
+requests and retries HTTP 429 honouring `Retry-After`.
+
+**Station URL format:** `https://sildre.nve.no/station/{station_id}`
+(station IDs are three dot-separated numbers, e.g. `12.142.0`).
+
+**Links**
+- HydAPI documentation: https://hydapi.nve.no/UserDocumentation/
+- Sildre station portal: https://sildre.nve.no/
+- xgeo.no (Norwegian snow map): https://www.xgeo.no/
+
+#### Data Sources and Access Methods
+
+| Tool / Source | Type | Description |
+|---|---|---|
+| HydAPI REST v1 | Primary API | JSON REST API, API key required. Series metadata via `/Series`, values via `/Observations`. **Used by this project.** |
+| Sildre portal | Web | Interactive station pages with plots and metadata. |
+| xgeo.no | Web | National snow/weather map built on NVE + MET data. |
+| seNorge (thredds) | Gridded | Gridded snow products (not point observations). |
+
 ---
 
 ## 7. Data Access Methods and Design Philosophy
@@ -499,6 +572,7 @@ Each data source has a dedicated client module under `clients/`:
 clients/awdb/awdb_client.py    → AWDBClient
 clients/cdec/cdec_client.py    → CDECClient
 clients/databc/databc_client.py → DataBCClient
+clients/nve/nve_client.py      → NVEClient
 ```
 
 **Invariants across all clients:**
@@ -652,6 +726,32 @@ df_surveys = client.get_mss_survey_data(archive=True)
 print(df_surveys.columns.tolist())
 ```
 
+### 8.7 Fetch NVE (Norway) snow data
+
+```python
+from clients.nve import NVEClient
+from clients.nve.nve_client import VARIABLES, DATA_FLAGS
+
+client = NVEClient()  # reads NVE_API_KEY from the environment
+
+# All NVE stations with snow parameters (daily_parameters shows which
+# have daily series)
+stations = client.get_all_stations(active_only=True)
+
+# Daily SWE + snow depth with quality flags (values in cm)
+records = client.get_data(
+    station_ids=["12.142.0"],       # Bakko snow pillow
+    variables=["swe", "snwd"],
+    interval="daily",
+    begin_date="2023-10-01",
+    end_date="2024-06-30",
+    include_flags=True,
+)
+# records[0] → {"station_id": "12.142.0", "date": "2023-10-01",
+#               "variable": "swe_m", "type": "swe", "value": 0.0,
+#               "units": "cm", "interval": "daily", "flag": "3"}
+```
+
 ---
 
 ## 9. Known Caveats
@@ -690,6 +790,18 @@ ASWS stations, contact BC Ministry of Environment or use the AQRT portal.
 CDEC's JSON data service does not return monthly aggregates for snow sensors
 3, 18, or 82.  Use daily duration (`"D"`) for all CDEC snow data retrieval.
 
+### 9.5 NVE parameter ID semantics and data glitches
+
+NVE parameter IDs are easy to misread: **2001 is soil water**
+(Markfuktighet), **2002 is snow depth** (Snødybde), and **2003 is SWE**
+(Snøens vannekvivalent, native unit metres).  The NVE archive also
+contains occasional extreme glitches that carry a "quality controlled"
+flag (e.g. ~145 m SWE at station 123.93.0 in Jan 2018); the client
+normalises values outside 0–15 m to null.  Only ~31 of NVE's ~1,880
+snow-parameter stations have *daily* (1440-minute) series — the rest are
+instantaneous/hourly only and are excluded from
+`all_daily_snow_stations.geojson`.
+
 ---
 
 ## 10. License and Citation
@@ -698,6 +810,8 @@ Data accessed from AWDB is public domain (U.S. Government).
 BC snow survey data is published under the Open Government Licence — British
 Columbia.
 CDEC data is published by CA DWR.
+NVE data is published under the Norwegian Licence for Open Government Data
+(NLOD).
 
 Suggested citations for source data:
 
@@ -710,3 +824,6 @@ Suggested citations for source data:
 
 > BC Ministry of Environment. BC Snow Survey Network. BC Data Catalogue.
 > <https://catalogue.data.gov.bc.ca>
+
+> Norwegian Water Resources and Energy Directorate (NVE). HydAPI —
+> hydrological API. <https://hydapi.nve.no/>
