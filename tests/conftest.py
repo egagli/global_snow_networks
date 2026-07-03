@@ -24,9 +24,10 @@ CDEC_COURSE = ["HNT"]             # Huntington Lake snow course
 DATABC_ASWS = ["1A01P", "1E08P"]  # Tupper, Yellowhead
 DATABC_MSS = ["1A06A", "1A10"]    # Tupper Creek MSS sites
 
-# NVE station IDs (Norwegian snow pillow / hydrological stations)
-NVE_SWE_STATIONS = ["2.11.0", "12.228.0"]  # Filefjell, Leirskardalen
-NVE_SNWD_STATION = ["2.11.0"]              # Filefjell — has snow depth too
+# NVE station IDs — snow pillows with daily SWE (param 2003) and snow
+# depth (param 2002).  NB: 2.11.0 / 12.228.0 are river gauges, not snow.
+NVE_SWE_STATIONS = ["12.142.0", "121.2.0"]  # Bakko, Maurhaugen-Oppdal
+NVE_SNWD_STATION = ["12.142.0"]             # Bakko — has snow depth too
 
 # Date window for data tests (known-good winter period)
 TEST_BEGIN = "2024-01-01"
