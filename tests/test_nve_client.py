@@ -12,12 +12,14 @@ import pytest
 from clients.nve import NVEClient, NVEError
 from clients.nve.nve_client import (
     VARIABLES,
-    DATA_FLAGS,
     _TYPE_TO_NVE_VARS,
     _PARAM_TO_VAR,
     _VAR_TO_PARAM,
     _INTERVAL_TO_RESOLUTION,
     _RESOLUTION_TO_INTERVAL,
+    _MAX_POINTS_PER_REQUEST,
+    _enrich_station,
+    _reference_windows,
 )
 from tests.conftest import (
     BBOX_NORWAY,
@@ -86,6 +88,100 @@ def test_swe_units_is_cm():
 
 def test_snwd_units_is_cm():
     assert VARIABLES["snwd_cm"]["units"] == "cm"
+
+
+# ── _enrich_station (offline) ─────────────────────────────────────────────────
+
+def _raw_station(series_list):
+    return {
+        "stationId": "2.11.0",
+        "stationName": "Filefjell",
+        "latitude": 61.18,
+        "longitude": 8.11,
+        "elevation": 955,
+        "active": True,
+        "seriesList": series_list,
+    }
+
+
+def test_enrich_station_reads_parameter_key():
+    """/Stations seriesList items use the key ``parameter``, not ``parameterId``."""
+    sta = _enrich_station(_raw_station([
+        {"parameter": 2002, "resolutionList": [{"resTime": 1440}]},
+        {"parameter": 2001, "resolutionList": [{"resTime": 0}]},
+    ]))
+    assert sta["parameters"] == [2001, 2002]
+
+
+def test_enrich_station_daily_parameters_from_resolution_list():
+    sta = _enrich_station(_raw_station([
+        {"parameter": 2002, "resolutionList": [{"resTime": 0}, {"resTime": 1440}]},
+        {"parameter": 2001, "resolutionList": [{"resTime": 0}, {"resTime": 60}]},
+    ]))
+    assert sta["daily_parameters"] == [2002], (
+        "only parameters with a 1440-minute resolution are daily"
+    )
+
+
+def test_enrich_station_empty_series_list():
+    sta = _enrich_station(_raw_station([]))
+    assert sta["parameters"] == []
+    assert sta["daily_parameters"] == []
+
+
+# ── _reference_windows (offline) ──────────────────────────────────────────────
+
+def test_reference_windows_no_dates_means_latest_only():
+    assert _reference_windows(None, None, "2010-01-01", 1440) == [(None, None)]
+
+
+def test_reference_windows_clips_begin_to_data_from():
+    wins = _reference_windows("1950-01-01", "2024-06-01", "2010-01-01", 1440)
+    assert wins == [("2010-01-01", "2024-06-01")]
+
+
+def test_reference_windows_open_end_is_today_not_data_to():
+    """dataToTime can lag the newest observations — an omitted end_date
+    must extend to today, never be clipped by series metadata."""
+    from datetime import date
+    wins = _reference_windows("2024-01-01", None, "2010-01-01", 1440)
+    assert wins[-1][1] == date.today().isoformat()
+
+
+def test_reference_windows_begin_after_end_returns_empty():
+    assert _reference_windows("2024-06-01", "2024-01-01", "", 1440) == []
+
+
+def test_reference_windows_chunks_long_daily_ranges():
+    wins = _reference_windows("1950-01-01", "2026-07-01", "", 1440)
+    assert len(wins) > 1, "76 years of daily data must be split"
+    # Windows are contiguous, ordered, and within the requested period
+    assert wins[0][0] == "1950-01-01"
+    assert wins[-1][1] == "2026-07-01"
+    for (_, prev_end), (next_begin, _) in zip(wins, wins[1:]):
+        from datetime import date, timedelta
+        assert date.fromisoformat(next_begin) == (
+            date.fromisoformat(prev_end) + timedelta(days=1)
+        )
+    # Each window stays under the per-request point budget
+    from datetime import date
+    for begin, end in wins:
+        n_days = (date.fromisoformat(end) - date.fromisoformat(begin)).days + 1
+        assert n_days <= _MAX_POINTS_PER_REQUEST
+
+
+def test_reference_windows_hourly_budget():
+    wins = _reference_windows("2020-01-01", "2024-01-01", "", 60)
+    from datetime import date
+    for begin, end in wins:
+        n_days = (date.fromisoformat(end) - date.fromisoformat(begin)).days + 1
+        assert n_days * 24 <= _MAX_POINTS_PER_REQUEST + 24
+
+
+def test_reference_windows_open_start():
+    assert _reference_windows(None, "2024-06-01", "", 1440) == [
+        (None, "2024-06-01")
+    ]
 
 
 # ── get_all_stations ──────────────────────────────────────────────────────────
