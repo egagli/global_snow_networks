@@ -306,6 +306,53 @@ def make_feature(
     }
 
 
+def keep_previous_if_empty(
+    client_name: str,
+    geojson_path: Path,
+    all_feats: list[dict],
+    daily_feats: list[dict],
+) -> tuple[list[dict], list[dict], bool]:
+    """Fall back to the last saved inventory when a client fetch is empty.
+
+    A source outage (e.g. BC OpenMaps WFS timing out from GitHub runners,
+    2026-07-03) must never overwrite a good station inventory with an
+    empty one, nor silently drop the client from the merged daily file.
+    Reuses the previously committed per-client GeoJSON and derives the
+    daily subset from its dailySWE/dailySnowDepth properties.
+
+    Returns ``(all_features, daily_features, fresh)``.  ``fresh`` is False
+    when the previous inventory was reused — the caller should then skip
+    rewriting the per-client file so it keeps its original metadata.
+    """
+    if all_feats:
+        return all_feats, daily_feats, True
+    try:
+        with geojson_path.open(encoding="utf-8") as fp:
+            previous = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError) as exc:
+        previous = []
+        logger.error("[%s] Could not read previous inventory %s: %s",
+                     client_name, geojson_path, exc)
+    if not previous:
+        logger.error(
+            "[%s] Fetch returned 0 stations and there is no previous "
+            "inventory to fall back on — client will be missing from "
+            "the merged GeoJSON", client_name,
+        )
+        return all_feats, daily_feats, False
+    daily = [
+        f for f in previous
+        if f.get("properties", {}).get("dailySWE")
+        or f.get("properties", {}).get("dailySnowDepth")
+    ]
+    logger.error(
+        "[%s] Fetch returned 0 stations — KEEPING PREVIOUS inventory "
+        "(%d stations, %d daily) from %s",
+        client_name, len(previous), len(daily), geojson_path.name,
+    )
+    return previous, daily, False
+
+
 def write_geojson(
     path: Path,
     features: list[dict],
@@ -890,8 +937,16 @@ def main() -> None:
 
     # ── AWDB ──────────────────────────────────────────────────────────────────
     if not args.skip_awdb:
+        awdb_all: list[dict] = []
+        awdb_daily: list[dict] = []
         try:
             awdb_all, awdb_daily = run_awdb_workflow(bias_table)
+        except Exception as exc:
+            logging.warning("[AWDB] Workflow failed: %s", exc)
+        awdb_all, awdb_daily, fresh = keep_previous_if_empty(
+            "AWDB", AWDB_GEOJSON_OUT, awdb_all, awdb_daily
+        )
+        if fresh:
             write_geojson(
                 AWDB_GEOJSON_OUT,
                 awdb_all,
@@ -907,17 +962,23 @@ def main() -> None:
                     "total": len(awdb_all),
                 },
             )
-            all_daily_features.extend(awdb_daily)
-            print(
-                f"[AWDB] {len(awdb_daily):,} daily stations added to merged GeoJSON"
-            )
-        except Exception as exc:
-            logging.warning("[AWDB] Workflow failed, skipping: %s", exc)
+        all_daily_features.extend(awdb_daily)
+        print(
+            f"[AWDB] {len(awdb_daily):,} daily stations added to merged GeoJSON"
+        )
 
     # ── CDEC ──────────────────────────────────────────────────────────────────
     if not args.skip_cdec:
+        cdec_all: list[dict] = []
+        cdec_daily: list[dict] = []
         try:
             cdec_all, cdec_daily = run_cdec_workflow()
+        except Exception as exc:
+            logging.warning("[CDEC] Workflow failed: %s", exc)
+        cdec_all, cdec_daily, fresh = keep_previous_if_empty(
+            "CDEC", CDEC_GEOJSON_OUT, cdec_all, cdec_daily
+        )
+        if fresh:
             write_geojson(
                 CDEC_GEOJSON_OUT,
                 cdec_all,
@@ -935,19 +996,25 @@ def main() -> None:
                     "total": len(cdec_all),
                 },
             )
-            all_daily_features.extend(cdec_daily)
-            print(
-                f"[CDEC] {len(cdec_daily):,} daily stations added to merged GeoJSON"
-            )
-        except Exception as exc:
-            logging.warning("[CDEC] Workflow failed, skipping: %s", exc)
+        all_daily_features.extend(cdec_daily)
+        print(
+            f"[CDEC] {len(cdec_daily):,} daily stations added to merged GeoJSON"
+        )
 
     # ── DataBC ────────────────────────────────────────────────────────────────
     if not args.skip_databc:
+        databc_all: list[dict] = []
+        databc_daily: list[dict] = []
         try:
             databc_all, databc_daily = run_databc_workflow(
                 fetch_images=not args.skip_station_images,
             )
+        except Exception as exc:
+            logging.warning("[DataBC] Workflow failed: %s", exc)
+        databc_all, databc_daily, fresh = keep_previous_if_empty(
+            "DataBC", DATABC_GEOJSON_OUT, databc_all, databc_daily
+        )
+        if fresh:
             write_geojson(
                 DATABC_GEOJSON_OUT,
                 databc_all,
@@ -966,17 +1033,23 @@ def main() -> None:
                     "total": len(databc_all),
                 },
             )
-            all_daily_features.extend(databc_daily)
-            print(
-                f"[DataBC] {len(databc_daily):,} daily stations added to merged GeoJSON"
-            )
-        except Exception as exc:
-            logging.warning("[DataBC] Workflow failed, skipping: %s", exc)
+        all_daily_features.extend(databc_daily)
+        print(
+            f"[DataBC] {len(databc_daily):,} daily stations added to merged GeoJSON"
+        )
 
     # ── NVE ───────────────────────────────────────────────────────────────────
     if not args.skip_nve:
+        nve_all: list[dict] = []
+        nve_daily: list[dict] = []
         try:
             nve_all, nve_daily = run_nve_workflow()
+        except Exception as exc:
+            logging.warning("[NVE] Workflow failed: %s", exc)
+        nve_all, nve_daily, fresh = keep_previous_if_empty(
+            "NVE", NVE_GEOJSON_OUT, nve_all, nve_daily
+        )
+        if fresh:
             write_geojson(
                 NVE_GEOJSON_OUT,
                 nve_all,
@@ -992,12 +1065,10 @@ def main() -> None:
                     "total": len(nve_all),
                 },
             )
-            all_daily_features.extend(nve_daily)
-            print(
-                f"[NVE] {len(nve_daily):,} daily stations added to merged GeoJSON"
-            )
-        except Exception as exc:
-            logging.warning("[NVE] Workflow failed, skipping: %s", exc)
+        all_daily_features.extend(nve_daily)
+        print(
+            f"[NVE] {len(nve_daily):,} daily stations added to merged GeoJSON"
+        )
 
     # ── Write merged all_daily_snow_stations.geojson ────────────────────────────────────
     print("=" * 60)

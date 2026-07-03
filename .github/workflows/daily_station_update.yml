@@ -179,6 +179,13 @@ jobs:
   build-and-deploy:
     needs: finalize
     if: needs.finalize.result == 'success' || needs.finalize.result == 'skipped'
+    # Same concurrency group as the push-triggered deploy-pages workflow.
+    # A reusable workflow's own top-level concurrency is ignored when
+    # called via workflow_call, so without this the two trigger paths can
+    # race and Pages fails one deployment with "try again later".
+    concurrency:
+      group: pages
+      cancel-in-progress: false
     permissions:
       contents: read
       pages: write
