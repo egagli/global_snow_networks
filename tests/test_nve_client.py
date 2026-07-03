@@ -61,7 +61,7 @@ def test_variables_types_are_valid():
 def test_type_to_nve_vars_has_swe_snwd():
     assert "swe" in _TYPE_TO_NVE_VARS
     assert "snwd" in _TYPE_TO_NVE_VARS
-    assert "swe_mm" in _TYPE_TO_NVE_VARS["swe"]
+    assert "swe_m" in _TYPE_TO_NVE_VARS["swe"]
     assert "snwd_cm" in _TYPE_TO_NVE_VARS["snwd"]
 
 
@@ -81,8 +81,8 @@ def test_interval_dicts_roundtrip():
 
 
 def test_swe_units_is_cm():
-    assert VARIABLES["swe_mm"]["units"] == "cm", (
-        "swe_mm should report cm (converted from mm)"
+    assert VARIABLES["swe_m"]["units"] == "cm", (
+        "swe_m should report cm (converted from metres)"
     )
 
 
@@ -107,18 +107,18 @@ def _raw_station(series_list):
 def test_enrich_station_reads_parameter_key():
     """/Stations seriesList items use the key ``parameter``, not ``parameterId``."""
     sta = _enrich_station(_raw_station([
-        {"parameter": 2002, "resolutionList": [{"resTime": 1440}]},
-        {"parameter": 2001, "resolutionList": [{"resTime": 0}]},
+        {"parameter": 2003, "resolutionList": [{"resTime": 1440}]},
+        {"parameter": 2002, "resolutionList": [{"resTime": 0}]},
     ]))
-    assert sta["parameters"] == [2001, 2002]
+    assert sta["parameters"] == [2002, 2003]
 
 
 def test_enrich_station_daily_parameters_from_resolution_list():
     sta = _enrich_station(_raw_station([
-        {"parameter": 2002, "resolutionList": [{"resTime": 0}, {"resTime": 1440}]},
-        {"parameter": 2001, "resolutionList": [{"resTime": 0}, {"resTime": 60}]},
+        {"parameter": 2003, "resolutionList": [{"resTime": 0}, {"resTime": 1440}]},
+        {"parameter": 2002, "resolutionList": [{"resTime": 0}, {"resTime": 60}]},
     ]))
-    assert sta["daily_parameters"] == [2002], (
+    assert sta["daily_parameters"] == [2003], (
         "only parameters with a 1440-minute resolution are daily"
     )
 
@@ -257,20 +257,20 @@ def test_get_all_stations_bbox_norway(client):
 # ── get_stations ──────────────────────────────────────────────────────────────
 
 def test_get_stations_by_swe_parameter(client):
-    stations = client.get_stations(parameter_ids=2002)
+    stations = client.get_stations(parameter_ids=2003)
     assert isinstance(stations, list)
     assert len(stations) > 10, "Expected >10 SWE stations"
 
 
 def test_get_stations_by_snwd_parameter(client):
-    stations = client.get_stations(parameter_ids=2001)
+    stations = client.get_stations(parameter_ids=2002)
     assert isinstance(stations, list)
     assert len(stations) > 10, "Expected >10 snow depth stations"
 
 
 def test_get_stations_by_multiple_parameters(client):
-    single = client.get_stations(parameter_ids=2002)
-    multi = client.get_stations(parameter_ids=[2001, 2002])
+    single = client.get_stations(parameter_ids=2003)
+    multi = client.get_stations(parameter_ids=[2002, 2003])
     assert len(multi) >= len(single), (
         "Multiple parameter filter should return >= single parameter results"
     )
@@ -323,7 +323,7 @@ def test_get_data_swe_type_and_cm_units(client):
         assert r["units"] == "cm", (
             f"SWE units should be cm, got {r['units']!r}"
         )
-        assert r["variable"] == "swe_mm"
+        assert r["variable"] == "swe_m"
         assert r["interval"] == "daily"
         if r["value"] is not None:
             assert 0 <= r["value"] <= 500, (
@@ -350,7 +350,7 @@ def test_get_data_snwd_type(client):
 
 
 def test_get_data_native_variable_key(client):
-    """Passing 'swe_mm' (native key) works the same as type 'swe'."""
+    """Passing 'swe_m' (native key) works the same as type 'swe'."""
     by_type = client.get_data(
         station_ids=NVE_SWE_STATIONS[:1],
         variables=["swe"],
@@ -359,7 +359,7 @@ def test_get_data_native_variable_key(client):
     )
     by_key = client.get_data(
         station_ids=NVE_SWE_STATIONS[:1],
-        variables=["swe_mm"],
+        variables=["swe_m"],
         begin_date=TEST_BEGIN,
         end_date=TEST_END,
     )

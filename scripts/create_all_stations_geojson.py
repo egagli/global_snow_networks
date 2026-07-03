@@ -782,26 +782,26 @@ def _nve_data_variables(station: dict) -> list[dict]:
     param_ids = station.get("parameters", [])
     daily_ids = station.get("daily_parameters", [])
     dvars: list[dict] = []
-    if 2002 in param_ids:  # SWE (mm, returned as cm)
+    if 2003 in param_ids:  # SWE, "Snøens vannekvivalent" (m, returned as cm)
         dvars.append({
-            "name": "swe_mm",
+            "name": "swe_m",
             "type": "swe",
-            "interval": "daily" if 2002 in daily_ids else "non-daily",
+            "interval": "daily" if 2003 in daily_ids else "non-daily",
             "units": "cm",
             "description": (
                 "Snow water equivalent from automated snow pillow. "
-                "Native API unit is mm; returned here in cm (÷ 10)."
+                "Native API unit is metres; returned here in cm (× 100)."
             ),
-            "notes": "Parameter ID 2002. Native units: mm.",
+            "notes": "Parameter ID 2003 (Snøens vannekvivalent). Native units: m.",
         })
-    if 2001 in param_ids:  # Snow depth (cm)
+    if 2002 in param_ids:  # Snow depth, "Snødybde" (cm)
         dvars.append({
             "name": "snwd_cm",
             "type": "snwd",
-            "interval": "daily" if 2001 in daily_ids else "non-daily",
+            "interval": "daily" if 2002 in daily_ids else "non-daily",
             "units": "cm",
             "description": "Snow depth from automated sensor. Native unit cm.",
-            "notes": "Parameter ID 2001. Native units: cm.",
+            "notes": "Parameter ID 2002 (Snødybde). Native units: cm.",
         })
     return dvars
 
@@ -854,7 +854,7 @@ def run_nve_workflow() -> tuple[list[dict], list[dict]]:
     client = NVEClient()
 
     print("=" * 60)
-    print("[NVE] Fetching snow station list (parameters 2001, 2002)")
+    print("[NVE] Fetching snow station list (parameters 2003 SWE, 2002 snow depth)")
     try:
         stations = client.get_all_stations()
         print(f"  Total NVE snow stations: {len(stations):,}")
@@ -863,8 +863,8 @@ def run_nve_workflow() -> tuple[list[dict], list[dict]]:
         return [], []
 
     active = sum(1 for s in stations if s.get("status") == "Active")
-    swe_count = sum(1 for s in stations if 2002 in s.get("parameters", []))
-    snwd_count = sum(1 for s in stations if 2001 in s.get("parameters", []))
+    swe_count = sum(1 for s in stations if 2003 in s.get("parameters", []))
+    snwd_count = sum(1 for s in stations if 2002 in s.get("parameters", []))
     print(
         f"  Active: {active}  |  With SWE: {swe_count}  "
         f"|  With snow depth: {snwd_count}"
@@ -1059,8 +1059,8 @@ def main() -> None:
                     "client": "nve",
                     "description": (
                         "All NVE (Norwegian Water Resources and Energy Directorate) "
-                        "snow monitoring stations with SWE (parameter 2002) and/or "
-                        "snow depth (parameter 2001). Daily automated measurements."
+                        "snow monitoring stations with SWE (parameter 2003) and/or "
+                        "snow depth (parameter 2002). Daily automated measurements."
                     ),
                     "total": len(nve_all),
                 },
