@@ -37,6 +37,7 @@ import argparse
 import csv
 import json
 import tarfile
+import logging
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
@@ -49,6 +50,14 @@ from clients.awdb import AWDBClient, AWDBError
 from clients.cdec import CDECClient, CDECError
 from clients.databc import DataBCClient, DataBCError
 from clients.nve import NVEClient, NVEError
+
+# INFO so client-level diagnostics (e.g. NVE series-index coverage) are
+# visible in CI logs.
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s %(message)s",
+    datefmt="%H:%M:%S",
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
