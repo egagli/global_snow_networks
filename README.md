@@ -802,6 +802,19 @@ snow-parameter stations have *daily* (1440-minute) series — the rest are
 instantaneous/hourly only and are excluded from
 `all_daily_snow_stations.geojson`.
 
+### 9.6 Stations with invalid coordinates
+
+Two classes of stations are excluded from `all_daily_snow_stations.geojson`
+(but retained in the per-client GeoJSONs):
+
+- **Null-island placeholders** — e.g. CDEC's `TST` ("SNOW SURVEYS TEST
+  STATION") sits at latitude/longitude (0, 0).
+- **NVE foreign cooperation stations** (drainage-basin group `1977.*`:
+  Langtang and Mustang, Nepal) — the coordinates served by HydAPI are
+  corrupt (longitudes ~60° west of reality; some latitudes wrong too),
+  so the stations would render in Africa.  They carry an explanatory
+  `notes` entry in `clients/nve/nve_stations.geojson`.
+
 ---
 
 ## 10. License and Citation
