@@ -724,14 +724,22 @@ def run_databc_workflow(
 # ── NVE workflow ──────────────────────────────────────────────────────────────
 
 def _nve_data_variables(station: dict) -> list[dict]:
-    """Build data_variables for an NVE station from its parameter list."""
+    """Build data_variables for an NVE station from its parameter list.
+
+    ``interval`` is "daily" only when the station's series actually has a
+    daily (1440-minute) resolution per HydAPI /Stations seriesList;
+    otherwise the parameter exists only at instantaneous/hourly resolution,
+    which the NVE client does not aggregate to daily ("non-daily" — must
+    NOT match _DAILY_INTERVALS).
+    """
     param_ids = station.get("parameters", [])
+    daily_ids = station.get("daily_parameters", [])
     dvars: list[dict] = []
     if 2002 in param_ids:  # SWE (mm, returned as cm)
         dvars.append({
             "name": "swe_mm",
             "type": "swe",
-            "interval": "daily",
+            "interval": "daily" if 2002 in daily_ids else "non-daily",
             "units": "cm",
             "description": (
                 "Snow water equivalent from automated snow pillow. "
@@ -743,7 +751,7 @@ def _nve_data_variables(station: dict) -> list[dict]:
         dvars.append({
             "name": "snwd_cm",
             "type": "snwd",
-            "interval": "daily",
+            "interval": "daily" if 2001 in daily_ids else "non-daily",
             "units": "cm",
             "description": "Snow depth from automated sensor. Native unit cm.",
             "notes": "Parameter ID 2001. Native units: cm.",
