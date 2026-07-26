@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-07-25",
+    "generated": "2026-07-26",
     "source": "BC Data Catalogue \u2014 BC Ministry of Environment (BC OpenMaps WFS)",
     "client": "databc",
     "description": "All BC snow survey stations: ASWS (automated, daily SWE) and MSS (manual snow courses, periodic). Only ASWS stations appear in all_daily_snow_stations.geojson.",
@@ -32,7 +32,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D07AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/687",
         "data_variables": [
           {
@@ -145,7 +145,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/690",
         "data_variables": [
           {
@@ -258,7 +258,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/644",
         "data_variables": [
           {
@@ -371,7 +371,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/645",
         "data_variables": [
           {
@@ -484,7 +484,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D15P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/701",
         "data_variables": [
           {
@@ -597,7 +597,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D16P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -709,7 +709,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E07P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/647",
         "data_variables": [
           {
@@ -822,7 +822,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F01AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/658",
         "data_variables": [
           {
@@ -935,7 +935,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F03AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/954",
         "data_variables": [
           {
@@ -1048,7 +1048,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F05P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/646",
         "data_variables": [
           {
@@ -1161,7 +1161,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/652",
         "data_variables": [
           {
@@ -1274,7 +1274,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F09P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/661",
         "data_variables": [
           {
@@ -1387,7 +1387,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/664",
         "data_variables": [
           {
@@ -1500,7 +1500,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F18P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/648",
         "data_variables": [
           {
@@ -1613,7 +1613,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F19P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/649",
         "data_variables": [
           {
@@ -1726,7 +1726,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F26P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1433",
         "data_variables": [
           {
@@ -1839,7 +1839,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G03P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/651",
         "data_variables": [
           {
@@ -1952,7 +1952,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G06P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/955",
         "data_variables": [
           {
@@ -2065,7 +2065,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A09P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -2177,7 +2177,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -2289,7 +2289,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A19P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%1D%12X%0E%00",
         "data_variables": [
           {
@@ -2402,7 +2402,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A20P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/684",
         "data_variables": [
           {
@@ -2515,7 +2515,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A22P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/650",
         "data_variables": [
           {
@@ -2628,7 +2628,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A24P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/666",
         "data_variables": [
           {
@@ -2741,7 +2741,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A25P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/668",
         "data_variables": [
           {
@@ -2854,7 +2854,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A28P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/670",
         "data_variables": [
           {
@@ -2967,7 +2967,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A29P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -3079,7 +3079,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/721",
         "data_variables": [
           {
@@ -3192,7 +3192,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B23P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1390",
         "data_variables": [
           {
@@ -3305,7 +3305,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B24P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/653",
         "data_variables": [
           {
@@ -3418,7 +3418,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B25P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -3530,7 +3530,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B26P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/667",
         "data_variables": [
           {
@@ -3643,7 +3643,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B27P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -3755,7 +3755,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B28P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -3867,7 +3867,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B29P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -3979,7 +3979,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B30P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -4091,7 +4091,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B31P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -4203,7 +4203,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/669",
         "data_variables": [
           {
@@ -4316,7 +4316,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A02P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/722",
         "data_variables": [
           {
@@ -4429,7 +4429,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A03P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/720",
         "data_variables": [
           {
@@ -4542,7 +4542,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A04P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/724",
         "data_variables": [
           {
@@ -4655,7 +4655,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A09P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/726",
         "data_variables": [
           {
@@ -4768,7 +4768,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -4879,7 +4879,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A12P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/725",
         "data_variables": [
           {
@@ -4992,7 +4992,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A13P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/704",
         "data_variables": [
           {
@@ -5105,7 +5105,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A18P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/712",
         "data_variables": [
           {
@@ -5218,7 +5218,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A20P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/711",
         "data_variables": [
           {
@@ -5331,7 +5331,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A27P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1389",
         "data_variables": [
           {
@@ -5444,7 +5444,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A29P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -5556,7 +5556,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A30P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/685",
         "data_variables": [
           {
@@ -5669,7 +5669,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A31P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/689",
         "data_variables": [
           {
@@ -5782,7 +5782,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A33P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/715",
         "data_variables": [
           {
@@ -5895,7 +5895,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A34P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/686",
         "data_variables": [
           {
@@ -6008,7 +6008,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A35P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/695",
         "data_variables": [
           {
@@ -6121,7 +6121,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A36P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/714",
         "data_variables": [
           {
@@ -6234,7 +6234,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A37P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/703",
         "data_variables": [
           {
@@ -6347,7 +6347,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A38P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/696",
         "data_variables": [
           {
@@ -6460,7 +6460,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A39P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -6572,7 +6572,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A40P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -6684,7 +6684,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B02P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/698",
         "data_variables": [
           {
@@ -6797,7 +6797,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B12P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -6909,7 +6909,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B15P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/665",
         "data_variables": [
           {
@@ -7022,7 +7022,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B16P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/672",
         "data_variables": [
           {
@@ -7135,7 +7135,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/671",
         "data_variables": [
           {
@@ -7248,7 +7248,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B18P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -7360,7 +7360,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B19P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -7472,7 +7472,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C01P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/723",
         "data_variables": [
           {
@@ -7585,7 +7585,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C09P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/953",
         "data_variables": [
           {
@@ -7698,7 +7698,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C11P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -7810,7 +7810,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A01P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/673",
         "data_variables": [
           {
@@ -7923,7 +7923,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A02P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/628",
         "data_variables": [
           {
@@ -8036,7 +8036,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A03P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/629",
         "data_variables": [
           {
@@ -8149,7 +8149,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A05P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/627",
         "data_variables": [
           {
@@ -8262,7 +8262,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A12P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/700",
         "data_variables": [
           {
@@ -8375,7 +8375,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/630",
         "data_variables": [
           {
@@ -8488,7 +8488,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A15P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/631",
         "data_variables": [
           {
@@ -8601,7 +8601,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/656",
         "data_variables": [
           {
@@ -8714,7 +8714,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A19P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/632",
         "data_variables": [
           {
@@ -8827,7 +8827,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B01P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -8939,7 +8939,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B02P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -9051,7 +9051,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -9163,7 +9163,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C05P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/708",
         "data_variables": [
           {
@@ -9276,7 +9276,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C12P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/697",
         "data_variables": [
           {
@@ -9389,7 +9389,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/680",
         "data_variables": [
           {
@@ -9502,7 +9502,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -9614,7 +9614,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C18P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -9726,7 +9726,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C20P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/633",
         "data_variables": [
           {
@@ -9839,7 +9839,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C22AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -9951,7 +9951,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C23P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/634",
         "data_variables": [
           {
@@ -10064,7 +10064,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C29P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/657",
         "data_variables": [
           {
@@ -10177,7 +10177,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C32P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/427",
         "data_variables": [
           {
@@ -10290,7 +10290,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C38P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3%CDJ7%F6uq%AD%F4%CB%8A4%F0%0Bq%AD%F2uq%2C%F7u%094%04%00",
         "data_variables": [
           {
@@ -10403,7 +10403,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C40P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/716",
         "data_variables": [
           {
@@ -10516,7 +10516,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C41P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1382",
         "data_variables": [
           {
@@ -10629,7 +10629,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C43P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/682",
         "data_variables": [
           {
@@ -10742,7 +10742,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C44P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -10854,7 +10854,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C45P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -10966,7 +10966,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D06P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/663",
         "data_variables": [
           {
@@ -11079,7 +11079,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/710",
         "data_variables": [
           {
@@ -11192,7 +11192,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D09P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/719",
         "data_variables": [
           {
@@ -11305,7 +11305,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D11P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -11417,7 +11417,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D12P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -11529,7 +11529,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -11641,7 +11641,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D15P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -11753,7 +11753,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D16P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -11865,7 +11865,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/636",
         "data_variables": [
           {
@@ -11978,7 +11978,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D18P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -12090,7 +12090,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D19P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/659",
         "data_variables": [
           {
@@ -12203,7 +12203,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E02P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/635",
         "data_variables": [
           {
@@ -12316,7 +12316,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E03AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -12428,7 +12428,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1391",
         "data_variables": [
           {
@@ -12541,7 +12541,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/637",
         "data_variables": [
           {
@@ -12654,7 +12654,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E11P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -12766,7 +12766,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/639",
         "data_variables": [
           {
@@ -12879,7 +12879,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F03P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/638",
         "data_variables": [
           {
@@ -12992,7 +12992,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F04P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7%85c%D7%2A0%9D%E5X%0E%00",
         "data_variables": [
           {
@@ -13105,7 +13105,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F04P2/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -13217,7 +13217,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F06P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/641",
         "data_variables": [
           {
@@ -13330,7 +13330,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A06P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/709",
         "data_variables": [
           {
@@ -13443,7 +13443,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -13555,7 +13555,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A18P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/702",
         "data_variables": [
           {
@@ -13668,7 +13668,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A21P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/706",
         "data_variables": [
           {
@@ -13781,7 +13781,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A27P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -13893,7 +13893,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A30P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/681",
         "data_variables": [
           {
@@ -14006,7 +14006,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A31P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/678",
         "data_variables": [
           {
@@ -14119,7 +14119,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A32P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/718",
         "data_variables": [
           {
@@ -14232,7 +14232,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A33P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/693",
         "data_variables": [
           {
@@ -14345,7 +14345,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A34P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/699",
         "data_variables": [
           {
@@ -14458,7 +14458,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A35P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/691",
         "data_variables": [
           {
@@ -14571,7 +14571,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B02AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -14683,7 +14683,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B06P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/683",
         "data_variables": [
           {
@@ -14796,7 +14796,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/717",
         "data_variables": [
           {
@@ -14909,7 +14909,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/694",
         "data_variables": [
           {
@@ -15022,7 +15022,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C09P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/713",
         "data_variables": [
           {
@@ -15135,7 +15135,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C09Q/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -15247,7 +15247,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/642",
         "data_variables": [
           {
@@ -15360,7 +15360,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/692",
         "data_variables": [
           {
@@ -15473,7 +15473,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C17AP/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -15585,7 +15585,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C21P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/688",
         "data_variables": [
           {
@@ -15698,7 +15698,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D05P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/643",
         "data_variables": [
           {
@@ -15811,7 +15811,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -15923,7 +15923,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C20P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16035,7 +16035,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C21P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16147,7 +16147,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C22P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16259,7 +16259,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D08P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16371,7 +16371,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D10P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16483,7 +16483,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D11P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/675",
         "data_variables": [
           {
@@ -16596,7 +16596,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D13P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16708,7 +16708,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D14P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "station_image_url": "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/952",
         "data_variables": [
           {
@@ -16821,7 +16821,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D16P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -16933,7 +16933,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D17P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17045,7 +17045,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E01P/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17157,7 +17157,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17220,7 +17220,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17283,7 +17283,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17346,7 +17346,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17409,7 +17409,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17472,7 +17472,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17535,7 +17535,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17598,7 +17598,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17661,7 +17661,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17724,7 +17724,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17787,7 +17787,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17850,7 +17850,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17913,7 +17913,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -17976,7 +17976,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E01A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18039,7 +18039,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E01B/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18102,7 +18102,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18165,7 +18165,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18228,7 +18228,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18291,7 +18291,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E03A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18354,7 +18354,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18417,7 +18417,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18480,7 +18480,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18543,7 +18543,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18606,7 +18606,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18669,7 +18669,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18732,7 +18732,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18795,7 +18795,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18858,7 +18858,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1E13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18921,7 +18921,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -18984,7 +18984,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F01A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19047,7 +19047,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F01B/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19110,7 +19110,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19173,7 +19173,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19236,7 +19236,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19299,7 +19299,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1F05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19362,7 +19362,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19425,7 +19425,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A01A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19488,7 +19488,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19551,7 +19551,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19614,7 +19614,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19677,7 +19677,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A03A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19740,7 +19740,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19803,7 +19803,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A04A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19866,7 +19866,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19929,7 +19929,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -19992,7 +19992,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20055,7 +20055,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20118,7 +20118,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20181,7 +20181,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20244,7 +20244,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20307,7 +20307,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20370,7 +20370,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20433,7 +20433,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20496,7 +20496,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20559,7 +20559,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20622,7 +20622,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20685,7 +20685,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20748,7 +20748,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20811,7 +20811,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20874,7 +20874,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -20937,7 +20937,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A23/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21000,7 +21000,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A24/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21063,7 +21063,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A25/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21126,7 +21126,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A26/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21189,7 +21189,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A27/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21252,7 +21252,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A28/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21315,7 +21315,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2A29/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21378,7 +21378,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21441,7 +21441,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21504,7 +21504,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21567,7 +21567,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21630,7 +21630,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21693,7 +21693,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21756,7 +21756,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21819,7 +21819,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21882,7 +21882,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -21945,7 +21945,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2B09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22008,7 +22008,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22071,7 +22071,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22134,7 +22134,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22197,7 +22197,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22260,7 +22260,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C03A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22323,7 +22323,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22386,7 +22386,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22449,7 +22449,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22512,7 +22512,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22575,7 +22575,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22638,7 +22638,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22701,7 +22701,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C09A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22764,7 +22764,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22827,7 +22827,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22890,7 +22890,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -22953,7 +22953,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23016,7 +23016,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23079,7 +23079,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23142,7 +23142,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23205,7 +23205,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23268,7 +23268,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23331,7 +23331,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23394,7 +23394,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23457,7 +23457,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23520,7 +23520,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2C22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23583,7 +23583,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23646,7 +23646,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23709,7 +23709,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23772,7 +23772,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23835,7 +23835,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23898,7 +23898,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -23961,7 +23961,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24024,7 +24024,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D07A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24087,7 +24087,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24150,7 +24150,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24213,7 +24213,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24276,7 +24276,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24339,7 +24339,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24402,7 +24402,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24465,7 +24465,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24528,7 +24528,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2D18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24591,7 +24591,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24654,7 +24654,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24717,7 +24717,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24780,7 +24780,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24843,7 +24843,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E04A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24906,7 +24906,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -24969,7 +24969,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2E06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25032,7 +25032,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25095,7 +25095,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F01A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25158,7 +25158,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25221,7 +25221,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25284,7 +25284,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25347,7 +25347,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25410,7 +25410,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25473,7 +25473,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25536,7 +25536,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25599,7 +25599,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25662,7 +25662,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25725,7 +25725,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25788,7 +25788,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25851,7 +25851,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25914,7 +25914,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -25977,7 +25977,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26040,7 +26040,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26103,7 +26103,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26166,7 +26166,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26229,7 +26229,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26292,7 +26292,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26355,7 +26355,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26418,7 +26418,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26481,7 +26481,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F23/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26544,7 +26544,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F24/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26607,7 +26607,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2F25/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26670,7 +26670,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26733,7 +26733,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G01A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26796,7 +26796,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26859,7 +26859,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26922,7 +26922,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -26985,7 +26985,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27048,7 +27048,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27111,7 +27111,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/2G06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27174,7 +27174,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27237,7 +27237,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27300,7 +27300,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27363,7 +27363,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27426,7 +27426,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27489,7 +27489,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27552,7 +27552,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27615,7 +27615,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27678,7 +27678,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27741,7 +27741,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27804,7 +27804,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27867,7 +27867,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27930,7 +27930,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -27993,7 +27993,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28056,7 +28056,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28119,7 +28119,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28182,7 +28182,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28245,7 +28245,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28308,7 +28308,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28371,7 +28371,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28434,7 +28434,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28497,7 +28497,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28560,7 +28560,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A22A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28623,7 +28623,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A26/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28686,7 +28686,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3A27/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28749,7 +28749,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28812,7 +28812,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28875,7 +28875,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -28938,7 +28938,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29001,7 +29001,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29064,7 +29064,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29127,7 +29127,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29190,7 +29190,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29253,7 +29253,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29316,7 +29316,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29379,7 +29379,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29442,7 +29442,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29505,7 +29505,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29568,7 +29568,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29631,7 +29631,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29694,7 +29694,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29757,7 +29757,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29820,7 +29820,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29883,7 +29883,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -29946,7 +29946,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30009,7 +30009,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30072,7 +30072,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30135,7 +30135,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30198,7 +30198,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3B24/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30261,7 +30261,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30324,7 +30324,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30387,7 +30387,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30450,7 +30450,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30513,7 +30513,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30576,7 +30576,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30639,7 +30639,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3C07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30702,7 +30702,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30765,7 +30765,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D01A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30828,7 +30828,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D01B/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30891,7 +30891,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D01C/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -30954,7 +30954,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31017,7 +31017,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31080,7 +31080,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/3D03A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31143,7 +31143,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31206,7 +31206,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31269,7 +31269,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31332,7 +31332,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31395,7 +31395,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31458,7 +31458,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31521,7 +31521,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31584,7 +31584,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31647,7 +31647,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31710,7 +31710,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31773,7 +31773,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31836,7 +31836,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31899,7 +31899,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -31962,7 +31962,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32025,7 +32025,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32088,7 +32088,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32151,7 +32151,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32214,7 +32214,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32277,7 +32277,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32340,7 +32340,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A19A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32403,7 +32403,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32466,7 +32466,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32529,7 +32529,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32592,7 +32592,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A23/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32655,7 +32655,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A24/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32718,7 +32718,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A25/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32781,7 +32781,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A26/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32844,7 +32844,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A27/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32907,7 +32907,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A28/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -32970,7 +32970,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A31/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33033,7 +33033,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A41/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33096,7 +33096,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A42/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33158,7 +33158,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A43/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33220,7 +33220,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4A44/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33283,7 +33283,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33346,7 +33346,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33409,7 +33409,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33472,7 +33472,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B03A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33535,7 +33535,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33598,7 +33598,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33661,7 +33661,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33724,7 +33724,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33787,7 +33787,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33850,7 +33850,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33913,7 +33913,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -33976,7 +33976,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B11A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34039,7 +34039,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34102,7 +34102,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34165,7 +34165,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B13A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34228,7 +34228,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34291,7 +34291,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4B15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34354,7 +34354,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34417,7 +34417,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34480,7 +34480,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34543,7 +34543,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34606,7 +34606,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34669,7 +34669,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34732,7 +34732,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34795,7 +34795,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34858,7 +34858,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34921,7 +34921,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -34984,7 +34984,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35047,7 +35047,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35110,7 +35110,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35173,7 +35173,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35236,7 +35236,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4C15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35299,7 +35299,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35362,7 +35362,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35425,7 +35425,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35488,7 +35488,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35551,7 +35551,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35614,7 +35614,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35677,7 +35677,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35740,7 +35740,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35803,7 +35803,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35866,7 +35866,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35929,7 +35929,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -35992,7 +35992,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36055,7 +36055,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36118,7 +36118,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36181,7 +36181,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4D15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36244,7 +36244,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36307,7 +36307,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36370,7 +36370,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E02A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36433,7 +36433,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E02B/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36496,7 +36496,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/4E03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36559,7 +36559,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36622,7 +36622,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36685,7 +36685,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36748,7 +36748,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36811,7 +36811,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36874,7 +36874,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -36937,7 +36937,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A06A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37000,7 +37000,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37063,7 +37063,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37126,7 +37126,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37189,7 +37189,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37252,7 +37252,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37315,7 +37315,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37378,7 +37378,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37441,7 +37441,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37504,7 +37504,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37567,7 +37567,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37630,7 +37630,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37693,7 +37693,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A18/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37756,7 +37756,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37819,7 +37819,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37882,7 +37882,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -37945,7 +37945,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38008,7 +38008,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A23/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38071,7 +38071,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1A24/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38134,7 +38134,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38197,7 +38197,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38260,7 +38260,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38323,7 +38323,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38386,7 +38386,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38449,7 +38449,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38512,7 +38512,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1B07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38575,7 +38575,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38638,7 +38638,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38701,7 +38701,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38764,7 +38764,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38827,7 +38827,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38890,7 +38890,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C06/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -38953,7 +38953,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C07/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39016,7 +39016,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C08/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39079,7 +39079,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C09/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39142,7 +39142,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C09A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39205,7 +39205,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C10/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39268,7 +39268,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C11/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39331,7 +39331,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C12/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39394,7 +39394,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C13/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39457,7 +39457,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C13A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39520,7 +39520,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C14/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39583,7 +39583,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C15/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39646,7 +39646,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C16/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39709,7 +39709,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C17/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39772,7 +39772,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C19/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39835,7 +39835,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C20/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39898,7 +39898,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C21/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -39961,7 +39961,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C22/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40024,7 +40024,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C23/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40087,7 +40087,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C24/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40150,7 +40150,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C25/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40213,7 +40213,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C26/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40276,7 +40276,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C27/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40339,7 +40339,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C28/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40402,7 +40402,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C29/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40465,7 +40465,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C30/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40528,7 +40528,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C31/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40591,7 +40591,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C32/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40654,7 +40654,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C33/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40717,7 +40717,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C33A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40780,7 +40780,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C34/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40843,7 +40843,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C35/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40906,7 +40906,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C35A/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -40969,7 +40969,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C36/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41032,7 +41032,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C37/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41095,7 +41095,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C38/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41158,7 +41158,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C39/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41221,7 +41221,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C40/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41284,7 +41284,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C42/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41347,7 +41347,7 @@
         "status": "Active",
         "isActive": true,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1C46/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41410,7 +41410,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D01/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41473,7 +41473,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D02/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41536,7 +41536,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D03/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41599,7 +41599,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D04/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -41662,7 +41662,7 @@
         "status": "Inactive",
         "isActive": false,
         "station_url": "https://aqrt.nrs.gov.bc.ca/Data/Location/Summary/Location/1D05/Interval/Latest",
-        "metadata_fetched_at": "2026-07-25",
+        "metadata_fetched_at": "2026-07-26",
         "data_variables": [
           {
             "name": "swe_mm",
