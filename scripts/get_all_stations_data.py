@@ -22,10 +22,16 @@ CSV schema (all clients)
   AWDB: WTEQ element (inches × 2.54, converted by AWDBClient).
   CDEC: sensor 82 (SNO ADJ, preferred) or sensor 3 (raw SWE), inches × 2.54.
   DataBC ASWS: SWDaily.csv value in mm ÷ 10.
+  NVE: parameter 2003 in metres × 100.
+  Yukon: /timeseries/measurementsDaily value in mm ÷ 10 (daily mean over
+  the station's local day).
 - ``snwd_cm``: Snow depth in centimetres.
   AWDB: SNWD element (inches × 2.54, converted by AWDBClient).
   CDEC: sensor 18 (Snow Depth), inches × 2.54.
   DataBC ASWS: SD.csv / SD_Archive.csv value in cm (16:00 UTC reading).
+  NVE: parameter 2002 in cm.
+  Yukon: /timeseries/measurementsDaily value in cm (daily mean over the
+  station's local day).
 
 Data flags are not stored in CSV files.  Use the respective client's
 ``get_data(include_flags=True)`` method if flag information is needed.
@@ -50,6 +56,7 @@ from clients.awdb import AWDBClient, AWDBError
 from clients.cdec import CDECClient, CDECError
 from clients.databc import DataBCClient, DataBCError
 from clients.nve import NVEClient, NVEError
+from clients.yukon import YukonClient, YukonError
 
 # INFO so client-level diagnostics (e.g. NVE series-index coverage) are
 # visible in CI logs.
@@ -469,6 +476,88 @@ def refresh_nve(
     print(f"  [NVE] updated {updated} station CSVs")
 
 
+# ── Yukon refresh ─────────────────────────────────────────────────────────────
+
+def refresh_yukon(
+    stations: list[tuple[int, str]],
+    features: list[dict],
+    data_dir: Path,
+    refreshed_at_utc: str,
+    stats: RefreshStats,
+) -> None:
+    """Refresh Yukon (AquaCache) station CSVs.
+
+    ``stations`` is a list of (feature_index, location_code) tuples.
+    SWE is fetched from /timeseries/measurementsDaily (mm → cm) and snow
+    depth from the same endpoint (already cm).  Daily values are means over
+    the station's local day.
+
+    Only stations with a continuous series reach this function — the 92
+    manual snow courses are periodic and are excluded from
+    all_daily_snow_stations.geojson upstream.
+    """
+    if not stations:
+        return
+
+    client = YukonClient()
+    station_ids = [code for _, code in stations]
+    idx_by_id = {code: idx for idx, code in stations}
+
+    n = len(station_ids)
+    print(
+        f"  [Yukon] Fetching daily SWE + snow depth for {n} stations...",
+        end=" ",
+        flush=True,
+    )
+    try:
+        records = client.get_data(
+            station_ids=station_ids,
+            variables=["swe", "snwd"],
+            interval="daily",
+            begin_date="1950-01-01",
+            end_date=date.today().isoformat(),
+        )
+        print(f"ok ({len(records)} records)")
+    except YukonError as exc:
+        stats.failed_batches += 1
+        print(f"FAILED ({exc})")
+        records = []
+
+    # Group flat records by station_id
+    by_station: dict[str, list[dict]] = {}
+    for r in records:
+        sid = str(r.get("station_id") or "")
+        if sid:
+            by_station.setdefault(sid, []).append(r)
+    stats.fetched += len(by_station)
+
+    updated = 0
+    for sid in station_ids:
+        feat_idx = idx_by_id.get(sid)
+        if feat_idx is None:
+            continue
+        df = _station_records_to_df(by_station.get(sid, []))
+        if df.empty:
+            stats.skipped_empty += 1
+            continue
+        csv_path = station_csv_path(data_dir, sid)
+        write_csv_atomically(csv_path, df)
+        earliest, latest, upd = compute_record_dates(df)
+        update_geojson_dates(
+            features[feat_idx],
+            earliest,
+            latest,
+            upd,
+            f"stations/{sid}.csv",
+            refreshed_at_utc,
+        )
+        stats.updated_csvs += 1
+        stats.by_client["yukon"] = stats.by_client.get("yukon", 0) + 1
+        updated += 1
+
+    print(f"  [Yukon] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -562,7 +651,7 @@ def main() -> None:
     )
     ap.add_argument(
         "--network",
-        choices=["awdb", "cdec", "databc", "nve"],
+        choices=["awdb", "cdec", "databc", "nve", "yukon"],
         default=None,
         help=(
             "Only refresh this network's stations. "
@@ -603,6 +692,7 @@ def main() -> None:
     cdec_stations: list[tuple[int, str]] = []
     databc_stations: list[tuple[int, str]] = []
     nve_stations: list[tuple[int, str]] = []
+    yukon_stations: list[tuple[int, str]] = []
 
     for idx, feat in enumerate(features):
         props = feat.get("properties", {})
@@ -623,6 +713,8 @@ def main() -> None:
             databc_stations.append((idx, code))
         elif client_name == "nve":
             nve_stations.append((idx, code))
+        elif client_name == "yukon":
+            yukon_stations.append((idx, code))
 
     # Restrict to the requested network when --network is given
     network = args.network
@@ -630,12 +722,14 @@ def main() -> None:
     run_cdec = (network in (None, "cdec")) and bool(cdec_stations)
     run_databc = (network in (None, "databc")) and bool(databc_stations)
     run_nve = (network in (None, "nve")) and bool(nve_stations)
+    run_yukon = (network in (None, "yukon")) and bool(yukon_stations)
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
         len(cdec_stations) if run_cdec else 0,
         len(databc_stations) if run_databc else 0,
         len(nve_stations) if run_nve else 0,
+        len(yukon_stations) if run_yukon else 0,
     ])
 
     print("=" * 70)
@@ -648,6 +742,7 @@ def main() -> None:
         f"CDEC: {len(cdec_stations) if run_cdec else 'skip'}  "
         f"DataBC: {len(databc_stations) if run_databc else 'skip'}  "
         f"NVE: {len(nve_stations) if run_nve else 'skip'}  "
+        f"Yukon: {len(yukon_stations) if run_yukon else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -672,6 +767,10 @@ def main() -> None:
     if run_nve:
         refresh_nve(
             nve_stations, features, data_dir, refreshed_at_utc, stats
+        )
+    if run_yukon:
+        refresh_yukon(
+            yukon_stations, features, data_dir, refreshed_at_utc, stats
         )
 
     # In per-network mode: CSVs written, skip GeoJSON update and archive.
