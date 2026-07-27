@@ -1015,6 +1015,8 @@ Columbia.
 CDEC data is published by CA DWR.
 NVE data is published under the Norwegian Licence for Open Government Data
 (NLOD).
+Yukon snow and water data is published under the Open Government Licence —
+Yukon.
 
 Suggested citations for source data:
 
@@ -1030,3 +1032,6 @@ Suggested citations for source data:
 
 > Norwegian Water Resources and Energy Directorate (NVE). HydAPI —
 > hydrological API. <https://hydapi.nve.no/>
+
+> Government of Yukon, Department of Environment, Water Resources. Yukon Water
+> Data (AquaCache) API. <https://service.yukon.ca/water-data/>
