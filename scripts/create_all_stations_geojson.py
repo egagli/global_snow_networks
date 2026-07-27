@@ -63,6 +63,8 @@ from clients.cdec.cdec_client import (
 from clients.databc import DataBCClient
 from clients.databc.databc_client import VARIABLES as DATABC_VARIABLES
 from clients.nve import NVEClient
+from clients.yukon import YukonClient
+from clients.yukon.yukon_client import VARIABLES as YUKON_VARIABLES
 
 logging.basicConfig(
     level=logging.INFO,
@@ -81,6 +83,9 @@ DATABC_GEOJSON_OUT = (
     REPO_ROOT / "clients" / "databc" / "databc_stations.geojson"
 )
 NVE_GEOJSON_OUT = REPO_ROOT / "clients" / "nve" / "nve_stations.geojson"
+YUKON_GEOJSON_OUT = (
+    REPO_ROOT / "clients" / "yukon" / "yukon_stations.geojson"
+)
 
 # AWDB networks queried for the all-stations GeoJSON
 AWDB_NETWORKS = ["SNTL", "SNTLT", "MSNT", "SCAN", "COOP"]
@@ -912,6 +917,167 @@ def run_nve_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── Yukon workflow ────────────────────────────────────────────────────────────
+
+def _yukon_data_variables(station: dict) -> list[dict]:
+    """
+    Build the data_variables list for a Yukon AquaCache station.
+
+    Unlike the other clients this is derived from the live ``/timeseries``
+    catalogue rather than a hardcoded per-station table, so the interval
+    and units always reflect what the source currently serves.  Snow
+    courses have no continuous series — they report SWE and snow depth
+    periodically, so those two entries are synthesised.
+    """
+    dvars: list[dict] = []
+
+    if station.get("station_type") == "SC":
+        for key in ("swe_mm", "snwd_cm"):
+            vinfo = YUKON_VARIABLES[key]
+            dvars.append({
+                "name": key,
+                "type": vinfo["type"],
+                "interval": "periodic",
+                "units": vinfo["output_units"],
+                "description": vinfo["description"],
+                "notes": vinfo["notes"],
+            })
+        return dvars
+
+    # One entry per continuous series.  A location can hold several series
+    # of the same parameter (ECCC daily air temperature exists as minimum,
+    # maximum and mean), so entries are keyed on the resolved variable name
+    # and de-duplicated by (name, interval).
+    seen: set[tuple[str, str]] = set()
+    for series in station.get("series") or []:
+        key = series["variable"]
+        vinfo = YUKON_VARIABLES[key]
+        ident = (key, series["interval"])
+        if ident in seen:
+            continue
+        seen.add(ident)
+        notes = vinfo["notes"]
+        period = f"{series['start_datetime'][:10]} to {series['end_datetime'][:10]}"
+        notes = (
+            f"{notes} AquaCache timeseries {series['timeseries_id']}, "
+            f"aggregation '{series['aggregation']}', recording rate "
+            f"'{series['recording_rate']}', period of record {period}."
+        )
+        dvars.append({
+            "name": key,
+            "type": vinfo["type"],
+            "interval": series["interval"],
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": notes,
+        })
+    return dvars
+
+
+def yukon_station_to_feature(station: dict) -> dict:
+    """Convert a Yukon AquaCache station dict to a GeoJSON feature."""
+    code = station["station_id"]
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+    stype = station.get("station_type", "")
+
+    notes = station.get("note", "")
+    if stype == "SC" and not station.get("has_survey_metadata"):
+        extra = (
+            "Listed in /locations but absent from /snow-survey/metadata; "
+            "no survey rows are published under this code."
+        )
+        notes = f"{notes} {extra}".strip()
+
+    props: dict[str, Any] = {
+        "code": code,
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        # Not blanket "YT": the Yukon Snow Survey also runs courses in BC
+        # and Alaska (e.g. "Atlin (B.C.)", "Boundary (Alaska)").
+        "state": station.get("state", ""),
+        "Operator": station.get("operator", ""),
+        "client": "yukon",
+        "networkCode": station.get("network_code", "YSS"),
+        "notes": notes,
+        # "SC" = manual snow course, "AWS" = automated snow-weather station
+        # (snow-pillow SWE), "ECCC" = mirrored ECCC climate station.
+        "station_type": stype,
+        "network": station.get("network", ""),
+        "status": station.get("status", ""),
+        "isActive": station.get("status") == "Active",
+        "station_url": station.get("station_url", ""),
+        "dataset_url": station.get("dataset_url", ""),
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+
+    if station.get("sub_basin"):
+        props["sub_basin"] = station["sub_basin"]
+    if station.get("first_survey"):
+        props["first_survey"] = station["first_survey"]
+    if station.get("last_survey"):
+        props["last_survey"] = station["last_survey"]
+
+    data_vars = _yukon_data_variables(station)
+    props["data_variables"] = data_vars
+    props["dailySWE"] = _has_daily_type(data_vars, "swe")
+    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+    # A variable can appear at two daily-class intervals (ECCC serves air
+    # temperature and precipitation both hourly and as a daily aggregate),
+    # so de-duplicate while preserving first-seen order.
+    daily_names = list(dict.fromkeys(
+        dv["name"] for dv in data_vars
+        if dv.get("interval", "").lower() in _DAILY_INTERVALS
+    ))
+    if daily_names:
+        props["variables_daily"] = ", ".join(daily_names)
+
+    return make_feature(lon, lat, props)
+
+
+def run_yukon_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch Yukon AquaCache stations and return (all_features, daily_features).
+
+    ``all_features``   — every snow station: manual snow courses, automated
+                         snow-weather stations, and the ECCC climate
+                         stations mirrored into AquaCache.
+    ``daily_features`` — only stations with a continuous SWE or snow-depth
+                         series.  Snow courses are periodic (Feb 1 / Mar 1 /
+                         Apr 1 / May 1 / May 15 targets) and are therefore
+                         excluded, matching how DataBC MSS sites are handled.
+    """
+    client = YukonClient()
+
+    print("=" * 60)
+    print("[Yukon] Fetching snow courses and continuous snow series")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total Yukon snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("Yukon station fetch failed: %s", exc)
+        return [], []
+
+    counts = Counter(s.get("station_type", "") for s in stations)
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    print(
+        f"  Snow courses: {counts.get('SC', 0)}  |  "
+        f"Automated snow-weather: {counts.get('AWS', 0)}  |  "
+        f"ECCC climate: {counts.get('ECCC', 0)}  |  Active: {active}"
+    )
+
+    all_features = [yukon_station_to_feature(s) for s in stations]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -952,6 +1118,11 @@ def main() -> None:
         "--skip-nve",
         action="store_true",
         help="Skip NVE client",
+    )
+    ap.add_argument(
+        "--skip-yukon",
+        action="store_true",
+        help="Skip Yukon (AquaCache) client",
     )
     args = ap.parse_args()
 
@@ -1102,6 +1273,45 @@ def main() -> None:
             f"[NVE] {len(nve_daily):,} daily stations added to merged GeoJSON"
         )
 
+    # ── Yukon ─────────────────────────────────────────────────────────────────
+    if not args.skip_yukon:
+        yukon_all: list[dict] = []
+        yukon_daily: list[dict] = []
+        try:
+            yukon_all, yukon_daily = run_yukon_workflow()
+        except Exception as exc:
+            logging.warning("[Yukon] Workflow failed: %s", exc)
+        yukon_all, yukon_daily, fresh = keep_previous_if_empty(
+            "Yukon", YUKON_GEOJSON_OUT, yukon_all, yukon_daily
+        )
+        if fresh:
+            write_geojson(
+                YUKON_GEOJSON_OUT,
+                yukon_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "Yukon Water Data (AquaCache) API v1 — "
+                        "https://service.yukon.ca/water-data/api/v1"
+                    ),
+                    "client": "yukon",
+                    "description": (
+                        "All Yukon snow monitoring stations: manual snow "
+                        "courses (YSS, periodic Feb/Mar/Apr/May surveys), "
+                        "automated snow-weather stations with snow-pillow "
+                        "SWE (YSS), and ECCC climate stations with daily "
+                        "snow depth mirrored into AquaCache (YKEC). "
+                        "Only stations with a continuous series appear in "
+                        "all_daily_snow_stations.geojson."
+                    ),
+                    "total": len(yukon_all),
+                },
+            )
+        all_daily_features.extend(yukon_daily)
+        print(
+            f"[Yukon] {len(yukon_daily):,} daily stations added to merged GeoJSON"
+        )
+
     # ── Write merged all_daily_snow_stations.geojson ────────────────────────────────────
     all_daily_features = drop_invalid_coordinates(all_daily_features)
     print("=" * 60)
@@ -1132,7 +1342,8 @@ def main() -> None:
             "description": (
                 "Merged inventory of all snow stations with daily SWE or "
                 "snow depth from AWDB (US), CDEC (California), DataBC (BC, Canada), "
-                "and NVE (Norway). Stations from multiple clients may represent "
+                "NVE (Norway), and Yukon AquaCache (Yukon, Canada). "
+                "Stations from multiple clients may represent "
                 "the same physical site — use the 'client' field to "
                 "distinguish data sources. See per-client GeoJSONs in "
                 "clients/*/  for complete metadata including periodic "
