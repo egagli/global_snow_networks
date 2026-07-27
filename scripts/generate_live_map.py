@@ -666,6 +666,10 @@ const STATE_NAMES = {
   SC:"South Carolina",SD:"South Dakota",TN:"Tennessee",TX:"Texas",
   UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",
   WI:"Wisconsin",WY:"Wyoming",
+  // Canadian provinces and territories — BC and AB arrive via AWDB and
+  // DataBC; YT via the Yukon AquaCache client.
+  AB:"Alberta", BC:"British Columbia", NT:"Northwest Territories",
+  NU:"Nunavut", YT:"Yukon",
 };
 
 const NET_LABELS = {
@@ -673,6 +677,8 @@ const NET_LABELS = {
   MPRC:"Manual", SNOW:"Manual",
   SCAN:"SCAN", COOP:"COOP",
   CCSS:"CCSS", BCSS:"BC Snow Survey",
+  NVE:"NVE (Norway)",
+  YSS:"Yukon Snow Survey", YKEC:"ECCC Yukon",
 };
 
 // SVG shape markup for each network code (12×12 viewBox)
@@ -686,6 +692,9 @@ const NET_SHAPES = {
   COOP:'<rect x="4.2" y="1" width="3.6" height="10" fill="#666" stroke="#fff" stroke-width="0.5"/><rect x="1" y="4.2" width="10" height="3.6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   CCSS:'<polygon points="1,1 11,1 6,11" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   BCSS:'<polygon points="6,0.5 10.9,3.6 10.9,8.4 6,11.5 1.1,8.4 1.1,3.6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  NVE:'<polygon points="6,1 11,6 6,11 1,6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  YSS:'<polygon points="6,1 9.54,2.46 11,6 9.54,9.54 6,11 2.46,9.54 1,6 2.46,2.46" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  YKEC:'<polygon points="11,6 3.5,10.33 3.5,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -954,6 +963,15 @@ function buildIcon(network, measurementType, color, isSelected) {
     }
     case "SNTL":
       inner = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
+      break;
+    case "NVE":
+      inner = `<polygon points="${regularPolygonPoints(4, 0)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
+      break;
+    case "YSS":
+      inner = `<polygon points="${regularPolygonPoints(8, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
+      break;
+    case "YKEC":
+      inner = `<polygon points="${regularPolygonPoints(3, 0)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
       break;
     default:
       if (measurementType === "manual") {
