@@ -60,6 +60,10 @@ from clients.cdec.cdec_client import SENSORS as CDEC_SENSORS
 from clients.databc import DataBCClient
 from clients.databc.databc_client import VARIABLES as DATABC_VARIABLES
 from clients.nve import NVEClient
+from clients.nve.nve_client import (
+    VARIABLES as NVE_VARIABLES,
+    _PARAM_TO_VAR as _NVE_PARAM_TO_VAR,
+)
 from clients.yukon import YukonClient
 from clients.yukon.yukon_client import VARIABLES as YUKON_VARIABLES
 
@@ -879,35 +883,30 @@ def run_databc_workflow(
 def _nve_data_variables(station: dict) -> list[dict]:
     """Build data_variables for an NVE station from its parameter list.
 
-    ``interval`` is "daily" only when the station's series actually has a
-    daily (1440-minute) resolution per HydAPI /Stations seriesList;
-    otherwise the parameter exists only at instantaneous/hourly resolution,
-    which the NVE client does not aggregate to daily ("non-daily" — must
-    NOT match _DAILY_INTERVALS).
+    Metadata comes from the NVE client's ``VARIABLES`` registry — the one
+    source of truth — rather than literals duplicated here.  ``interval``
+    is "daily" only when the station's series actually has a daily
+    (1440-minute) resolution per HydAPI /Stations seriesList; otherwise
+    the parameter exists only at instantaneous/hourly resolution, which
+    is recorded as "instantaneous" (a non-daily interval that keeps the
+    station out of the daily inventory until the pipeline can resample).
     """
     param_ids = station.get("parameters", [])
     daily_ids = station.get("daily_parameters", [])
     dvars: list[dict] = []
-    if 2003 in param_ids:  # SWE, "Snøens vannekvivalent" (m, returned as cm)
+    for param_id, var_key in _NVE_PARAM_TO_VAR.items():
+        if param_id not in param_ids:
+            continue
+        vinfo = NVE_VARIABLES[var_key]
         dvars.append({
-            "name": "swe_m",
-            "type": "swe",
-            "interval": "daily" if 2003 in daily_ids else "non-daily",
-            "units": "cm",
-            "description": (
-                "Snow water equivalent from automated snow pillow. "
-                "Native API unit is metres; returned here in cm (× 100)."
+            "name": var_key,
+            "type": vinfo["type"],
+            "interval": (
+                "daily" if param_id in daily_ids else "instantaneous"
             ),
-            "notes": "Parameter ID 2003 (Snøens vannekvivalent). Native units: m.",
-        })
-    if 2002 in param_ids:  # Snow depth, "Snødybde" (cm)
-        dvars.append({
-            "name": "snwd_cm",
-            "type": "snwd",
-            "interval": "daily" if 2002 in daily_ids else "non-daily",
-            "units": "cm",
-            "description": "Snow depth from automated sensor. Native unit cm.",
-            "notes": "Parameter ID 2002 (Snødybde). Native units: cm.",
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": vinfo["notes"],
         })
     return dvars
 
