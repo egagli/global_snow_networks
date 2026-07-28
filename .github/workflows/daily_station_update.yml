@@ -31,7 +31,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
-            all_daily_snow_stations.geojson \
+            all_snow_stations.geojson \
             clients/awdb/awdb_stations.geojson \
             clients/cdec/cdec_stations.geojson \
             clients/databc/databc_stations.geojson \
@@ -120,7 +120,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ all_daily_snow_stations.geojson
+          git add data/ all_snow_stations.geojson
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
