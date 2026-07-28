@@ -84,8 +84,11 @@ YUKON_GEOJSON_OUT = (
     REPO_ROOT / "clients" / "yukon" / "yukon_stations.geojson"
 )
 
-# AWDB networks queried for the all-stations GeoJSON
-AWDB_NETWORKS = ["SNTL", "SNTLT", "MSNT", "SCAN", "COOP"]
+# AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
+# courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
+# semi-monthly/monthly cadence — periodic sites that belong in the
+# per-client inventory even though they never qualify as daily.
+AWDB_NETWORKS = ["SNTL", "SNTLT", "MSNT", "SCAN", "COOP", "SNOW", "MPRC"]
 SNOW_ELEMENTS = ["WTEQ", "SNWD"]
 
 # Batching parameters for AWDB
@@ -100,7 +103,10 @@ BIAS_CORRECTION_URL = (
 # Networks that receive bias correction notes
 BIAS_NETWORKS = {"SNTL", "SNTLT"}
 
-# Operator lookup by AWDB network code
+# Operator lookup by AWDB network code.  SNOW and MPRC are deliberately
+# absent: those networks mix NRCS-run and partner-run sites, and the
+# operator is only recorded when certain (DESIGN.md §5) — unknown
+# operators stay null rather than guessed.
 AWDB_NETWORK_OPERATOR: dict[str, str] = {
     "SNTL": "USDA NRCS",
     "SNTLT": "USDA NRCS",
@@ -133,15 +139,25 @@ def _awdb_data_variables(station: dict) -> list[dict]:
         if not code:
             continue
         dur_name = str(el.get("durationName") or "DAILY").upper()
-        interval = _AWDB_DURATION_TO_INTERVAL.get(dur_name, dur_name.lower())
+        interval = _AWDB_DURATION_TO_INTERVAL.get(dur_name)
+        if interval is None:
+            # Unknown durations must not leak source vocabulary into the
+            # inventory (DESIGN.md §3.3) — 5,772 'calendar_year' entries
+            # once did exactly that.
+            logger.warning(
+                "AWDB station %s element %s has unmapped duration %r — "
+                "skipping data_variables entry",
+                station.get("stationTriplet"), code, dur_name,
+            )
+            continue
         key = (code, interval)
         if key in seen:
             continue
         seen.add(key)
         var_info = AWDB_VARIABLES.get(code, {})
         units = (
-            "cm" if code in {"WTEQ", "SNWD"}
-            else el.get("originalUnitCode", "")
+            var_info.get("output_units")
+            or el.get("originalUnitCode", "")
         )
         dvars.append({
             "name": code,
@@ -544,7 +560,7 @@ def awdb_station_to_feature(
         "beginDate": (station.get("beginDate") or "")[:10],
         "endDate": (station.get("endDate") or "")[:10],
         "isActive": _awdb_is_active(station.get("endDate")),
-        "Operator": AWDB_NETWORK_OPERATOR.get(network, "USDA NRCS"),
+        "Operator": AWDB_NETWORK_OPERATOR.get(network),
         "client": "awdb",
         "notes": notes,
         "station_url": awdb_station_url(station),
@@ -570,9 +586,12 @@ def run_awdb_workflow(
     """
     Fetch AWDB stations and return (all_features, daily_features).
 
-    ``all_features``   — all AWDB stations with any snow element (for
-                         clients/awdb/awdb_stations.geojson).
-    ``daily_features`` — filtered to daily WTEQ/SNWD (for all_daily_snow_stations.geojson).
+    ``all_features``   — ALL AWDB stations with any WTEQ/SNWD element at
+                         ANY duration — including periodic snow courses
+                         (SNOW) and aerial markers (MPRC) — for
+                         clients/awdb/awdb_stations.geojson.
+    ``daily_features`` — the subset with daily-or-better WTEQ/SNWD
+                         (for all_daily_snow_stations.geojson).
     """
     client = AWDBClient()
 
@@ -584,7 +603,7 @@ def run_awdb_workflow(
     print(f"  Raw stations: {len(all_stations):,}")
     all_triplets = [s["stationTriplet"] for s in all_stations]
 
-    print("[AWDB] Filtering to stations with daily snow obs")
+    print("[AWDB] Filtering to stations with WTEQ/SNWD at any duration")
     snow_metadata: list[dict] = []
     batches = [
         all_triplets[i: i + API_BATCH]
@@ -599,7 +618,7 @@ def run_awdb_workflow(
         results = client.get_metadata(
             triplets=batch,
             elements=SNOW_ELEMENTS,
-            durations=["DAILY"],
+            durations="*",
             active_only=False,
         )
         kept = [s for s in results if s.get("stationElements")]
@@ -607,7 +626,7 @@ def run_awdb_workflow(
         print(f"kept {len(kept)}")
 
     print(
-        f"  Stations with daily WTEQ/SNWD: {len(snow_metadata):,}  "
+        f"  Stations with WTEQ/SNWD: {len(snow_metadata):,}  "
         f"({dict(Counter(s['networkCode'] for s in snow_metadata))})"
     )
 
@@ -631,8 +650,16 @@ def run_awdb_workflow(
         awdb_station_to_feature(s, bias_table) for s in full_meta
     ]
 
-    # All-stations GeoJSON: same set (already filtered to daily)
-    daily_features = all_features
+    # Merged daily inventory: only daily-or-better WTEQ/SNWD
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("dailySWE")
+        or f["properties"].get("dailySnowDepth")
+    ]
+    print(
+        f"  Daily-or-better stations: {len(daily_features):,} of "
+        f"{len(all_features):,}"
+    )
 
     return all_features, daily_features
 
@@ -1209,8 +1236,12 @@ def main() -> None:
                     "client": "awdb",
                     "networks": AWDB_NETWORKS,
                     "description": (
-                        "All AWDB stations with daily WTEQ and/or SNWD. "
-                        "Includes full element inventory."
+                        "All AWDB stations with WTEQ and/or SNWD at any "
+                        "duration — including periodic snow courses "
+                        "(SNOW) and aerial markers (MPRC). Includes full "
+                        "element inventory. Only stations with daily-or-"
+                        "better snow data appear in "
+                        "all_daily_snow_stations.geojson."
                     ),
                     "total": len(awdb_all),
                 },
