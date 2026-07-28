@@ -56,10 +56,7 @@ from clients.awdb.awdb_client import (
     _AWDB_DURATION_TO_INTERVAL,
 )
 from clients.cdec import CDECClient
-from clients.cdec.cdec_client import (
-    SENSORS as CDEC_SENSORS,
-    _CDEC_DURATION_TO_INTERVAL,
-)
+from clients.cdec.cdec_client import SENSORS as CDEC_SENSORS
 from clients.databc import DataBCClient
 from clients.databc.databc_client import VARIABLES as DATABC_VARIABLES
 from clients.nve import NVEClient
@@ -158,44 +155,45 @@ def _awdb_data_variables(station: dict) -> list[dict]:
 
 
 def _cdec_data_variables(station: dict) -> list[dict]:
-    """Build the data_variables list for a CDEC station from its sensor list."""
+    """Build the data_variables list for a CDEC station from its sensor list.
+
+    CDEC's station reports advertise snow sensors (3/18/82) on manual snow
+    courses even though those sites have no continuous record, so sensor
+    presence alone must not imply a daily interval.  Snow pillows (and
+    other non-course stations) are daily *candidates*; manual courses
+    without a pillow get ``periodic``.  The data fetch is the final
+    authority on what is actually daily (DESIGN.md §4).
+    """
+    course_only = bool(
+        station.get("is_snow_course") and not station.get("is_snow_pillow")
+    )
+    interval = "periodic" if course_only else "daily"
     dvars: list[dict] = []
-    sensors = station.get("sensors", [])
-    for sensor in sensors:
-        # sensor may be an int (sensor num) or a dict
-        if isinstance(sensor, int):
-            snum = sensor
-            durations = ["D"]
-        elif isinstance(sensor, dict):
-            snum = int(sensor.get("sensor_num", 0) or 0)
-            raw_dur = sensor.get("duration_codes") or sensor.get(
-                "durations", ["D"]
-            )
-            durations = (
-                raw_dur if isinstance(raw_dur, list) else [raw_dur]
-            )
-        else:
+    for sensor in station.get("sensors", []):
+        if isinstance(sensor, dict):
+            sensor = sensor.get("sensor_num")
+        try:
+            snum = int(sensor)
+        except (TypeError, ValueError):
             continue
         sinfo = CDEC_SENSORS.get(snum, {})
         if not sinfo:
             continue
-        for dur in durations:
-            interval = _CDEC_DURATION_TO_INTERVAL.get(str(dur), "daily")
-            dvars.append({
-                "name": sinfo.get("short_name", str(snum)),
-                "type": sinfo.get("type", "other"),
-                "interval": interval,
-                "units": "cm",
-                "description": sinfo.get("description", ""),
-                "notes": sinfo.get("notes", ""),
-            })
-    # Snow courses have only periodic SWE (no sensors listed)
+        dvars.append({
+            "name": sinfo.get("short_name", str(snum)),
+            "type": sinfo.get("type", "other"),
+            "interval": interval,
+            "units": "cm",
+            "description": sinfo.get("description", ""),
+            "notes": sinfo.get("notes", ""),
+        })
+    # Snow courses with no sensors listed still have periodic manual SWE
     if not dvars and station.get("is_snow_course"):
         dvars.append({
             "name": "SWE (manual)",
             "type": "swe",
             "interval": "periodic",
-            "units": "in",
+            "units": "cm",
             "description": "Manually measured snow water equivalent.",
             "notes": "Snow course — periodic survey only.",
         })
@@ -297,6 +295,16 @@ def triplet_to_code(triplet: str | None) -> str:
     return str(triplet).replace(":", "_")
 
 
+def _awdb_is_active(end_date: str | None) -> bool:
+    """AWDB marks active stations with a far-future endDate sentinel
+    (2100-01-01) rather than a null endDate, so ``not endDate`` is wrong
+    for every AWDB station.  A station is active while its period of
+    record extends to today or beyond."""
+    if not end_date:
+        return True
+    return str(end_date)[:10] >= date.today().isoformat()
+
+
 # ── GeoJSON helpers ───────────────────────────────────────────────────────────
 
 def make_feature(
@@ -393,9 +401,54 @@ def write_geojson(
         "metadata": metadata,
         "features": features,
     }
-    with path.open("w", encoding="utf-8") as f:
+    # Atomic: these are multi-MB tracked files — an interrupt mid-write
+    # must not leave a truncated inventory behind.
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    with tmp_path.open("w", encoding="utf-8") as f:
         json.dump(fc, f, indent=2)
+    tmp_path.replace(path)
     logger.info("  Written %s (%d features)", path, len(features))
+
+
+_RECORD_DATE_FIELDS = (
+    "earliest_record_date",
+    "latest_record_date",
+    "csv_refreshed_at_utc",
+)
+
+
+def carry_forward_record_dates(
+    previous_path: Path, features: list[dict]
+) -> int:
+    """Preserve CSV-derived record dates across inventory rebuilds.
+
+    Stage 2 (get_all_stations_data) stamps ``earliest_record_date`` /
+    ``latest_record_date`` / ``csv_refreshed_at_utc`` onto the merged
+    inventory from actual CSV content.  This script rebuilds the inventory
+    from source metadata every run and would otherwise wipe those fields
+    each morning.  Fields are carried forward per (client, code); the
+    next data refresh overwrites them with fresher values.
+    """
+    try:
+        with previous_path.open(encoding="utf-8") as fp:
+            previous = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError):
+        return 0
+    prev_by_key: dict[tuple, dict] = {}
+    for f in previous:
+        p = f.get("properties", {})
+        vals = {k: p[k] for k in _RECORD_DATE_FIELDS if p.get(k)}
+        if vals:
+            prev_by_key[(p.get("client"), p.get("code"))] = vals
+    applied = 0
+    for f in features:
+        p = f.get("properties", {})
+        vals = prev_by_key.get((p.get("client"), p.get("code")))
+        if vals:
+            for k, v in vals.items():
+                p.setdefault(k, v)
+            applied += 1
+    return applied
 
 
 # ── AWDB workflow ─────────────────────────────────────────────────────────────
@@ -423,7 +476,6 @@ def awdb_image_url(station: dict) -> str:
 def awdb_station_to_feature(
     station: dict,
     bias_table: dict,
-    full_metadata: bool = False,
 ) -> dict:
     """Convert an AWDB station dict to a GeoJSON feature."""
     lon = station.get("longitude")
@@ -491,7 +543,7 @@ def awdb_station_to_feature(
         "elevation_m": ft_to_m(station.get("elevation")),
         "beginDate": (station.get("beginDate") or "")[:10],
         "endDate": (station.get("endDate") or "")[:10],
-        "isActive": not station.get("endDate"),
+        "isActive": _awdb_is_active(station.get("endDate")),
         "Operator": AWDB_NETWORK_OPERATOR.get(network, "USDA NRCS"),
         "client": "awdb",
         "notes": notes,
@@ -499,11 +551,10 @@ def awdb_station_to_feature(
         "station_image_url": awdb_image_url(station),
         "metadata_fetched_at": date.today().isoformat(),
     }
-    if full_metadata:
-        props["snowElements"] = elements_summary
-        props["elementCodes"] = all_vars
-        props["variables_daily"] = ", ".join(daily_vars)
-        props["variables_hourly"] = ", ".join(hourly_vars)
+    props["snowElements"] = elements_summary
+    props["elementCodes"] = all_vars
+    props["variables_daily"] = ", ".join(daily_vars)
+    props["variables_hourly"] = ", ".join(hourly_vars)
 
     data_vars = _awdb_data_variables(station)
     props["data_variables"] = data_vars
@@ -577,8 +628,7 @@ def run_awdb_workflow(
 
     # Per-client GeoJSON: all stations with full metadata
     all_features = [
-        awdb_station_to_feature(s, bias_table, full_metadata=True)
-        for s in full_meta
+        awdb_station_to_feature(s, bias_table) for s in full_meta
     ]
 
     # All-stations GeoJSON: same set (already filtered to daily)
@@ -1145,7 +1195,7 @@ def main() -> None:
         try:
             awdb_all, awdb_daily = run_awdb_workflow(bias_table)
         except Exception as exc:
-            logging.warning("[AWDB] Workflow failed: %s", exc)
+            logger.warning("[AWDB] Workflow failed: %s", exc)
         awdb_all, awdb_daily, fresh = keep_previous_if_empty(
             "AWDB", AWDB_GEOJSON_OUT, awdb_all, awdb_daily
         )
@@ -1177,7 +1227,7 @@ def main() -> None:
         try:
             cdec_all, cdec_daily = run_cdec_workflow()
         except Exception as exc:
-            logging.warning("[CDEC] Workflow failed: %s", exc)
+            logger.warning("[CDEC] Workflow failed: %s", exc)
         cdec_all, cdec_daily, fresh = keep_previous_if_empty(
             "CDEC", CDEC_GEOJSON_OUT, cdec_all, cdec_daily
         )
@@ -1213,7 +1263,7 @@ def main() -> None:
                 fetch_images=not args.skip_station_images,
             )
         except Exception as exc:
-            logging.warning("[DataBC] Workflow failed: %s", exc)
+            logger.warning("[DataBC] Workflow failed: %s", exc)
         databc_all, databc_daily, fresh = keep_previous_if_empty(
             "DataBC", DATABC_GEOJSON_OUT, databc_all, databc_daily
         )
@@ -1248,7 +1298,7 @@ def main() -> None:
         try:
             nve_all, nve_daily = run_nve_workflow()
         except Exception as exc:
-            logging.warning("[NVE] Workflow failed: %s", exc)
+            logger.warning("[NVE] Workflow failed: %s", exc)
         nve_all, nve_daily, fresh = keep_previous_if_empty(
             "NVE", NVE_GEOJSON_OUT, nve_all, nve_daily
         )
@@ -1280,7 +1330,7 @@ def main() -> None:
         try:
             yukon_all, yukon_daily = run_yukon_workflow()
         except Exception as exc:
-            logging.warning("[Yukon] Workflow failed: %s", exc)
+            logger.warning("[Yukon] Workflow failed: %s", exc)
         yukon_all, yukon_daily, fresh = keep_previous_if_empty(
             "Yukon", YUKON_GEOJSON_OUT, yukon_all, yukon_daily
         )
@@ -1314,6 +1364,11 @@ def main() -> None:
 
     # ── Write merged all_daily_snow_stations.geojson ────────────────────────────────────
     all_daily_features = drop_invalid_coordinates(all_daily_features)
+    carried = carry_forward_record_dates(
+        Path(args.output), all_daily_features
+    )
+    if carried:
+        print(f"Carried forward CSV record dates for {carried:,} stations")
     print("=" * 60)
     print(
         f"Writing merged all_daily_snow_stations.geojson "
