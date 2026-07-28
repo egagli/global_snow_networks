@@ -50,6 +50,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Any
 
+import numpy as np
 import pandas as pd
 
 from clients.awdb import AWDBClient, AWDBError
@@ -156,15 +157,17 @@ def _column_cadence_ok(dates: pd.Series) -> bool:
     days = pd.to_datetime(dates, errors="coerce").dropna()
     if len(days) < _CADENCE_MIN_OBS:
         return False
-    days = days.sort_values().reset_index(drop=True)
-    # densest N-day window via two pointers
-    lo = 0
-    best = 0
-    for hi in range(len(days)):
-        while (days[hi] - days[lo]).days > _CADENCE_WINDOW_DAYS:
-            lo += 1
-        best = max(best, hi - lo + 1)
-    return best >= _CADENCE_MIN_WINDOW_OBS
+    # densest N-day window, vectorized: for each observation, count how
+    # many observations fall within the preceding window
+    day_numbers = np.sort(
+        days.values.astype("datetime64[D]").astype("int64")
+    )
+    window_starts = day_numbers - _CADENCE_WINDOW_DAYS
+    counts = (
+        np.arange(1, len(day_numbers) + 1)
+        - np.searchsorted(day_numbers, window_starts, side="left")
+    )
+    return int(counts.max()) >= _CADENCE_MIN_WINDOW_OBS
 
 
 def check_daily_cadence(df: pd.DataFrame) -> tuple[bool, bool]:
