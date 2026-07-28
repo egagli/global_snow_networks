@@ -5,6 +5,11 @@ from external data sources.  Each client is responsible for one data source
 and exposes a consistent interface for fetching stations, metadata, and
 time-series data.
 
+> The normative client contract (method signatures, record schema, units,
+> intervals, error behaviour) lives in [DESIGN.md](../DESIGN.md) §3.  This
+> file documents each client's API surface and source-specific quirks;
+> where they disagree, `DESIGN.md` wins.
+
 ---
 
 ## Table of Contents
@@ -22,16 +27,23 @@ time-series data.
 
 ## 1. Design Philosophy
 
+See [DESIGN.md](../DESIGN.md) §3 for the full contract.  Summary:
+
 - **One client per data source.**  Each client encapsulates HTTP requests,
   batching, retry logic, HTML/JSON parsing, and response normalisation.
-- **Return plain Python objects.**  Methods return `dict` / `list[dict]` or
-  pandas DataFrames so callers decide how to convert.
-- **Metric-first normalisation.**  All SWE and snow depth values are returned
-  in centimetres.  Imperial inputs are converted in-client.
+- **`get_data()` returns flat record dicts.**  The standardized interface
+  returns `list[dict]`; DataBC additionally has a pandas-DataFrame
+  convenience layer for its bulk CSV files.
+- **Metric-first normalisation.**  SWE and snow depth are returned in
+  centimetres; every other variable is converted to metric too (°C, mm,
+  km/h, …) — no imperial passthrough.
 - **Handle limits internally.**  API rate limits, value-count limits, and URL
   length limits are managed by the client.
-- **Fail clearly.**  All errors raise `{Client}Error(Exception)` with
-  descriptive messages.
+- **Fail clearly, never silently.**  All source errors raise
+  `{Client}Error(Exception)` with descriptive messages; unknown variables
+  and unsupported intervals also raise rather than falling back.
+- **Sub-daily records carry a `datetime` key** alongside `date`, so hourly
+  observations stay distinguishable.
 - **Data flags are opt-in.**  Pass `include_flags=True` to `get_data()` to
   receive per-value quality flags.  Flags are NOT stored in per-station CSVs
   but are available for QC analysis.
@@ -65,16 +77,28 @@ client = AWDBClient()
 | Manual SNOTEL | `MSNT` | Legacy / transitional sites (includes some BC and CCSS) |
 | SCAN | `SCAN` | Soil climate network with snow sensors |
 | COOP | `COOP` | NWS cooperative observer snow sites |
+| Snow Course | `SNOW` | Manual snow courses (~2,700, semi-monthly/monthly WTEQ+SNWD, incl. partner courses) |
+| Aerial Marker | `MPRC` | Aerial snow markers (~260, periodic depth readings) |
 
 ### Key data variables
 
-| Element | Description | Units |
+All values are converted to metric in-client (DESIGN.md §3.5); AWDB serves
+them natively in inches / °F / mph.
+
+| Element | Description | Emitted units |
 |---|---|---|
-| `WTEQ` | Snow Water Equivalent | cm (converted from inches) |
-| `SNWD` | Snow Depth | cm (converted from inches) |
-| `TOBS` | Air Temperature (observed) | °C |
-| `PREC` | Precipitation accumulation | cm |
-| `PRCP` | Precipitation increment | cm |
+| `WTEQ` | Snow Water Equivalent | cm (from inches) |
+| `SNWD` | Snow Depth | cm (from inches) |
+| `TOBS` / `TMAX` / `TMIN` | Air temperature | °C (from °F) |
+| `PREC` / `PRCP` / `PRCPSA` | Precipitation | mm (from inches) |
+| `RHUM` | Relative humidity | % |
+| `WSPDV` / `WSPDX` | Wind speed / gust | km/h (from mph) |
+| `WDIRV` | Wind direction | degrees |
+| `SRADV` | Solar radiation | W/m² |
+
+`VARIABLES[code]` carries both `units` (native) and `output_units`
+(emitted).  `DATA_FLAGS` is an empty dict — the AWDB REST API returns no
+per-value QC flags.
 
 ### Constructor
 
@@ -149,7 +173,11 @@ norms = client.get_normals("303:CO:SNTL", ["WTEQ"], normal_period="1991-2020")
   snow stations respectively).  AWDB returns **no** Yukon stations with snow
   elements — for Yukon coverage use the [Yukon client](#6-yukonclient).
 - **Missing values:** `None` in parsed response.
-- **WTEQ/SNWD units:** Converted from inches to cm automatically.
+- **Units:** all elements are converted to metric in-client — WTEQ/SNWD
+  inches→cm, temperatures °F→°C, precipitation inches→mm, wind mph→km/h.
+- **Unknown variables / intervals raise `AWDBError`** rather than
+  silently fetching everything or assuming daily.
+- **Hourly records carry a `datetime` key** alongside `date`.
 
 ---
 
@@ -181,6 +209,12 @@ from clients.cdec.cdec_client import SENSORS, DATA_FLAGS, DURATION_CODES
 | 18 | SNOW DP | `snwd` | Snow depth, ultrasonic (inches → cm) |
 | 82 | SNO ADJ | `swe` | **Preferred SWE** — quality-controlled, offset-adjusted version of sensor 3 |
 
+The registry also covers the met suite at CCSS stations (all converted to
+metric in-client): precipitation 2/45/16 (in → mm), air temperature
+4/30/31/32 (°F → °C), relative humidity 12, wind 9 (mph → km/h) / 10,
+solar 103, and soil moisture 283/310/286/287.
+`get_data(variables=None)` defaults to the snow sensors.
+
 **SWE vs. SNO ADJ:** Sensor 82 (SNO ADJ) is the revised version of sensor 3
 (raw SWE), with a calibration offset applied after manual QC.  Both represent
 SWE from the same snow pillow.  Sensor 82 is always preferred and is stored
@@ -192,12 +226,17 @@ used as fallback.
 | Flag | Meaning |
 |---|---|
 | ` ` (space) | Unreviewed / provisional |
-| `r` | Revised (most sensor 82 values carry this flag) |
-| `o` | Calibration offset applied |
-| `e` | Estimated |
+| `A` | Precipitation accumulation period |
+| `L` | Awaiting observer response |
 | `N` | Error in data |
-| `v` | Out of valid range |
+| `c` | Calculated (gridded precipitation) |
+| `e` | Estimated |
+| `o` | Calibration offset applied |
+| `q` | New rating table applied |
+| `r` | Revised (most sensor 82 values carry this flag) |
+| `s` | New shift applied |
 | `t` | Trace of precipitation |
+| `v` | Out of valid range |
 
 ### Duration codes
 
@@ -308,7 +347,11 @@ The internal fetch method `_get_data_cdec()` calls the JSONDataServlet directly.
 - The JSON data service accepts multiple comma-separated station IDs.
 - **Monthly duration** (`M`) returns empty results for sensors 3, 18, 82.
   Use daily (`D`) for all snow sensor data.
-- **Hourly data** is available for sensors 3 and 18 at most automated stations.
+- **Hourly data** is available for sensors 3 and 18 at most automated
+  stations; hourly/event records carry a `datetime` key and SWE priority
+  resolves per timestamp.
+- **Unknown variables / intervals raise `CDECError`** rather than
+  silently expanding to all sensors / falling back to daily.
 - Station IDs are 2–5 uppercase alphanumeric characters (e.g. `QUA`, `BLC`).
 
 ### Station URLs
@@ -350,27 +393,30 @@ from clients.databc.databc_client import VARIABLES, DATA_FLAGS
 
 All ASWS variables share the same wide-format CSV structure.  The **16:00 UTC
 reading** is used as the canonical daily value (~08:00 PST / 09:00 PDT).
-Pass `daily_only=False` to any ASWS method to retrieve all hourly readings
-instead, which returns a `datetime` column rather than `date`.
+Pass `daily_only=False` to the private ASWS DataFrame methods that accept it to
+retrieve all hourly readings instead (a `datetime` column rather than
+`date`).  Two methods have no `daily_only` parameter because they are
+interval-specific: `_get_asws_daily_data()` (always daily, SWDaily.csv)
+and `_get_asws_sw_hourly_data()` (always hourly, SW.csv).
 
 | Variable | Units | Method | Archive? | Notes |
 |---|---|---|---|---|
-| `swe_mm` | mm | `get_asws_daily_data()` | Yes | Daily pre-aggregated (SWDaily.csv) |
-| `swe_mm` | mm | `get_asws_sw_hourly_data()` | Yes | Hourly raw pillow (SW.csv) |
-| `snwd_cm` | cm | `get_asws_sd_data()` | Yes | Snow depth sensor (SD.csv) |
-| `air_temp_degc` | °C | `get_asws_ta_data()` | Yes | Air temperature (TA.csv) |
-| `precip_cumul_mm` | mm | `get_asws_pc_data()` | Yes | Cumulative precipitation (PC.csv) |
-| `baro_press_hpa` | hPa | `get_asws_pa_data()` | **No** | Barometric pressure (PA.csv) |
-| `wind_dir_deg` | ° | `get_asws_ud_data()` | **No** | Wind direction (UD.csv) |
-| `wind_spd_kmh` | km/h | `get_asws_us_data()` | **No** | Wind speed (US.csv) |
-| `wind_spd_peak_kmh` | km/h | `get_asws_up_data()` | **No** | Wind gust speed (UP.csv) |
-| `wind_run_km` | km | `get_asws_ur_data()` | **No** | Cumulative wind run (UR.csv) |
-| `rh_pct` | % | `get_asws_xr_data()` | **No** | Relative humidity (XR.csv) |
-| `swe_mm` + `snwd_cm` + `air_temp_degc` + `precip_cumul_mm` | mixed | `get_asws_combined_data(id)` | — | Per-station combined file (SnowAll/) |
-| `swe_mm` | mm | `get_mss_survey_data()` | Yes | MSS periodic survey (Water Equiv.) |
-| `snwd_cm` | cm | `get_mss_survey_data()` | Yes | MSS periodic survey (Snow Depth) |
-| `density_pct` | % | `get_mss_survey_data()` | Yes | MSS periodic only |
-| `snow_line_m` | m | `get_mss_survey_data()` | Yes | MSS periodic only |
+| `swe_mm` | mm | `_get_asws_daily_data()` | Yes | Daily pre-aggregated (SWDaily.csv) |
+| `swe_mm` | mm | `_get_asws_sw_hourly_data()` | Yes | Hourly raw pillow (SW.csv) |
+| `snwd_cm` | cm | `_get_asws_sd_data()` | Yes | Snow depth sensor (SD.csv) |
+| `air_temp_degc` | °C | `_get_asws_ta_data()` | Yes | Air temperature (TA.csv) |
+| `precip_cumul_mm` | mm | `_get_asws_pc_data()` | Yes | Cumulative precipitation (PC.csv) |
+| `baro_press_hpa` | hPa | `_get_asws_pa_data()` | **No** | Barometric pressure (PA.csv) |
+| `wind_dir_deg` | ° | `_get_asws_ud_data()` | **No** | Wind direction (UD.csv) |
+| `wind_spd_kmh` | km/h | `_get_asws_us_data()` | **No** | Wind speed (US.csv) |
+| `wind_spd_peak_kmh` | km/h | `_get_asws_up_data()` | **No** | Wind gust speed (UP.csv) |
+| `wind_run_km` | km | `_get_asws_ur_data()` | **No** | Cumulative wind run (UR.csv) |
+| `rh_pct` | % | `_get_asws_xr_data()` | **No** | Relative humidity (XR.csv) |
+| `swe_mm` + `snwd_cm` + `air_temp_degc` + `precip_cumul_mm` | mixed | `_get_asws_combined_data(id)` | — | Per-station combined file (SnowAll/) |
+| `swe_mm` | mm | `_get_mss_survey_data()` | Yes | MSS periodic survey (Water Equiv.) |
+| `snwd_cm` | cm | `_get_mss_survey_data()` | Yes | MSS periodic survey (Snow Depth) |
+| `density_pct` | % | `_get_mss_survey_data()` | Yes | MSS periodic only |
+| `snow_line_m` | m | `_get_mss_survey_data()` | Yes | MSS periodic only |
 
 "No archive" variables have only current-season data (the archive files do
 not exist for PA, UD, US, UP, UR, XR).
@@ -433,8 +479,11 @@ Returns combined ASWS + MSS station list.
 #### `get_data(station_ids, variables, bbox, begin_date, end_date, interval, include_flags)` → `list[dict]`
 
 Standardized data fetch — returns a **flat** list of observation records.
-`interval="daily"` fetches ASWS data; `interval="periodic"` fetches MSS survey
-data.  `swe_mm` values are converted to cm so all SWE is returned in cm.
+`interval="daily"` fetches daily ASWS data (16:00 UTC canonical reading);
+`interval="hourly"` / `"sub_daily"` fetch all hourly ASWS readings (records
+carry a `datetime` key); `interval="periodic"` fetches MSS survey data.
+Any other interval raises `DataBCError`.  `swe_mm` values are converted to
+cm so all SWE is returned in cm.
 
 ```python
 records = client.get_data(
@@ -449,80 +498,27 @@ records = client.get_data(
 #    "units": "cm", "interval": "daily"}
 ```
 
-#### `get_asws_daily_data(location_ids, begin_date, end_date, archive)` → `pd.DataFrame`
+#### Private DataFrame layer (`_get_asws_*`, `_get_mss_survey_data`)
 
-Fetches daily ASWS SWE data from the pre-aggregated `SWDaily.csv` files.
-Returns columns: `date`, `location_id`, `swe_mm`.
+The bulk CSV parsing lives in private per-variable DataFrame methods
+(`_get_asws_daily_data`, `_get_asws_sw_hourly_data`, `_get_asws_sd_data`,
+`_get_asws_ta_data`, `_get_asws_pc_data`, `_get_asws_pa_data`,
+`_get_asws_ud_data`, `_get_asws_us_data`, `_get_asws_up_data`,
+`_get_asws_ur_data`, `_get_asws_xr_data`, `_get_asws_combined_data`,
+`_get_mss_survey_data`).  `get_data()` is the public contract
+(DESIGN.md §3.4); the private layer feeds it.  Notable sizes: the
+TA archive is ~75 MB and SD ~37 MB — `get_data` for long hourly
+periods loads them in full.
+
+MSS surveys via the public API:
 
 ```python
-df = client.get_asws_daily_data(
-    location_ids=["1A01P", "1E08P"],
-    begin_date="2022-10-01",
-    archive=True,
+records = client.get_data(
+    station_ids=["1A06A", "1A10"],
+    variables=["swe", "snwd", "density", "snow_line"],
+    interval="periodic",
+    include_flags=True,   # survey_code quality flag
 )
-```
-
-Archive file (`SW_DailyArchive.csv`) is ~5 MB.
-
-#### `get_asws_sw_hourly_data(location_ids, begin_date, end_date, archive)` → `pd.DataFrame`
-
-Fetches raw hourly SWE from `SW.csv` / `SW_Archive.csv`.
-Returns columns: `datetime` (UTC, `"YYYY-MM-DD HH:MM"`), `location_id`, `swe_mm`.
-
-#### `get_asws_sd_data(location_ids, begin_date, end_date, archive, daily_only)` → `pd.DataFrame`
-
-Fetches snow depth from `SD.csv` / `SD_Archive.csv`.
-Returns columns: `date`/`datetime`, `location_id`, `snwd_cm`.
-Archive file is ~37 MB.
-
-#### `get_asws_ta_data(location_ids, begin_date, end_date, archive, daily_only)` → `pd.DataFrame`
-
-Fetches air temperature from `TA.csv` / `TA_Archive.csv`.
-Returns columns: `date`/`datetime`, `location_id`, `air_temp_degc`.
-Archive file is ~75 MB.
-
-#### `get_asws_pc_data(location_ids, begin_date, end_date, archive, daily_only)` → `pd.DataFrame`
-
-Fetches cumulative precipitation from `PC.csv` / `PC_Archive.csv`.
-Returns columns: `date`/`datetime`, `location_id`, `precip_cumul_mm`.
-Archive file is ~63 MB.
-
-#### `get_asws_pa_data(location_ids, begin_date, end_date, daily_only)` → `pd.DataFrame`
-
-Fetches barometric pressure from `PA.csv` (current season only).
-Returns columns: `date`/`datetime`, `location_id`, `baro_press_hpa`.
-
-#### `get_asws_ud_data(...)` / `get_asws_us_data(...)` / `get_asws_up_data(...)` / `get_asws_ur_data(...)` / `get_asws_xr_data(...)` → `pd.DataFrame`
-
-Fetch wind direction, wind speed, wind gust, wind run, and relative humidity
-respectively from the corresponding current-season-only CSV files.
-All return columns: `date`/`datetime`, `location_id`, `{variable}`.
-
-```python
-# Example: fetch all met variables for a station, hourly
-df_ta = client.get_asws_ta_data(["1E08P"], daily_only=False)
-df_rh = client.get_asws_xr_data(["1E08P"], daily_only=False)
-df_ws = client.get_asws_us_data(["1E08P"], daily_only=False)
-```
-
-#### `get_asws_combined_data(location_id)` → `pd.DataFrame`
-
-Fetches the per-station combined archive from `SnowAll/{id}.csv`.
-Contains SWE, snow depth, air temperature, and precipitation in one file.
-Uses 16:00 UTC as canonical daily value.
-Returns columns: `date`, `swe_mm`, `snwd_cm`, `air_temp_degc`, `precip_cumul_mm`.
-
-#### `get_mss_survey_data(location_ids, begin_date, end_date, archive, include_flags)` → `pd.DataFrame`
-
-Fetches periodic manual snow survey data from `allmss_current.csv` /
-`allmss_archive.csv`.
-
-Returns: `date`, `location_id`, `name`, `swe_mm`, `snwd_cm`,
-`density_pct`, `snow_line_m`, `survey_period`, optionally `survey_code`.
-
-```python
-df = client.get_mss_survey_data(archive=True, include_flags=True)
-apr1 = df[df["survey_period"] == "01-Apr"]
 ```
 
 #### `get_station_image_url(location_id)` → `str | None`
@@ -587,25 +583,33 @@ https://bcmoe-prod.aquaticinformatics.net/Data/Location/Summary/Location/{ID}/In
 
 The NVE HydAPI provides access to hydrological observations from the Norwegian
 Water Resources and Energy Directorate (Norges vassdrags- og energidirektorat).
-No authentication is required — the API is fully open.
+
+**An API key is required.**  Register for a free key at
+<https://hydapi.nve.no/> and set the `NVE_API_KEY` environment variable (or
+pass `api_key=` to the constructor).  Without a key the client logs a
+warning and every request fails with HTTP 401.
 
 ```python
 from clients.nve import NVEClient
-client = NVEClient()
+client = NVEClient()   # reads NVE_API_KEY from the environment
 ```
 
 ### Key parameters
 
 | Parameter ID | Description | Native Units | Returned Units |
 |---|---|---|---|
-| `2002` | Snow Water Equivalent (SWE) | mm | cm (÷ 10) |
-| `2001` | Snow Depth | cm | cm |
+| `2003` | Snow Water Equivalent (Snøens vannekvivalent) | **m** | cm (× 100) |
+| `2002` | Snow Depth (Snødybde) | cm | cm |
+
+> ⚠️ Parameter **2001** is *Markfuktighet* (soil water, %) — it is **not**
+> a snow parameter despite its neighbouring ID.
 
 ### Constructor
 
 ```python
 NVEClient(
     base_url: str = "https://hydapi.nve.no/api/v1",
+    api_key: str | None = None,   # falls back to NVE_API_KEY env var
     timeout: int = 60,
     max_retries: int = 3,
     backoff: int = 4,
@@ -621,16 +625,16 @@ Returns stations filtered by NVE parameter ID(s).
 
 ```python
 # All SWE stations
-swe_stations = client.get_stations(parameter_ids=2002)
+swe_stations = client.get_stations(parameter_ids=2003)
 
 # SWE + snow depth stations, active only
-stations = client.get_stations(parameter_ids=[2001, 2002], active_only=True)
+stations = client.get_stations(parameter_ids=[2003, 2002], active_only=True)
 ```
 
 #### `get_all_stations(active_only, bbox)` → `list[dict]`
 
 Returns all NVE stations with snow parameters (SWE and/or snow depth).
-Convenience wrapper around `get_stations(parameter_ids=[2001, 2002])`.
+Convenience wrapper around `get_stations(parameter_ids=[2003, 2002])`.
 
 #### `get_metadata(station_id)` → `dict`
 
@@ -640,6 +644,12 @@ Returns full metadata for a single station including its available series.
 meta = client.get_metadata("2.11.0")
 ```
 
+#### `get_series(parameter, station_id)` → `list[dict]`
+
+Lists available time series from `/Series`.  `get_data()` depends on this
+internally to discover which station+parameter pairs actually have data at
+the requested resolution (requesting a non-existent series returns 404).
+
 #### `get_observations(station_id, parameter_id, begin_date, end_date, resolution)` → `list[dict]`
 
 Low-level endpoint — returns raw observation records from `/Observations`.
@@ -647,7 +657,7 @@ Low-level endpoint — returns raw observation records from `/Observations`.
 ```python
 obs = client.get_observations(
     station_id="2.11.0",
-    parameter_id=2002,
+    parameter_id=2003,
     begin_date="2024-01-01",
     end_date="2024-04-30",
     resolution=1440,   # 1440 = daily; 60 = hourly
@@ -656,26 +666,28 @@ obs = client.get_observations(
 
 #### `get_data(station_ids, variables, bbox, begin_date, end_date, interval, include_flags)` → `list[dict]`
 
-Standardised flat-record output.  SWE is returned in cm (converted from mm).
+Standardised flat-record output.  SWE is returned in cm (converted from
+native metres × 100).  Hourly records carry a `datetime` key.  Unknown
+variables and unsupported intervals raise `NVEError`.
 
 ```python
 records = client.get_data(
     station_ids=["2.11.0", "12.228.0"],
-    variables=["swe"],          # or "snwd", "swe_mm", "snwd_cm"
+    variables=["swe"],          # or "snwd", "swe_m", "snwd_cm"
     begin_date="2024-01-01",
     end_date="2024-03-31",
-    interval="daily",
+    interval="daily",           # or "hourly"
     include_flags=True,
 )
 # records[0] → {
 #   "station_id": "2.11.0",
 #   "date": "2024-01-01",
-#   "variable": "swe_mm",
+#   "variable": "swe_m",
 #   "type": "swe",
 #   "value": 45.2,       # cm
 #   "units": "cm",
 #   "interval": "daily",
-#   "flag": "0",         # NVE quality code (only when include_flags=True)
+#   "flag": "3",         # NVE quality code (only when include_flags=True)
 # }
 ```
 
@@ -692,6 +704,8 @@ records = client.get_data(
 | `status` | str | `"Active"` or `"Inactive"` |
 | `station_url` | str | URL to NVE Sildre station page |
 | `parameters` | list[int] | Available NVE parameter IDs at this station |
+| `daily_parameters` | list[int] | Parameter IDs with a daily (1440-min) series |
+| `coordinates_overridden` | bool | True when the client corrected a known-wrong HydAPI position (Nepal cooperation stations) |
 
 ### Quality flags
 
@@ -699,12 +713,14 @@ NVE quality codes returned when `include_flags=True`:
 
 | Code | Meaning |
 |---|---|
-| `"0"` | No flag / good data |
-| `"1"` | Interpolated |
-| `"2"` | Estimated / corrected |
-| `"3"` | Dubious |
-| `"4"` | Missing |
-| `"9"` | No data |
+| `"0"` | Unknown — quality status not determined |
+| `"1"` | Uncontrolled |
+| `"2"` | Primary controlled |
+| `"3"` | Secondary controlled (quality assured) |
+
+Note the archive contains occasional glitches that pass NVE's own QC
+(e.g. ~145 m SWE flagged "secondary controlled"); the client normalises
+snow values outside 0–15 m to `None`.
 
 ### Endpoints used
 
@@ -712,9 +728,11 @@ NVE quality codes returned when `include_flags=True`:
 |---|---|
 | Station list | `GET /Stations?ParameterId={id}` |
 | Single station | `GET /Stations?StationId={id}` |
-| Observations | `GET /Observations?StationId={id}&ParameterId={id}&...` |
+| Series catalogue | `GET /Series?Parameter={id}` / `GET /Series?StationId={id}` |
+| Observations | `GET /Observations?StationId={id}&Parameter={id}&ReferenceTime=...` |
 
-Base URL: `https://hydapi.nve.no/api/v1`
+Base URL: `https://hydapi.nve.no/api/v1`.  Rate limit: 5 requests/second
+per API key — the client spaces requests and honours `Retry-After` on 429.
 
 ---
 
@@ -740,7 +758,7 @@ client = YukonClient()
 
 | Station type | `networkCode` | Count | Description |
 |---|---|---|---|
-| `SC` | `YSS` | 92 | Manual snow courses — 10-point surveys, records from 1964, target dates Feb 1 / Mar 1 / Apr 1 / May 1 / May 15.  **Periodic**, so excluded from `all_daily_snow_stations.geojson`. |
+| `SC` | `YSS` | 92 | Manual snow courses — 10-point surveys, records from 1964, target dates Feb 1 / Mar 1 / Apr 1 / May 1 / May 15.  **Periodic**, so `daily_or_better: false` in `all_snow_stations.geojson`. |
 | `AWS` | `YSS` | 9 | Automated snow-weather stations — snow-pillow SWE at hourly to 3-hourly resolution, earliest record 1980-02-25. |
 | `ECCC` | `YKEC` | 8 | Environment and Climate Change Canada climate stations mirrored into AquaCache, with daily snow depth.  Reaches the Arctic coast (Herschel Island 69.57°N; Komakuk Beach from 1963). |
 
@@ -769,10 +787,10 @@ from clients.yukon.yukon_client import VARIABLES, DATA_FLAGS, SNOW_VARIABLES
 | `baro_press_kpa` | `baro` | kPa | kPa |
 | `soil_moisture_pct` | `other` | % | % |
 
-Unlike the other clients, `VARIABLES[key]["units"]` is the **native** unit and
-`["output_units"]` is what `get_data()` emits, so callers and the GeoJSON
-builder read one source of truth.  Only SWE is converted; as in the DataBC
-client, other met variables keep their native units.
+`VARIABLES[key]["units"]` is the **native** unit and `["output_units"]` is
+what `get_data()` emits — the pattern `DESIGN.md` §3.2 adopts for every
+client.  Only SWE needs conversion here (mm → cm); the other Yukon met
+variables are already metric.
 
 ### Constructor
 
@@ -818,6 +836,11 @@ populated `series` list.
 #### `get_all_stations(active_only, bbox)` → `list[dict]`
 
 Courses + automated + ECCC, sorted by `station_id` (109 stations).
+
+#### `get_metadata(station_id)` → `dict`
+
+Full metadata for a single station, including its `series` list and a
+`variables` summary.  Returns `{}` for unknown codes.
 
 #### `get_snow_survey_data(station_ids, begin_date, end_date, include_flags)` → `list[dict]`
 
@@ -904,7 +927,7 @@ Courses additionally carry `first_survey`, `last_survey`, `survey_counts`,
 
 ### Data flags
 
-Four vocabularies, exported separately and unioned into `DATA_FLAGS`:
+Five vocabularies, exported separately and unioned into `DATA_FLAGS`:
 
 | Export | Source | Applies to |
 |---|---|---|
@@ -1008,16 +1031,22 @@ with linear backoff up to `max_retries` attempts.
 
 ## 8. Adding a New Client
 
-To add support for a new data source (e.g. GHCND, Alberta Environment):
+The full normative contract and checklist live in
+[DESIGN.md](../DESIGN.md) §3 and the
+[new-client issue template](../.github/ISSUE_TEMPLATE/new_client.md).
+In brief, to add support for a new data source:
 
 1. Create `clients/{source}/` directory with `__init__.py` and
    `{source}_client.py`.
 2. Implement a `{Source}Client` class with at minimum:
-   - `get_stations(...)` → `list[dict]`
+   - `get_all_stations(active_only=False, bbox=None)` → `list[dict]`
    - `get_data(..., include_flags: bool = False)` → `list[dict]`
+   - `get_metadata(station_id)` → `dict`
 3. Export `VARIABLES` (or `SENSORS`) and `DATA_FLAGS` module-level dicts.
-4. Raise `{Source}Error(Exception)` for all errors.
-5. Return metric units (cm for SWE and snow depth).
+4. Raise `{Source}Error(Exception)` for all errors — including unknown
+   variables and unsupported intervals (no silent fallbacks).
+5. Return metric units for every variable (cm for SWE and snow depth —
+   see the DESIGN.md §3.5 units table).
 6. Export the class from `clients/{source}/__init__.py`.
 7. Add to `clients/__init__.py`.
 8. Add to `scripts/create_all_stations_geojson.py`:

@@ -8,6 +8,8 @@ An internet connection is required.
 
 import pytest
 
+pytestmark = pytest.mark.live  # hits real network endpoints
+
 from clients.cdec import CDECClient, CDECError
 from clients.cdec.cdec_client import (
     SENSORS,

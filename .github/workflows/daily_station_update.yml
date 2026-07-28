@@ -31,7 +31,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add \
-            all_daily_snow_stations.geojson \
+            all_snow_stations.geojson \
             clients/awdb/awdb_stations.geojson \
             clients/cdec/cdec_stations.geojson \
             clients/databc/databc_stations.geojson \
@@ -46,9 +46,13 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   # ── Stage 2: fetch each network in parallel ────────────────────────────────
-  fetch-awdb:
+  fetch-data:
     needs: create-stations-geojson
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        network: [awdb, cdec, databc, nve, yukon]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -56,108 +60,36 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
-      - name: Fetch AWDB station data
-        continue-on-error: true
-        run: pixi run fetch-data-awdb
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: station-csvs-awdb
-          path: data/stations/
-          if-no-files-found: warn
-
-  fetch-cdec:
-    needs: create-stations-geojson
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
-
-      - uses: prefix-dev/setup-pixi@v0.8.3
-
-      - name: Fetch CDEC station data
-        continue-on-error: true
-        run: pixi run fetch-data-cdec
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: station-csvs-cdec
-          path: data/stations/
-          if-no-files-found: warn
-
-  fetch-databc:
-    needs: create-stations-geojson
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
-
-      - uses: prefix-dev/setup-pixi@v0.8.3
-
-      - name: Fetch DataBC station data
-        continue-on-error: true
-        run: pixi run fetch-data-databc
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: station-csvs-databc
-          path: data/stations/
-          if-no-files-found: warn
-
-  fetch-nve:
-    needs: create-stations-geojson
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
-
-      - uses: prefix-dev/setup-pixi@v0.8.3
-
-      - name: Fetch NVE station data
+      - name: Fetch ${{ matrix.network }} station data
         continue-on-error: true
         env:
+          # Only the NVE client reads this; harmless for the others.
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
-        run: pixi run fetch-data-nve
+        run: pixi run fetch-data-${{ matrix.network }}
+
+      # Upload ONLY the CSVs this job actually refreshed.  The checkout
+      # contains yesterday's committed CSVs for every network; uploading
+      # the whole directory would let download-artifact's last-writer-wins
+      # merge overwrite another network's fresh files with stale copies.
+      - name: Stage refreshed CSVs
+        run: |
+          mkdir -p /tmp/refreshed-csvs
+          git status --porcelain -- data/stations/ | while read -r _ path; do
+            cp "$path" /tmp/refreshed-csvs/
+          done
+          echo "Refreshed $(ls /tmp/refreshed-csvs | wc -l) CSVs"
 
       - uses: actions/upload-artifact@v4
         with:
-          name: station-csvs-nve
-          path: data/stations/
-          if-no-files-found: warn
-
-  fetch-yukon:
-    needs: create-stations-geojson
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
-
-      - uses: prefix-dev/setup-pixi@v0.8.3
-
-      # The Yukon AquaCache API is unauthenticated — no secret needed.
-      - name: Fetch Yukon station data
-        continue-on-error: true
-        run: pixi run fetch-data-yukon
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: station-csvs-yukon
-          path: data/stations/
+          name: station-csvs-${{ matrix.network }}
+          path: /tmp/refreshed-csvs/
           if-no-files-found: warn
 
   # ── Stage 3: merge artifacts, update GeoJSON dates, build archive, commit ──
   finalize:
     needs:
       - create-stations-geojson
-      - fetch-awdb
-      - fetch-cdec
-      - fetch-databc
-      - fetch-nve
-      - fetch-yukon
+      - fetch-data
     # Run even if some fetch jobs failed so partial data is still committed.
     if: always() && needs.create-stations-geojson.result == 'success'
     runs-on: ubuntu-latest
@@ -181,11 +113,14 @@ jobs:
       - name: Update GeoJSON dates and build archive
         run: pixi run finalize-data
 
+      # The GeoJSON must be committed here too: finalize-data stamps the
+      # CSV-derived record dates onto it, and stage 1's rebuild carries
+      # them forward only if they were actually published.
       - name: Commit and push station data
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/
+          git add data/ all_snow_stations.geojson
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0
@@ -198,6 +133,9 @@ jobs:
     needs: finalize
     if: needs.finalize.result == 'success' || needs.finalize.result == 'skipped'
     uses: ./.github/workflows/ci.yml
+    # ci.yml references secrets.NVE_API_KEY; a called workflow receives no
+    # secrets unless they are passed explicitly.
+    secrets: inherit
 
   build-and-deploy:
     needs: finalize

@@ -9,6 +9,8 @@ snow monitoring sites that have been operating for multiple seasons.
 
 import pytest
 
+pytestmark = pytest.mark.live  # hits real network endpoints
+
 from clients.nve import NVEClient, NVEError
 from clients.nve.nve_client import (
     VARIABLES,

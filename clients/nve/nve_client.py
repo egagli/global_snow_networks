@@ -46,10 +46,17 @@ from __future__ import annotations
 import logging
 import os
 import time
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from typing import Any
 
 import requests
+
+from clients._common import (
+    coerce_list as _coerce_list,
+    date_str as _date_str,
+    filter_by_bbox as _filter_by_bbox,
+    request_with_retries,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -128,7 +135,8 @@ VARIABLES: dict[str, dict] = {
     "swe_m": {
         "name": "Snow Water Equivalent",
         "type": "swe",
-        "units": "cm",
+        "units": "m",
+        "output_units": "cm",
         "source": _NVE_DATA_SOURCE + " (ParameterId=2003)",
         "description": (
             "Snow water equivalent from automated snow pillow. "
@@ -140,6 +148,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Snow Depth",
         "type": "snwd",
         "units": "cm",
+        "output_units": "cm",
         "source": _NVE_DATA_SOURCE + " (ParameterId=2002)",
         "description": "Snow depth from automated sensor. Native API unit is cm.",
         "notes": "Parameter ID 2002 (Snødybde). Native units: cm.",
@@ -183,21 +192,6 @@ DATA_FLAGS: dict[str, str] = {
 
 
 # ── Helper functions ─────────────────────────────────────────────────────────
-
-def _coerce_list(value: list | str) -> list[str]:
-    """Ensure value is a list of strings."""
-    if isinstance(value, str):
-        return [value]
-    return list(value)
-
-
-def _date_str(d: str | date | datetime) -> str:
-    """Normalize a date-like object to ``YYYY-MM-DD`` string."""
-    if isinstance(d, str):
-        return d[:10]
-    if isinstance(d, datetime):
-        return d.date().isoformat()
-    return d.isoformat()
 
 
 def _reference_windows(
@@ -245,22 +239,6 @@ def _reference_windows(
         windows.append((cur.isoformat(), win_end.isoformat()))
         cur = win_end + timedelta(days=1)
     return windows
-
-
-def _filter_by_bbox(
-    stations: list[dict],
-    bbox: tuple[float, float, float, float],
-    lat_key: str = "latitude",
-    lon_key: str = "longitude",
-) -> list[dict]:
-    """Return stations whose lat/lon fall within (min_lon, min_lat, max_lon, max_lat)."""
-    min_lon, min_lat, max_lon, max_lat = bbox
-    return [
-        s for s in stations
-        if s.get(lat_key) is not None and s.get(lon_key) is not None
-        and min_lat <= float(s[lat_key]) <= max_lat
-        and min_lon <= float(s[lon_key]) <= max_lon
-    ]
 
 
 def _normalize_value(v: Any) -> float | None:
@@ -424,8 +402,9 @@ class NVEClient:
         ----------
         parameter_ids : list[int] or int, optional
             NVE parameter ID(s) to filter stations by.
-            - 2001 : Snow depth
-            - 2002 : Snow Water Equivalent (SWE)
+            - 2002 : Snow depth (Snødybde)
+            - 2003 : Snow Water Equivalent (Snøens vannekvivalent)
+            (2001 is soil water — NOT a snow parameter.)
             Defaults to no parameter filter (all stations).
         active_only : bool
             If True, return only currently active stations.
@@ -492,8 +471,8 @@ class NVEClient:
         Get all NVE stations with snow parameters (SWE and/or snow depth).
 
         This is the recommended entry point for discovering snow monitoring
-        stations.  It fetches stations with parameter 2002 (SWE) and
-        parameter 2001 (snow depth) and deduplicates.
+        stations.  It fetches stations with parameter 2003 (SWE) and
+        parameter 2002 (snow depth) and deduplicates.
 
         Parameters
         ----------
@@ -558,7 +537,7 @@ class NVEClient:
         Parameters
         ----------
         parameter : int, optional
-            NVE parameter ID (e.g. 2002 for SWE, 2001 for snow depth).
+            NVE parameter ID (e.g. 2003 for SWE, 2002 for snow depth).
             The endpoint accepts a single parameter per request.
         station_id : str, optional
             NVE station ID, e.g. ``"2.11.0"``.
@@ -664,7 +643,7 @@ class NVEClient:
         station_id : str
             NVE station ID, e.g. ``"2.11.0"``.
         parameter_id : int
-            NVE parameter ID (e.g. 2002 for SWE, 2001 for snow depth).
+            NVE parameter ID (e.g. 2003 for SWE, 2002 for snow depth).
         begin_date : str or date, optional
             Start of the observation window (``"YYYY-MM-DD"``).
         end_date : str or date, optional
@@ -804,8 +783,15 @@ class NVEClient:
         # ── Resolve variables → (var_key, param_id, converter) tuples ─────
         var_jobs = _resolve_variables(variables)
 
-        resolution = _INTERVAL_TO_RESOLUTION.get(interval.lower(), _RESOLUTION_DAILY)
-        std_interval = _RESOLUTION_TO_INTERVAL.get(resolution, interval.lower())
+        try:
+            resolution = _INTERVAL_TO_RESOLUTION[interval.lower()]
+        except KeyError:
+            raise NVEError(
+                f"Unsupported interval {interval!r} for NVE — expected "
+                f"one of {sorted(_INTERVAL_TO_RESOLUTION)}."
+            ) from None
+        std_interval = _RESOLUTION_TO_INTERVAL[resolution]
+        sub_daily = resolution != _RESOLUTION_DAILY
 
         # ── Discover which series actually exist ──────────────────────────
         # Requesting a series that does not exist returns HTTP 404, and a
@@ -843,7 +829,7 @@ class NVEClient:
             for var_key, param_id, converter in var_jobs:
                 var_info = VARIABLES[var_key]
                 std_type = var_info["type"]
-                units = var_info["units"]
+                units = var_info["output_units"]
 
                 if (sid, param_id) not in series_index:
                     logger.debug(
@@ -895,6 +881,10 @@ class NVEClient:
                         "units": units,
                         "interval": std_interval,
                     }
+                    if sub_daily:
+                        # Keep the full timestamp so hourly records stay
+                        # distinguishable (DESIGN.md §3.4).
+                        rec["datetime"] = ts
                     if include_flags:
                         rec["flag"] = str(obs.get("quality") or obs.get("flag") or "")
                     records.append(rec)
@@ -924,89 +914,12 @@ class NVEClient:
             On non-retryable HTTP errors or after all retries are exhausted.
         """
         url = f"{self.base_url}/{endpoint}"
-
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                response = self._session.get(
-                    url, params=params, timeout=self.timeout
-                )
-            except requests.exceptions.RequestException as exc:
-                logger.warning(
-                    "Request failed (attempt %d/%d): %s",
-                    attempt, self.max_retries, exc,
-                )
-                if attempt == self.max_retries:
-                    raise NVEError(
-                        f"Request to {url} failed after "
-                        f"{self.max_retries} attempts: {exc}"
-                    ) from exc
-                time.sleep(self.backoff * attempt)
-                continue
-
-            if response.ok:
-                return response.json()
-
-            # Non-retryable client errors
-            if response.status_code == 400:
-                try:
-                    body = response.json()
-                    errors = body.get("errors") or {}
-                    msg = (
-                        f"{body.get('title', '')} {errors}"
-                        if errors
-                        else body.get("title") or response.text[:500]
-                    )
-                except Exception:
-                    msg = response.text[:500]
-                raise NVEError(f"HTTP 400 Bad Request: {msg}")
-
-            if response.status_code == 404:
-                # The API 404s e.g. when a requested series does not exist;
-                # the body explains which — keep it in the error.
-                raise NVEError(
-                    f"HTTP 404 Not Found: {url} "
-                    f"(params={params!r}): {response.text[:300]}"
-                )
-
-            # Rate limited — honour Retry-After if present, then retry
-            if response.status_code == 429:
-                if attempt < self.max_retries:
-                    try:
-                        delay = float(response.headers.get("Retry-After", ""))
-                    except ValueError:
-                        delay = float(self.backoff * attempt)
-                    logger.warning(
-                        "HTTP 429 from %s (attempt %d/%d) — retrying in %.1fs",
-                        url, attempt, self.max_retries, delay,
-                    )
-                    time.sleep(delay)
-                    continue
-                raise NVEError(
-                    f"HTTP 429 Too Many Requests from {url} "
-                    f"after {self.max_retries} attempts"
-                )
-
-            # Retryable server errors (5xx)
-            if response.status_code >= 500:
-                logger.warning(
-                    "HTTP %d from %s (attempt %d/%d) — retrying in %ds",
-                    response.status_code, url,
-                    attempt, self.max_retries, self.backoff * attempt,
-                )
-                if attempt < self.max_retries:
-                    time.sleep(self.backoff * attempt)
-                    continue
-                raise NVEError(
-                    f"HTTP {response.status_code} from {url} "
-                    f"after {self.max_retries} attempts"
-                )
-
-            # Other errors (401, 403, etc.)
-            raise NVEError(
-                f"HTTP {response.status_code} from {url}: {response.text[:200]}"
-            )
-
-        raise NVEError(f"Exhausted retries for {url}")  # should not reach here
+        response = request_with_retries(
+            self._session, url, params=params, error_cls=NVEError,
+            timeout=self.timeout, max_retries=self.max_retries,
+            backoff=self.backoff,
+        )
+        return response.json()
 
 
 # ── Exception ────────────────────────────────────────────────────────────────
@@ -1051,6 +964,11 @@ def _resolve_variables(
         ]
 
     raw_vars = [variables] if isinstance(variables, str) else list(variables)
+    if not raw_vars:
+        return [
+            (vk, _VAR_TO_PARAM[vk], _converters[vk])
+            for vk in ["swe_m", "snwd_cm"]
+        ]
     jobs: list[tuple[str, int, Any]] = []
     seen: set[str] = set()
     for v in raw_vars:
@@ -1064,8 +982,10 @@ def _resolve_variables(
                     jobs.append((vk, _VAR_TO_PARAM[vk], _converters[vk]))
                     seen.add(vk)
         else:
-            logger.warning("Unknown variable %r — skipping", v)
-    return jobs or [
-        (vk, _VAR_TO_PARAM[vk], _converters[vk])
-        for vk in ["swe_m", "snwd_cm"]
-    ]
+            # No silent fallback (DESIGN.md §3.6)
+            raise NVEError(
+                f"Unknown variable {v!r} for NVE — expected one of "
+                f"{sorted(_VAR_TO_PARAM)} or a standardized type "
+                f"({sorted(_TYPE_TO_NVE_VARS)})."
+            )
+    return jobs
