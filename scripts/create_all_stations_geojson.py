@@ -2,40 +2,30 @@
 """
 create_all_stations_geojson.py
 ==============================
-Build station GeoJSON inventories from all configured clients.
+Build station GeoJSON inventories from all configured clients
+(DESIGN.md §6).
 
-Three things are written per run:
+Two kinds of output per run:
 
-1. **Per-client GeoJSONs** (one per client, written to the client folder).
-   These contain ALL stations available from that client with ALL available
-   metadata.  They are NOT filtered to daily-only snow stations.
-     - ``clients/awdb/awdb_stations.geojson``
-     - ``clients/cdec/cdec_stations.geojson``
-     - ``clients/databc/databc_stations.geojson``
+1. **Per-client GeoJSONs** (one per client, written to the client
+   folder) — ALL stations from that source, including periodic snow
+   courses, with all available metadata.
 
-2. **``all_daily_snow_stations.geojson``** (repo root) — the merged, daily-only
-   inventory used by the data pipeline and live map.  Includes stations
-   from all clients that have at least one **daily** SWE or snow depth
-   observation.
+2. **``all_snow_stations.geojson``** (repo root) — the combined
+   inventory of every station from every client, on the universal
+   schema (``UNIVERSAL_FIELDS``).  ``daily_or_better`` marks the
+   stations the CSV archive and live map cover; it starts as an
+   advertised candidate and the data fetch verifies it
+   (``daily_verified``, DESIGN.md §4).
 
-Duplicate stations (same physical site accessible via multiple clients) are
-intentional and expected.  Each entry carries a ``client`` field so
-consumers can filter or de-duplicate by source.  The ``code`` field is the
-native station identifier for each client — it does not embed the client
-name.
+Duplicate stations (same physical site accessible via multiple clients)
+are intentional and expected; ``possible_duplicates`` cross-links them
+(DESIGN.md §5).  ``code`` is the native station identifier per client.
 
-Notes field
------------
-SNOTEL (SNTL/SNTLT) stations in AWDB receive a ``notes`` value describing
-the status of the NRCS air temperature bias correction programme.  This is
-fetched from the live NRCS JSON endpoint at runtime.
-
-Operator field
---------------
-Each feature includes an ``Operator`` field populated from the best
-available source metadata.  For AWDB stations, the operator is inferred
-from the network code.  For CDEC, it comes from the staSearch HTML.  For
-DataBC ASWS stations, it comes from the WFS ``OPERATOR`` field.
+The ``operator`` field is recorded only when certain — AWDB partner
+stations (MSNT/SNOW) get theirs borrowed from a uniquely matching native
+twin, never guessed.  SNOTEL stations carry an NRCS air-temperature
+bias-correction note fetched live at build time.
 """
 
 from __future__ import annotations
@@ -77,7 +67,7 @@ logger = logging.getLogger(__name__)
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Output paths
-ALL_STATIONS_OUT = REPO_ROOT / "all_daily_snow_stations.geojson"
+ALL_STATIONS_OUT = REPO_ROOT / "all_snow_stations.geojson"
 AWDB_GEOJSON_OUT = REPO_ROOT / "clients" / "awdb" / "awdb_stations.geojson"
 CDEC_GEOJSON_OUT = REPO_ROOT / "clients" / "cdec" / "cdec_stations.geojson"
 DATABC_GEOJSON_OUT = (
@@ -120,8 +110,88 @@ AWDB_NETWORK_OPERATOR: dict[str, str] = {
 }
 
 
-# Intervals that qualify a variable for inclusion in all_daily_snow_stations
+# Intervals that qualify a variable as a daily-or-better candidate
 _DAILY_INTERVALS = {"daily", "sub_daily", "hourly"}
+
+# ── Universal feature schema (DESIGN.md §6.1) ────────────────────────────────
+
+# Properties present on EVERY feature across all clients — null when the
+# source has nothing, never omitted.  Client-specific extras ride along
+# and are dropped when None.
+UNIVERSAL_FIELDS: tuple[str, ...] = (
+    "code",
+    "name",
+    "latitude",
+    "longitude",
+    "elevation_m",
+    "state",
+    "network_code",
+    "operator",
+    "client",
+    "data_provider",
+    "status",
+    "is_active",
+    "begin_date",
+    "end_date",
+    "earliest_record_date",
+    "latest_record_date",
+    "station_url",
+    "station_image_url",
+    "station_camera_url",
+    "notes",
+    "data_variables",
+    "has_daily_swe",
+    "has_daily_snwd",
+    "daily_or_better",
+    "daily_verified",
+    "daily_provenance",
+    "possible_duplicates",
+    "metadata_fetched_at",
+)
+
+# Human-readable organization/portal behind each access path (DESIGN.md §5)
+DATA_PROVIDERS: dict[str, str] = {
+    "awdb": "USDA NRCS AWDB",
+    "cdec": "CDEC (CA DWR)",
+    "databc": "BC Data Catalogue / BC ENV",
+    "nve": "NVE HydAPI",
+    "yukon": "Yukon Water Data (AquaCache)",
+}
+
+# Canonical operator spellings.  Values of None mean "treat as unknown"
+# (DESIGN.md §5: never guess an operator).
+OPERATOR_NORMALIZATION: dict[str, str | None] = {
+    ".None Specified": None,
+    "Natural Resources Conservation Service": "USDA NRCS",
+    "BC Ministry of Environment": "BC ENV",
+}
+
+# BC snow-station satellite cameras.  The camera pages use opaque
+# per-station tokens, so they are tabled here; the authoritative index is
+# https://www2.gov.bc.ca/gov/content/environment/air-land-water/water/
+# water-science-data/water-data-tools/snow-survey-data/
+# snow-station-satellite-cameras (checked 2026-07-28).
+_BC_CAMERA_BASE = "https://pvs.nupointsystems.com/api/photo-slider-by-nsn"
+BC_CAMERA_URLS: dict[str, str] = {
+    "2A31P": _BC_CAMERA_BASE + "?pass=%F3%CB%0A-%F7%0FI6%F2%CDr%AD%F2sq%AD%F2uq%2C%F7u%F15%04%00#images-1",
+    "1F04P": _BC_CAMERA_BASE + "?pass=%F3uq%2C%F7%85c%D7%2A0%9D%E5X%0E%00#images-1",
+    "1C38P": _BC_CAMERA_BASE + "?pass=%F3%CDJ7%F6uq%AD%F4%CB%8A4%F0%0Bq%AD%F2uq%2C%F7u%094%04%00#images-1",
+    "2F08P": _BC_CAMERA_BASE + "?pass=%F3uq%2C%F7%85c%D7%2A0%5D%15j%00%00#images-1",
+    "3B26P": _BC_CAMERA_BASE + "?pass=%F3uq%2C%F7%85c%D7%2A0%9D%E5X%01%00#images-1",
+    "4A02P": _BC_CAMERA_BASE + "?pass=%F3%CB%8A4%F4sq%AD%F4%0F%894%F0%0Bq%AD%F2uq%2C%F7u%094%00%00#images-1",
+    "2D14P": _BC_CAMERA_BASE + "?pass=%F3uq%2C%F7%85c%D7%2A0%5D%95%5E%0E%00#images-1",
+    "3A19P": _BC_CAMERA_BASE + "?pass=%F3uq%2C%F7%85c%D7%2A0%1D%12X%0E%00#images-1",
+}
+
+
+def normalize_operator(raw: str | None) -> str | None:
+    """Canonicalize an operator string; unknown/junk becomes None."""
+    if raw is None:
+        return None
+    text = str(raw).strip()
+    if not text:
+        return None
+    return OPERATOR_NORMALIZATION.get(text, text)
 
 
 def _has_daily_type(data_variables: list[dict], type_str: str) -> bool:
@@ -135,7 +205,12 @@ def _has_daily_type(data_variables: list[dict], type_str: str) -> bool:
 
 
 def _awdb_data_variables(station: dict) -> list[dict]:
-    """Build the data_variables list for an AWDB station from stationElements."""
+    """Build the data_variables list for an AWDB station from stationElements.
+
+    AWDB reports a period of record per element, so ``begin_date`` /
+    ``end_date`` are populated here; ``n_obs`` is unknown from metadata
+    alone and stays null (DESIGN.md §6.1).
+    """
     seen: set[tuple] = set()
     dvars: list[dict] = []
     for el in station.get("stationElements", []):
@@ -163,6 +238,7 @@ def _awdb_data_variables(station: dict) -> list[dict]:
             var_info.get("output_units")
             or el.get("originalUnitCode", "")
         )
+        end_raw = (el.get("endDate") or "")[:10]
         dvars.append({
             "name": code,
             "type": var_info.get("type", "other"),
@@ -170,6 +246,12 @@ def _awdb_data_variables(station: dict) -> list[dict]:
             "units": units,
             "description": var_info.get("description", ""),
             "notes": var_info.get("notes", ""),
+            "begin_date": (el.get("beginDate") or "")[:10] or None,
+            # 2100-01-01 is AWDB's "still recording" sentinel
+            "end_date": (
+                None if end_raw.startswith("2100") else end_raw or None
+            ),
+            "n_obs": None,
         })
     return dvars
 
@@ -203,9 +285,12 @@ def _cdec_data_variables(station: dict) -> list[dict]:
             "name": sinfo.get("short_name", str(snum)),
             "type": sinfo.get("type", "other"),
             "interval": interval,
-            "units": "cm",
+            "units": sinfo.get("output_units", ""),
             "description": sinfo.get("description", ""),
             "notes": sinfo.get("notes", ""),
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
         })
     # Snow courses with no sensors listed still have periodic manual SWE
     if not dvars and station.get("is_snow_course"):
@@ -216,6 +301,9 @@ def _cdec_data_variables(station: dict) -> list[dict]:
             "units": "cm",
             "description": "Manually measured snow water equivalent.",
             "notes": "Snow course — periodic survey only.",
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
         })
     return dvars
 
@@ -250,6 +338,9 @@ def _databc_data_variables(station: dict) -> list[dict]:
             "units": units,
             "description": vinfo.get("description", ""),
             "notes": vinfo.get("notes", ""),
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
         })
     return dvars
 
@@ -332,11 +423,201 @@ def make_feature(
     lat: float | None,
     props: dict[str, Any],
 ) -> dict:
+    """Build a GeoJSON feature enforcing the universal schema.
+
+    Universal fields (DESIGN.md §6.1) are always present — null when the
+    source has nothing.  Client-specific extras are kept only when
+    non-null.
+    """
+    properties: dict[str, Any] = {
+        k: props.get(k) for k in UNIVERSAL_FIELDS
+    }
+    for k, v in props.items():
+        if k not in UNIVERSAL_FIELDS and v is not None:
+            properties[k] = v
     return {
         "type": "Feature",
         "geometry": {"type": "Point", "coordinates": [lon, lat]},
-        "properties": {k: v for k, v in props.items() if v is not None},
+        "properties": properties,
     }
+
+
+# Old-schema → new-schema property renames, for upgrading features read
+# from a previously committed inventory (fallback paths).
+_LEGACY_RENAMES: dict[str, str] = {
+    "Operator": "operator",
+    "networkCode": "network_code",
+    "isActive": "is_active",
+    "beginDate": "begin_date",
+    "endDate": "end_date",
+    "dailySWE": "has_daily_swe",
+    "dailySnowDepth": "has_daily_snwd",
+}
+
+
+def upgrade_legacy_feature(feature: dict) -> dict:
+    """Upgrade a pre-2026-07 feature to the universal schema in place.
+
+    Used when a source outage forces a fallback to a previously
+    committed inventory that may predate the schema migration — the
+    merged file must never mix vocabularies.
+    """
+    props = feature.get("properties", {})
+    if "network_code" in props and "operator" in props:
+        return feature  # already new-schema
+    for old, new in _LEGACY_RENAMES.items():
+        if old in props and new not in props:
+            props[new] = props.pop(old)
+        else:
+            props.pop(old, None)
+    props["operator"] = normalize_operator(props.get("operator"))
+    props["data_provider"] = DATA_PROVIDERS.get(props.get("client"))
+    if props.get("daily_or_better") is None:
+        props["daily_or_better"] = bool(
+            props.get("has_daily_swe") or props.get("has_daily_snwd")
+        )
+    if props.get("daily_provenance") is None:
+        props["daily_provenance"] = (
+            "native" if props["daily_or_better"] else "none"
+        )
+    # Old data_variables entries used a pre-enum vocabulary and lacked
+    # the period-of-record keys
+    legacy_intervals = {"non-daily": "instantaneous",
+                        "calendar_year": "annual"}
+    for dv in props.get("data_variables") or []:
+        iv = str(dv.get("interval", "")).lower()
+        dv["interval"] = legacy_intervals.get(iv, iv)
+        dv.setdefault("begin_date", None)
+        dv.setdefault("end_date", None)
+        dv.setdefault("n_obs", None)
+    # Pre-migration bloat fields with no place in the new schema
+    for stale in ("snowElements", "elementCodes", "variables_daily",
+                  "variables_hourly", "elevation_ft", "stationId",
+                  "april1_avg_swe_in", "csv_path", "updated_date"):
+        props.pop(stale, None)
+    lon, lat = props.get("longitude"), props.get("latitude")
+    return make_feature(lon, lat, props)
+
+
+# ── Duplicate annotation (DESIGN.md §5) ──────────────────────────────────────
+
+def _haversine_m(lat1, lon1, lat2, lon2) -> float:
+    import math
+    r = 6371000.0
+    p1, p2 = math.radians(lat1), math.radians(lat2)
+    dp = math.radians(lat2 - lat1)
+    dl = math.radians(lon2 - lon1)
+    a = (math.sin(dp / 2) ** 2
+         + math.cos(p1) * math.cos(p2) * math.sin(dl / 2) ** 2)
+    return 2 * r * math.asin(math.sqrt(a))
+
+
+def annotate_possible_duplicates(
+    features: list[dict],
+    near_m: float = 1000.0,
+    name_match_m: float = 5000.0,
+) -> int:
+    """Cross-link likely duplicate stations across clients.
+
+    The same physical site appearing once per access path is intentional
+    (DESIGN.md §5); this makes the links explicit instead of leaving
+    consumers to rediscover them.  Two features from *different* clients
+    are candidates when they are within ``near_m`` metres, or within
+    ``name_match_m`` metres with the same case-folded name.  Each side
+    gets a ``possible_duplicates`` list of ``{code, client, distance_m}``.
+    """
+    # Grid-bucket at ~0.1° so only nearby pairs are compared
+    cell = 0.1
+    grid: dict[tuple[int, int], list[int]] = {}
+    for idx, f in enumerate(features):
+        p = f["properties"]
+        lat, lon = p.get("latitude"), p.get("longitude")
+        if lat is None or lon is None:
+            continue
+        grid.setdefault((int(lat // cell), int(lon // cell)), []).append(idx)
+
+    links: dict[int, list[dict]] = {}
+    seen_pairs: set[tuple[int, int]] = set()
+    for (gy, gx), members in grid.items():
+        neighborhood: list[int] = []
+        for dy in (-1, 0, 1):
+            for dx in (-1, 0, 1):
+                neighborhood.extend(grid.get((gy + dy, gx + dx), []))
+        for i in members:
+            pi = features[i]["properties"]
+            for j in neighborhood:
+                if j <= i:
+                    continue
+                pj = features[j]["properties"]
+                if pi.get("client") == pj.get("client"):
+                    continue
+                pair = (i, j)
+                if pair in seen_pairs:
+                    continue
+                seen_pairs.add(pair)
+                d = _haversine_m(
+                    pi["latitude"], pi["longitude"],
+                    pj["latitude"], pj["longitude"],
+                )
+                same_name = (
+                    str(pi.get("name") or "").casefold().strip()
+                    == str(pj.get("name") or "").casefold().strip()
+                    and str(pi.get("name") or "").strip() != ""
+                )
+                if d <= near_m or (same_name and d <= name_match_m):
+                    links.setdefault(i, []).append({
+                        "code": pj.get("code"),
+                        "client": pj.get("client"),
+                        "distance_m": round(d),
+                    })
+                    links.setdefault(j, []).append({
+                        "code": pi.get("code"),
+                        "client": pi.get("client"),
+                        "distance_m": round(d),
+                    })
+
+    for idx, dups in links.items():
+        features[idx]["properties"]["possible_duplicates"] = sorted(
+            dups, key=lambda x: x["distance_m"]
+        )
+    return len(links)
+
+
+def borrow_operators_from_twins(features: list[dict]) -> int:
+    """Fill unknown operators from a uniquely matching native twin.
+
+    AWDB labels partner stations (MSNT/SNOW) with no trustworthy
+    operator.  When such a feature has exactly one possible duplicate
+    from another client and that twin declares an operator, the twin's
+    value is authoritative for the same physical site (DESIGN.md §5 —
+    correction only when certain).
+    """
+    by_key = {
+        (f["properties"].get("client"), f["properties"].get("code")): f
+        for f in features
+    }
+    borrowed = 0
+    for f in features:
+        p = f["properties"]
+        if p.get("operator") or p.get("client") != "awdb":
+            continue
+        dups = p.get("possible_duplicates") or []
+        if len(dups) != 1:
+            continue
+        twin = by_key.get((dups[0]["client"], dups[0]["code"]))
+        if twin is None:
+            continue
+        twin_op = twin["properties"].get("operator")
+        if not twin_op:
+            continue
+        p["operator"] = twin_op
+        note = (
+            f"Operator taken from {dups[0]['client']} twin "
+            f"{dups[0]['code']} ({dups[0]['distance_m']} m away)."
+        )
+        p["notes"] = f"{p.get('notes') or ''} {note}".strip()
+        borrowed += 1
+    return borrowed
 
 
 def drop_invalid_coordinates(features: list[dict]) -> list[dict]:
@@ -397,10 +678,13 @@ def keep_previous_if_empty(
             "the merged GeoJSON", client_name,
         )
         return all_feats, daily_feats, False
+    # The previous file may predate the schema migration — the merged
+    # inventory must never mix vocabularies.
+    previous = [upgrade_legacy_feature(f) for f in previous]
     daily = [
         f for f in previous
-        if f.get("properties", {}).get("dailySWE")
-        or f.get("properties", {}).get("dailySnowDepth")
+        if f.get("properties", {}).get("has_daily_swe")
+        or f.get("properties", {}).get("has_daily_snwd")
     ]
     logger.error(
         "[%s] Fetch returned 0 stations — KEEPING PREVIOUS inventory "
@@ -436,6 +720,18 @@ _RECORD_DATE_FIELDS = (
     "csv_refreshed_at_utc",
 )
 
+# Probe-verified fields also carried forward across rebuilds — the data
+# fetch is the authority on these (DESIGN.md §4), so a metadata rebuild
+# must not reset them to advertised candidates.  ``has_daily_swe`` /
+# ``has_daily_snwd`` deliberately stay *advertised* (rebuilt from source
+# metadata every run) so a station that newly advertises daily data gets
+# probed again even after a failed verification.
+_VERIFIED_FIELDS = (
+    "daily_or_better",
+    "daily_verified",
+    "daily_provenance",
+)
+
 
 def carry_forward_record_dates(
     previous_path: Path, features: list[dict]
@@ -457,16 +753,25 @@ def carry_forward_record_dates(
     prev_by_key: dict[tuple, dict] = {}
     for f in previous:
         p = f.get("properties", {})
-        vals = {k: p[k] for k in _RECORD_DATE_FIELDS if p.get(k)}
-        if vals:
-            prev_by_key[(p.get("client"), p.get("code"))] = vals
+        prev_by_key[(p.get("client"), p.get("code"))] = p
     applied = 0
     for f in features:
         p = f.get("properties", {})
-        vals = prev_by_key.get((p.get("client"), p.get("code")))
-        if vals:
-            for k, v in vals.items():
-                p.setdefault(k, v)
+        prev = prev_by_key.get((p.get("client"), p.get("code")))
+        if prev is None:
+            continue
+        touched = False
+        for k in _RECORD_DATE_FIELDS:
+            if p.get(k) is None and prev.get(k) is not None:
+                p[k] = prev[k]
+                touched = True
+        # The probe's verdict is authoritative until the next probe
+        if prev.get("daily_verified"):
+            for k in _VERIFIED_FIELDS:
+                if prev.get(k) is not None:
+                    p[k] = prev[k]
+            touched = True
+        if touched:
             applied += 1
     return applied
 
@@ -493,6 +798,24 @@ def awdb_image_url(station: dict) -> str:
     return f"https://www.wcc.nrcs.usda.gov/siteimages/{sid}.jpg"
 
 
+def _daily_candidate_props(data_vars: list[dict]) -> dict[str, Any]:
+    """Advertised daily-or-better flags shared by every client's builder.
+
+    These are *candidates* from source metadata; the data fetch verifies
+    them (DESIGN.md §4) and stamps ``daily_verified`` accordingly.
+    """
+    has_swe = _has_daily_type(data_vars, "swe")
+    has_snwd = _has_daily_type(data_vars, "snwd")
+    return {
+        "data_variables": data_vars,
+        "has_daily_swe": has_swe,
+        "has_daily_snwd": has_snwd,
+        "daily_or_better": has_swe or has_snwd,
+        "daily_verified": False,
+        "daily_provenance": "native" if (has_swe or has_snwd) else "none",
+    }
+
+
 def awdb_station_to_feature(
     station: dict,
     bias_table: dict,
@@ -504,46 +827,6 @@ def awdb_station_to_feature(
     code = triplet_to_code(triplet)
     network = str(station.get("networkCode") or "")
 
-    elements_summary = [
-        {
-            "elementCode": el.get("elementCode"),
-            "elementName": el.get("elementName", ""),
-            "durationName": el.get("durationName", ""),
-            "unitCode": (
-                "cm"
-                if el.get("elementCode") in {"WTEQ", "SNWD"}
-                else el.get("originalUnitCode", "")
-            ),
-            "beginDate": (el.get("beginDate") or "")[:10],
-            "endDate": (el.get("endDate") or "")[:10],
-        }
-        for el in station.get("stationElements", [])
-    ]
-
-    daily_vars = sorted(
-        {
-            str(el.get("elementCode") or "").strip()
-            for el in station.get("stationElements", [])
-            if str(el.get("durationName") or "").upper() == "DAILY"
-            and str(el.get("elementCode") or "").strip()
-        }
-    )
-    hourly_vars = sorted(
-        {
-            str(el.get("elementCode") or "").strip()
-            for el in station.get("stationElements", [])
-            if str(el.get("durationName") or "").upper() == "HOURLY"
-            and str(el.get("elementCode") or "").strip()
-        }
-    )
-    all_vars = sorted(
-        {
-            str(el.get("elementCode") or "").strip()
-            for el in station.get("stationElements", [])
-            if str(el.get("elementCode") or "").strip()
-        }
-    )
-
     # Notes: bias correction for SNOTEL networks
     notes = ""
     if network in BIAS_NETWORKS:
@@ -552,8 +835,8 @@ def awdb_station_to_feature(
     props: dict[str, Any] = {
         "code": code,
         "awdb_station_triplet": triplet,
-        "stationId": station.get("stationId"),
-        "networkCode": network,
+        "awdb_station_id": station.get("stationId"),
+        "network_code": network,
         "name": station.get("name"),
         "state": station.get("stateCode"),
         "county": station.get("countyName"),
@@ -561,25 +844,23 @@ def awdb_station_to_feature(
         "latitude": lat,
         "longitude": lon,
         "elevation_m": ft_to_m(station.get("elevation")),
-        "beginDate": (station.get("beginDate") or "")[:10],
-        "endDate": (station.get("endDate") or "")[:10],
-        "isActive": _awdb_is_active(station.get("endDate")),
-        "Operator": AWDB_NETWORK_OPERATOR.get(network),
+        "begin_date": (station.get("beginDate") or "")[:10] or None,
+        "end_date": (station.get("endDate") or "")[:10] or None,
+        "is_active": _awdb_is_active(station.get("endDate")),
+        "status": (
+            "Active" if _awdb_is_active(station.get("endDate"))
+            else "Inactive"
+        ),
+        "operator": AWDB_NETWORK_OPERATOR.get(network),
         "client": "awdb",
-        "notes": notes,
-        "station_url": awdb_station_url(station),
-        "station_image_url": awdb_image_url(station),
+        "data_provider": DATA_PROVIDERS["awdb"],
+        "notes": notes or None,
+        "station_url": awdb_station_url(station) or None,
+        "station_image_url": awdb_image_url(station) or None,
+        "station_camera_url": None,
         "metadata_fetched_at": date.today().isoformat(),
     }
-    props["snowElements"] = elements_summary
-    props["elementCodes"] = all_vars
-    props["variables_daily"] = ", ".join(daily_vars)
-    props["variables_hourly"] = ", ".join(hourly_vars)
-
-    data_vars = _awdb_data_variables(station)
-    props["data_variables"] = data_vars
-    props["dailySWE"] = _has_daily_type(data_vars, "swe")
-    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
+    props.update(_daily_candidate_props(_awdb_data_variables(station)))
 
     return make_feature(lon, lat, props)
 
@@ -677,47 +958,46 @@ def cdec_station_to_feature(station: dict) -> dict:
     lon = station.get("longitude")
     elev_ft = station.get("elevation_ft")
 
+    april1_in = station.get("april1_avg_swe_in")
     props: dict[str, Any] = {
         "code": sid,
         "name": station.get("name", ""),
         "latitude": lat,
         "longitude": lon,
         "elevation_m": ft_to_m(elev_ft),
-        "elevation_ft": elev_ft,
         "state": "CA",
-        "river_basin": station.get("river_basin", ""),
-        "county": station.get("county", ""),
-        "Operator": station.get("operator", "")
-        or station.get("measuring_agency", ""),
+        "river_basin": station.get("river_basin") or None,
+        "county": station.get("county") or None,
+        "operator": normalize_operator(
+            station.get("operator")
+            or station.get("measuring_agency")
+        ),
         "client": "cdec",
-        "networkCode": "CCSS",
-        "notes": "",
+        "data_provider": DATA_PROVIDERS["cdec"],
+        "network_code": "CCSS",
+        "notes": None,
+        "status": None,
+        "is_active": None,
+        "begin_date": None,
+        "end_date": None,
         "is_snow_course": station.get("is_snow_course", False),
         "is_snow_pillow": station.get("is_snow_pillow", False),
-        "has_daily_swe": station.get("has_daily_swe", False),
-        "has_daily_snwd": station.get("has_daily_snwd", False),
         "sensors": station.get("sensors", []),
         "station_url": station.get(
             "station_url",
             f"https://cdec.water.ca.gov/dynamicapp/staMeta"
             f"?station_id={sid}",
         ),
-        "april1_avg_swe_in": station.get("april1_avg_swe_in"),
+        "station_image_url": None,
+        "station_camera_url": None,
+        "april1_avg_swe_cm": (
+            round(april1_in * 2.54, 1) if april1_in is not None else None
+        ),
         "course_number": station.get("course_number"),
         "measuring_agency": station.get("measuring_agency"),
         "metadata_fetched_at": date.today().isoformat(),
     }
-
-    data_vars = _cdec_data_variables(station)
-    props["data_variables"] = data_vars
-    props["dailySWE"] = _has_daily_type(data_vars, "swe")
-    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
-    daily_names = [
-        dv["name"] for dv in data_vars
-        if dv.get("interval", "").lower() in _DAILY_INTERVALS
-    ]
-    if daily_names:
-        props["variables_daily"] = ", ".join(daily_names)
+    props.update(_daily_candidate_props(_cdec_data_variables(station)))
 
     return make_feature(lon, lat, props)
 
@@ -778,33 +1058,27 @@ def databc_station_to_feature(station: dict) -> dict:
         "longitude": lon,
         "elevation_m": station.get("elevation_m"),
         "state": "BC",
-        "Operator": station.get("operator", "BC Ministry of Environment"),
+        "operator": normalize_operator(
+            station.get("operator") or "BC ENV"
+        ),
         "client": "databc",
-        "networkCode": "BCSS",
-        "notes": "",
-        "station_type": stype,  # "ASWS" or "MSS" — distinguishes automated vs manual
-        "status": station.get("status", ""),
-        "isActive": str(station.get("status", "")).lower() == "active",
-        "station_url": station.get("station_url", ""),
+        "data_provider": DATA_PROVIDERS["databc"],
+        "network_code": "BCSS",
+        "notes": None,
+        "begin_date": None,
+        "end_date": None,
+        "station_type": stype,  # "ASWS" or "MSS" — automated vs manual
+        "status": station.get("status") or None,
+        "is_active": str(station.get("status", "")).lower() == "active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": (
+            station.get("station_image_url") or station.get("camera_url")
+            if stype == "ASWS" else None
+        ),
+        "station_camera_url": BC_CAMERA_URLS.get(loc_id),
         "metadata_fetched_at": date.today().isoformat(),
     }
-
-    if stype == "ASWS":
-        # Prefer AQRT-fetched station image over WFS camera URL
-        img = station.get("station_image_url") or station.get("camera_url")
-        if img:
-            props["station_image_url"] = img
-
-    data_vars = _databc_data_variables(station)
-    props["data_variables"] = data_vars
-    props["dailySWE"] = _has_daily_type(data_vars, "swe")
-    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
-    daily_names = [
-        dv["name"] for dv in data_vars
-        if dv.get("interval", "").lower() in _DAILY_INTERVALS
-    ]
-    if daily_names:
-        props["variables_daily"] = ", ".join(daily_names)
+    props.update(_daily_candidate_props(_databc_data_variables(station)))
 
     return make_feature(lon, lat, props)
 
@@ -907,6 +1181,9 @@ def _nve_data_variables(station: dict) -> list[dict]:
             "units": vinfo["output_units"],
             "description": vinfo["description"],
             "notes": vinfo["notes"],
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
         })
     return dvars
 
@@ -931,27 +1208,23 @@ def nve_station_to_feature(station: dict) -> dict:
         "latitude": lat,
         "longitude": lon,
         "elevation_m": station.get("elevation_m"),
-        "Operator": "NVE",
+        "state": "NO",
+        "operator": "NVE",
         "client": "nve",
-        "networkCode": "NVE",
-        "notes": notes,
-        "status": station.get("status", ""),
-        "isActive": station.get("status") == "Active",
-        "station_url": station.get("station_url", ""),
-        "drainage_basin_key": station.get("drainage_basin_key", ""),
+        "data_provider": DATA_PROVIDERS["nve"],
+        "network_code": "NVE",
+        "notes": notes or None,
+        "begin_date": None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "drainage_basin_key": station.get("drainage_basin_key") or None,
         "metadata_fetched_at": date.today().isoformat(),
     }
-
-    data_vars = _nve_data_variables(station)
-    props["data_variables"] = data_vars
-    props["dailySWE"] = _has_daily_type(data_vars, "swe")
-    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
-    daily_names = [
-        dv["name"] for dv in data_vars
-        if dv.get("interval", "").lower() in _DAILY_INTERVALS
-    ]
-    if daily_names:
-        props["variables_daily"] = ", ".join(daily_names)
+    props.update(_daily_candidate_props(_nve_data_variables(station)))
 
     return make_feature(lon, lat, props)
 
@@ -1017,6 +1290,9 @@ def _yukon_data_variables(station: dict) -> list[dict]:
                 "units": vinfo["output_units"],
                 "description": vinfo["description"],
                 "notes": vinfo["notes"],
+                "begin_date": station.get("first_survey") or None,
+                "end_date": station.get("last_survey") or None,
+                "n_obs": None,
             })
         return dvars
 
@@ -1033,11 +1309,10 @@ def _yukon_data_variables(station: dict) -> list[dict]:
             continue
         seen.add(ident)
         notes = vinfo["notes"]
-        period = f"{series['start_datetime'][:10]} to {series['end_datetime'][:10]}"
         notes = (
             f"{notes} AquaCache timeseries {series['timeseries_id']}, "
             f"aggregation '{series['aggregation']}', recording rate "
-            f"'{series['recording_rate']}', period of record {period}."
+            f"'{series['recording_rate']}'."
         )
         dvars.append({
             "name": key,
@@ -1046,6 +1321,9 @@ def _yukon_data_variables(station: dict) -> list[dict]:
             "units": vinfo["output_units"],
             "description": vinfo["description"],
             "notes": notes,
+            "begin_date": (series.get("start_datetime") or "")[:10] or None,
+            "end_date": (series.get("end_datetime") or "")[:10] or None,
+            "n_obs": None,
         })
     return dvars
 
@@ -1073,42 +1351,30 @@ def yukon_station_to_feature(station: dict) -> dict:
         "elevation_m": station.get("elevation_m"),
         # Not blanket "YT": the Yukon Snow Survey also runs courses in BC
         # and Alaska (e.g. "Atlin (B.C.)", "Boundary (Alaska)").
-        "state": station.get("state", ""),
-        "Operator": station.get("operator", ""),
+        "state": station.get("state") or None,
+        "operator": normalize_operator(station.get("operator")),
         "client": "yukon",
-        "networkCode": station.get("network_code", "YSS"),
-        "notes": notes,
+        "data_provider": DATA_PROVIDERS["yukon"],
+        "network_code": station.get("network_code", "YSS"),
+        "notes": notes or None,
+        "begin_date": station.get("first_survey") or None,
+        "end_date": None,
         # "SC" = manual snow course, "AWS" = automated snow-weather station
         # (snow-pillow SWE), "ECCC" = mirrored ECCC climate station.
         "station_type": stype,
-        "network": station.get("network", ""),
-        "status": station.get("status", ""),
-        "isActive": station.get("status") == "Active",
-        "station_url": station.get("station_url", ""),
-        "dataset_url": station.get("dataset_url", ""),
+        "network": station.get("network") or None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "dataset_url": station.get("dataset_url") or None,
+        "sub_basin": station.get("sub_basin"),
+        "first_survey": station.get("first_survey"),
+        "last_survey": station.get("last_survey"),
         "metadata_fetched_at": date.today().isoformat(),
     }
-
-    if station.get("sub_basin"):
-        props["sub_basin"] = station["sub_basin"]
-    if station.get("first_survey"):
-        props["first_survey"] = station["first_survey"]
-    if station.get("last_survey"):
-        props["last_survey"] = station["last_survey"]
-
-    data_vars = _yukon_data_variables(station)
-    props["data_variables"] = data_vars
-    props["dailySWE"] = _has_daily_type(data_vars, "swe")
-    props["dailySnowDepth"] = _has_daily_type(data_vars, "snwd")
-    # A variable can appear at two daily-class intervals (ECCC serves air
-    # temperature and precipitation both hourly and as a daily aggregate),
-    # so de-duplicate while preserving first-seen order.
-    daily_names = list(dict.fromkeys(
-        dv["name"] for dv in data_vars
-        if dv.get("interval", "").lower() in _DAILY_INTERVALS
-    ))
-    if daily_names:
-        props["variables_daily"] = ", ".join(daily_names)
+    props.update(_daily_candidate_props(_yukon_data_variables(station)))
 
     return make_feature(lon, lat, props)
 
@@ -1165,7 +1431,7 @@ def main() -> None:
     ap.add_argument(
         "--output",
         default=str(ALL_STATIONS_OUT),
-        help="Path for the merged all-stations GeoJSON (default: all_daily_snow_stations.geojson)",
+        help="Path for the combined all-stations GeoJSON (default: all_snow_stations.geojson)",
     )
     ap.add_argument(
         "--skip-awdb",
@@ -1203,7 +1469,8 @@ def main() -> None:
     args = ap.parse_args()
 
     today = date.today().isoformat()
-    all_daily_features: list[dict] = []
+    all_features_merged: list[dict] = []
+    daily_count = 0
 
     # ── Fetch bias correction table (used by AWDB) ────────────────────────────
     print("Fetching NRCS air temp bias correction table...")
@@ -1245,7 +1512,8 @@ def main() -> None:
                     "total": len(awdb_all),
                 },
             )
-        all_daily_features.extend(awdb_daily)
+        all_features_merged.extend(awdb_all)
+        daily_count += len(awdb_daily)
         print(
             f"[AWDB] {len(awdb_daily):,} daily stations added to merged GeoJSON"
         )
@@ -1279,7 +1547,8 @@ def main() -> None:
                     "total": len(cdec_all),
                 },
             )
-        all_daily_features.extend(cdec_daily)
+        all_features_merged.extend(cdec_all)
+        daily_count += len(cdec_daily)
         print(
             f"[CDEC] {len(cdec_daily):,} daily stations added to merged GeoJSON"
         )
@@ -1316,7 +1585,8 @@ def main() -> None:
                     "total": len(databc_all),
                 },
             )
-        all_daily_features.extend(databc_daily)
+        all_features_merged.extend(databc_all)
+        daily_count += len(databc_daily)
         print(
             f"[DataBC] {len(databc_daily):,} daily stations added to merged GeoJSON"
         )
@@ -1348,7 +1618,8 @@ def main() -> None:
                     "total": len(nve_all),
                 },
             )
-        all_daily_features.extend(nve_daily)
+        all_features_merged.extend(nve_all)
+        daily_count += len(nve_daily)
         print(
             f"[NVE] {len(nve_daily):,} daily stations added to merged GeoJSON"
         )
@@ -1387,54 +1658,67 @@ def main() -> None:
                     "total": len(yukon_all),
                 },
             )
-        all_daily_features.extend(yukon_daily)
+        all_features_merged.extend(yukon_all)
+        daily_count += len(yukon_daily)
         print(
             f"[Yukon] {len(yukon_daily):,} daily stations added to merged GeoJSON"
         )
 
-    # ── Write merged all_daily_snow_stations.geojson ────────────────────────────────────
-    all_daily_features = drop_invalid_coordinates(all_daily_features)
+    # ── Write merged all_snow_stations.geojson ──────────────────────────────
+    all_features_merged = drop_invalid_coordinates(all_features_merged)
     carried = carry_forward_record_dates(
-        Path(args.output), all_daily_features
+        Path(args.output), all_features_merged
     )
     if carried:
-        print(f"Carried forward CSV record dates for {carried:,} stations")
+        print(f"Carried forward record/verified fields for {carried:,} stations")
+
+    linked = annotate_possible_duplicates(all_features_merged)
+    print(f"Cross-linked possible duplicates on {linked:,} features")
+    borrowed = borrow_operators_from_twins(all_features_merged)
+    if borrowed:
+        print(f"Borrowed operators from native twins for {borrowed:,} stations")
+
     print("=" * 60)
     print(
-        f"Writing merged all_daily_snow_stations.geojson "
-        f"({len(all_daily_features):,} features)"
+        f"Writing merged all_snow_stations.geojson "
+        f"({len(all_features_merged):,} features, "
+        f"{daily_count:,} daily-or-better candidates)"
     )
     clients_used = sorted(
         {
             f.get("properties", {}).get("client", "")
-            for f in all_daily_features
+            for f in all_features_merged
         }
     )
     by_client = Counter(
         f.get("properties", {}).get("client", "")
-        for f in all_daily_features
+        for f in all_features_merged
     )
     print(f"  By client: {dict(by_client)}")
 
     write_geojson(
         Path(args.output),
-        all_daily_features,
+        all_features_merged,
         {
             "generated": today,
             "clients": clients_used,
-            "elements": ["WTEQ/swe", "SNWD/snwd"],
-            "durations": ["DAILY"],
             "description": (
-                "Merged inventory of all snow stations with daily SWE or "
-                "snow depth from AWDB (US), CDEC (California), DataBC (BC, Canada), "
-                "NVE (Norway), and Yukon AquaCache (Yukon, Canada). "
-                "Stations from multiple clients may represent "
-                "the same physical site — use the 'client' field to "
-                "distinguish data sources. See per-client GeoJSONs in "
-                "clients/*/  for complete metadata including periodic "
-                "snow course sites."
+                "Combined inventory of ALL known snow point-observation "
+                "stations (SWE and/or snow depth) from AWDB (US + partner "
+                "networks), CDEC (California), DataBC (BC, Canada), NVE "
+                "(Norway), and Yukon AquaCache — including periodic snow "
+                "courses and other manual sites. daily_or_better marks "
+                "stations with a (probe-verified, see daily_verified) "
+                "daily-or-better record; the CSV archive and live map "
+                "cover exactly those. The same physical site may appear "
+                "once per access path — see possible_duplicates. "
+                "Schema: DESIGN.md §6.1."
             ),
-            "total": len(all_daily_features),
+            "references": [
+                "https://github.com/egagli/global_snow_networks/blob/main/DESIGN.md",
+                "https://github.com/egagli/global_snow_networks/blob/main/docs/SOURCES.md",
+            ],
+            "total": len(all_features_merged),
             "by_client": dict(by_client),
         },
     )

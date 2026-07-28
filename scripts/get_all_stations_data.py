@@ -3,7 +3,7 @@
 get_all_stations_data.py
 ========================
 Refresh per-station CSV files from all configured clients and update station
-date fields in all_daily_snow_stations.geojson.
+date and verification fields in all_snow_stations.geojson.
 
 Workflow
 --------
@@ -68,7 +68,7 @@ logging.basicConfig(
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-DEFAULT_GEOJSON = REPO_ROOT / "all_daily_snow_stations.geojson"
+DEFAULT_GEOJSON = REPO_ROOT / "all_snow_stations.geojson"
 DEFAULT_DATA_DIR = REPO_ROOT / "data" / "stations"
 DEFAULT_ARCHIVE = REPO_ROOT / "data" / "all_station_csvs.tar.xz"
 
@@ -135,6 +135,125 @@ def write_json_atomically(path: Path, obj: Any) -> None:
     with tmp_path.open("w", encoding="utf-8") as f:
         json.dump(obj, f, indent=2)
     tmp_path.replace(path)
+
+
+# ── Daily-or-better verification (DESIGN.md §4) ─────────────────────────────
+
+# A station's series counts as genuinely regular daily data only when it
+# has at least this many observations in total…
+_CADENCE_MIN_OBS = 30
+# …and its densest 90-day window averages at least one observation every
+# three days.  One-off and sporadic point measurements fail this even if
+# the source labels them "daily"; seasonal pillows (winter-only) pass.
+_CADENCE_WINDOW_DAYS = 90
+_CADENCE_MIN_WINDOW_OBS = 30
+
+
+def _column_cadence_ok(dates: pd.Series) -> bool:
+    """True when a series of observation dates is regular daily data."""
+    if len(dates) < _CADENCE_MIN_OBS:
+        return False
+    days = pd.to_datetime(dates, errors="coerce").dropna()
+    if len(days) < _CADENCE_MIN_OBS:
+        return False
+    days = days.sort_values().reset_index(drop=True)
+    # densest N-day window via two pointers
+    lo = 0
+    best = 0
+    for hi in range(len(days)):
+        while (days[hi] - days[lo]).days > _CADENCE_WINDOW_DAYS:
+            lo += 1
+        best = max(best, hi - lo + 1)
+    return best >= _CADENCE_MIN_WINDOW_OBS
+
+
+def check_daily_cadence(df: pd.DataFrame) -> tuple[bool, bool]:
+    """Per-column cadence verdict (swe_ok, snwd_ok) for a station CSV."""
+    if df.empty:
+        return False, False
+    swe = df.dropna(subset=["wteq_cm"])
+    snwd = df.dropna(subset=["snwd_cm"])
+    return (
+        _column_cadence_ok(swe["date"]),
+        _column_cadence_ok(snwd["date"]),
+    )
+
+
+def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
+    """Stamp probe-verified daily fields onto a feature from CSV content.
+
+    Returns True when the station passes the cadence check.  A station
+    that fails stays in the inventory (never deleted — DESIGN.md §6.4)
+    but is excluded from the map by ``daily_or_better = False``.
+    Inactive stations with a regular historical record pass on that
+    record and stay archived and mapped.
+    """
+    props = feature.setdefault("properties", {})
+    swe_ok, snwd_ok = check_daily_cadence(df)
+    passed = swe_ok or snwd_ok
+    props["daily_or_better"] = passed
+    props["daily_verified"] = True
+    if not passed:
+        props["daily_provenance"] = "none"
+        note = (
+            "Probe: fetched data is too sparse for a daily-or-better "
+            "record (cadence check failed) — treated as periodic."
+        )
+        existing = props.get("notes") or ""
+        if "cadence check failed" not in existing:
+            props["notes"] = f"{existing} {note}".strip()
+    elif not props.get("daily_provenance") or (
+        props.get("daily_provenance") == "none"
+    ):
+        props["daily_provenance"] = "native"
+    return passed
+
+
+def is_fetch_candidate(props: dict) -> bool:
+    """Stations worth fetching: advertised daily-or-better candidates
+    plus anything previously verified (keeps inactive-but-historical
+    stations refreshed)."""
+    return bool(
+        props.get("has_daily_swe")
+        or props.get("has_daily_snwd")
+        or props.get("daily_or_better")
+    )
+
+
+def resample_records_to_daily(
+    records: list[dict], tz: str = "UTC"
+) -> list[dict]:
+    """Resample sub-daily records to daily means over the station-local day.
+
+    Used ONLY for stations with no native daily series (DESIGN.md §4 —
+    native daily always wins).  Produces daily-shaped records compatible
+    with ``_station_records_to_df``.
+    """
+    if not records:
+        return []
+    df = pd.DataFrame(records)
+    ts_col = "datetime" if "datetime" in df.columns else "date"
+    stamps = pd.to_datetime(df[ts_col], errors="coerce", utc=True)
+    try:
+        local = stamps.dt.tz_convert(tz)
+    except Exception:
+        local = stamps
+    df["_local_date"] = local.dt.strftime("%Y-%m-%d")
+    out: list[dict] = []
+    grouped = df.groupby(["station_id", "type", "_local_date"])
+    for (sid, vtype, day), grp in grouped:
+        vals = pd.to_numeric(grp["value"], errors="coerce").dropna()
+        out.append({
+            "station_id": sid,
+            "date": day,
+            "variable": str(grp["variable"].iloc[0]),
+            "type": vtype,
+            "value": round(float(vals.mean()), 3) if len(vals) else None,
+            "units": str(grp["units"].iloc[0]),
+            "interval": "daily",
+        })
+    out.sort(key=lambda r: (r["station_id"], r["type"], r["date"]))
+    return out
 
 
 def update_geojson_dates(
@@ -270,6 +389,7 @@ def refresh_awdb(
             update_geojson_dates(
                 features[feat_idx], earliest, latest, refreshed_at_utc
             )
+            verify_feature_from_csv(features[feat_idx], df)
             stats.updated_csvs += 1
             stats.by_client["awdb"] = stats.by_client.get("awdb", 0) + 1
             updated += 1
@@ -341,6 +461,7 @@ def refresh_cdec(
             update_geojson_dates(
                 features[feat_idx], earliest, latest, refreshed_at_utc
             )
+            verify_feature_from_csv(features[feat_idx], df)
             stats.updated_csvs += 1
             stats.by_client["cdec"] = stats.by_client.get("cdec", 0) + 1
             updated += 1
@@ -394,7 +515,7 @@ def refresh_databc(
         sid = str(r.get("station_id") or "")
         if sid:
             by_station.setdefault(sid, []).append(r)
-    stats.fetched += len(location_ids)
+    stats.fetched += len(by_station)
 
     updated = 0
     for lid_str in location_ids:
@@ -413,6 +534,7 @@ def refresh_databc(
         update_geojson_dates(
             features[feat_idx], earliest, latest, refreshed_at_utc
         )
+        verify_feature_from_csv(features[feat_idx], df)
         stats.updated_csvs += 1
         stats.by_client["databc"] = stats.by_client.get("databc", 0) + 1
         updated += 1
@@ -428,6 +550,7 @@ def refresh_nve(
     data_dir: Path,
     refreshed_at_utc: str,
     stats: RefreshStats,
+    resample_probe: bool = False,
 ) -> None:
     """Refresh NVE station CSVs.
 
@@ -442,24 +565,57 @@ def refresh_nve(
     idx_by_id = {sid: idx for idx, sid in stations}
 
     n = len(station_ids)
-    print(
-        f"  [NVE] Fetching daily SWE + snow depth for {n} stations...",
-        end=" ",
-        flush=True,
-    )
-    try:
-        records = client.get_data(
-            station_ids=station_ids,
-            variables=["swe", "snwd"],
-            interval="daily",
-            begin_date="1950-01-01",
-            end_date=date.today().isoformat(),
+    print(f"  [NVE] Fetching daily SWE + snow depth for {n} stations...")
+    # Batched so one bad batch doesn't zero the whole network for the
+    # day (DESIGN.md §6.4).
+    records: list[dict] = []
+    batch_size = 25
+    for start in range(0, n, batch_size):
+        batch = station_ids[start:start + batch_size]
+        try:
+            records.extend(client.get_data(
+                station_ids=batch,
+                variables=["swe", "snwd"],
+                interval="daily",
+                begin_date="1950-01-01",
+                end_date=date.today().isoformat(),
+            ))
+        except NVEError as exc:
+            stats.failed_batches += 1
+            print(f"  [NVE] batch {start // batch_size + 1} FAILED ({exc})")
+    print(f"  [NVE] ok ({len(records)} records)")
+
+    if resample_probe:
+        # Stations with no native daily series: probe their sub-daily
+        # record and resample to daily means over the station-local day
+        # (DESIGN.md §4 — only when no native daily exists).  Expensive;
+        # run explicitly via --resample-probe, not nightly.
+        have_daily = {str(r.get("station_id")) for r in records}
+        missing = [sid for sid in station_ids if sid not in have_daily]
+        print(
+            f"  [NVE] resample probe: {len(missing)} stations without "
+            f"native daily data"
         )
-        print(f"ok ({len(records)} records)")
-    except NVEError as exc:
-        stats.failed_batches += 1
-        print(f"FAILED ({exc})")
-        records = []
+        for sid in missing:
+            try:
+                hourly = client.get_data(
+                    station_ids=[sid],
+                    variables=["swe", "snwd"],
+                    interval="hourly",
+                    begin_date="1950-01-01",
+                    end_date=date.today().isoformat(),
+                )
+            except NVEError as exc:
+                print(f"  [NVE] resample probe {sid} FAILED ({exc})")
+                continue
+            resampled = resample_records_to_daily(hourly, tz="Europe/Oslo")
+            if resampled:
+                records.extend(resampled)
+                feat_idx = idx_by_id.get(sid)
+                if feat_idx is not None:
+                    features[feat_idx]["properties"][
+                        "daily_provenance"
+                    ] = "resampled_hourly"
 
     # Group flat records by station_id
     by_station: dict[str, list[dict]] = {}
@@ -484,6 +640,7 @@ def refresh_nve(
         update_geojson_dates(
             features[feat_idx], earliest, latest, refreshed_at_utc
         )
+        verify_feature_from_csv(features[feat_idx], df)
         stats.updated_csvs += 1
         stats.by_client["nve"] = stats.by_client.get("nve", 0) + 1
         updated += 1
@@ -519,24 +676,25 @@ def refresh_yukon(
     idx_by_id = {code: idx for idx, code in stations}
 
     n = len(station_ids)
-    print(
-        f"  [Yukon] Fetching daily SWE + snow depth for {n} stations...",
-        end=" ",
-        flush=True,
-    )
-    try:
-        records = client.get_data(
-            station_ids=station_ids,
-            variables=["swe", "snwd"],
-            interval="daily",
-            begin_date="1950-01-01",
-            end_date=date.today().isoformat(),
-        )
-        print(f"ok ({len(records)} records)")
-    except YukonError as exc:
-        stats.failed_batches += 1
-        print(f"FAILED ({exc})")
-        records = []
+    print(f"  [Yukon] Fetching daily SWE + snow depth for {n} stations...")
+    records: list[dict] = []
+    batch_size = 50
+    for start in range(0, n, batch_size):
+        batch = station_ids[start:start + batch_size]
+        try:
+            records.extend(client.get_data(
+                station_ids=batch,
+                variables=["swe", "snwd"],
+                interval="daily",
+                begin_date="1950-01-01",
+                end_date=date.today().isoformat(),
+            ))
+        except YukonError as exc:
+            stats.failed_batches += 1
+            print(
+                f"  [Yukon] batch {start // batch_size + 1} FAILED ({exc})"
+            )
+    print(f"  [Yukon] ok ({len(records)} records)")
 
     # Group flat records by station_id
     by_station: dict[str, list[dict]] = {}
@@ -561,6 +719,7 @@ def refresh_yukon(
         update_geojson_dates(
             features[feat_idx], earliest, latest, refreshed_at_utc
         )
+        verify_feature_from_csv(features[feat_idx], df)
         stats.updated_csvs += 1
         stats.by_client["yukon"] = stats.by_client.get("yukon", 0) + 1
         updated += 1
@@ -592,6 +751,8 @@ def finalize_from_csvs(
         timespec="seconds"
     )
     updated = 0
+    verified_ok = 0
+    verified_failed = 0
 
     for feat in features:
         props = feat.get("properties", {})
@@ -610,9 +771,16 @@ def finalize_from_csvs(
             continue
         earliest, latest = compute_record_dates(df)
         update_geojson_dates(feat, earliest, latest, refreshed_at_utc)
+        if verify_feature_from_csv(feat, df):
+            verified_ok += 1
+        else:
+            verified_failed += 1
         updated += 1
 
-    print(f"Updated GeoJSON dates for {updated} stations")
+    print(
+        f"Updated GeoJSON dates for {updated} stations "
+        f"(cadence passed: {verified_ok}, failed: {verified_failed})"
+    )
 
     geojson.setdefault("metadata", {})
     geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
@@ -663,6 +831,16 @@ def main() -> None:
         ),
     )
     ap.add_argument(
+        "--resample-probe",
+        action="store_true",
+        help=(
+            "For stations with no native daily series, fetch their "
+            "sub-daily record and resample to daily (station-local-day "
+            "mean). Expensive — run explicitly (bootstrap), not nightly. "
+            "Currently wired for NVE."
+        ),
+    )
+    ap.add_argument(
         "--finalize-only",
         action="store_true",
         help=(
@@ -704,6 +882,11 @@ def main() -> None:
         client_name = str(props.get("client") or "").lower()
 
         if not code:
+            continue
+
+        if not is_fetch_candidate(props):
+            # Periodic-only sites (snow courses etc.) are inventoried but
+            # not archived (DESIGN.md §4).
             continue
 
         if client_name == "awdb":
@@ -778,7 +961,8 @@ def main() -> None:
         )
     if run_nve:
         refresh_nve(
-            nve_stations, features, data_dir, refreshed_at_utc, stats
+            nve_stations, features, data_dir, refreshed_at_utc, stats,
+            resample_probe=args.resample_probe,
         )
     if run_yukon:
         refresh_yukon(
