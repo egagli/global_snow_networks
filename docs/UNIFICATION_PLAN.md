@@ -1,6 +1,6 @@
 # Unification Plan
 
-**Status:** approved 2026-07-28 (with clarifications below) — in progress
+**Status:** approved 2026-07-28 (with clarifications below) — **implemented** (merged to `main` via PR #26, 2026-07-28); §7 items remain open as future issues
 **Purpose:** unify the repository around a single, formalized design philosophy; fix all bugs found in the July 2026 audit; standardize the clients, artifacts, pipeline, map, docs, and tests so they all say and do the same thing.
 
 This plan is organized as: the consolidated design philosophy (§0, to be promoted to `DESIGN.md`), six implementation phases (§1–§6), future work to capture as GitHub issues (§7), and proposed-unless-vetoed decisions (§8).
