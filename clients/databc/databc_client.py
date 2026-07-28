@@ -112,11 +112,15 @@ import io
 import logging
 import math
 import re
-import time
 from typing import Any
 
 import pandas as pd
 import requests
+
+from clients._common import (
+    request_with_retries,
+    to_float as _to_float,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -140,6 +144,19 @@ _DEFAULT_BACKOFF = 5
 # The 16:00 UTC daily reading time used as the canonical daily value
 _DAILY_UTC_HOUR = "16:00"
 
+# Variables that can never be negative — for these, any negative reading
+# is a sensor/sentinel artefact and is nulled.  Air temperature is NOT in
+# this set: sub-zero readings are real data (DESIGN.md §3.6 requires
+# per-type clamps, never blanket "negative = invalid" filters).
+_NON_NEGATIVE_VARS = {
+    "swe_mm", "snwd_cm", "precip_cumul_mm", "rh_pct",
+    "wind_dir_deg", "wind_spd_kmh", "wind_spd_peak_kmh", "wind_run_km",
+    "baro_press_hpa", "snow_line_m", "density_pct",
+}
+
+# Coldest plausible air temperature (°C) — below this is a sentinel.
+_MIN_PLAUSIBLE_TEMP_C = -90.0
+
 
 # ── Public variable / flag tables ─────────────────────────────────────────────
 
@@ -149,6 +166,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Snow Water Equivalent",
         "type": "swe",
         "units": "mm",
+        "output_units": "cm",
         "source": "ASWS (daily: SWDaily.csv; hourly: SW.csv) and MSS (periodic survey)",
         "description": (
             "ASWS: automated snow pillow reading. "
@@ -161,6 +179,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Snow Depth",
         "type": "snwd",
         "units": "cm",
+        "output_units": "cm",
         "source": "ASWS (SD.csv / SD_Archive.csv) and MSS (periodic survey)",
         "description": (
             "ASWS: automated snow depth sensor reading from SD.csv; "
@@ -173,6 +192,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Air Temperature",
         "type": "temp",
         "units": "°C",
+        "output_units": "°C",
         "source": "ASWS (TA.csv / TA_Archive.csv)",
         "description": (
             "Hourly air temperature from ASWS stations. "
@@ -184,6 +204,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Precipitation Cumulative",
         "type": "precip",
         "units": "mm",
+        "output_units": "mm",
         "source": "ASWS (PC.csv / PC_Archive.csv)",
         "description": (
             "Cumulative precipitation accumulation from ASWS stations. "
@@ -195,6 +216,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Barometric Pressure",
         "type": "baro",
         "units": "hPa",
+        "output_units": "hPa",
         "source": "ASWS (PA.csv, current season only — no archive)",
         "description": (
             "Station-level barometric pressure. "
@@ -206,6 +228,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Wind Direction",
         "type": "wind_dir",
         "units": "degrees",
+        "output_units": "degrees",
         "source": "ASWS (UD.csv, current season only — no archive)",
         "description": (
             "Wind direction in degrees from north (0–360). "
@@ -217,6 +240,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Wind Speed",
         "type": "wind_spd",
         "units": "km/h",
+        "output_units": "km/h",
         "source": "ASWS (US.csv, current season only — no archive)",
         "description": (
             "Average wind speed. "
@@ -228,6 +252,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Wind Speed Peak (Gust)",
         "type": "wind_gust",
         "units": "km/h",
+        "output_units": "km/h",
         "source": "ASWS (UP.csv, current season only — no archive)",
         "description": (
             "Peak (gust) wind speed. "
@@ -239,6 +264,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Wind Run",
         "type": "wind_run",
         "units": "km",
+        "output_units": "km",
         "source": "ASWS (UR.csv, current season only — no archive)",
         "description": (
             "Cumulative wind run (distance travelled by wind). "
@@ -250,6 +276,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Relative Humidity",
         "type": "rh",
         "units": "%",
+        "output_units": "%",
         "source": "ASWS (XR.csv, current season only — no archive)",
         "description": (
             "Relative humidity as a percentage. "
@@ -261,6 +288,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Snow Density",
         "type": "density",
         "units": "%",
+        "output_units": "%",
         "source": "MSS (periodic survey only)",
         "description": "Snow density calculated from depth and SWE.",
         "notes": "",
@@ -269,6 +297,7 @@ VARIABLES: dict[str, dict] = {
         "name": "Snow Line Elevation",
         "type": "snow_line",
         "units": "m",
+        "output_units": "m",
         "source": "MSS (periodic survey only)",
         "description": "Elevation of the snow line at time of survey.",
         "notes": "",
@@ -428,6 +457,41 @@ class DataBCClient:
             ]
         return stations
 
+    def get_metadata(self, station_id: str) -> dict:
+        """
+        Full metadata for a single station, including its variable
+        inventory.
+
+        Combines the WFS station record with this client's variable
+        registry: ASWS stations share one CSV-file variable suite; MSS
+        sites carry the periodic survey variables.
+
+        Parameters
+        ----------
+        station_id : str
+            BC location ID, e.g. ``"1A01P"`` (ASWS) or ``"1A06A"`` (MSS).
+
+        Returns
+        -------
+        dict
+            The station dict plus a ``variables`` mapping
+            (``{key: VARIABLES[key]}``).  Empty dict for unknown IDs.
+        """
+        sid = str(station_id).strip().upper()
+        for sta in self.get_all_stations():
+            if str(sta.get("location_id", "")).upper() != sid:
+                continue
+            source_tag = (
+                "ASWS" if sta.get("station_type") == "ASWS" else "MSS"
+            )
+            meta = dict(sta)
+            meta["variables"] = {
+                key: vinfo for key, vinfo in VARIABLES.items()
+                if source_tag in vinfo.get("source", "")
+            }
+            return meta
+        return {}
+
     def get_data(
         self,
         station_ids: list[str] | str | None = None,
@@ -459,8 +523,12 @@ class DataBCClient:
         begin_date, end_date : str or None
             Date range (``"YYYY-MM-DD"``).
         interval : str
-            ``"daily"`` fetches ASWS data; ``"periodic"`` fetches MSS
-            survey data; ``"hourly"`` fetches hourly ASWS sensor data.
+            ``"daily"`` fetches ASWS daily data (16:00 UTC canonical
+            reading; SWE from the pre-aggregated ``SWDaily.csv``);
+            ``"hourly"`` / ``"sub_daily"`` fetch all hourly ASWS
+            readings (records carry a ``datetime`` key); ``"periodic"``
+            fetches MSS survey data.  Any other value raises
+            :class:`DataBCError`.
         include_flags : bool
             If True, MSS survey codes are included as ``"flag"`` field.
 
@@ -506,9 +574,19 @@ class DataBCClient:
         else:
             raise ValueError("Provide station_ids or bbox.")
 
-        # Resolve variables list
-        var_list: list[str] | None = None
-        if variables is not None:
+        interval_key = str(interval).lower()
+        if interval_key not in ("daily", "hourly", "sub_daily", "periodic"):
+            raise DataBCError(
+                f"Unsupported interval {interval!r} for DataBC — "
+                "expected 'daily', 'hourly', 'sub_daily', or 'periodic'."
+            )
+        hourly = interval_key in ("hourly", "sub_daily")
+
+        # Resolve variables list.  None means the snow variables
+        # (DESIGN.md §3.4), not the full met suite.
+        if variables is None:
+            var_list: list[str] = ["swe_mm", "snwd_cm"]
+        else:
             raw_vars = (
                 [variables]
                 if isinstance(variables, str)
@@ -520,11 +598,18 @@ class DataBCClient:
                     resolved.append(v)
                 elif v in _TYPE_TO_DATABC_VARS:
                     resolved.extend(_TYPE_TO_DATABC_VARS[v])
-            var_list = resolved or None
+                else:
+                    # No silent fallback (DESIGN.md §3.6)
+                    raise DataBCError(
+                        f"Unknown variable {v!r} for DataBC — expected "
+                        f"one of {sorted(VARIABLES)} or a standardized "
+                        f"type ({sorted(_TYPE_TO_DATABC_VARS)})."
+                    )
+            var_list = resolved or ["swe_mm", "snwd_cm"]
 
         records: list[dict] = []
 
-        if interval in ("daily", "sub_daily"):
+        if interval_key in ("daily", "hourly", "sub_daily"):
             # ASWS stations — filter to IDs ending in 'P'
             asws_ids = (
                 [i for i in ids if str(i).upper().endswith("P")]
@@ -532,73 +617,87 @@ class DataBCClient:
             )
             if asws_ids is None or asws_ids:
                 # Map variable key → (fetch method, value col, type,
-                # units, converter)
+                # units, converter, method accepts daily_only kwarg).
+                # SWE has dedicated daily (SWDaily.csv) and hourly
+                # (SW.csv) sources, so its method is picked by interval.
                 _var_methods: list[tuple] = [
                     (
-                        "swe_mm", self.get_asws_daily_data,
+                        "swe_mm",
+                        self._get_asws_sw_hourly_data
+                        if hourly else self._get_asws_daily_data,
                         "swe_mm", "swe", "cm",
                         lambda x: round(x / 10.0, 3),
+                        False,
                     ),
                     (
-                        "snwd_cm", self.get_asws_sd_data,
+                        "snwd_cm", self._get_asws_sd_data,
                         "snwd_cm", "snwd", "cm",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "air_temp_degc", self.get_asws_ta_data,
+                        "air_temp_degc", self._get_asws_ta_data,
                         "air_temp_degc", "temp", "\u00b0C",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "precip_cumul_mm", self.get_asws_pc_data,
+                        "precip_cumul_mm", self._get_asws_pc_data,
                         "precip_cumul_mm", "precip", "mm",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "baro_press_hpa", self.get_asws_pa_data,
+                        "baro_press_hpa", self._get_asws_pa_data,
                         "baro_press_hpa", "baro", "hPa",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "wind_dir_deg", self.get_asws_ud_data,
+                        "wind_dir_deg", self._get_asws_ud_data,
                         "wind_dir_deg", "wind_dir", "degrees",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "wind_spd_kmh", self.get_asws_us_data,
+                        "wind_spd_kmh", self._get_asws_us_data,
                         "wind_spd_kmh", "wind_spd", "km/h",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "wind_spd_peak_kmh", self.get_asws_up_data,
+                        "wind_spd_peak_kmh", self._get_asws_up_data,
                         "wind_spd_peak_kmh", "wind_gust", "km/h",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "wind_run_km", self.get_asws_ur_data,
+                        "wind_run_km", self._get_asws_ur_data,
                         "wind_run_km", "wind_run", "km",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                     (
-                        "rh_pct", self.get_asws_xr_data,
+                        "rh_pct", self._get_asws_xr_data,
                         "rh_pct", "rh", "%",
-                        lambda x: x,
+                        lambda x: x, True,
                     ),
                 ]
+                emit_interval = "hourly" if hourly else "daily"
+                time_col = "datetime" if hourly else "date"
                 emit_vars = set(var_list) if var_list else None
                 for (
                     var_key, method, val_col,
-                    std_type, units, converter
+                    std_type, units, converter, has_daily_only
                 ) in _var_methods:
                     if emit_vars and var_key not in emit_vars:
                         continue
+                    kwargs: dict = {
+                        "location_ids": asws_ids,
+                        "begin_date": begin_date,
+                        "end_date": end_date,
+                    }
+                    if has_daily_only:
+                        kwargs["daily_only"] = not hourly
                     try:
-                        df = method(
-                            location_ids=asws_ids,
-                            begin_date=begin_date,
-                            end_date=end_date,
+                        df = method(**kwargs)
+                    except DataBCError as exc:
+                        logger.warning(
+                            "get_data: %s fetch failed: %s",
+                            var_key, exc,
                         )
-                    except Exception:
                         continue
                     if df.empty or val_col not in df.columns:
                         continue
@@ -614,25 +713,26 @@ class DataBCClient:
                                 value = converter(float(raw_val))
                             except (TypeError, ValueError):
                                 value = None
+                        ts = str(row.get(time_col, ""))
                         r: dict = {
                             "station_id": str(
                                 row.get("location_id", "")
                             ),
-                            "date": str(
-                                row.get("date", "")
-                            )[:10],
+                            "date": ts[:10],
                             "variable": var_key,
                             "type": std_type,
                             "value": value,
                             "units": units,
-                            "interval": "daily",
+                            "interval": emit_interval,
                         }
+                        if hourly:
+                            r["datetime"] = ts
                         if include_flags:
                             r["flag"] = None
                         records.append(r)
 
-        if interval in ("periodic", "monthly") or (
-            interval == "daily"
+        if interval_key == "periodic" or (
+            interval_key == "daily"
             and ids is not None
             and any(not str(i).upper().endswith("P") for i in ids)
         ):
@@ -642,7 +742,7 @@ class DataBCClient:
                 if ids is not None else None
             )
             if mss_ids is None or mss_ids:
-                df_mss = self.get_mss_survey_data(
+                df_mss = self._get_mss_survey_data(
                     location_ids=mss_ids or None,
                     begin_date=begin_date,
                     end_date=end_date,
@@ -705,13 +805,12 @@ class DataBCClient:
 
     # ── Public API — ASWS time-series data ───────────────────────────────────
 
-    def get_asws_daily_data(
+    def _get_asws_daily_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
         end_date: str | None = None,
         archive: bool = True,
-        include_flags: bool = False,
     ) -> pd.DataFrame:
         """
         Get daily SWE data from Automated Snow Weather Stations.
@@ -732,9 +831,6 @@ class DataBCClient:
         archive : bool
             If True, also load the historical archive CSV (larger file).
             Recommended for full period-of-record retrieval.
-        include_flags : bool
-            Reserved for future use; ASWS CSV data does not currently
-            include per-value quality flags.
 
         Returns
         -------
@@ -755,7 +851,7 @@ class DataBCClient:
             daily_only=True,
         )
 
-    def get_asws_sw_hourly_data(
+    def _get_asws_sw_hourly_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -798,7 +894,7 @@ class DataBCClient:
             daily_only=False,
         )
 
-    def get_asws_sd_data(
+    def _get_asws_sd_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -845,7 +941,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_ta_data(
+    def _get_asws_ta_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -890,7 +986,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_pc_data(
+    def _get_asws_pc_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -934,7 +1030,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_pa_data(
+    def _get_asws_pa_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -975,7 +1071,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_ud_data(
+    def _get_asws_ud_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -1016,7 +1112,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_us_data(
+    def _get_asws_us_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -1057,7 +1153,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_up_data(
+    def _get_asws_up_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -1098,7 +1194,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_ur_data(
+    def _get_asws_ur_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -1139,7 +1235,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_xr_data(
+    def _get_asws_xr_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -1180,7 +1276,7 @@ class DataBCClient:
             daily_only=daily_only,
         )
 
-    def get_asws_combined_data(
+    def _get_asws_combined_data(
         self,
         location_id: str,
     ) -> pd.DataFrame:
@@ -1192,7 +1288,7 @@ class DataBCClient:
         and PC (precipitation, mm) in one file.
 
         The 16:00 UTC reading is used as the canonical daily value, consistent
-        with ``get_asws_daily_data()`` and ``get_asws_sd_data()``.
+        with ``_get_asws_daily_data()`` and ``_get_asws_sd_data()``.
 
         Parameters
         ----------
@@ -1273,14 +1369,18 @@ class DataBCClient:
         df = df.dropna(subset=["date"])
         df = df.sort_values("date").reset_index(drop=True)
 
-        for num_col in ("swe_mm", "snwd_cm", "air_temp_degc", "precip_cumul_mm"):
+        for num_col in ("swe_mm", "snwd_cm", "precip_cumul_mm"):
             df.loc[df[num_col] < 0, num_col] = float("nan")
+        # Air temperature is legitimately negative; null only sentinels.
+        df.loc[
+            df["air_temp_degc"] < _MIN_PLAUSIBLE_TEMP_C, "air_temp_degc"
+        ] = float("nan")
 
         return df[_cols]
 
     # ── Public API — MSS time-series data ─────────────────────────────────────
 
-    def get_mss_survey_data(
+    def _get_mss_survey_data(
         self,
         location_ids: list[str] | None = None,
         begin_date: str | None = None,
@@ -1634,8 +1734,13 @@ class DataBCClient:
         df_long[value_col] = pd.to_numeric(
             df_long[value_col], errors="coerce"
         )
-        # Remove clearly invalid values (negative, -99999 sentinel)
-        df_long.loc[df_long[value_col] < 0, value_col] = float("nan")
+        # Null sentinel / physically impossible values, scoped per type
+        if value_col in _NON_NEGATIVE_VARS:
+            df_long.loc[df_long[value_col] < 0, value_col] = float("nan")
+        else:
+            df_long.loc[
+                df_long[value_col] < _MIN_PLAUSIBLE_TEMP_C, value_col
+            ] = float("nan")
 
         return df_long[[time_col, "location_id", value_col]]
 
@@ -1699,55 +1804,11 @@ class DataBCClient:
         url: str,
         params: dict[str, str] | None = None,
     ) -> requests.Response:
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                resp = self._session.get(
-                    url, params=params, timeout=self.timeout
-                )
-            except requests.exceptions.RequestException as exc:
-                logger.warning(
-                    "Request failed (attempt %d/%d): %s",
-                    attempt,
-                    self.max_retries,
-                    exc,
-                )
-                if attempt == self.max_retries:
-                    raise DataBCError(
-                        f"Request to {url} failed after "
-                        f"{self.max_retries} attempts: {exc}"
-                    ) from exc
-                time.sleep(self.backoff * attempt)
-                continue
-
-            if resp.ok:
-                return resp
-
-            if resp.status_code in (400, 404):
-                raise DataBCError(
-                    f"HTTP {resp.status_code} from {url}: {resp.text[:200]}"
-                )
-
-            if resp.status_code >= 500:
-                logger.warning(
-                    "HTTP %d from %s (attempt %d/%d)",
-                    resp.status_code,
-                    url,
-                    attempt,
-                    self.max_retries,
-                )
-                if attempt < self.max_retries:
-                    time.sleep(self.backoff * attempt)
-                    continue
-                raise DataBCError(
-                    f"HTTP {resp.status_code} from {url} after "
-                    f"{self.max_retries} attempts"
-                )
-
-            raise DataBCError(
-                f"HTTP {resp.status_code} from {url}: {resp.text[:200]}"
-            )
-
-        raise DataBCError(f"Exhausted retries for {url}")
+        return request_with_retries(
+            self._session, url, params=params, error_cls=DataBCError,
+            timeout=self.timeout, max_retries=self.max_retries,
+            backoff=self.backoff,
+        )
 
 
 # ── Exception ─────────────────────────────────────────────────────────────────
@@ -1758,11 +1819,3 @@ class DataBCError(Exception):
 
 # ── Utility ───────────────────────────────────────────────────────────────────
 
-def _to_float(val: Any) -> float | None:
-    if val is None:
-        return None
-    try:
-        f = float(str(val).replace(",", "").strip())
-        return None if (f != f) else f  # NaN check
-    except (ValueError, TypeError):
-        return None

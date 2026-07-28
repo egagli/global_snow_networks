@@ -8,6 +8,8 @@ An internet connection is required.
 
 import pytest
 
+pytestmark = pytest.mark.live  # hits real network endpoints
+
 from clients.databc import DataBCClient
 from clients.databc.databc_client import (
     VARIABLES,
@@ -327,11 +329,11 @@ def test_get_data_mss_periodic(client):
             assert r["units"] == "cm"
 
 
-# ── get_asws_daily_data (internal helper, still public) ───────────────────────
+# ── _get_asws_daily_data (private DataFrame layer) ────────────────────────────
 
 def test_get_asws_daily_data_returns_dataframe(client):
     import pandas as pd
-    df = client.get_asws_daily_data(
+    df = client._get_asws_daily_data(
         location_ids=DATABC_ASWS,
         begin_date=TEST_BEGIN,
         end_date=TEST_END,

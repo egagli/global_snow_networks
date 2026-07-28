@@ -1,0 +1,30 @@
+cff-version: 1.2.0
+message: >-
+  If you use this software or the station archive it produces, please
+  cite it as below, along with the upstream data providers listed in
+  README.md §10.
+title: "global_snow_networks: archive and access tools for global snow point observations"
+type: software
+authors:
+  - family-names: Gagliano
+    given-names: Eric
+    email: egagli@uw.edu
+    affiliation: University of Washington
+repository-code: "https://github.com/egagli/global_snow_networks"
+url: "https://egagli.github.io/global_snow_networks/"
+license-url: "https://github.com/egagli/global_snow_networks"
+keywords:
+  - snow
+  - snow water equivalent
+  - snow depth
+  - SNOTEL
+  - snow course
+  - in-situ observations
+references:
+  - type: software
+    title: "snotel_ccss_stations (predecessor archive, v1)"
+    authors:
+      - family-names: Gagliano
+        given-names: Eric
+    doi: 10.5281/zenodo.17246162
+    repository-code: "https://github.com/egagli/snotel_ccss_stations"

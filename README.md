@@ -1,12 +1,17 @@
 # global_snow_networks
 
-A Python toolkit for archiving and accessing daily snow point observations from
-multiple networks and data sources.
+A Python toolkit for documenting and accessing snow point observations
+(SWE and snow depth) from networks around the world — automated pillows,
+manual snow courses, aerial markers, and mirrored climate stations.
 
-The current storage strategy is CSV-first:
+The normative design contract lives in [DESIGN.md](DESIGN.md); the
+storage strategy is CSV-first:
 
-- a station inventory in GeoJSON (`all_daily_snow_stations.geojson`)
-- one CSV time-series file per station (`data/stations/*.csv`)
+- a combined station inventory in GeoJSON (`all_snow_stations.geojson`)
+  covering **every** known station, periodic sites included, with
+  `daily_or_better` marking the probe-verified daily subset
+- one CSV time-series file per daily-or-better station
+  (`data/stations/*.csv`)
 - a compressed bundle for bulk transfer (`data/all_station_csvs.tar.xz`)
 
 This design favors transparency, interoperability, and easy downstream use in
@@ -25,7 +30,8 @@ Python, R, GIS tools, and command-line workflows.
 7. [Data Access Methods and Design Philosophy](#7-data-access-methods-and-design-philosophy)
 8. [Usage Examples](#8-usage-examples)
 9. [Known Caveats](#9-known-caveats)
-10. [License and Citation](#10-license-and-citation)
+10. [Provenance and Lineage](#10-provenance-and-lineage)
+11. [License and Citation](#11-license-and-citation)
 
 ---
 
@@ -33,40 +39,40 @@ Python, R, GIS tools, and command-line workflows.
 
 ```text
 global_snow_networks/
-├── pixi.toml                              # Environment + task definitions
+├── DESIGN.md                              # Normative contract (schema, units, semantics)
 ├── README.md                              # This file
-├── all_daily_snow_stations.geojson                  # Merged daily-only station inventory
+├── CITATION.cff                           # How to cite this archive
+├── pixi.toml                              # Environment + task definitions
+├── all_snow_stations.geojson              # Combined inventory of ALL stations
+├── docs/
+│   ├── SOURCES.md                         # Authoritative per-network references
+│   └── UNIFICATION_PLAN.md                # July 2026 unification plan/status
 ├── scripts/
 │   ├── create_all_stations_geojson.py     # Build station GeoJSONs from all clients
-│   ├── get_all_stations_data.py           # Refresh CSVs + archive + date fields
+│   ├── get_all_stations_data.py           # Refresh CSVs + probe verification + archive
 │   └── generate_live_map.py               # Build map HTML + chart JSON payloads
 │
-├── clients/
-│   ├── __init__.py
+├── clients/                               # Pure data-access layer (DESIGN.md §2)
 │   ├── README.md                          # Client API docs
-│   ├── awdb/
-│   │   ├── awdb_client.py                 # AWDB REST API client
-│   │   └── awdb_stations.geojson          # All AWDB snow stations (generated)
-│   ├── cdec/
-│   │   ├── cdec_client.py                 # CDEC (California) client
-│   │   └── cdec_stations.geojson          # All CDEC snow stations (generated)
-│   ├── databc/
-│   │   ├── databc_client.py               # BC Data Catalogue client
-│   │   └── databc_stations.geojson        # All BC snow stations (generated)
-│   ├── nve/
-│   │   ├── nve_client.py                  # NVE HydAPI (Norway) client
-│   │   └── nve_stations.geojson           # All NVE snow stations (generated)
-│   └── yukon/
-│       ├── yukon_client.py                # Yukon AquaCache client
-│       └── yukon_stations.geojson         # All Yukon snow stations (generated)
+│   ├── _common.py                         # Shared retry loop, interval enum, helpers
+│   ├── awdb/                              #   USDA NRCS AWDB REST API
+│   ├── cdec/                              #   CDEC (California)
+│   ├── databc/                            #   BC Data Catalogue
+│   ├── nve/                               #   NVE HydAPI (Norway)
+│   └── yukon/                             #   Yukon AquaCache
+│       └── *_stations.geojson             #   Per-client full inventories (generated)
 │
 ├── data/
-│   ├── stations/
-│   │   └── *.csv                          # One CSV per station
+│   ├── stations/*.csv                     # One CSV per daily-or-better station
 │   └── all_station_csvs.tar.xz            # Bulk archive of all station CSVs
 │
+├── tests/                                 # Offline unit + contract tests; live suites marked
+├── utils/                                 # Water-year / day-of-water-year helpers
+├── notebooks/                             # Exploration notebooks
 └── .github/workflows/
-     └── daily_station_update.yml           # Daily automated refresh
+     ├── daily_station_update.yml           # Nightly refresh pipeline
+     ├── ci.yml                             # Tests (offline on push, live from pipeline)
+     └── deploy-pages.yml                   # GitHub Pages map deployment
 ```
 
 ---
@@ -106,7 +112,7 @@ The pipeline is split into explicit stages:
 ```bash
 # Stage 1: Build station GeoJSON inventories for all clients
 #   Writes per-client GeoJSONs (clients/*/..._stations.geojson)
-#   and the merged daily-only all_daily_snow_stations.geojson
+#   and the combined all_snow_stations.geojson
 pixi run fetch-stations
 
 # Stage 2: Fetch/update station CSVs and update GeoJSON record dates
@@ -135,8 +141,10 @@ What it does:
 2. Queries each configured client for station locations and metadata.
 3. For each client, writes a per-client GeoJSON with **all stations and all
    available metadata** (including periodic snow course sites).
-4. Writes `all_daily_snow_stations.geojson` — a merged inventory of only those stations
-   with at least one **daily** SWE or snow depth observation.
+4. Writes `all_snow_stations.geojson` — the combined inventory of every
+   station from every client on the universal schema (DESIGN.md §6.1),
+   cross-linking `possible_duplicates`, carrying forward probe-verified
+   fields, and marking daily-or-better candidates.
 
 ### 3.2 Stage 2: Refresh Per-Station CSV Data
 
@@ -144,11 +152,20 @@ Script: `scripts/get_all_stations_data.py`
 
 What it does:
 
-1. Reads stations from `all_daily_snow_stations.geojson`.
+1. Reads daily-or-better candidates from `all_snow_stations.geojson`.
 2. Routes each station to the appropriate client based on its `client` field.
 3. Writes/replaces station CSVs atomically on successful fetch.
-4. Updates date fields in the GeoJSON from the refreshed CSV content.
+4. **Verifies** each station against the fetched data: a cadence check
+   (≥ 30 observations and a dense 90-day window) sets `daily_or_better`,
+   `daily_verified`, and the record-date fields — sporadic manual
+   readings never masquerade as daily stations (DESIGN.md §4).
+   Inactive stations with a regular historical record stay archived.
 5. Writes `data/all_station_csvs.tar.xz`.
+
+For stations with **no native daily series**, `--resample-probe` fetches
+their sub-daily record and resamples to daily means over the
+station-local day (currently wired for NVE; run explicitly, not
+nightly).
 
 ---
 
@@ -163,10 +180,15 @@ Primary outputs:
 - `charts/*.json` (per-station chart payloads loaded by the popup chart panel)
 
 Features:
-- Interactive station markers and popups
+- Interactive station markers and popups (photo, operator, data
+  provider, live satellite camera link where available)
 - Variable toggling (WTEQ/SNWD)
 - Period-of-record and normal-period comparisons
 - Date slider behavior for current water year
+- A toggleable overlay of **all other point observations** (snow
+  courses, aerial markers, non-daily sites) with metadata-only popups
+- "Potentially duplicated station" links that pan to the same physical
+  site's other access paths
 
 ### View on GitHub Pages
 
@@ -176,11 +198,15 @@ Map URL: `https://egagli.github.io/global_snow_networks/`
 
 ## 5. Data Model
 
-### 5.1 Station Inventory: `all_daily_snow_stations.geojson`
+### 5.1 Station Inventory: `all_snow_stations.geojson`
 
-`all_daily_snow_stations.geojson` is the **daily-only** merged metadata index.
+`all_snow_stations.geojson` is the **combined** inventory: every station
+from every client, including periodic snow courses and other manual
+sites.  The daily archive and map cover exactly the features with
+`daily_or_better: true`.
 
-**Common fields across all clients:**
+**Universal fields (present on every feature; `null` when unavailable —
+DESIGN.md §6.1):**
 
 | Field | Description |
 | --- | --- |
@@ -188,53 +214,45 @@ Map URL: `https://egagli.github.io/global_snow_networks/`
 | `name` | Station name |
 | `latitude`, `longitude` | WGS-84 coordinates |
 | `elevation_m` | Elevation in metres |
-| `Operator` | Operating agency |
-| `client` | Source client: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"` |
-| `networkCode` | Network label (SNTL, SNTLT, CCSS, BCSS, NVE, YSS, YKEC, …) |
-| `state` | State or province code |
-| `isActive` | Boolean active status |
-| `beginDate`, `endDate` | Period of record from source metadata |
-| `notes` | Any notable caveats (e.g. SNOTEL air temp bias status) |
-| `station_url` | URL to station information page |
-| `station_image_url` | Station photo URL (where available) |
+| `state` | State / province / country code |
+| `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
+| `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"` |
+| `data_provider` | Human-readable organization/portal behind that access path |
+| `status`, `is_active` | Active status as reported/derived |
+| `begin_date`, `end_date` | Period of record from source metadata |
+| `earliest_record_date`, `latest_record_date` | Actual archived CSV record span |
+| `station_url` | Station information page |
+| `station_image_url` | Station photo (where published) |
+| `station_camera_url` | Live/satellite camera (e.g. BC snow-station cameras) |
+| `notes` | Caveats (bias-correction status, coordinate overrides, probe results, …) |
+| `data_variables` | `{name, type, interval, units, description, notes, begin_date, end_date, n_obs}` per variable |
+| `has_daily_swe`, `has_daily_snwd` | **Advertised** daily-or-better candidates from source metadata |
+| `daily_or_better` | **Probe-verified** daily-or-better status (drives archive + map) |
+| `daily_verified` | Whether the data probe has confirmed `daily_or_better` |
+| `daily_provenance` | `native`, `resampled_hourly`, or `none` |
+| `possible_duplicates` | `{code, client, distance_m}` links to the same physical site via other clients |
 | `metadata_fetched_at` | Date the metadata was fetched |
-| `data_variables` | List of variable dicts `{name, type, interval, units, description, notes}` |
-| `dailySWE` | `true` if station has daily SWE observations |
-| `dailySnowDepth` | `true` if station has daily snow depth observations |
-| `variables_daily` | Comma-separated list of daily variable names (derived from `data_variables`) |
 
-**AWDB-specific additional fields:** `awdb_station_triplet`, `stationId`,
-`county`, `huc`, `snowElements`, `elementCodes`, `variables_hourly`.
-
-**CDEC-specific additional fields:** `is_snow_course`, `is_snow_pillow`,
-`sensors`, `river_basin`, `april1_avg_swe_in`, `course_number`.
-
-**DataBC-specific additional fields:** `station_type` (ASWS or MSS),
-`status`.
-
-**NVE-specific additional fields:** `status`, `drainage_basin_key`.
-
-**Yukon-specific additional fields:** `station_type` (`SC` snow course,
-`AWS` automated snow-weather station, `ECCC` mirrored climate station),
-`network`, `status`, `dataset_url`, and for courses `sub_basin`,
-`first_survey`, `last_survey`.
+Client-specific extras ride along when present (e.g. AWDB
+`awdb_station_triplet`/`county`/`huc`, CDEC `is_snow_course`/`sensors`/
+`april1_avg_swe_cm`, DataBC/Yukon `station_type`, NVE
+`drainage_basin_key`).
 
 #### Duplicate stations
 
-The same physical station may appear in `all_daily_snow_stations.geojson` more than once
-if it is accessible via multiple clients.  For example, some BC snow survey
-stations and California CCSS stations appear in both AWDB (`MSNT` network) and
-their respective native clients (DataBC, CDEC).  Each entry has a distinct
-`client` field.  Downstream consumers can de-duplicate by matching on
-`latitude`/`longitude`/`name`, or filter to a preferred client.
+The same physical station may appear once per access path — some BC and
+California stations arrive via both AWDB (`MSNT`/`SNOW`) and their
+native clients.  This is intentional (each entry is a distinct access
+path with potentially different variables, QC, or metadata); the
+`possible_duplicates` field cross-links them so consumers can
+de-duplicate however they prefer.
 
 #### Per-client GeoJSONs
 
-The per-client GeoJSONs in `clients/*/` contain **all** stations from each
-source — including manual snow course sites that have only periodic
-measurements and are excluded from `all_daily_snow_stations.geojson`.  These files
-carry all available source metadata and serve as a complete reference for each
-data source.
+The per-client GeoJSONs in `clients/*/` carry all available source
+metadata and serve as the complete reference for each data source,
+including sites the combined schema flattens.
 
 ### 5.2 Station CSVs: `data/stations/*.csv`
 
@@ -283,7 +301,7 @@ central database (AWDB/WCIS) several times per day.
 
 **Air temperature bias correction:** NRCS has identified a warm bias in SNOTEL
 air temperature sensors at many sites. A correction programme is in progress.
-The `notes` field in `all_daily_snow_stations.geojson` indicates whether a correction
+The `notes` field in `all_snow_stations.geojson` indicates whether a correction
 has been applied for each SNOTEL station. Status is fetched at runtime from:
 https://www.wcc.nrcs.usda.gov/ftpref/support/air_temp_bias/nrcs_air_temp_unbias.html
 
@@ -351,7 +369,7 @@ California's primary snow monitoring system. It includes two types of sites:
 #### Automated snow pillows (daily)
 
 Automated snow pillow stations measure SWE continuously and report daily
-values. These stations are included in `all_daily_snow_stations.geojson`.
+values. These stations are `daily_or_better` in `all_snow_stations.geojson`.
 
 **SWE variables (CDEC sensor numbers):**
 - **Sensor 3 (SNOW WC):** Raw telemetered reading from the snow pillow load
@@ -369,9 +387,10 @@ sensor 82 is always used in preference.
 
 Snow course sites are visited manually by surveyors, typically monthly from
 January through May. They record snow depth and SWE by weighing snow cores.
-**These sites are NOT included in `all_daily_snow_stations.geojson`** (no daily data)
-but appear in `clients/cdec/cdec_stations.geojson` with full metadata
-including the `april1_avg_swe_in` (April 1 climatological average).
+**These sites carry `daily_or_better: false`** (periodic data only) —
+they are inventoried and shown on the map's periodic overlay but get no
+CSV archive.  Their metadata includes `april1_avg_swe_cm` (April 1
+climatological average, converted from the source's inches).
 
 **Station URL format:** `https://cdec.water.ca.gov/dynamicapp/staMeta?station_id={ID}`
 
@@ -424,7 +443,8 @@ comprising automated snow weather stations (ASWS) and manual snow course sites
 
 ASWS stations are automated snow pillow and weather sites with location IDs
 ending in `P` (e.g. `1A01P`, `1E08P`). They report hourly observations for
-a full meteorological suite and are included in `all_daily_snow_stations.geojson`.
+a full meteorological suite and are `daily_or_better` in
+`all_snow_stations.geojson`.
 
 **Variables (ASWS) — sourced from the public BC env.gov.bc.ca CSV directory:**
 
@@ -463,8 +483,8 @@ images are displayed in the live map station popup.
 
 Manual snow course sites have location IDs that do NOT end in `P`
 (e.g. `1A06A`, `1A10`). Survey visits occur monthly during the snow season.
-**MSS sites are NOT in `all_daily_snow_stations.geojson`** but appear in
-`clients/databc/databc_stations.geojson`.
+**MSS sites carry `daily_or_better: false`** — inventoried, on the
+periodic map overlay, no CSV archive.
 
 **Variables (MSS):**
 - `swe_mm` (Water Equiv., mm) — snow water equivalent
@@ -599,10 +619,9 @@ itself is unrestricted.
 
 **Snow courses (`SC`, 92 sites)** are 10-point manual surveys targeting
 Feb 1, Mar 1, Apr 1, May 1 and May 15, with records from 1964.  Being
-periodic, they are catalogued in `clients/yukon/yukon_stations.geojson` and
-appear on the live map but are **excluded** from
-`all_daily_snow_stations.geojson` and get no per-station CSV — the same
-treatment as DataBC MSS sites.  Reach them with
+periodic, they carry `daily_or_better: false` — inventoried, on the
+periodic map overlay, no per-station CSV — the same treatment as DataBC
+MSS sites.  Reach their survey data with
 `client.get_snow_survey_data()`.
 
 **Automated snow-weather stations (`AWS`, 9 sites)** carry snow-pillow SWE
@@ -676,20 +695,30 @@ clients/nve/nve_client.py        → NVEClient
 clients/yukon/yukon_client.py    → YukonClient
 ```
 
-**Invariants across all clients:**
-- Return plain Python objects (dicts / lists); callers choose pandas/xarray.
-- Metric-first: all values in SI units (centimetres for SWE and snow depth).
+**Invariants across all clients** (normative version in
+[DESIGN.md](DESIGN.md) §3):
+- `get_data()` returns flat record dicts; callers choose pandas/xarray.
+  (DataBC additionally offers a pandas-DataFrame convenience layer for
+  its bulk CSV files.)
+- Metric-first: every value is metric — cm for SWE and snow depth, °C for
+  temperature, mm for precipitation, km/h for wind.  No imperial
+  passthrough.
 - Missing values normalised to `None` / `NaN`.
-- Errors raise `{Client}Error(Exception)` with descriptive messages.
+- Errors raise `{Client}Error(Exception)` with descriptive messages;
+  unknown variables and unsupported intervals raise too (no silent
+  fallbacks).
+- Sub-daily records carry a `datetime` key alongside `date`.
 - `get_data(..., include_flags=True)` adds a `flag` key to each value record.
 
 ### 7.2 Variables and flags
 
 Each client module exposes:
 - **`SENSORS` / `VARIABLES`** — dict mapping variable codes to metadata
-  (name, units, description).
-- **`DATA_FLAGS`** — dict mapping flag codes to human-readable descriptions.
-- **`DURATION_CODES`** — dict mapping duration codes to names.
+  (name, native units, output units, description).
+- **`DATA_FLAGS`** — dict mapping flag codes to human-readable
+  descriptions (empty for AWDB, which returns no per-value flags).
+- CDEC additionally exposes **`DURATION_CODES`** (its native duration
+  vocabulary).
 
 These are importable for documentation and downstream use:
 
@@ -722,9 +751,10 @@ For BC snow courses (periodic survey data):
 
 ```python
 client = DataBCClient()
-df = client.get_mss_survey_data(
-    location_ids=["1A06A", "1A10"],
-    archive=True,
+records = client.get_data(
+    station_ids=["1A06A", "1A10"],
+    variables=["swe", "snwd", "density", "snow_line"],
+    interval="periodic",
     include_flags=True,   # includes survey_code quality flag
 )
 ```
@@ -767,10 +797,10 @@ pixi run live-map
 ```python
 import geopandas as gpd
 
-gdf = gpd.read_file("all_daily_snow_stations.geojson")
-# Filter to a single client
-cdec = gdf[gdf["client"] == "cdec"]
-print(cdec[["code", "name", "Operator", "dailySWE", "dailySnowDepth"]].head())
+gdf = gpd.read_file("all_snow_stations.geojson")
+# Probe-verified daily stations from a single client
+cdec = gdf[(gdf["client"] == "cdec") & gdf["daily_or_better"]]
+print(cdec[["code", "name", "operator", "has_daily_swe", "has_daily_snwd"]].head())
 ```
 
 ### 8.3 Read one station CSV
@@ -826,16 +856,22 @@ client = DataBCClient()
 asws = client.get_asws_stations(active_only=True)
 print(len(asws), "active ASWS stations")
 
-# Get daily SWE for current + archive season
-df = client.get_asws_daily_data(
-    location_ids=["1A01P", "1E08P"],
-    archive=True,
+# Daily SWE + snow depth for two ASWS stations (values in cm)
+records = client.get_data(
+    station_ids=["1A01P", "1E08P"],
+    variables=["swe", "snwd"],
+    interval="daily",
+    begin_date="2022-10-01",
 )
-print(df.head())
+print(records[0])
 
-# Get snow course survey data for BC MSS stations
-df_surveys = client.get_mss_survey_data(archive=True)
-print(df_surveys.columns.tolist())
+# Periodic snow course surveys for BC MSS stations
+surveys = client.get_data(
+    station_ids=["1A06A", "1A10"],
+    variables=["swe", "snwd", "density"],
+    interval="periodic",
+)
+print(len(surveys), "survey records")
 ```
 
 ### 8.7 Fetch NVE (Norway) snow data
@@ -915,16 +951,19 @@ AWDB network codes can be semantically misleading:
 - Some California CCSS stations also appear under `MSNT`.
 
 This project preserves source-provided AWDB network codes exactly to avoid
-introducing ambiguity.  The `client` field in `all_daily_snow_stations.geojson`
-distinguishes data sources; `networkCode` reflects what AWDB reports.
+introducing ambiguity.  The `client` and `data_provider` fields in
+`all_snow_stations.geojson` distinguish access paths; `network_code`
+reflects what AWDB reports, and `operator` is corrected only when a
+uniquely matching native twin makes it certain (DESIGN.md §5).
 
 ### 9.2 Duplicate stations
 
-The same physical station may appear multiple times in `all_daily_snow_stations.geojson`
-if accessible via more than one client.  This is intentional — each entry
-reflects a distinct data access path with potentially different variables,
-QC levels, or metadata.  De-duplicate by spatial proximity + name matching
-if a single-entry view is needed.
+The same physical station may appear multiple times in
+`all_snow_stations.geojson` if accessible via more than one client.
+This is intentional — each entry reflects a distinct data access path
+with potentially different variables, QC levels, or metadata.  The
+`possible_duplicates` field cross-links candidates (spatial +
+name matching) so a single-entry view is one filter away.
 
 ### 9.3 DataBC ASWS met variables with no archive
 
@@ -949,14 +988,15 @@ contains occasional extreme glitches that carry a "quality controlled"
 flag (e.g. ~145 m SWE at station 123.93.0 in Jan 2018); the client
 normalises values outside 0–15 m to null.  Only ~31 of NVE's ~1,880
 snow-parameter stations have *daily* (1440-minute) series — the rest are
-instantaneous/hourly only and are excluded from
-`all_daily_snow_stations.geojson`.
+instantaneous/hourly-or-sporadic only and carry
+`daily_or_better: false` (`--resample-probe` can promote genuinely
+continuous ones — see §3.2).
 
 ### 9.6 Stations with invalid coordinates
 
 - **Null-island placeholders** — e.g. CDEC's `TST` ("SNOW SURVEYS TEST
   STATION") sits at latitude/longitude (0, 0).  Features with missing or
-  (0, 0) coordinates are excluded from `all_daily_snow_stations.geojson`
+  (0, 0) coordinates are excluded from `all_snow_stations.geojson`
   (but retained in the per-client GeoJSONs).
 - **NVE Nepal cooperation stations** (drainage-basin group `1977.*`:
   Langtang and Mustang, SnowAMP project with ICIMOD/DHM) — HydAPI serves
@@ -1007,7 +1047,29 @@ name — the same situation as BC and CCSS stations appearing under both
 
 ---
 
-## 10. License and Citation
+## 10. Provenance and Lineage
+
+This repository is the fourth generation of an evolving effort:
+
+1. **[snotel_ccss_stations](https://github.com/egagli/snotel_ccss_stations)**
+   (2024, v1) — SNOTEL + CCSS daily CSVs readable straight off
+   `raw.githubusercontent.com`, no API needed.  Frozen but citable
+   (DOI [10.5281/zenodo.17246162](https://doi.org/10.5281/zenodo.17246162)).
+2. **snotel_ccss_stations_v2** (early 2026) — rebuilt on the AWDB REST
+   API with inline QC flags, per-station audit logs of NRCS retroactive
+   corrections, and adaptive lookback.  Retired March 2026.  (Reviving
+   its flags/audit machinery in this repo is tracked as future work.)
+3. **global_snow_point_obs** (March 2026) — an architecture spike
+   sketching a unified API over ~29 networks; its registry-first design
+   and "preserve source metadata, duplicates are intentional" principles
+   carried into this repo's `DESIGN.md`.
+4. **global_snow_networks** (this repo) — five fully-implemented
+   clients, the combined probe-verified inventory, the daily CSV
+   archive, and the live map.
+
+---
+
+## 11. License and Citation
 
 Data accessed from AWDB is public domain (U.S. Government).
 BC snow survey data is published under the Open Government Licence — British

@@ -1,8 +1,8 @@
 [workspace]
-name = "global-snow-point-obs"
+name = "global-snow-networks"
 version = "0.1.0"
-description = "Archive and access tools for global snow point observations (SWE, snow depth) from AWDB and other sources."
-authors = ["your-name <your@email.com>"]
+description = "Archive and access tools for global snow point observations (SWE, snow depth) from AWDB, CDEC, DataBC, NVE, and Yukon AquaCache."
+authors = ["Eric Gagliano <egagli@uw.edu>"]
 channels = ["conda-forge"]
 platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]
 
@@ -19,7 +19,6 @@ tqdm = ">=4.66"
 fsspec = ">=2026.3.0,<2027"
 aiohttp = ">=3.13.4,<4"
 beautifulsoup4 = ">=4.14.3,<5"
-playwright = ">=1.58.2,<2"
 
 [feature.dev.dependencies]
 jupyter = "*"
@@ -43,11 +42,10 @@ finalize-data    = "python -m scripts.get_all_stations_data --finalize-only"
 live-map         = "python -m scripts.generate_live_map"
 update-all       = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
 test             = "pytest tests/ -v"
+test-unit        = "pytest tests/ -v -m 'not live'"
+test-live        = "pytest tests/ -v -m live"
 test-awdb        = "pytest tests/test_awdb_client.py -v"
 test-cdec        = "pytest tests/test_cdec_client.py -v"
 test-databc      = "pytest tests/test_databc_client.py -v"
 test-nve         = "pytest tests/test_nve_client.py -v"
 test-yukon       = "pytest tests/test_yukon_client.py -v"
-
-[pypi-dependencies]
-playwright = ">=1.58.0, <2"

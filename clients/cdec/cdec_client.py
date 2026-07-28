@@ -47,13 +47,18 @@ from __future__ import annotations
 import io
 import logging
 import re
-import time
-from datetime import date, datetime
+from datetime import date
 from typing import Any
 
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+
+from clients._common import (
+    date_str as _date_str,
+    request_with_retries,
+    to_float as _to_float,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +70,6 @@ _DEFAULT_TIMEOUT = 60
 _DEFAULT_RETRIES = 3
 _DEFAULT_BACKOFF = 4
 _MISSING = -9999
-_INCHES_TO_CM = 2.54
 
 # Regex for valid CDEC station IDs (2–5 uppercase alphanumeric characters)
 _STATION_ID_RE = re.compile(r"^[A-Z0-9]{2,5}$")
@@ -73,49 +77,153 @@ _STATION_ID_RE = re.compile(r"^[A-Z0-9]{2,5}$")
 
 # ── Public sensor / flag / duration tables ───────────────────────────────────
 
-#: Known snow-relevant CDEC sensors.
-_CDEC_DATA_SOURCE = "CDEC JSONDataServlet — {BASE_URL}/dynamicapp/req/JSONDataServlet"
+_CDEC_SRC = "CDEC JSONDataServlet (SensorNums={n})"
 
+
+def _sensor(name, short_name, stype, units, output_units, variable,
+            n, description, notes=""):
+    return {
+        "name": name,
+        "short_name": short_name,
+        "type": stype,
+        "units": units,
+        "output_units": output_units,
+        "variable": variable,
+        "source": _CDEC_SRC.format(n=n),
+        "description": description,
+        "notes": notes,
+    }
+
+
+#: Known CDEC sensors at CCSS snow stations (numbers verified against
+#: live staMeta inventories, 2026-07).  ``units`` is native;
+#: ``output_units`` is what :meth:`CDECClient.get_data` emits after
+#: in-client conversion (DESIGN.md §3.5).
 SENSORS: dict[int, dict[str, str]] = {
-    3: {
-        "name": "Snow Water Content",
-        "short_name": "SNOW WC",
-        "type": "swe",
-        "units": "in",
-        "variable": "swe_raw",
-        "source": "CDEC JSONDataServlet (SensorNums=3, dur_code=D)",
-        "description": "Raw snow pillow reading (SWE, inches). Converted to cm by client.",
-        "notes": "Prefer sensor 82 (SNO ADJ) when available.",
-    },
-    18: {
-        "name": "Snow Depth",
-        "short_name": "SNOW DP",
-        "type": "snwd",
-        "units": "in",
-        "variable": "snwd",
-        "source": "CDEC JSONDataServlet (SensorNums=18, dur_code=D)",
-        "description": "Ultrasonic snow depth sensor (inches). Converted to cm by client.",
-        "notes": "",
-    },
-    82: {
-        "name": "Snow Water Content (Adjusted)",
-        "short_name": "SNO ADJ",
-        "type": "swe",
-        "units": "in",
-        "variable": "swe",
-        "source": "CDEC JSONDataServlet (SensorNums=82, dur_code=D)",
-        "description": (
-            "Quality-controlled SWE with calibration offset applied "
-            "(preferred over sensor 3). Converted to cm by client."
-        ),
-        "notes": "Preferred SWE sensor for CCSS automated pillows.",
-    },
+    3: _sensor(
+        "Snow Water Content", "SNOW WC", "swe", "in", "cm", "swe_raw", 3,
+        "Raw snow pillow reading (SWE, inches). Converted to cm by client.",
+        "Prefer sensor 82 (SNO ADJ) when available.",
+    ),
+    18: _sensor(
+        "Snow Depth", "SNOW DP", "snwd", "in", "cm", "snwd", 18,
+        "Ultrasonic snow depth sensor (inches). Converted to cm by client.",
+    ),
+    82: _sensor(
+        "Snow Water Content (Adjusted)", "SNO ADJ", "swe", "in", "cm",
+        "swe", 82,
+        "Quality-controlled SWE with calibration offset applied "
+        "(preferred over sensor 3). Converted to cm by client.",
+        "Preferred SWE sensor for CCSS automated pillows.",
+    ),
+    2: _sensor(
+        "Precipitation, Accumulated", "RAIN", "precip", "in", "mm",
+        "precip_accum", 2,
+        "Accumulated precipitation (inches). Converted to mm by client.",
+    ),
+    45: _sensor(
+        "Precipitation, Incremental", "PPT INC", "precip", "in", "mm",
+        "precip_incr", 45,
+        "Incremental precipitation (inches). Converted to mm by client.",
+    ),
+    16: _sensor(
+        "Precipitation, Tipping Bucket", "PPT TB", "precip", "in", "mm",
+        "precip_tb", 16,
+        "Tipping-bucket precipitation (inches). Converted to mm by client.",
+    ),
+    4: _sensor(
+        "Temperature, Air", "TEMP", "temp", "°F", "°C", "air_temp", 4,
+        "Instantaneous air temperature (°F). Converted to °C by client.",
+    ),
+    30: _sensor(
+        "Temperature, Air Average", "TEMP AV", "temp", "°F", "°C",
+        "air_temp_avg", 30,
+        "Daily average air temperature (°F). Converted to °C by client.",
+    ),
+    31: _sensor(
+        "Temperature, Air Maximum", "TEMP MX", "temp_max", "°F", "°C",
+        "air_temp_max", 31,
+        "Daily maximum air temperature (°F). Converted to °C by client.",
+    ),
+    32: _sensor(
+        "Temperature, Air Minimum", "TEMP MN", "temp_min", "°F", "°C",
+        "air_temp_min", 32,
+        "Daily minimum air temperature (°F). Converted to °C by client.",
+    ),
+    12: _sensor(
+        "Relative Humidity", "REL HUM", "rh", "%", "%", "rh", 12,
+        "Relative humidity (percent).",
+    ),
+    9: _sensor(
+        "Wind Speed", "WIND SP", "wind_spd", "mph", "km/h", "wind_spd", 9,
+        "Wind speed (mph). Converted to km/h by client.",
+    ),
+    10: _sensor(
+        "Wind Direction", "WIND DR", "wind_dir", "degrees", "degrees",
+        "wind_dir", 10,
+        "Wind direction (degrees from north).",
+    ),
+    103: _sensor(
+        "Solar Radiation Average", "SOLAR AV", "solar", "W/m²", "W/m²",
+        "solar_avg", 103,
+        "Average incoming solar radiation (W/m²).",
+    ),
+    283: _sensor(
+        "Soil Moisture, 10 cm", "SOIL M10", "soil_moisture", "%", "%",
+        "soil_moisture_10cm", 283,
+        "Volumetric soil moisture at 10 cm depth (percent).",
+    ),
+    310: _sensor(
+        "Soil Moisture, 25 cm", "SOIL M25", "soil_moisture", "%", "%",
+        "soil_moisture_25cm", 310,
+        "Volumetric soil moisture at 25 cm depth (percent).",
+    ),
+    286: _sensor(
+        "Soil Moisture, 50 cm", "SOIL M50", "soil_moisture", "%", "%",
+        "soil_moisture_50cm", 286,
+        "Volumetric soil moisture at 50 cm depth (percent).",
+    ),
+    287: _sensor(
+        "Soil Moisture, 100 cm", "SOIL M100", "soil_moisture", "%", "%",
+        "soil_moisture_100cm", 287,
+        "Volumetric soil moisture at 100 cm depth (percent).",
+    ),
+}
+
+#: Snow sensors — the default when ``get_data(variables=None)``
+#: (DESIGN.md §3.4: None means all *snow* variables, not everything).
+SNOW_SENSORS: tuple[int, ...] = (3, 18, 82)
+
+# In-client metric conversions keyed by sensor number
+# (transform, emitted unit).  Sensors not listed pass through unchanged
+# with their registry output_units (already metric).
+_SENSOR_CONVERSIONS: dict[int, Any] = {
+    3: lambda v: v * 2.54,                  # in → cm
+    18: lambda v: v * 2.54,
+    82: lambda v: v * 2.54,
+    2: lambda v: v * 25.4,                  # in → mm
+    45: lambda v: v * 25.4,
+    16: lambda v: v * 25.4,
+    4: lambda v: (v - 32.0) * 5.0 / 9.0,    # °F → °C
+    30: lambda v: (v - 32.0) * 5.0 / 9.0,
+    31: lambda v: (v - 32.0) * 5.0 / 9.0,
+    32: lambda v: (v - 32.0) * 5.0 / 9.0,
+    9: lambda v: v * 1.609344,              # mph → km/h
 }
 
 # Standardized type → CDEC sensor number(s) in priority order
 _TYPE_TO_SENSORS: dict[str, list[int]] = {
-    "swe":  [82, 3],
-    "snwd": [18],
+    "swe":           [82, 3],
+    "snwd":          [18],
+    "precip":        [2, 45, 16],
+    "temp":          [4, 30],
+    "temp_max":      [31],
+    "temp_min":      [32],
+    "rh":            [12],
+    "wind_spd":      [9],
+    "wind_dir":      [10],
+    "solar":         [103],
+    "soil_moisture": [283, 310, 286, 287],
 }
 # CDEC duration code → standardized interval
 _CDEC_DURATION_TO_INTERVAL: dict[str, str] = {
@@ -163,12 +271,14 @@ def _resolve_variables_to_cdec_sensors(
 ) -> list[int]:
     """Translate a variables list (short names or types) to sensor numbers."""
     if variables is None:
-        return list(SENSORS.keys())
+        return list(SNOW_SENSORS)
     sensors: list[int] = []
     seen: set[int] = set()
     var_list = (
         [variables] if isinstance(variables, str) else list(variables)
     )
+    if not var_list:
+        return list(SNOW_SENSORS)
     # Build reverse lookups
     short_name_to_num = {
         v["short_name"]: k for k, v in SENSORS.items()
@@ -190,7 +300,15 @@ def _resolve_variables_to_cdec_sensors(
             if snum not in seen:
                 sensors.append(snum)
                 seen.add(snum)
-    return sensors or list(SENSORS.keys())
+        else:
+            # No silent fallback (DESIGN.md §3.6): an unknown variable
+            # must not quietly expand into "fetch everything".
+            raise CDECError(
+                f"Unknown variable {v!r} for CDEC — expected a "
+                f"standardized type ({sorted(_TYPE_TO_SENSORS)}) or a "
+                f"sensor short name ({sorted(short_name_to_num)})."
+            )
+    return sensors
 
 
 # ── Client ───────────────────────────────────────────────────────────────────
@@ -473,8 +591,9 @@ class CDECClient:
         dict
             Keys: ``station_id``, ``name``, ``elevation_ft``, ``river_basin``,
             ``county``, ``hydrologic_area``, ``nearby_city``, ``latitude``,
-            ``longitude``, ``operator``, ``maintenance``, ``sensors``
-            (list of sensor inventory dicts), ``station_url``.
+            ``longitude``, ``operator``, ``maintenance``,
+            ``sensor_inventory`` (list of sensor inventory dicts),
+            ``station_url``.
         """
         url = f"{BASE_URL}/dynamicapp/staMeta"
         html = self._get_html(url, params={"station_id": station_id})
@@ -583,25 +702,29 @@ class CDECClient:
                 sensor_num = int(record.get("SENSOR_NUM", 0))
                 raw_val = record.get("value")
 
-                # Normalise missing value and convert inches → cm
+                # Normalise missing values and convert to metric using
+                # the per-sensor transform (DESIGN.md §3.5) — inches were
+                # previously ×2.54'd for every sensor, °F included.
+                transform = _SENSOR_CONVERSIONS.get(sensor_num)
                 if raw_val is None or raw_val == _MISSING:
-                    value_cm: float | None = None
+                    value: float | None = None
                 else:
                     try:
                         fv = float(raw_val)
-                        value_cm = (
-                            None
-                            if fv == _MISSING
-                            else round(fv * _INCHES_TO_CM, 3)
-                        )
+                        if fv == _MISSING:
+                            value = None
+                        elif transform is not None:
+                            value = round(transform(fv), 3)
+                        else:
+                            value = fv
                     except (TypeError, ValueError):
-                        value_cm = None
+                        value = None
 
                 v: dict[str, Any] = {
                     "date": _normalise_cdec_date(
                         str(record.get("date", ""))
                     ),
-                    "value": value_cm,
+                    "value": value,
                 }
                 if include_flags:
                     v["flag"] = str(record.get("dataFlag", "")).strip()
@@ -621,7 +744,7 @@ class CDECClient:
                             "durationName": DURATION_CODES.get(
                                 duration, duration
                             ),
-                            "units": "cm",
+                            "units": si.get("output_units", ""),
                         },
                         "values": [],
                     }
@@ -747,9 +870,17 @@ class CDECClient:
 
         # Resolve variables → sensor numbers
         sensors = _resolve_variables_to_cdec_sensors(variables)
-        cdec_duration = _INTERVAL_TO_CDEC_DURATION.get(
-            interval.lower(), "D"
-        )
+        try:
+            cdec_duration = _INTERVAL_TO_CDEC_DURATION[interval.lower()]
+        except KeyError:
+            raise CDECError(
+                f"Unsupported interval {interval!r} for CDEC — expected "
+                f"one of {sorted(_INTERVAL_TO_CDEC_DURATION)}."
+            ) from None
+        # Sub-daily durations keep their timestamps; records get a
+        # 'datetime' key and SWE priority resolves per timestamp, not per
+        # calendar date (which used to collapse hourly data silently).
+        sub_daily = cdec_duration in ("H", "E")
 
         raw = self._get_data_cdec(
             ids, sensors, cdec_duration, begin_date, end_date,
@@ -760,8 +891,8 @@ class CDECClient:
         records: list[dict] = []
         for station_data in raw:
             sid = station_data.get("stationId", "")
-            # Collect per-date SWE values by sensor priority
-            swe_by_date: dict[str, tuple[int, float | None, str | None]] = {}
+            # Highest-priority SWE value per timestamp (or date)
+            swe_by_ts: dict[str, tuple[int, float | None, str | None]] = {}
             other_records: list[dict] = []
 
             for block in station_data.get("data", []):
@@ -776,57 +907,52 @@ class CDECClient:
                 )
 
                 for rec in block.get("values", []):
-                    d = str(rec.get("date", ""))[:10]
+                    ts = str(rec.get("date", ""))
                     v = rec.get("value")
                     flag = rec.get("flag") if include_flags else None
 
                     if std_type == "swe":
-                        # Keep higher-priority sensor per date
-                        existing = swe_by_date.get(d)
-                        if existing is None or sensor_num < existing[0]:
-                            # lower sensor number = lower priority
-                            # 82 preferred over 3; store as
-                            # (-priority, sensor_num) — we want 82 to win
-                            pass
-                        # sensor 82 wins over sensor 3
-                        if existing is None:
-                            swe_by_date[d] = (sensor_num, v, flag)
-                        else:
-                            existing_snum = existing[0]
-                            # 82 > 3 in priority
-                            if sensor_num == 82 or (
-                                sensor_num != 3 or existing_snum != 82
-                            ):
-                                if existing_snum != 82:
-                                    swe_by_date[d] = (sensor_num, v, flag)
+                        key = ts if sub_daily else ts[:10]
+                        existing = swe_by_ts.get(key)
+                        # Sensor 82 (SNO ADJ, calibration-adjusted) always
+                        # beats sensor 3 (raw pillow reading).
+                        if (
+                            existing is None
+                            or existing[0] != 82
+                            or sensor_num == 82
+                        ):
+                            swe_by_ts[key] = (sensor_num, v, flag)
                     else:
                         r: dict = {
                             "station_id": sid,
-                            "date": d,
+                            "date": ts[:10],
                             "variable": short_name,
                             "type": std_type,
                             "value": v,
-                            "units": "cm",
+                            "units": sensor_info.get("output_units", ""),
                             "interval": std_interval,
                         }
+                        if sub_daily:
+                            r["datetime"] = ts
                         if include_flags:
                             r["flag"] = flag
                         other_records.append(r)
 
             # Emit SWE records (priority-resolved)
-            for d, (snum, v, flag) in sorted(swe_by_date.items()):
+            std_interval_out = _CDEC_DURATION_TO_INTERVAL[cdec_duration]
+            for key, (snum, v, flag) in sorted(swe_by_ts.items()):
                 sinfo = SENSORS.get(snum, {})
                 r = {
                     "station_id": sid,
-                    "date": d,
+                    "date": key[:10],
                     "variable": sinfo.get("short_name", str(snum)),
                     "type": "swe",
                     "value": v,
-                    "units": "cm",
-                    "interval": _CDEC_DURATION_TO_INTERVAL.get(
-                        cdec_duration, cdec_duration
-                    ),
+                    "units": sinfo.get("output_units", "cm"),
+                    "interval": std_interval_out,
                 }
+                if sub_daily:
+                    r["datetime"] = key
                 if include_flags:
                     r["flag"] = flag
                 records.append(r)
@@ -859,55 +985,11 @@ class CDECClient:
         url: str,
         params: dict[str, str] | None = None,
     ) -> requests.Response:
-        for attempt in range(1, self.max_retries + 1):
-            try:
-                resp = self._session.request(
-                    method, url, params=params, timeout=self.timeout
-                )
-            except requests.exceptions.RequestException as exc:
-                logger.warning(
-                    "Request failed (attempt %d/%d): %s",
-                    attempt,
-                    self.max_retries,
-                    exc,
-                )
-                if attempt == self.max_retries:
-                    raise CDECError(
-                        f"Request to {url} failed after "
-                        f"{self.max_retries} attempts: {exc}"
-                    ) from exc
-                time.sleep(self.backoff * attempt)
-                continue
-
-            if resp.ok:
-                return resp
-
-            if resp.status_code in (400, 404):
-                raise CDECError(
-                    f"HTTP {resp.status_code} from {url}: {resp.text[:200]}"
-                )
-
-            if resp.status_code >= 500:
-                logger.warning(
-                    "HTTP %d from %s (attempt %d/%d)",
-                    resp.status_code,
-                    url,
-                    attempt,
-                    self.max_retries,
-                )
-                if attempt < self.max_retries:
-                    time.sleep(self.backoff * attempt)
-                    continue
-                raise CDECError(
-                    f"HTTP {resp.status_code} from {url} after "
-                    f"{self.max_retries} attempts"
-                )
-
-            raise CDECError(
-                f"HTTP {resp.status_code} from {url}: {resp.text[:200]}"
-            )
-
-        raise CDECError(f"Exhausted retries for {url}")
+        return request_with_retries(
+            self._session, url, params=params, method=method,
+            error_cls=CDECError, timeout=self.timeout,
+            max_retries=self.max_retries, backoff=self.backoff,
+        )
 
 
 # ── Exception ─────────────────────────────────────────────────────────────────
@@ -1151,35 +1233,24 @@ def _parse_sta_meta_html(station_id: str, html: str) -> dict:
 # ── Utility helpers ───────────────────────────────────────────────────────────
 
 def _normalise_cdec_date(date_str: str) -> str:
-    """Convert CDEC date strings like '2023-1-1 00:00' to 'YYYY-MM-DD'."""
-    s = date_str.strip().split(" ")[0]
-    parts = s.split("-")
+    """Normalise CDEC timestamps like '2023-1-1 16:00' by zero-padding the
+    date part.  The time-of-day is PRESERVED ('YYYY-MM-DD HH:MM') so that
+    hourly and event records stay distinguishable — truncating here used
+    to collapse a day of hourly readings into one indistinguishable date."""
+    s = date_str.strip()
+    date_part, _, time_part = s.partition(" ")
+    parts = date_part.split("-")
     if len(parts) == 3:
         try:
-            return (
+            date_part = (
                 f"{int(parts[0]):04d}-{int(parts[1]):02d}-{int(parts[2]):02d}"
             )
         except ValueError:
-            pass
-    return s[:10]
-
-
-def _date_str(d: str | date | datetime) -> str:
-    if isinstance(d, str):
-        return d[:10]
-    if isinstance(d, datetime):
-        return d.date().isoformat()
-    return d.isoformat()
-
-
-def _to_float(val: Any) -> float | None:
-    if val is None:
-        return None
-    try:
-        f = float(str(val).replace(",", "").strip())
-        return None if (f != f) else f  # NaN check
-    except (ValueError, TypeError):
-        return None
+            date_part = date_part[:10]
+    else:
+        date_part = date_part[:10]
+    time_part = time_part.strip()[:5]
+    return f"{date_part} {time_part}" if time_part else date_part
 
 
 def _str(val: Any) -> str:
