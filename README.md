@@ -731,9 +731,10 @@ For BC snow courses (periodic survey data):
 
 ```python
 client = DataBCClient()
-df = client.get_mss_survey_data(
-    location_ids=["1A06A", "1A10"],
-    archive=True,
+records = client.get_data(
+    station_ids=["1A06A", "1A10"],
+    variables=["swe", "snwd", "density", "snow_line"],
+    interval="periodic",
     include_flags=True,   # includes survey_code quality flag
 )
 ```
@@ -835,16 +836,22 @@ client = DataBCClient()
 asws = client.get_asws_stations(active_only=True)
 print(len(asws), "active ASWS stations")
 
-# Get daily SWE for current + archive season
-df = client.get_asws_daily_data(
-    location_ids=["1A01P", "1E08P"],
-    archive=True,
+# Daily SWE + snow depth for two ASWS stations (values in cm)
+records = client.get_data(
+    station_ids=["1A01P", "1E08P"],
+    variables=["swe", "snwd"],
+    interval="daily",
+    begin_date="2022-10-01",
 )
-print(df.head())
+print(records[0])
 
-# Get snow course survey data for BC MSS stations
-df_surveys = client.get_mss_survey_data(archive=True)
-print(df_surveys.columns.tolist())
+# Periodic snow course surveys for BC MSS stations
+surveys = client.get_data(
+    station_ids=["1A06A", "1A10"],
+    variables=["swe", "snwd", "density"],
+    interval="periodic",
+)
+print(len(surveys), "survey records")
 ```
 
 ### 8.7 Fetch NVE (Norway) snow data
