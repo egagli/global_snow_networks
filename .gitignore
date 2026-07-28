@@ -24,6 +24,6 @@ charts/
 .cache/
 
 # Local run logs and atomic-write temporaries
-fetch_stations_run.log
+*_run.log
 *.geojson.tmp
 *.tar.xz.tmp
