@@ -14,7 +14,15 @@ jobs:
         with:
           environments: dev
 
-      - name: Run tests
+      # Pushes run only the fast offline suite; the full live-API suite
+      # runs when invoked from the daily pipeline (workflow_call), which
+      # is when fresh upstream data is actually worth validating.
+      - name: Run offline unit tests
+        if: github.event_name == 'push'
+        run: pixi run -e dev test-unit
+
+      - name: Run full test suite (offline + live API)
+        if: github.event_name != 'push'
         env:
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
         run: pixi run -e dev test

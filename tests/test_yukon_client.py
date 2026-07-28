@@ -16,6 +16,8 @@ import re
 
 import pytest
 
+pytestmark = pytest.mark.live  # hits real network endpoints
+
 from clients.yukon import YukonClient, YukonError
 from clients.yukon.yukon_client import (
     APPROVAL_FLAGS,
