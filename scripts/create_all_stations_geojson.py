@@ -876,7 +876,7 @@ def run_awdb_workflow(
                          (SNOW) and aerial markers (MPRC) — for
                          clients/awdb/awdb_stations.geojson.
     ``daily_features`` — the subset with daily-or-better WTEQ/SNWD
-                         (for all_daily_snow_stations.geojson).
+                         (for all_snow_stations.geojson).
     """
     client = AWDBClient()
 
@@ -1507,7 +1507,7 @@ def main() -> None:
                         "(SNOW) and aerial markers (MPRC). Includes full "
                         "element inventory. Only stations with daily-or-"
                         "better snow data appear in "
-                        "all_daily_snow_stations.geojson."
+                        "all_snow_stations.geojson."
                     ),
                     "total": len(awdb_all),
                 },
@@ -1541,8 +1541,8 @@ def main() -> None:
                         "All CDEC stations with snow sensors (3, 18, 82), "
                         "including manual snow courses (periodic) and "
                         "automated snow pillows (daily). "
-                        "Only stations with daily SWE or depth appear in "
-                        "all_daily_snow_stations.geojson."
+                        "Only stations with probe-verified daily data are "
+                        "daily_or_better in all_snow_stations.geojson."
                     ),
                     "total": len(cdec_all),
                 },
@@ -1580,7 +1580,7 @@ def main() -> None:
                     "description": (
                         "All BC snow survey stations: ASWS (automated, daily SWE) "
                         "and MSS (manual snow courses, periodic). "
-                        "Only ASWS stations appear in all_daily_snow_stations.geojson."
+                        "Only ASWS stations appear in all_snow_stations.geojson."
                     ),
                     "total": len(databc_all),
                 },
@@ -1653,7 +1653,7 @@ def main() -> None:
                         "SWE (YSS), and ECCC climate stations with daily "
                         "snow depth mirrored into AquaCache (YKEC). "
                         "Only stations with a continuous series appear in "
-                        "all_daily_snow_stations.geojson."
+                        "all_snow_stations.geojson."
                     ),
                     "total": len(yukon_all),
                 },

@@ -666,7 +666,7 @@ def refresh_yukon(
 
     Only stations with a continuous series reach this function — the 92
     manual snow courses are periodic and are excluded from
-    all_daily_snow_stations.geojson upstream.
+    all_snow_stations.geojson upstream.
     """
     if not stations:
         return
