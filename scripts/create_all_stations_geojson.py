@@ -656,7 +656,7 @@ def keep_previous_if_empty(
     2026-07-03) must never overwrite a good station inventory with an
     empty one, nor silently drop the client from the merged daily file.
     Reuses the previously committed per-client GeoJSON and derives the
-    daily subset from its dailySWE/dailySnowDepth properties.
+    daily subset from its has_daily_swe/has_daily_snwd properties.
 
     Returns ``(all_features, daily_features, fresh)``.  ``fresh`` is False
     when the previous inventory was reused — the caller should then skip
@@ -938,8 +938,8 @@ def run_awdb_workflow(
     # Merged daily inventory: only daily-or-better WTEQ/SNWD
     daily_features = [
         f for f in all_features
-        if f["properties"].get("dailySWE")
-        or f["properties"].get("dailySnowDepth")
+        if f["properties"].get("has_daily_swe")
+        or f["properties"].get("has_daily_snwd")
     ]
     print(
         f"  Daily-or-better stations: {len(daily_features):,} of "
@@ -1036,7 +1036,7 @@ def run_cdec_workflow() -> tuple[list[dict], list[dict]]:
     all_features = [cdec_station_to_feature(s) for s in stations]
     daily_features = [
         f for f in all_features
-        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
     ]
 
     return all_features, daily_features
@@ -1146,7 +1146,7 @@ def run_databc_workflow(
 
     daily_features = [
         f for f in all_features
-        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
     ]
 
     return all_features, daily_features
@@ -1259,7 +1259,7 @@ def run_nve_workflow() -> tuple[list[dict], list[dict]]:
     all_features = [nve_station_to_feature(s) for s in stations]
     daily_features = [
         f for f in all_features
-        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
     ]
     print(f"  Daily stations: {len(daily_features):,}")
 
@@ -1413,7 +1413,7 @@ def run_yukon_workflow() -> tuple[list[dict], list[dict]]:
     all_features = [yukon_station_to_feature(s) for s in stations]
     daily_features = [
         f for f in all_features
-        if f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
     ]
     print(f"  Daily stations: {len(daily_features):,}")
 
