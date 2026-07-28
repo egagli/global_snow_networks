@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-07-27",
+    "generated": "2026-07-28",
     "source": "Yukon Water Data (AquaCache) API v1 \u2014 https://service.yukon.ca/water-data/api/v1",
     "client": "yukon",
     "description": "All Yukon snow monitoring stations: manual snow courses (YSS, periodic Feb/Mar/Apr/May surveys), automated snow-weather stations with snow-pillow SWE (YSS), and ECCC climate stations with daily snow depth mirrored into AquaCache (YKEC). Only stations with a continuous series appear in all_daily_snow_stations.geojson.",
@@ -34,7 +34,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -124,7 +124,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -175,7 +175,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1980-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -226,7 +226,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1994-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -277,7 +277,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "2000-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -328,7 +328,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1978-02-01",
         "last_survey": "1985-05-01",
         "data_variables": [
@@ -379,7 +379,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1978-02-01",
         "last_survey": "2010-05-01",
         "data_variables": [
@@ -430,7 +430,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1980-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -481,7 +481,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-04-01",
         "last_survey": "2010-05-01",
         "data_variables": [
@@ -532,7 +532,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -583,7 +583,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1980-02-01",
         "last_survey": "1985-03-01",
         "data_variables": [
@@ -634,7 +634,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -685,7 +685,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1989-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -736,7 +736,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -744,7 +744,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1220, aggregation 'instantaneous', recording rate '01:00:00', period of record 2009-11-09 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1220, aggregation 'instantaneous', recording rate '01:00:00', period of record 2009-11-09 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -752,7 +752,7 @@
             "interval": "sub_daily",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1241, aggregation 'sum', recording rate '03:00:00', period of record 2009-11-09 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1241, aggregation 'sum', recording rate '03:00:00', period of record 2009-11-09 to 2026-07-28."
           },
           {
             "name": "swe_mm",
@@ -768,7 +768,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 21, aggregation 'instantaneous', recording rate '01:00:00', period of record 2013-09-12 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 21, aggregation 'instantaneous', recording rate '01:00:00', period of record 2013-09-12 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -802,7 +802,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -810,7 +810,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1218, aggregation 'instantaneous', recording rate '01:00:00', period of record 2023-06-14 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1218, aggregation 'instantaneous', recording rate '01:00:00', period of record 2023-06-14 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -818,7 +818,7 @@
             "interval": "hourly",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1750, aggregation 'sum', recording rate '01:00:00', period of record 2023-06-14 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1750, aggregation 'sum', recording rate '01:00:00', period of record 2023-06-14 to 2026-07-28."
           },
           {
             "name": "swe_mm",
@@ -826,7 +826,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 649, aggregation 'instantaneous', recording rate '01:00:00', period of record 1980-02-25 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 649, aggregation 'instantaneous', recording rate '01:00:00', period of record 1980-02-25 to 2026-07-28."
           },
           {
             "name": "snwd_cm",
@@ -834,7 +834,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 650, aggregation 'instantaneous', recording rate '01:00:00', period of record 1980-02-25 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 650, aggregation 'instantaneous', recording rate '01:00:00', period of record 1980-02-25 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -868,7 +868,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -876,7 +876,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1086, aggregation 'instantaneous', recording rate '01:00:00', period of record 2023-08-23 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1086, aggregation 'instantaneous', recording rate '01:00:00', period of record 2023-08-23 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -884,7 +884,7 @@
             "interval": "hourly",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1140, aggregation 'sum', recording rate '01:00:00', period of record 2023-08-23 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1140, aggregation 'sum', recording rate '01:00:00', period of record 2023-08-23 to 2026-07-28."
           },
           {
             "name": "wind_spd_kmh",
@@ -900,7 +900,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 1222, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-07-16 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 1222, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-07-16 to 2026-07-28."
           },
           {
             "name": "wind_dir_deg",
@@ -916,7 +916,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1842, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-10-07 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1842, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-10-07 to 2026-07-28."
           },
           {
             "name": "rel_humidity_pct",
@@ -924,7 +924,7 @@
             "interval": "hourly",
             "units": "%",
             "description": "Relative humidity.",
-            "notes": "Native units: %. AquaCache timeseries 1843, aggregation 'instantaneous', recording rate '01:00:00', period of record 2023-08-23 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1843, aggregation 'instantaneous', recording rate '01:00:00', period of record 2023-08-23 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -958,7 +958,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-02-15",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1009,7 +1009,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-02-15",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1060,7 +1060,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1958-05-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1111,7 +1111,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1964-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1162,7 +1162,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1981-02-01",
         "last_survey": "2007-05-01",
         "data_variables": [
@@ -1213,7 +1213,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1264,7 +1264,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1981-02-01",
         "last_survey": "1988-05-15",
         "data_variables": [
@@ -1315,7 +1315,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1981-02-01",
         "last_survey": "1985-05-01",
         "data_variables": [
@@ -1366,7 +1366,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1965-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1417,7 +1417,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1965-03-01",
         "last_survey": "2024-05-01",
         "data_variables": [
@@ -1468,7 +1468,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "2023-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1519,7 +1519,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1980-02-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -1570,7 +1570,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1983-02-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -1621,7 +1621,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1983-03-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -1672,7 +1672,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1723,7 +1723,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1774,7 +1774,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1825,7 +1825,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "1976-05-01",
         "data_variables": [
@@ -1876,7 +1876,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "1989-05-15",
         "data_variables": [
@@ -1927,7 +1927,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -1978,7 +1978,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2029,7 +2029,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1995-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2080,7 +2080,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -2088,7 +2088,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1221, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-09-22 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1221, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-09-22 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -2096,7 +2096,7 @@
             "interval": "sub_daily",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1759, aggregation 'sum', recording rate '03:00:00', period of record 2017-09-22 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1759, aggregation 'sum', recording rate '03:00:00', period of record 2017-09-22 to 2026-07-28."
           },
           {
             "name": "swe_mm",
@@ -2104,7 +2104,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 51, aggregation 'instantaneous', recording rate '01:00:00', period of record 1988-10-01 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 51, aggregation 'instantaneous', recording rate '01:00:00', period of record 1988-10-01 to 2026-07-28."
           },
           {
             "name": "snwd_cm",
@@ -2112,7 +2112,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 52, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-10-09 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 52, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-10-09 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -2146,7 +2146,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -2197,7 +2197,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2248,7 +2248,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2299,7 +2299,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "2016-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2350,7 +2350,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2401,7 +2401,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2452,7 +2452,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2503,7 +2503,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "1982-05-15",
         "data_variables": [
@@ -2554,7 +2554,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1981-02-01",
         "last_survey": "1982-05-01",
         "data_variables": [
@@ -2605,7 +2605,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2656,7 +2656,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2707,7 +2707,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -2829,7 +2829,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -2880,7 +2880,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -3002,7 +3002,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3053,7 +3053,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3104,7 +3104,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3155,7 +3155,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1978-02-01",
         "last_survey": "1984-05-15",
         "data_variables": [
@@ -3206,7 +3206,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1985-02-01",
         "last_survey": "2010-05-01",
         "data_variables": [
@@ -3257,7 +3257,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1991-03-01",
         "last_survey": "1994-05-15",
         "data_variables": [
@@ -3308,7 +3308,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3359,7 +3359,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1988-03-01",
         "last_survey": "2026-04-01",
         "data_variables": [
@@ -3410,7 +3410,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1995-03-01",
         "last_survey": "1999-05-01",
         "data_variables": [
@@ -3461,7 +3461,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3512,7 +3512,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1983-02-01",
         "last_survey": "1985-05-01",
         "data_variables": [
@@ -3563,7 +3563,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3614,7 +3614,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1978-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3665,7 +3665,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "2010-05-01",
         "data_variables": [
@@ -3716,7 +3716,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "soil_moisture_pct",
@@ -3724,7 +3724,7 @@
             "interval": "sub_daily",
             "units": "%",
             "description": "Volumetric soil moisture content.",
-            "notes": "Native units: %. AquaCache timeseries 1766, aggregation 'instantaneous', recording rate '03:00:00', period of record 2019-07-17 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1766, aggregation 'instantaneous', recording rate '03:00:00', period of record 2019-07-17 to 2026-07-28."
           },
           {
             "name": "rel_humidity_pct",
@@ -3732,7 +3732,7 @@
             "interval": "sub_daily",
             "units": "%",
             "description": "Relative humidity.",
-            "notes": "Native units: %. AquaCache timeseries 1767, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-08-28 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1767, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-08-28 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -3740,7 +3740,7 @@
             "interval": "sub_daily",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1776, aggregation 'sum', recording rate '03:00:00', period of record 2012-09-20 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1776, aggregation 'sum', recording rate '03:00:00', period of record 2012-09-20 to 2026-07-28."
           },
           {
             "name": "swe_mm",
@@ -3748,7 +3748,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 75, aggregation 'instantaneous', recording rate '01:00:00', period of record 1988-10-08 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 75, aggregation 'instantaneous', recording rate '01:00:00', period of record 1988-10-08 to 2026-07-28."
           },
           {
             "name": "snwd_cm",
@@ -3756,7 +3756,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 76, aggregation 'instantaneous', recording rate '01:00:00', period of record 2009-11-09 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 76, aggregation 'instantaneous', recording rate '01:00:00', period of record 2009-11-09 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -3790,7 +3790,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3841,7 +3841,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3892,7 +3892,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -3941,7 +3941,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1968-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -3992,7 +3992,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4043,7 +4043,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4094,7 +4094,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4145,7 +4145,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "1981-02-01",
         "data_variables": [
@@ -4196,7 +4196,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1983-02-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -4247,7 +4247,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -4255,7 +4255,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1219, aggregation 'instantaneous', recording rate '01:00:00', period of record 2022-10-25 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1219, aggregation 'instantaneous', recording rate '01:00:00', period of record 2022-10-25 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -4263,7 +4263,7 @@
             "interval": "hourly",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1751, aggregation 'sum', recording rate '01:00:00', period of record 2022-09-21 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1751, aggregation 'sum', recording rate '01:00:00', period of record 2022-09-21 to 2026-07-28."
           },
           {
             "name": "precip_rain_mm",
@@ -4271,7 +4271,7 @@
             "interval": "hourly",
             "units": "mm",
             "description": "Rainfall accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1763, aggregation 'sum', recording rate '01:00:00', period of record 2024-08-01 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1763, aggregation 'sum', recording rate '01:00:00', period of record 2024-08-01 to 2026-07-28."
           },
           {
             "name": "rel_humidity_pct",
@@ -4279,7 +4279,7 @@
             "interval": "hourly",
             "units": "%",
             "description": "Relative humidity.",
-            "notes": "Native units: %. AquaCache timeseries 1764, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-10-01 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1764, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-10-01 to 2026-07-28."
           },
           {
             "name": "soil_moisture_pct",
@@ -4287,7 +4287,7 @@
             "interval": "sub_daily",
             "units": "%",
             "description": "Volumetric soil moisture content.",
-            "notes": "Native units: %. AquaCache timeseries 1765, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-05-21 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1765, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-05-21 to 2026-07-28."
           },
           {
             "name": "swe_mm",
@@ -4295,7 +4295,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 85, aggregation 'instantaneous', recording rate '01:00:00', period of record 2022-09-21 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 85, aggregation 'instantaneous', recording rate '01:00:00', period of record 2022-09-21 to 2026-07-28."
           },
           {
             "name": "snwd_cm",
@@ -4303,7 +4303,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 86, aggregation 'instantaneous', recording rate '01:00:00', period of record 2022-10-25 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 86, aggregation 'instantaneous', recording rate '01:00:00', period of record 2022-10-25 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -4337,7 +4337,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4388,7 +4388,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4439,7 +4439,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4490,7 +4490,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1967-03-01",
         "last_survey": "2026-04-01",
         "data_variables": [
@@ -4541,7 +4541,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "1984-05-01",
         "data_variables": [
@@ -4592,7 +4592,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "snwd_cm",
@@ -4616,7 +4616,7 @@
             "interval": "sub_daily",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1235, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-09-07 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1235, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-09-07 to 2026-07-28."
           },
           {
             "name": "wind_dir_deg",
@@ -4632,7 +4632,7 @@
             "interval": "hourly",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1737, aggregation 'sum', recording rate '01:00:00', period of record 2025-09-10 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1737, aggregation 'sum', recording rate '01:00:00', period of record 2025-09-10 to 2026-07-28."
           },
           {
             "name": "baro_press_kpa",
@@ -4640,7 +4640,7 @@
             "interval": "sub_daily",
             "units": "kPa",
             "description": "Barometric pressure.",
-            "notes": "Native units: kPa \u2014 note the DataBC client reports hPa for the same quantity (1 kPa = 10 hPa). AquaCache timeseries 1845, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-09-07 to 2026-07-27."
+            "notes": "Native units: kPa \u2014 note the DataBC client reports hPa for the same quantity (1 kPa = 10 hPa). AquaCache timeseries 1845, aggregation 'instantaneous', recording rate '03:00:00', period of record 2025-09-07 to 2026-07-28."
           },
           {
             "name": "rel_humidity_pct",
@@ -4648,7 +4648,7 @@
             "interval": "hourly",
             "units": "%",
             "description": "Relative humidity.",
-            "notes": "Native units: %. AquaCache timeseries 1848, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-09-07 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1848, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-09-07 to 2026-07-28."
           },
           {
             "name": "wind_spd_kmh",
@@ -4656,7 +4656,7 @@
             "interval": "hourly",
             "units": "km/h",
             "description": "Wind speed.",
-            "notes": "Native units: km/h. AquaCache timeseries 1926, aggregation 'mean', recording rate '01:00:00', period of record 2026-06-15 to 2026-07-27."
+            "notes": "Native units: km/h. AquaCache timeseries 1926, aggregation 'mean', recording rate '01:00:00', period of record 2026-06-15 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -4690,7 +4690,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4741,7 +4741,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -4847,7 +4847,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1983-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4898,7 +4898,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1983-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -4949,7 +4949,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5000,7 +5000,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "2025-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5051,7 +5051,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1965-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5102,7 +5102,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1977-02-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5153,7 +5153,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5204,7 +5204,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5255,7 +5255,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-04-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5306,7 +5306,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -5314,7 +5314,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 122, aggregation 'instantaneous', recording rate '01:00:00', period of record 1992-10-15 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 122, aggregation 'instantaneous', recording rate '01:00:00', period of record 1992-10-15 to 2026-07-28."
           },
           {
             "name": "snwd_cm",
@@ -5322,7 +5322,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
-            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 123, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-10-06 to 2026-07-27."
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 123, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-10-06 to 2026-07-28."
           },
           {
             "name": "air_temp_degc",
@@ -5330,7 +5330,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1745, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-10-06 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1745, aggregation 'instantaneous', recording rate '01:00:00', period of record 2017-10-06 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -5338,7 +5338,7 @@
             "interval": "sub_daily",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1758, aggregation 'sum', recording rate '03:00:00', period of record 2017-10-06 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1758, aggregation 'sum', recording rate '03:00:00', period of record 2017-10-06 to 2026-07-28."
           }
         ],
         "dailySWE": true,
@@ -5372,7 +5372,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5423,7 +5423,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "2022-05-01",
         "data_variables": [
@@ -5474,7 +5474,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "2018-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5525,7 +5525,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1975-04-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -5576,7 +5576,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-02-01",
         "last_survey": "1985-05-15",
         "data_variables": [
@@ -5627,7 +5627,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5678,7 +5678,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1976-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5729,7 +5729,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "first_survey": "1986-03-01",
         "last_survey": "2026-05-01",
         "data_variables": [
@@ -5780,7 +5780,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -5886,7 +5886,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -5992,7 +5992,7 @@
         "isActive": false,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -6106,7 +6106,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -6228,7 +6228,7 @@
         "isActive": true,
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
-        "metadata_fetched_at": "2026-07-27",
+        "metadata_fetched_at": "2026-07-28",
         "data_variables": [
           {
             "name": "swe_mm",
@@ -6236,7 +6236,7 @@
             "interval": "hourly",
             "units": "cm",
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
-            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 145, aggregation 'instantaneous', recording rate '01:00:00', period of record 1995-10-20 to 2026-07-27."
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 145, aggregation 'instantaneous', recording rate '01:00:00', period of record 1995-10-20 to 2026-07-28."
           },
           {
             "name": "precip_total_mm",
@@ -6244,7 +6244,7 @@
             "interval": "sub_daily",
             "units": "mm",
             "description": "Total precipitation accumulated over the recording interval.",
-            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1772, aggregation 'sum', recording rate '03:00:00', period of record 1998-08-31 to 2026-07-27."
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1772, aggregation 'sum', recording rate '03:00:00', period of record 1998-08-31 to 2026-07-28."
           },
           {
             "name": "air_temp_degc",
@@ -6252,7 +6252,7 @@
             "interval": "hourly",
             "units": "\u00b0C",
             "description": "Air temperature.",
-            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1773, aggregation 'instantaneous', recording rate '01:00:00', period of record 1998-08-31 to 2026-07-27."
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1773, aggregation 'instantaneous', recording rate '01:00:00', period of record 1998-08-31 to 2026-07-28."
           },
           {
             "name": "soil_moisture_pct",
@@ -6268,7 +6268,7 @@
             "interval": "hourly",
             "units": "%",
             "description": "Relative humidity.",
-            "notes": "Native units: %. AquaCache timeseries 1775, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-10-01 to 2026-07-27."
+            "notes": "Native units: %. AquaCache timeseries 1775, aggregation 'instantaneous', recording rate '01:00:00', period of record 2025-10-01 to 2026-07-28."
           }
         ],
         "dailySWE": true,
