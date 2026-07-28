@@ -212,8 +212,16 @@ feature; `null` when unavailable, never omitted):
 `is_active`, `begin_date`, `end_date`, `earliest_record_date`,
 `latest_record_date`, `station_url`, `station_image_url`,
 `station_camera_url`, `notes`, `data_variables`, `has_daily_swe`,
-`has_daily_snwd`, `daily_or_better`, `daily_provenance`,
-`possible_duplicates`, `metadata_fetched_at`.
+`has_daily_snwd`, `daily_or_better`, `daily_verified`,
+`daily_provenance`, `possible_duplicates`, `metadata_fetched_at`.
+
+`has_daily_swe` / `has_daily_snwd` are **advertised** candidates,
+rebuilt from source metadata on every inventory rebuild.
+`daily_or_better` is the **probe's verdict** (`daily_verified` says
+whether the probe has run); the probe's verdict is carried forward
+across rebuilds and only the next probe changes it.  The fetch tries
+every station where either signal is positive, so a station that newly
+advertises daily data is probed even after a failed verification.
 
 `data_variables` entries: `{name, type, interval, units, description, notes,
 begin_date, end_date, n_obs}` — the last three `null` where the source
