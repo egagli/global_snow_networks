@@ -612,7 +612,7 @@ itself is unrestricted.
 
 **Two network codes** distinguish who operates the site:
 
-| `networkCode` | Station types | Count | Description |
+| `network_code` | Station types | Count | Description |
 |---|---|---|---|
 | `YSS` | `SC`, `AWS` | 101 | Yukon Snow Survey — 92 manual snow courses plus 9 automated snow-weather stations with snow-pillow SWE |
 | `YKEC` | `ECCC` | 8 | ECCC climate stations with daily snow depth, mirrored into AquaCache |

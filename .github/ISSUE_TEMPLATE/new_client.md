@@ -29,205 +29,118 @@ the rest by exploring the API / data portal directly.
 
 ## Implementation checklist
 
-Please implement the following network and client following the implementation checklist. Work through these steps **in order**.  Mark each task complete before
-moving to the next.  Run all test code against the **live API** — do
-not mock responses.  The network overview provided is just a very rough approximation of what to expect, it could be completely wrong our outdated. Please do your own research, and if you find a better way to utilize or access the data, please do so. For example, if daily SWE is available and we said it doesn't exist, prefer your own research and implement it. Or if the API example we gave you doesn't work as well as another, you can prefer your own research and testing and go the other way.
+The **normative contract** for everything below is
+[DESIGN.md](https://github.com/egagli/global_snow_networks/blob/main/DESIGN.md)
+— client API (§3), daily semantics (§4), identity fields (§5), artifact
+schema (§6). This checklist sequences the work; it does not restate the
+contract, and where the two disagree, DESIGN.md wins.
+
+Work through the steps **in order**. Mark each task complete before moving to
+the next. Run all test code against the **live API** — do not mock responses.
+The network overview above is a rough approximation and could be wrong or
+outdated: do your own research, and if you find a better way to access the
+data, prefer it. For example, if daily SWE is available and we said it doesn't
+exist, trust your own findings and implement it.
 
 ### 1. Explore the API / data format
 
 - [ ] Identify the base URL(s) and authentication requirements (if any).
 - [ ] Determine the station-list endpoint / file format (JSON, CSV, WFS, …).
-- [ ] Fetch a sample station list and print 3–5 representative records in
-  a notebook cell.
-- [ ] Search for webpages for individual station in the network to find extra metadata, station urls, and station image urls.
-- [ ] Identify all available variables, these could be different across different stations in the network (sensor names, units, element codes).
-- [ ] Determine available temporal resolutions (daily, hourly, periodic).
-- [ ] Identify any station-type distinctions (e.g. automated vs. manual).
+- [ ] Fetch a sample station list and print 3–5 representative records.
+- [ ] Search the source's webpages for per-station metadata pages, station
+  photos, and live/satellite cameras (`station_url`, `station_image_url`,
+  `station_camera_url`).
+- [ ] Identify all available variables — these can differ across stations
+  in the network (sensor names, units, element codes).
+- [ ] Determine available temporal resolutions (daily, hourly, periodic, …).
+- [ ] Identify any station-type distinctions (e.g. automated vs. manual),
+  and note what the source's network labels actually mean — never take
+  network codes at face value (DESIGN.md §5).
 - [ ] Document the data endpoint(s) and any required parameters
   (date range, station ID format, pagination).
 - [ ] Fetch sample time-series data for 2–3 stations (one per station type)
   and print the raw response.
+- [ ] Collect authoritative references (API docs, portal pages, network
+  design reports) for `docs/SOURCES.md` and the per-client GeoJSON
+  `metadata.references`.
 
-### 2. Create the client module
+### 2. Create the client module (DESIGN.md §3)
 
-- [ ] Create `clients/<network>/` directory with `__init__.py`.
-- [ ] Create `clients/<network>/<network>_client.py`.
-- [ ] Define a module-level `VARIABLES` dict (or `SENSORS` for sensor-based
-  networks). Each entry must include:
-  ```python
-  "ELEMENT_CODE": {
-      "type": "<standardized_type>",   # see vocabulary below
-      "units": "<native_units>",
-      "description": "Human-readable description.",
-      "notes": "",                     # or relevant caveats
-      "source": "<endpoint_or_file>",  # where this variable comes from
-  }
-  ```
-  **Standardized type vocabulary:**
-  `"swe"`, `"snwd"`, `"temp"`, `"temp_max"`, `"temp_min"`,
-  `"precip"`, `"rh"`, `"wind_spd"`, `"wind_gust"`, `"wind_dir"`,
-  `"wind_run"`, `"solar"`, `"baro"`, `"density"`, `"snow_line"`,
-  `"other"`
+- [ ] Create `clients/<network>/` with `__init__.py` and
+  `<network>_client.py` defining `<Network>Client` and
+  `<Network>Error(Exception)`; export both from `clients/__init__.py`.
+- [ ] Define the module-level `VARIABLES` registry — one entry per native
+  variable with `type` / `units` / `output_units` / `description` /
+  `notes` / `source` (§3.2 has the type vocabulary) — and `DATA_FLAGS`
+  (an empty dict with a comment if the source has no flags).
+- [ ] Use the shared helpers in `clients/_common.py` (retry loop, interval
+  enum, list/date coercion, missing-value sentinels) — never re-implement
+  them per client.
+- [ ] Implement `get_all_stations(active_only=False, bbox=None)` per §3.4.
+- [ ] Implement `get_data(...)` per §3.4: flat records, fully metric output
+  units (§3.5 table), `datetime` on sub-daily records, `variables=None`
+  meaning snow variables only, and no silent fallbacks — unknown variable
+  or interval raises `<Network>Error` (§3.6).
+- [ ] Implement `get_metadata(station_id)` including the station's
+  variable/series inventory.
+- [ ] Verify against the live API: station count + a sample record from
+  `get_all_stations()`; 1 year of daily SWE + snow depth for 3 stations
+  from `get_data()`.
 
-- [ ] Define `_TYPE_TO_<NETWORK>_VARS` dict mapping standardized type →
-  list of native variable/sensor names.
-- [ ] Define interval conversion dicts (native duration code ↔ standardized
-  interval string: `"daily"`, `"hourly"`, `"sub_daily"`, `"periodic"`,
-  `"monthly"`).
+### 3. Wire into the inventory (`scripts/create_all_stations_geojson.py`)
 
-### 3. Implement `get_all_stations()`
-
-Signature:
-```python
-def get_all_stations(
-    self,
-    active_only: bool = False,
-    bbox: tuple[float, float, float, float] | None = None,
-) -> list[dict]:
-```
-
-- [ ] Returns a list of station dicts.  Each dict **must** contain at
-  minimum: `station_id` (or `location_id`), `name`, `latitude`,
-  `longitude`, `elevation_m` (or derivable from feet), `status`.
-- [ ] `active_only=True` filters to currently active stations.
-- [ ] `bbox=(min_lon, min_lat, max_lon, max_lat)` spatially filters results.
-- [ ] Write and run a notebook cell that calls `get_all_stations()` and
-  prints the total count and a sample record.
-
-### 4. Implement `get_data()`
-
-Signature:
-```python
-def get_data(
-    self,
-    station_ids: list[str] | str | None = None,
-    variables: list[str] | str | None = None,
-    bbox: tuple[float, float, float, float] | None = None,
-    begin_date: str | None = None,
-    end_date: str | None = None,
-    interval: str = "daily",
-    include_flags: bool = False,
-) -> list[dict]:
-```
-
-- [ ] Accepts **either** `station_ids` or `bbox` (raise `ValueError` if
-  neither is provided).
-- [ ] `variables` accepts **both** native names (e.g. `"swe_mm"`) and
-  standardized types (e.g. `"swe"`); `None` returns all variables.
-- [ ] Returns a **flat list** of observation records.  Every record must
-  have exactly these keys (plus optional `"flag"` when
-  `include_flags=True`):
-  ```python
-  {
-      "station_id": str,   # native station identifier
-      "date":       str,   # "YYYY-MM-DD"
-      "variable":   str,   # native variable/sensor name
-      "type":       str,   # standardized type (e.g. "swe")
-      "value":      float | None,
-      "units":      str,   # standardized output units (cm for swe/snwd)
-      "interval":   str,   # "daily", "hourly", etc.
-  }
-  ```
-- [ ] SWE (`type="swe"`) must be returned in **cm**.  Convert at the
-  source if the API returns other units (e.g. mm ÷ 10, inches × 2.54).
-- [ ] Snow depth (`type="snwd"`) must also be in **cm**.
-- [ ] Rename the internal/native fetch function to
-  `_get_data_<network>(...)` (private) and have the public `get_data()`
-  call it after resolving variables and intervals.
-- [ ] Write and run a notebook cell that fetches 1 year of daily SWE +
-  snow depth for 3 stations and prints the first 10 records and the
-  record count.
-
-### 5. Add per-client GeoJSON support
-
-In `scripts/create_all_stations_geojson.py`:
-
-- [ ] Import any new constants needed
-  (`VARIABLES`, interval-conversion dicts, etc.) from your client.
-- [ ] Add `_<network>_data_variables(station: dict) -> list[dict]`
-  helper.  Each entry must be:
-  ```python
-  {
-      "name":        str,  # native variable/sensor name
-      "type":        str,  # standardized type
-      "interval":    str,  # "daily", "hourly", "sub_daily", "periodic"
-      "units":       str,
-      "description": str,
-      "notes":       str,
-  }
-  ```
-- [ ] Add `<network>_station_to_feature(station: dict) -> dict` function
-  that builds a GeoJSON feature.  The `properties` dict **must** include:
-
-  | Key | Description |
-  |-----|-------------|
-  | `code` | Native station ID |
-  | `name` | Station name |
-  | `latitude` / `longitude` | Decimal degrees |
-  | `elevation_m` | Elevation in metres |
-  | `state` | State / province / country code |
-  | `Operator` | Operator string (used in map photo credit) |
-  | `client` | Client name string (e.g. `"mynetwork"`) |
-  | `networkCode` | Short network code shown on map |
-  | `notes` | Free-text notes |
-  | `station_url` | Link to station metadata page |
-  | `station_image_url` | Station photo URL, usually available on each station's metadata page (if available; omit if not) |
-  | `data_variables` | Output of `_<network>_data_variables(station)` |
-  | `dailySWE` | `_has_daily_type(data_vars, "swe")` |
-  | `dailySnowDepth` | `_has_daily_type(data_vars, "snwd")` |
-  | `metadata_fetched_at` | `date.today().isoformat()` |
-
-- [ ] Add `run_<network>_workflow()` that returns
-  `(all_features, daily_features)` where `daily_features` is filtered
-  to `f["properties"].get("dailySWE") or f["properties"].get("dailySnowDepth")`.
-- [ ] Add `--skip-<network>` CLI flag in `main()`.
-- [ ] Wire the workflow into `main()` with a `try/except` guard (same
-  pattern as existing clients).
-- [ ] Add the per-client GeoJSON output path to the `git add` loop in
+- [ ] Add `_<network>_data_variables(station) -> list[dict]` — one entry per
+  series: `{name, type, interval, units, description, notes, begin_date,
+  end_date, n_obs}` (the last three `None` where the source doesn't say).
+- [ ] Add `<network>_station_to_feature(station)` building its properties
+  through `make_feature()` (which enforces the §6.1 universal schema).
+  `network_code` verbatim from the source; `operator` only when certain,
+  else `None`; daily candidate flags via `_daily_candidate_props(...)`.
+- [ ] Add `run_<network>_workflow()` returning
+  `(all_features, daily_features)` and wire it into `main()` with the
+  same `try/except` + `--skip-<network>` pattern as existing clients.
+- [ ] Add the per-client GeoJSON path to the staging step in
   `.github/workflows/daily_station_update.yml`.
-- [ ] Write and run `pixi run fetch-stations` locally and verify the
-  per-client GeoJSON is written and valid.
+- [ ] Run `pixi run fetch-stations` locally: the per-client GeoJSON is
+  valid and the new stations appear in `all_snow_stations.geojson` with
+  the full universal schema.
 
-### 6. Add data-refresh support
+### 4. Wire into the data refresh (`scripts/get_all_stations_data.py`)
 
-In `scripts/get_all_stations_data.py`:
+- [ ] Add a `refresh_<network>()` following the existing refreshers: fetch
+  daily SWE/snow depth via the client, write `date,wteq_cm,snwd_cm` CSVs
+  atomically, and let the probe verify `daily_or_better` (DESIGN.md §4).
+- [ ] Resample to daily **only if the source has no native daily series**,
+  with `daily_provenance` set (§4).
+- [ ] Route the network in the fetch-candidate logic and run
+  `pixi run fetch-data-<network>` locally for a small subset.
 
-- [ ] Add a `refresh_<network>()` function with the same signature as
-  `refresh_awdb()` / `refresh_cdec()` / `refresh_databc()`.
-- [ ] Call `client.get_data(station_ids=..., variables=["swe","snwd"], interval="daily", ...)`.
-- [ ] Use `_station_records_to_df(station_records)` to convert flat
-  records to a `{date, wteq_cm, snwd_cm}` DataFrame.
-- [ ] Wire `refresh_<network>()` into `main()`.
-- [ ] Write and run `pixi run fetch-data` locally for a small subset
-  of stations (e.g. `--skip-awdb --skip-cdec`).
+### 5. Map, docs, and tests
 
-### 7. Interactive map
-
-In `scripts/generate_live_map.py` (or `_HTML_TEMPLATE` within it):
-
-- [ ] Verify the photo credit block handles the new network's
-  `Operator` field correctly (it should work automatically via `s.op`).
-- [ ] Run `pixi run live-map` and open the HTML to confirm the new
-  stations appear on the map with correct popups.
-
-### 8. Documentation
-
-- [ ] Add the new network to the **Networks** table in `README.md`.
-- [ ] Add the per-client GeoJSON path to the README file listing.
-- [ ] Update the CSV schema docstring in `get_all_stations_data.py` if
-  any new units/conversions are applied.
+- [ ] Add `NET_LABELS` / `NET_SHAPES` / `buildIcon()` entries in
+  `scripts/generate_live_map.py`; run `pixi run live-map` and confirm the
+  new stations render with correct popups (the legend builds itself from
+  the inventory).
+- [ ] Document the client in `clients/README.md` (API surface, quirks,
+  units) and add the network to the root `README.md` Networks section and
+  comparison table.
+- [ ] Add offline parsing tests plus live-marked tests
+  (`pytest.mark.live`); run `pixi run -e dev test-unit`, including the
+  inventory contract test.
 
 ---
 
 ## Acceptance criteria
 
-- [ ] `pixi run fetch-stations` completes without error and writes a
-  valid per-client GeoJSON with `data_variables`, `dailySWE`, and
-  `dailySnowDepth` on every feature.
-- [ ] `all_daily_snow_stations.geojson` includes the new stations.
-- [ ] `pixi run fetch-data` writes correct CSVs with `wteq_cm` and/or
-  `snwd_cm` columns for at least one station.
-- [ ] `pixi run live-map` produces a valid HTML map that shows the new
+- [ ] `pixi run fetch-stations` completes without error; every new feature
+  carries the DESIGN.md §6.1 universal schema (`null` when unavailable,
+  never omitted).
+- [ ] `all_snow_stations.geojson` includes the new stations with correct
+  advertised `has_daily_swe` / `has_daily_snwd` candidates.
+- [ ] `pixi run fetch-data` writes correct CSVs (`wteq_cm` / `snwd_cm`,
+  metric, empty cells for missing) for at least one station, and the
+  probe marks it `daily_or_better`.
+- [ ] `pixi run live-map` produces a valid HTML map showing the new
   stations.
-- [ ] All test code was run against the **live API** (no mocked
-  responses).
+- [ ] All test code was run against the **live API** (no mocked responses),
+  and `pixi run -e dev test-unit` is green.
