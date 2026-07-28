@@ -158,6 +158,7 @@ Checked against existing issues 2026-07-28: **context satellite imagery is alrea
 1. **easysnowdata migration** — move `clients/` as-is into easysnowdata; this repo then imports it for pre-download + map. Blocked on Phases 1–2. Note easysnowdata currently pulls from the frozen v1 repo; repointing it is a separate migration step.
 2. **v2 feature revival** — inline QC flags in the CSV archive and/or retroactive-change audit logs (both existed in `snotel_ccss_stations_v2`, dropped in the rewrite), if wanted in the new schema.
 3. **Sub-hourly support audit** — which sources actually serve sub-hourly (AWDB? CDEC event data?) and wiring it through the interval enum.
+4. **DataBC wide-CSV memory** — melting the full hourly archives (`SW_Archive.csv` etc.) in `_load_asws_wide_csv` can exhaust memory (observed OOM-kill on a small machine, 2026-07). Chunked parsing or per-station column selection would fix it; affects `get_data(interval="hourly")` over long periods.
 
 ## 8. Proposed decisions (acting on these unless vetoed)
 
