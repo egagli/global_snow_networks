@@ -45,7 +45,7 @@ The same physical station may appear once per access path. De-duplication is pun
 Every value a client emits is metric, converted at the source. `units` is present on every record. Canonical emitted units by type:
 
 | type | unit |
-|---|---|
+| --- | --- |
 | `swe` | cm |
 | `snwd` | cm |
 | `temp*` | °C |
