@@ -85,6 +85,7 @@ class RefreshStats:
     failed_batches: int = 0
     updated_csvs: int = 0
     skipped_empty: int = 0
+    unroutable: int = 0
     by_client: dict[str, int] = field(default_factory=dict)
 
 
@@ -94,15 +95,15 @@ def station_csv_path(data_dir: Path, code: str) -> Path:
 
 def compute_record_dates(
     df: pd.DataFrame,
-) -> tuple[str | None, str | None, str | None]:
+) -> tuple[str | None, str | None]:
     if df.empty:
-        return None, None, None
+        return None, None
     obs = df.dropna(subset=["wteq_cm", "snwd_cm"], how="all")
     if obs.empty:
-        return None, None, None
+        return None, None
     earliest = str(obs["date"].iloc[0])
     latest = str(obs["date"].iloc[-1])
-    return earliest, latest, latest
+    return earliest, latest
 
 
 def write_csv_atomically(csv_path: Path, df: pd.DataFrame) -> None:
@@ -118,16 +119,28 @@ def write_csv_atomically(csv_path: Path, df: pd.DataFrame) -> None:
         writer = csv.writer(tmp)
         writer.writerow(["date", "wteq_cm", "snwd_cm"])
         for _, row in df.iterrows():
-            writer.writerow([row["date"], row["wteq_cm"], row["snwd_cm"]])
+            # Missing observations are empty cells, never the string "nan"
+            writer.writerow([
+                row["date"],
+                "" if pd.isna(row["wteq_cm"]) else row["wteq_cm"],
+                "" if pd.isna(row["snwd_cm"]) else row["snwd_cm"],
+            ])
     tmp_path.replace(csv_path)
+
+
+def write_json_atomically(path: Path, obj: Any) -> None:
+    """Atomic JSON write — the merged GeoJSON is a multi-MB tracked file
+    and must never be left truncated by an interrupt."""
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    with tmp_path.open("w", encoding="utf-8") as f:
+        json.dump(obj, f, indent=2)
+    tmp_path.replace(path)
 
 
 def update_geojson_dates(
     feature: dict,
     earliest: str | None,
     latest: str | None,
-    updated: str | None,
-    csv_rel_path: str,
     refreshed_at_utc: str,
 ) -> None:
     props = feature.setdefault("properties", {})
@@ -135,18 +148,40 @@ def update_geojson_dates(
         props["earliest_record_date"] = earliest
     if latest:
         props["latest_record_date"] = latest
-    if updated:
-        props["updated_date"] = updated
-    props["csv_path"] = csv_rel_path
     props["csv_refreshed_at_utc"] = refreshed_at_utc
+
+
+def report_orphan_csvs(data_dir: Path, features: list[dict]) -> list[str]:
+    """CSVs with no matching inventory feature (station vanished upstream).
+
+    Retained per DESIGN.md §6.4 — historical data is never silently
+    deleted — but reported loudly so they are a decision, not an accident.
+    """
+    codes = {
+        str(f.get("properties", {}).get("code") or "") for f in features
+    }
+    orphans = sorted(
+        p.stem for p in data_dir.glob("*.csv") if p.stem not in codes
+    )
+    if orphans:
+        logging.warning(
+            "%d orphan station CSV(s) have no inventory feature "
+            "(kept in data/ and the archive): %s",
+            len(orphans),
+            ", ".join(orphans[:20]) + ("…" if len(orphans) > 20 else ""),
+        )
+    return orphans
 
 
 def build_archive(data_dir: Path, archive_path: Path) -> int:
     csv_files = sorted(data_dir.glob("*.csv"))
     archive_path.parent.mkdir(parents=True, exist_ok=True)
-    with tarfile.open(archive_path, mode="w:xz") as tar:
+    # Atomic: write to a temp file, then rename over the old archive.
+    tmp_path = archive_path.with_suffix(archive_path.suffix + ".tmp")
+    with tarfile.open(tmp_path, mode="w:xz") as tar:
         for csv_file in csv_files:
             tar.add(csv_file, arcname=f"stations/{csv_file.name}")
+    tmp_path.replace(archive_path)
     return len(csv_files)
 
 
@@ -231,14 +266,9 @@ def refresh_awdb(
                 continue
             csv_path = station_csv_path(data_dir, code)
             write_csv_atomically(csv_path, df)
-            earliest, latest, upd = compute_record_dates(df)
+            earliest, latest = compute_record_dates(df)
             update_geojson_dates(
-                features[feat_idx],
-                earliest,
-                latest,
-                upd,
-                f"stations/{code}.csv",
-                refreshed_at_utc,
+                features[feat_idx], earliest, latest, refreshed_at_utc
             )
             stats.updated_csvs += 1
             stats.by_client["awdb"] = stats.by_client.get("awdb", 0) + 1
@@ -307,14 +337,9 @@ def refresh_cdec(
                 continue
             csv_path = station_csv_path(data_dir, sid)
             write_csv_atomically(csv_path, df)
-            earliest, latest, upd = compute_record_dates(df)
+            earliest, latest = compute_record_dates(df)
             update_geojson_dates(
-                features[feat_idx],
-                earliest,
-                latest,
-                upd,
-                f"stations/{sid}.csv",
-                refreshed_at_utc,
+                features[feat_idx], earliest, latest, refreshed_at_utc
             )
             stats.updated_csvs += 1
             stats.by_client["cdec"] = stats.by_client.get("cdec", 0) + 1
@@ -384,14 +409,9 @@ def refresh_databc(
 
         csv_path = station_csv_path(data_dir, lid_str)
         write_csv_atomically(csv_path, df)
-        earliest, latest, upd = compute_record_dates(df)
+        earliest, latest = compute_record_dates(df)
         update_geojson_dates(
-            features[feat_idx],
-            earliest,
-            latest,
-            upd,
-            f"stations/{lid_str}.csv",
-            refreshed_at_utc,
+            features[feat_idx], earliest, latest, refreshed_at_utc
         )
         stats.updated_csvs += 1
         stats.by_client["databc"] = stats.by_client.get("databc", 0) + 1
@@ -460,14 +480,9 @@ def refresh_nve(
             continue
         csv_path = station_csv_path(data_dir, sid)
         write_csv_atomically(csv_path, df)
-        earliest, latest, upd = compute_record_dates(df)
+        earliest, latest = compute_record_dates(df)
         update_geojson_dates(
-            features[feat_idx],
-            earliest,
-            latest,
-            upd,
-            f"stations/{sid}.csv",
-            refreshed_at_utc,
+            features[feat_idx], earliest, latest, refreshed_at_utc
         )
         stats.updated_csvs += 1
         stats.by_client["nve"] = stats.by_client.get("nve", 0) + 1
@@ -542,14 +557,9 @@ def refresh_yukon(
             continue
         csv_path = station_csv_path(data_dir, sid)
         write_csv_atomically(csv_path, df)
-        earliest, latest, upd = compute_record_dates(df)
+        earliest, latest = compute_record_dates(df)
         update_geojson_dates(
-            features[feat_idx],
-            earliest,
-            latest,
-            upd,
-            f"stations/{sid}.csv",
-            refreshed_at_utc,
+            features[feat_idx], earliest, latest, refreshed_at_utc
         )
         stats.updated_csvs += 1
         stats.by_client["yukon"] = stats.by_client.get("yukon", 0) + 1
@@ -598,15 +608,8 @@ def finalize_from_csvs(
             continue
         if df.empty:
             continue
-        earliest, latest, upd = compute_record_dates(df)
-        update_geojson_dates(
-            feat,
-            earliest,
-            latest,
-            upd,
-            f"stations/{code}.csv",
-            refreshed_at_utc,
-        )
+        earliest, latest = compute_record_dates(df)
+        update_geojson_dates(feat, earliest, latest, refreshed_at_utc)
         updated += 1
 
     print(f"Updated GeoJSON dates for {updated} stations")
@@ -618,10 +621,10 @@ def finalize_from_csvs(
         "wteq_cm": "cm", "snwd_cm": "cm"
     }
 
-    with geojson_path.open("w", encoding="utf-8") as f:
-        json.dump(geojson, f, indent=2)
+    write_json_atomically(geojson_path, geojson)
     print(f"GeoJSON updated: {geojson_path}")
 
+    report_orphan_csvs(data_dir, features)
     archived_count = build_archive(
         data_dir=data_dir, archive_path=archive_path
     )
@@ -694,10 +697,11 @@ def main() -> None:
     nve_stations: list[tuple[int, str]] = []
     yukon_stations: list[tuple[int, str]] = []
 
+    stats = RefreshStats()
     for idx, feat in enumerate(features):
         props = feat.get("properties", {})
         code = str(props.get("code") or "")
-        client_name = str(props.get("client") or "awdb").lower()
+        client_name = str(props.get("client") or "").lower()
 
         if not code:
             continue
@@ -715,6 +719,15 @@ def main() -> None:
             nve_stations.append((idx, code))
         elif client_name == "yukon":
             yukon_stations.append((idx, code))
+        else:
+            # No silent fallback (DESIGN.md §3.6): a feature without a
+            # known client cannot be refreshed.  Loud, counted, skipped —
+            # the contract test keeps this from ever firing.
+            stats.unroutable += 1
+            logging.error(
+                "Station %r has unknown client %r — cannot refresh",
+                code, props.get("client"),
+            )
 
     # Restrict to the requested network when --network is given
     network = args.network
@@ -750,7 +763,6 @@ def main() -> None:
     refreshed_at_utc = datetime.now(timezone.utc).isoformat(
         timespec="seconds"
     )
-    stats = RefreshStats()
 
     if run_awdb:
         refresh_awdb(
@@ -787,9 +799,9 @@ def main() -> None:
     geojson["metadata"]["csv_elements"] = ["wteq_cm", "snwd_cm"]
     geojson["metadata"]["csv_units"] = {"wteq_cm": "cm", "snwd_cm": "cm"}
 
-    with geojson_path.open("w", encoding="utf-8") as f:
-        json.dump(geojson, f, indent=2)
+    write_json_atomically(geojson_path, geojson)
 
+    report_orphan_csvs(data_dir, features)
     archived_count = build_archive(
         data_dir=data_dir, archive_path=archive_path
     )
@@ -802,6 +814,7 @@ def main() -> None:
     print(f"  by client              : {stats.by_client}")
     print(f"Empty station payloads   : {stats.skipped_empty:,}")
     print(f"Failed batches           : {stats.failed_batches:,}")
+    print(f"Unroutable stations      : {stats.unroutable:,}")
     print(f"Archive members          : {archived_count:,}")
     print(f"Archive written          : {archive_path}")
     print(f"GeoJSON updated          : {geojson_path}")
