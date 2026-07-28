@@ -20,14 +20,13 @@ from datetime import datetime, timezone
 from pathlib import Path
 from urllib import request
 
-import geopandas as gpd
 import numpy as np
 import pandas as pd
 from utils import day_of_water_year, water_year
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
-GEOJSON_PATH = REPO_ROOT / "all_daily_snow_stations.geojson"
+GEOJSON_PATH = REPO_ROOT / "all_snow_stations.geojson"
 CSV_DIR = REPO_ROOT / "data" / "stations"
 OUTPUT_HTML = REPO_ROOT / "live_swe_map.html"
 CHARTS_DIR = REPO_ROOT / "charts"
@@ -353,14 +352,22 @@ def process_station_from_csv(
         if wy_entry:
             wy_data[str(wy)] = wy_entry
 
-    network = str(meta.get("network") or "SNTL")
+    network = _clean_meta_text(meta.get("network_code")) or "?"
     state_code = _clean_meta_text(meta.get("state") or "")
     if not state_code and code.count("_") >= 2:
         state_code = code.split("_")[1]
 
     station_name = _clean_meta_text(meta.get("name") or code)
-    daily_vars = _parse_var_list(meta.get("variables_daily"))
-    hourly_vars = _parse_var_list(meta.get("variables_hourly"))
+    daily_vars = sorted({
+        dv.get("name", "") for dv in meta.get("data_variables") or []
+        if dv.get("interval") in ("daily", "sub_daily", "hourly")
+        and dv.get("name")
+    })
+    hourly_vars = sorted({
+        dv.get("name", "") for dv in meta.get("data_variables") or []
+        if dv.get("interval") in ("hourly", "sub_daily", "sub_hourly")
+        and dv.get("name")
+    })
 
     obs_cols = [c for c in ("WTEQ", "SNWD") if c in df.columns]
     bdate = ""
@@ -373,7 +380,7 @@ def process_station_from_csv(
             edate = str(valid_times.max().date())
 
     upd = (
-        _clean_meta_text(meta.get("updated_date"))
+        _clean_meta_text(meta.get("latest_record_date"))
         or _clean_meta_text(meta.get("csv_refreshed_at_utc"))
         or _clean_meta_text(meta.get("metadata_fetched_at"))
         or edate
@@ -396,6 +403,10 @@ def process_station_from_csv(
         "vars_h": ", ".join(hourly_vars),
         "upd": upd,
         "mtype": "automated",
+        "dp": _clean_meta_text(meta.get("data_provider")),
+        "cam": _clean_meta_text(meta.get("station_camera_url")),
+        "prov": _clean_meta_text(meta.get("daily_provenance")),
+        "dups": meta.get("possible_duplicates") or [],
         "wteq": cur.get("WTEQ", {}).get("val"),
         "snwd": cur.get("SNWD", {}).get("val"),
         "wteq_d": cur.get("WTEQ", {}).get("date"),
@@ -629,6 +640,7 @@ select:focus{outline:none;border-color:#4af}
 <script>
 const MAP_META = __MAP_META__;
 const SD = __STATION_DATA__;
+const PD = __PERIODIC_DATA__;  // periodic / non-daily point observations
 </script>
 
 <!-- ═══════════════════ APP LOGIC ═══════════════════ -->
@@ -805,7 +817,7 @@ function getStationPct(code, dowy, wy, variable, ref) {
 
   let pct = null;
   if (n >= MAP_META.min_years && cur !== null && med_mm > 0) {
-    pct = Math.round((cur * 1000 / med_mm) * 1000) / 10;  // one decimal place
+    pct = Math.round((cur * 10 / med_mm) * 1000) / 10;  // one decimal place
   }
   return {pct, n, cur, curDowy, med_mm};
 }
@@ -816,7 +828,7 @@ function formatObsSummary(code, variable) {
   if (obs.cur === null) {
     return `${varLabel}: No recent data`;
   }
-  const valStr = `${(obs.cur * 100).toFixed(1)} cm`;
+  const valStr = `${(obs.cur).toFixed(1)} cm`;
   if (obs.n < MAP_META.min_years) {
     return `${varLabel}: ${valStr}, insufficient history (${obs.n} years)`;
   }
@@ -987,6 +999,83 @@ function buildIcon(network, measurementType, color, isSelected) {
     iconAnchor: [sz/2, sz/2],
     className: "",
   });
+}
+
+// ─── Periodic / non-daily point observations (toggle overlay) ────────────────
+const periodicMarkers = {};  // "client|code" -> marker
+const periodicLayer = L.layerGroup();
+
+function periodicIcon(isSelected) {
+  const sz = isSelected ? 16 : 11;
+  const c = sz / 2;
+  return L.divIcon({
+    html: `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">`
+      + `<circle cx="${c}" cy="${c}" r="${c - 1.5}" fill="none" `
+      + `stroke="#555" stroke-width="1.6" stroke-dasharray="2.5,1.8"/></svg>`,
+    iconSize: [sz, sz],
+    iconAnchor: [c, c],
+    className: "",
+  });
+}
+
+function periodicPopupHtml(s) {
+  const rows = [];
+  rows.push(`<b>${s.name}</b>`);
+  rows.push(`Code: ${s.code} · ${NET_LABELS[s.net] || s.net}`);
+  if (s.op) rows.push(`Operator: ${s.op}`);
+  if (s.dp) rows.push(`Data provider: ${s.dp}`);
+  rows.push("Periodic / non-daily point observations — no daily chart");
+  if (s.url) rows.push(`<a href="${s.url}" target="_blank" rel="noopener noreferrer">Station page</a>`);
+  if (s.cam) rows.push(`<a href="${s.cam}" target="_blank" rel="noopener noreferrer">Station camera</a>`);
+  const dupHtml = duplicatesHtml(s.dups);
+  if (dupHtml) rows.push(dupHtml);
+  return rows.join("<br>");
+}
+
+function initPeriodicMarkers() {
+  for (const s of PD) {
+    const m = L.marker([s.lat, s.lon], {
+      icon: periodicIcon(false), zIndexOffset: 50,
+    });
+    m.bindPopup(periodicPopupHtml(s), {maxWidth: 300});
+    m.bindTooltip(
+      `<b>${s.name}</b><br>Code: ${s.code}<br>`
+      + `${NET_LABELS[s.net] || s.net} — periodic`,
+      {sticky: true, direction: "top"}
+    );
+    m.addTo(periodicLayer);
+    periodicMarkers[`${s.cli}|${s.code}`] = m;
+  }
+  L.control.layers(null, {
+    [`All point observations (${PD.length.toLocaleString()} periodic / non-daily sites)`]: periodicLayer,
+  }, {position: "topright", collapsed: false}).addTo(map);
+}
+
+// ─── Potentially duplicated stations (DESIGN.md §5) ──────────────────────────
+function duplicatesHtml(dups) {
+  if (!dups || !dups.length) return "";
+  const links = dups.map(d =>
+    `<a href="#" onclick="panToStation('${d.client}','${d.code}');return false;">`
+    + `${d.code} (${d.client}, ${d.distance_m} m)</a>`
+  );
+  return `<span style="color:#a60">⚠ Potentially duplicated station — `
+    + `also reachable as:</span> ${links.join(", ")}`;
+}
+
+function panToStation(client, code) {
+  // daily marker first (SD is keyed by code; verify the client matches)
+  const s = SD[code];
+  if (s && s.cli === client && leafletMarkers[code]) {
+    map.setView([s.lat, s.lon], Math.max(map.getZoom(), 11));
+    onMarkerClick(code);
+    return;
+  }
+  const pm = periodicMarkers[`${client}|${code}`];
+  if (pm) {
+    if (!map.hasLayer(periodicLayer)) map.addLayer(periodicLayer);
+    map.setView(pm.getLatLng(), Math.max(map.getZoom(), 11));
+    pm.openPopup();
+  }
 }
 
 // ─── Initialise markers ───────────────────────────────────────────────────────
@@ -1205,7 +1294,7 @@ function onMarkerClick(code) {
     if (obs.cur == null) {
       return `<div class="${cssClass} na-line">${label}: No recent data</div>`;
     }
-    const valCm = (obs.cur * 100).toFixed(1);
+    const valCm = (obs.cur).toFixed(1);
     const dataDate = obs.curDowy != null
       ? formatDate(dowyToDate(obs.curDowy, st.wy))
       : "—";
@@ -1232,7 +1321,7 @@ function onMarkerClick(code) {
     <div class="info-row"><span class="info-key">Code:</span><span>${code}</span></div>
     <div class="info-row"><span class="info-key">Network:</span><span>${netLabel}</span></div>
     <div class="info-row"><span class="info-key">Operator:</span><span>${operatorStr}</span></div>
-    <div class="info-row"><span class="info-key">Client:</span><span>${clientStr}</span></div>
+    <div class="info-row"><span class="info-key">Data provider:</span><span>${s.dp || "—"} (client: ${clientStr})</span></div>
     <div class="info-row"><span class="info-key">State:</span><span>${stateName}</span></div>
     <div class="info-row"><span class="info-key">Elevation:</span><span>${elevStr}</span></div>
     <div class="info-row"><span class="info-key">Daily variables:</span><span style="font-size:11px">${s.vars_d||"—"}</span></div>
@@ -1241,6 +1330,9 @@ function onMarkerClick(code) {
     <div class="info-row"><span class="info-key">Latest record:</span><span>${s.edate||"—"}</span></div>
     <div class="info-row"><span class="info-key">Last updated:</span><span>${updStr}</span></div>
     <div class="info-row"><span class="info-key">Station page:</span><span>${stationUrl ? `<a href="${stationUrl}" target="_blank" rel="noopener noreferrer">${stationUrl}</a>` : "—"}</span></div>
+    ${s.cam ? `<div class="info-row"><span class="info-key">Station camera:</span><span><a href="${s.cam}" target="_blank" rel="noopener noreferrer">Live satellite camera</a></span></div>` : ""}
+    ${s.prov === "resampled_hourly" ? `<div class="info-row"><span class="info-key">Daily series:</span><span>resampled from sub-daily data</span></div>` : ""}
+    ${duplicatesHtml(s.dups) ? `<div class="info-row" style="font-size:11px">${duplicatesHtml(s.dups)}</div>` : ""}
     ${buildVarLine("WTEQ", "swe-line")}
     ${buildVarLine("SNWD", "snwd-line")}
   `;
@@ -1259,95 +1351,38 @@ function onMarkerClick(code) {
   loadChart(code, st.chartVar);
 }
 
-// ─── Chart rendering (CSV fetched lazily) ─────────────────────────────────────
-const chartCache = {};  // code+var → parsed CSV stats
+// ─── Chart rendering (payload fetched lazily from charts/*.json) ─────────────
+const chartCache = {};  // code -> chart payload
 
 async function loadChart(code, variable) {
-  const cacheKey = code + "_" + variable;
-  document.getElementById("chart-loading").textContent = "Loading chart data…";
+  document.getElementById("chart-loading").textContent =
+    "Loading chart data…";
   document.getElementById("chart-div").innerHTML = "";
 
-  let stats;
-  if (chartCache[cacheKey]) {
-    stats = chartCache[cacheKey];
-  } else {
+  let payload = chartCache[code];
+  if (!payload) {
     try {
-      const resp = await fetch(`./data/${code}.csv`);
+      const resp = await fetch(`./charts/${code}.json`);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-      const text = await resp.text();
-      stats = parseCSVForChart(text, variable);
-      chartCache[cacheKey] = stats;
+      payload = await resp.json();
+      chartCache[code] = payload;
     } catch (e) {
-      document.getElementById("chart-loading").textContent = `Could not load chart data: ${e.message}`;
+      document.getElementById("chart-loading").textContent =
+        `Could not load chart data: ${e.message}`;
       return;
     }
   }
 
+  const key = variable === "WTEQ" ? "wteq" : "snwd";
+  const stats = payload[key] || null;
+  if (!stats) {
+    document.getElementById("chart-loading").textContent =
+      "No chart data available.";
+    return;
+  }
+
   document.getElementById("chart-loading").textContent = "";
   renderChart(code, variable, stats);
-}
-
-function parseCSVForChart(csvText, variable) {
-  const lines = csvText.trim().split("\\n");
-  const headers = lines[0].split(",");
-  const varIdx = headers.indexOf(variable);
-  if (varIdx < 0) return null;
-
-  // Build: {wy: {dowy: value}}
-  const wyData = {};
-  for (let i = 1; i < lines.length; i++) {
-    const cols = lines[i].split(",");
-    const val = parseFloat(cols[varIdx]);
-    if (isNaN(val) || val < -1e-9 || !cols[0]) continue;  // include 0 (bare ground)
-    const d = new Date(cols[0]);
-    if (isNaN(d.getTime())) continue;
-    const m = d.getMonth() + 1;
-    const y = d.getFullYear();
-    const wy = m >= 10 ? y + 1 : y;
-    const wyStart = new Date(wy - 1, 9, 1);
-    const dowy = Math.round((d - wyStart) / 864e5) + 1;
-    if (dowy < 1 || dowy > 366) continue;
-    if (!wyData[wy]) wyData[wy] = {};
-    wyData[wy][dowy] = val;
-  }
-
-  // For each DOWY, collect all values across years
-  const p10=[],p20=[],p30=[],p40=[],p50=[],p60=[],p70=[],p80=[],p90=[];
-  const mins=[],maxs=[],minYrs=[],maxYrs=[];
-  for (let dowy = 1; dowy <= 366; dowy++) {
-    const vals = [];
-    const wyVals = {};
-    for (const [wy, dowyMap] of Object.entries(wyData)) {
-      if (dowyMap[dowy] !== undefined) {
-        vals.push(dowyMap[dowy]);
-        wyVals[parseInt(wy)] = dowyMap[dowy];
-      }
-    }
-    if (vals.length === 0) {
-      p10.push(null);p20.push(null);p30.push(null);p40.push(null);p50.push(null);
-      p60.push(null);p70.push(null);p80.push(null);p90.push(null);
-      mins.push(null);maxs.push(null);minYrs.push(null);maxYrs.push(null);
-      continue;
-    }
-    vals.sort((a,b) => a - b);
-    const q = p => {
-      const i = p * (vals.length - 1);
-      const lo = Math.floor(i), hi = Math.ceil(i);
-      return vals[lo] + (vals[hi] - vals[lo]) * (i - lo);
-    };
-    p10.push(q(0.10)); p20.push(q(0.20)); p30.push(q(0.30)); p40.push(q(0.40));
-    p50.push(q(0.50)); p60.push(q(0.60)); p70.push(q(0.70)); p80.push(q(0.80));
-    p90.push(q(0.90));
-    mins.push(vals[0]); maxs.push(vals[vals.length-1]);
-    // Year of min/max
-    let minV = vals[0], maxV = vals[vals.length-1], miny=null, maxy=null;
-    for (const [wy, v] of Object.entries(wyVals)) {
-      if (v === minV && miny === null) miny = parseInt(wy);
-      if (v === maxV && maxy === null) maxy = parseInt(wy);
-    }
-    minYrs.push(miny); maxYrs.push(maxy);
-  }
-  return {p10,p20,p30,p40,p50,p60,p70,p80,p90,mins,maxs,minYrs,maxYrs};
 }
 
 function renderChart(code, variable, stats) {
@@ -1356,7 +1391,7 @@ function renderChart(code, variable, stats) {
     return;
   }
   const s = SD[code];
-  const scale = 100;  // m → cm
+  const scale = 1;  // values are already in cm
   const varLabel = variable === "WTEQ" ? "SWE (cm)" : "Snow Depth (cm)";
   const dowyArr = Array.from({length:366}, (_,i) => i+1);
 
@@ -1849,7 +1884,8 @@ document.getElementById("chart-btn-snwd").addEventListener("click", () => {
 function initNetworkFilter() {
   const container = document.getElementById("network-legend-rows");
   const netOrder = [
-    "SNTL","SNTLT","MSNT","MPRC","SNOW","SCAN","COOP","CCSS","BCSS"
+    "SNTL","SNTLT","MSNT","MPRC","SNOW","SCAN","COOP","CCSS","BCSS",
+    "NVE","YSS","YKEC"
   ];
   const available = MAP_META.available_networks;
 
@@ -1899,6 +1935,7 @@ function initNetworkFilter() {
 initDateSlider();
 initNetworkFilter();
 initMarkers();
+initPeriodicMarkers();
 updateClockPanel();
 setInterval(updateClockPanel, 1000);
 updateTitle();
@@ -1908,12 +1945,29 @@ updateTitle();
 """
 
 
-def build_html(map_meta: dict, station_data: dict, generated_at: str) -> str:
+def build_html(
+    map_meta: dict,
+    station_data: dict,
+    periodic_data: list,
+) -> str:
+    """Substitute the data payloads and inlined assets into the template.
+
+    The template is authoritative — no post-hoc string surgery on its
+    JS (the old metres-era unit patches silently broke when the target
+    strings drifted).
+    """
     asset_tags = _build_frontend_asset_tags()
-    meta_js = json.dumps(map_meta, separators=(",", ":"))
-    stations_js = json.dumps(station_data, separators=(",", ":"))
-    html = _HTML_TEMPLATE.replace("__MAP_META__", meta_js)
-    html = html.replace("__STATION_DATA__", stations_js)
+    html = _HTML_TEMPLATE.replace(
+        "__MAP_META__", json.dumps(map_meta, separators=(",", ":"))
+    )
+    html = html.replace(
+        "__STATION_DATA__",
+        json.dumps(station_data, separators=(",", ":")),
+    )
+    html = html.replace(
+        "__PERIODIC_DATA__",
+        json.dumps(periodic_data, separators=(",", ":")),
+    )
     html = html.replace(
         (
             '<link rel="stylesheet" '
@@ -1935,61 +1989,6 @@ def build_html(map_meta: dict, station_data: dict, generated_at: str) -> str:
         ),
         asset_tags["plotly_js"],
     )
-    html = html.replace(
-        "const scale = 100;  // m → cm",
-        "const scale = 1;  // values already in cm",
-    )
-    html = html.replace("(obs.cur * 100).toFixed(1)", "(obs.cur).toFixed(1)")
-    html = html.replace("(cur * 1000 / med_mm)", "(cur * 10 / med_mm)")
-
-    chart_start = html.find("const chartCache = {};")
-    chart_end = html.find(
-        "function renderChart(code, variable, stats) {",
-        chart_start,
-    )
-    if chart_start < 0 or chart_end < 0:
-        raise RuntimeError("Could not locate chart loader block in template")
-
-    chart_loader = """const chartCache = {};  // code -> chart payload
-
-async function loadChart(code, variable) {
-    document.getElementById("chart-loading").textContent =
-        "Loading chart data…";
-    document.getElementById("chart-div").innerHTML = "";
-
-    let payload = chartCache[code];
-    if (!payload) {
-        try {
-            const resp = await fetch(`./charts/${code}.json`);
-            if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-            payload = await resp.json();
-            chartCache[code] = payload;
-        } catch (e) {
-            document.getElementById("chart-loading").textContent =
-                `Could not load chart data: ${e.message}`;
-            return;
-        }
-    }
-
-    const key = variable === "WTEQ" ? "wteq" : "snwd";
-    const stats = payload[key] || null;
-    if (!stats) {
-        document.getElementById("chart-loading").textContent =
-            "No chart data available.";
-        return;
-    }
-
-    document.getElementById("chart-loading").textContent = "";
-    renderChart(code, variable, stats);
-}
-
-"""
-
-    html = html[:chart_start] + chart_loader + html[chart_end:]
-    html = html.replace("__LEAFLET_CSS_TAG__", asset_tags["leaflet_css"])
-    html = html.replace("__LEAFLET_JS_TAG__", asset_tags["leaflet_js"])
-    html = html.replace("__PLOTLY_JS_TAG__", asset_tags["plotly_js"])
-    html = html.replace("__GENERATED_AT__", generated_at)
     return html
 
 
@@ -2019,43 +2018,75 @@ def main() -> None:
     for p in charts_dir.glob("*.json"):
         p.unlink()
 
-    gdf = gpd.read_file(geojson_path)
-    logger.info(f"Loaded {len(gdf)} stations from GeoJSON")
+    with geojson_path.open(encoding="utf-8") as f:
+        inventory = json.load(f)
+    features = inventory.get("features", [])
+    logger.info(f"Loaded {len(features)} stations from GeoJSON")
 
+    # The map charts exactly the probe-verified daily-or-better stations;
+    # every other point observation goes on the periodic toggle layer
+    # (DESIGN.md §8).
     meta_by_code: dict = {}
-    for _, row in gdf.iterrows():
-        code = str(row.get("stationTriplet") or row.get("code") or "")
-        if not code:
+    periodic_data: list = []
+    for feat in features:
+        props = feat.get("properties", {})
+        code = str(props.get("code") or "")
+        lat, lon = props.get("latitude"), props.get("longitude")
+        if not code or lat is None or lon is None:
             continue
-        network = (
-            _clean_meta_text(row.get("networkCode") or row.get("network"))
-            or "SNTL"
-        )
-        meta_by_code[code] = {
-            "lat": float(row.geometry.y),
-            "lon": float(row.geometry.x),
-            "name": _clean_meta_text(row.get("name")) or code,
-            "network": network,
-            "state": _clean_meta_text(row.get("state")),
-            "elevation": row.get("elevation_m") or row.get("elevation"),
-            "operator": _clean_meta_text(
-                row.get("Operator") or row.get("operator")
-            ),
-            "client": _clean_meta_text(row.get("client")),
-            "variables_daily": _clean_meta_text(row.get("variables_daily")),
-            "variables_hourly": _clean_meta_text(row.get("variables_hourly")),
-            "station_url": _clean_meta_text(row.get("station_url")),
-            "station_image_url": _clean_meta_text(
-                row.get("station_image_url")
-            ),
-            "updated_date": _clean_meta_text(row.get("updated_date")),
-            "csv_refreshed_at_utc": _clean_meta_text(
-                row.get("csv_refreshed_at_utc")
-            ),
-            "metadata_fetched_at": _clean_meta_text(
-                row.get("metadata_fetched_at")
-            ),
-        }
+        if props.get("daily_or_better"):
+            meta_by_code[code] = {
+                "lat": float(lat),
+                "lon": float(lon),
+                "name": _clean_meta_text(props.get("name")) or code,
+                "network_code": _clean_meta_text(props.get("network_code")),
+                "state": _clean_meta_text(props.get("state")),
+                "elevation": props.get("elevation_m"),
+                "operator": _clean_meta_text(props.get("operator")),
+                "client": _clean_meta_text(props.get("client")),
+                "data_provider": _clean_meta_text(
+                    props.get("data_provider")
+                ),
+                "data_variables": props.get("data_variables") or [],
+                "station_url": _clean_meta_text(props.get("station_url")),
+                "station_image_url": _clean_meta_text(
+                    props.get("station_image_url")
+                ),
+                "station_camera_url": _clean_meta_text(
+                    props.get("station_camera_url")
+                ),
+                "daily_provenance": _clean_meta_text(
+                    props.get("daily_provenance")
+                ),
+                "possible_duplicates": props.get("possible_duplicates"),
+                "latest_record_date": _clean_meta_text(
+                    props.get("latest_record_date")
+                ),
+                "csv_refreshed_at_utc": _clean_meta_text(
+                    props.get("csv_refreshed_at_utc")
+                ),
+                "metadata_fetched_at": _clean_meta_text(
+                    props.get("metadata_fetched_at")
+                ),
+            }
+        else:
+            periodic_data.append({
+                "code": code,
+                "lat": round(float(lat), 5),
+                "lon": round(float(lon), 5),
+                "name": _clean_meta_text(props.get("name")) or code,
+                "net": _clean_meta_text(props.get("network_code")),
+                "cli": _clean_meta_text(props.get("client")),
+                "op": _clean_meta_text(props.get("operator")),
+                "dp": _clean_meta_text(props.get("data_provider")),
+                "url": _clean_meta_text(props.get("station_url")),
+                "cam": _clean_meta_text(props.get("station_camera_url")),
+                "dups": props.get("possible_duplicates") or [],
+            })
+    logger.info(
+        f"{len(meta_by_code)} daily-or-better stations, "
+        f"{len(periodic_data)} periodic/non-daily sites"
+    )
 
     now = datetime.now(timezone.utc)
     today_ts = pd.Timestamp(now.date())
@@ -2121,12 +2152,11 @@ def main() -> None:
         "available_networks": available_networks,
     }
 
-    logger.info(f"Building HTML for {len(station_data)} stations")
-    html = build_html(
-        map_meta,
-        station_data,
-        now.strftime("%Y-%m-%d %H:%M:%S UTC"),
+    logger.info(
+        f"Building HTML for {len(station_data)} daily stations "
+        f"+ {len(periodic_data)} periodic sites"
     )
+    html = build_html(map_meta, station_data, periodic_data)
     output_path.write_text(html, encoding="utf-8")
     size_mb = output_path.stat().st_size / 1e6
     logger.info(f"Written: {output_path} ({size_mb:.1f} MB)")
