@@ -8,6 +8,8 @@ An internet connection is required.
 
 import pytest
 
+pytestmark = pytest.mark.live  # hits real network endpoints
+
 from clients.databc import DataBCClient
 from clients.databc.databc_client import (
     VARIABLES,

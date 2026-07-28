@@ -9,6 +9,8 @@ have been operating for decades and have complete data.
 
 import pytest
 
+pytestmark = pytest.mark.live  # hits real network endpoints
+
 from clients.awdb import AWDBClient, AWDBError
 from clients.awdb.awdb_client import (
     VARIABLES,

@@ -42,6 +42,8 @@ finalize-data    = "python -m scripts.get_all_stations_data --finalize-only"
 live-map         = "python -m scripts.generate_live_map"
 update-all       = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
 test             = "pytest tests/ -v"
+test-unit        = "pytest tests/ -v -m 'not live'"
+test-live        = "pytest tests/ -v -m live"
 test-awdb        = "pytest tests/test_awdb_client.py -v"
 test-cdec        = "pytest tests/test_cdec_client.py -v"
 test-databc      = "pytest tests/test_databc_client.py -v"
