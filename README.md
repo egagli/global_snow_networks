@@ -599,11 +599,10 @@ itself is unrestricted.
 
 **Snow courses (`SC`, 92 sites)** are 10-point manual surveys targeting
 Feb 1, Mar 1, Apr 1, May 1 and May 15, with records from 1964.  Being
-periodic, they are catalogued in `clients/yukon/yukon_stations.geojson` and
-appear on the live map but are **excluded** from
-`all_daily_snow_stations.geojson` and get no per-station CSV — the same
-treatment as DataBC MSS sites.  Reach them with
-`client.get_snow_survey_data()`.
+periodic, they are catalogued in `clients/yukon/yukon_stations.geojson`
+but are **excluded** from `all_daily_snow_stations.geojson`, get no
+per-station CSV, and do not appear on the live map — the same treatment
+as DataBC MSS sites.  Reach them with `client.get_snow_survey_data()`.
 
 **Automated snow-weather stations (`AWS`, 9 sites)** carry snow-pillow SWE
 at hourly to 3-hourly resolution, the longest starting 1980-02-25 (Log
@@ -676,20 +675,30 @@ clients/nve/nve_client.py        → NVEClient
 clients/yukon/yukon_client.py    → YukonClient
 ```
 
-**Invariants across all clients:**
-- Return plain Python objects (dicts / lists); callers choose pandas/xarray.
-- Metric-first: all values in SI units (centimetres for SWE and snow depth).
+**Invariants across all clients** (normative version in
+[DESIGN.md](DESIGN.md) §3):
+- `get_data()` returns flat record dicts; callers choose pandas/xarray.
+  (DataBC additionally offers a pandas-DataFrame convenience layer for
+  its bulk CSV files.)
+- Metric-first: every value is metric — cm for SWE and snow depth, °C for
+  temperature, mm for precipitation, km/h for wind.  No imperial
+  passthrough.
 - Missing values normalised to `None` / `NaN`.
-- Errors raise `{Client}Error(Exception)` with descriptive messages.
+- Errors raise `{Client}Error(Exception)` with descriptive messages;
+  unknown variables and unsupported intervals raise too (no silent
+  fallbacks).
+- Sub-daily records carry a `datetime` key alongside `date`.
 - `get_data(..., include_flags=True)` adds a `flag` key to each value record.
 
 ### 7.2 Variables and flags
 
 Each client module exposes:
 - **`SENSORS` / `VARIABLES`** — dict mapping variable codes to metadata
-  (name, units, description).
-- **`DATA_FLAGS`** — dict mapping flag codes to human-readable descriptions.
-- **`DURATION_CODES`** — dict mapping duration codes to names.
+  (name, native units, output units, description).
+- **`DATA_FLAGS`** — dict mapping flag codes to human-readable
+  descriptions (empty for AWDB, which returns no per-value flags).
+- CDEC additionally exposes **`DURATION_CODES`** (its native duration
+  vocabulary).
 
 These are importable for documentation and downstream use:
 
