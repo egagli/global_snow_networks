@@ -490,6 +490,9 @@ select:focus{outline:none;border-color:#4af}
                border:1px solid #ccd;display:block}
 #station-photo-credit{font-size:10px;color:#666;margin-top:2px}
 #station-photo-no-img{font-size:12px;color:#888;font-style:italic;padding:8px 0}
+#station-camera-link{margin-top:4px;font-size:12px;font-weight:600}
+#station-camera-link a{color:#0b6bcb;text-decoration:none}
+#station-camera-link a:hover{text-decoration:underline}
 #station-info .info-row{display:flex;gap:4px}
 #station-info .info-key{color:#555;min-width:120px;font-weight:500}
 #station-info .swe-line{margin:6px 0;padding:6px 8px;border-radius:4px;background:#e8f0fe}
@@ -1048,7 +1051,7 @@ function periodicPopupHtml(s) {
   }
   rows.push("Periodic / non-daily point observations — no daily chart");
   if (s.url) rows.push(`<a href="${s.url}" target="_blank" rel="noopener noreferrer">Station page</a>`);
-  if (s.cam) rows.push(`<a href="${s.cam}" target="_blank" rel="noopener noreferrer">Station camera</a>`);
+  if (s.cam) rows.push(`<a href="${s.cam}" target="_blank" rel="noopener noreferrer">🛰 Live satellite camera</a>`);
   const dupHtml = duplicatesHtml(s.dups);
   if (dupHtml) rows.push(dupHtml);
   return rows.join("<br>");
@@ -1062,7 +1065,8 @@ function initPeriodicMarkers() {
     m.bindPopup(periodicPopupHtml(s), {maxWidth: 300});
     m.bindTooltip(
       `<b>${s.name}</b><br>Code: ${s.code}<br>`
-      + `${NET_LABELS[s.net] || s.net} — periodic`,
+      + `${NET_LABELS[s.net] || s.net} — periodic`
+      + (s.cam ? "<br>🛰 live satellite camera" : ""),
       {sticky: true, direction: "top"}
     );
     m.addTo(periodicLayer);
@@ -1115,7 +1119,7 @@ function initMarkers() {
 
     const varSummary = formatObsSummary(code, st.variable);
     m.bindTooltip(
-      `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}`,
+      `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}${s.cam ? "<br>🛰 live satellite camera" : ""}`,
       {sticky: true, direction: "top"}
     );
     m.on("click", () => onMarkerClick(code));
@@ -1141,7 +1145,7 @@ function recolorAll() {
 
     const varSummary = formatObsSummary(code, st.variable);
     m.setTooltipContent(
-      `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}`
+      `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}${s.cam ? "<br>🛰 live satellite camera" : ""}`
     );
 
     if (isSelected) {
@@ -1292,15 +1296,19 @@ function onMarkerClick(code) {
   const updStr = s.upd ? s.upd.replace("T", " ").replace("Z", " UTC") : "—";
   const stationUrl = s.url || "";
 
+  const cameraLinkHtml = s.cam
+    ? `<div id="station-camera-link"><a href="${s.cam}" target="_blank" rel="noopener noreferrer">🛰 View live satellite camera</a></div>`
+    : "";
   let stationPhotoHtml = "";
   if (s.img) {
     const operator = s.op || "Station Operator";
     stationPhotoHtml = `<div id="station-photo-wrap">`
       + `<img id="station-photo" src="${s.img}" alt="${s.name} station photo" loading="lazy" referrerpolicy="no-referrer">`
       + `<div id="station-photo-credit">Photo credit: <a href="${s.img}" target="_blank" rel="noopener noreferrer">${operator}</a></div>`
+      + cameraLinkHtml
       + `</div>`;
   } else {
-    stationPhotoHtml = `<div id="station-photo-wrap"><div id="station-photo-no-img">No station image available</div></div>`;
+    stationPhotoHtml = `<div id="station-photo-wrap"><div id="station-photo-no-img">No station image available</div>${cameraLinkHtml}</div>`;
   }
 
   // SWE + snow depth lines
@@ -1353,7 +1361,6 @@ function onMarkerClick(code) {
     <div class="info-row"><span class="info-key">Latest record:</span><span>${s.edate||"—"}</span></div>
     <div class="info-row"><span class="info-key">Last updated:</span><span>${updStr}</span></div>
     <div class="info-row"><span class="info-key">Station page:</span><span>${stationUrl ? `<a href="${stationUrl}" target="_blank" rel="noopener noreferrer">${stationUrl}</a>` : "—"}</span></div>
-    ${s.cam ? `<div class="info-row"><span class="info-key">Station camera:</span><span><a href="${s.cam}" target="_blank" rel="noopener noreferrer">Live satellite camera</a></span></div>` : ""}
     ${s.prov === "resampled_hourly" ? `<div class="info-row"><span class="info-key">Daily series:</span><span>resampled from sub-daily data</span></div>` : ""}
     ${duplicatesHtml(s.dups) ? `<div class="info-row" style="font-size:11px">${duplicatesHtml(s.dups)}</div>` : ""}
     ${buildVarLine("WTEQ", "swe-line")}
