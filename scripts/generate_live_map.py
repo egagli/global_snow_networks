@@ -582,7 +582,7 @@ select:focus{outline:none;border-color:#4af}
 #station-info .swe-line{margin:6px 0;padding:6px 8px;border-radius:4px;background:#e8f0fe}
 #station-info .snwd-line{margin:6px 0;padding:6px 8px;border-radius:4px;background:#e8fef0}
 #station-info .na-line{color:#888;font-style:italic;font-size:12px}
-#imagery-section{margin:10px 0 2px;padding:8px;border:1px solid #d3dae4;
+#imagery-section{margin:12px 0 4px;padding:8px;border:1px solid #d3dae4;
                  border-radius:4px;background:#fff}
 #imagery-section.imagery-empty{display:none}
 .imagery-head{display:flex;align-items:baseline;justify-content:space-between;
@@ -595,15 +595,12 @@ select:focus{outline:none;border-color:#4af}
                overflow:hidden;min-height:60px}
 .imagery-frame img{display:block;width:100%;height:auto}
 .imagery-frame.is-loading img{opacity:0.35}
-.imagery-crosshair{position:absolute;left:50%;top:50%;width:26px;height:26px;
-                   transform:translate(-50%,-50%);pointer-events:none}
-.imagery-crosshair::before,.imagery-crosshair::after{content:"";position:absolute;
-  background:rgba(255,40,40,0.95);box-shadow:0 0 2px rgba(0,0,0,0.85)}
-.imagery-crosshair::before{left:50%;top:0;width:1.5px;height:100%;margin-left:-0.75px}
-.imagery-crosshair::after{top:50%;left:0;height:1.5px;width:100%;margin-top:-0.75px}
-.imagery-crosshair span{position:absolute;left:50%;top:50%;width:11px;height:11px;
-  transform:translate(-50%,-50%);border:1.5px solid rgba(255,40,40,0.95);
-  border-radius:50%;background:rgba(0,0,0,0.06);box-shadow:0 0 2px rgba(0,0,0,0.85)}
+/* Ring only, no cross hairs — the lines covered the ground they were
+   pointing at, which is the part you actually want to look at. */
+.imagery-marker{position:absolute;left:50%;top:50%;width:17px;height:17px;
+  transform:translate(-50%,-50%);pointer-events:none;border-radius:50%;
+  border:1.5px solid rgba(255,45,45,0.95);
+  box-shadow:0 0 2px rgba(0,0,0,0.8), inset 0 0 2px rgba(0,0,0,0.5)}
 .imagery-scalebar{position:absolute;left:8px;bottom:8px;height:5px;
   border:1.5px solid rgba(255,255,255,0.95);border-top:none;
   background:rgba(0,0,0,0.30);box-shadow:0 0 2px rgba(0,0,0,0.7)}
@@ -769,7 +766,6 @@ select:focus{outline:none;border-color:#4af}
     <div id="station-panel">
       <button id="close-btn" title="Close">&#x2715;</button>
       <div id="station-info"></div>
-      <div id="imagery-section" class="imagery-empty"></div>
       <div id="chart-controls" style="display:none">
         <button class="chart-btn active" id="chart-btn-wteq">SWE</button>
         <button class="chart-btn" id="chart-btn-snwd">Snow Depth</button>
@@ -780,6 +776,7 @@ select:focus{outline:none;border-color:#4af}
         <b>Shading (Period of Record):</b><br>
         Decile bands from min-10th, 10th-20th, ..., 90th-max (red = low, blue = high)
       </div>
+      <div id="imagery-section" class="imagery-empty"></div>
     </div>
   </div>
 </div>
@@ -2007,7 +2004,7 @@ function imgEndDate() {
 }
 
 // Chip bbox: a ground rectangle `km` wide with the station at dead centre, so
-// the crosshair overlay marks the station without any pixel maths.
+// the ring overlay marks the station without any pixel maths.
 function imgChipBbox(lat, lon, km, aspect) {
   const halfW = (km / 2) / (111.320 * Math.cos(lat * Math.PI / 180));
   const halfH = (km / 2 / aspect) / 110.574;
@@ -2220,7 +2217,7 @@ function imgRenderScenes(pick, note) {
     + `<img id="imagery-chip" src="${imgChipUrl(scene.id, bbox, IMG_CFG.chip_max_size)}" `
     + `alt="${IMG_CFG.collection_label} chip for ${s.name} on ${scene.date}">`
     + `<div class="imagery-status" id="imagery-chip-status">Loading imagery…</div>`
-    + `<div class="imagery-crosshair"><span></span></div>`
+    + `<div class="imagery-marker"></div>`
     + `<div class="imagery-scalebar" style="width:${barPct.toFixed(1)}%">`
     + `<span>${barLabel}</span></div>`
     + `</div>`
@@ -2230,7 +2227,7 @@ function imgRenderScenes(pick, note) {
     + `target="_blank" rel="noopener noreferrer">larger ↗</a>`
     + ` · <a href="${IMG_CFG.item_url}/${encodeURIComponent(scene.id)}" `
     + `target="_blank" rel="noopener noreferrer">scene metadata ↗</a>`
-    + `<br><span style="font-size:11px;color:#555">Crosshair marks the station; `
+    + `<br><span style="font-size:11px;color:#555">Ring marks the station; `
     + `chip is ${img.extentKm} km across. Cloud % is for the whole scene, `
     + `not this chip.${flagClearest ? " ★ marks the clearest scene below." : ""}`
     + `</span></div>`

@@ -194,9 +194,9 @@ Features:
 
 ### Context imagery
 
-Selecting a station adds a **Context imagery** block to the side panel: a
-Sentinel-2 chip centred on the station, with a crosshair marking the exact
-station location, a scale bar, and a filmstrip of nearby acquisitions.
+Selecting a station adds a **Context imagery** block below the chart in the
+side panel: a Sentinel-2 chip centred on the station, with a ring marking the
+exact station location, a scale bar, and a filmstrip of nearby acquisitions.
 
 | Control | Options | Notes |
 | --- | --- | --- |
