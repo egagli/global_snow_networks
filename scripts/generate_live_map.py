@@ -14,7 +14,6 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import re
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -66,12 +65,41 @@ def _clean_meta_text(raw) -> str:
     return s
 
 
-def _parse_var_list(raw) -> list[str]:
-    txt = _clean_meta_text(raw)
-    if not txt:
-        return []
-    parts = re.split(r"[,;|]", txt)
-    return sorted({v.strip() for v in parts if v.strip()})
+# Display order/labels for the shared interval enum (clients/_common.py);
+# unknown values render last under their raw name rather than disappearing.
+_INTERVAL_ORDER = (
+    "daily", "sub_daily", "hourly", "sub_hourly", "instantaneous",
+    "semi_monthly", "monthly", "annual", "periodic",
+)
+_INTERVAL_LABELS = {
+    "daily": "Daily", "sub_daily": "Sub-daily", "hourly": "Hourly",
+    "sub_hourly": "Sub-hourly", "instantaneous": "Instantaneous",
+    "semi_monthly": "Semi-monthly", "monthly": "Monthly",
+    "annual": "Annual", "periodic": "Periodic",
+}
+
+
+def _vars_by_interval(data_vars) -> list[list[str]]:
+    """Group every data_variables entry by interval for the popups.
+
+    Returns ``[[label, "NAME1, NAME2"], ...]`` covering ALL intervals a
+    station serves — nothing is filtered out.
+    """
+    groups: dict[str, set] = {}
+    for dv in data_vars or []:
+        name = dv.get("name")
+        if not name:
+            continue
+        groups.setdefault(str(dv.get("interval") or "unknown"), set()).add(
+            str(name)
+        )
+    out = []
+    for iv in _INTERVAL_ORDER:
+        if iv in groups:
+            out.append([_INTERVAL_LABELS[iv], ", ".join(sorted(groups.pop(iv)))])
+    for iv in sorted(groups):
+        out.append([iv, ", ".join(sorted(groups[iv]))])
+    return out
 
 
 def _build_chart_stats(pivot: pd.DataFrame) -> dict[str, list]:
@@ -358,16 +386,7 @@ def process_station_from_csv(
         state_code = code.split("_")[1]
 
     station_name = _clean_meta_text(meta.get("name") or code)
-    daily_vars = sorted({
-        dv.get("name", "") for dv in meta.get("data_variables") or []
-        if dv.get("interval") in ("daily", "sub_daily", "hourly")
-        and dv.get("name")
-    })
-    hourly_vars = sorted({
-        dv.get("name", "") for dv in meta.get("data_variables") or []
-        if dv.get("interval") in ("hourly", "sub_daily", "sub_hourly")
-        and dv.get("name")
-    })
+    vars_by_interval = _vars_by_interval(meta.get("data_variables"))
 
     obs_cols = [c for c in ("WTEQ", "SNWD") if c in df.columns]
     bdate = ""
@@ -399,8 +418,7 @@ def process_station_from_csv(
         "elev_m": meta.get("elevation"),
         "bdate": bdate,
         "edate": edate,
-        "vars_d": ", ".join(daily_vars),
-        "vars_h": ", ".join(hourly_vars),
+        "vars": vars_by_interval,
         "upd": upd,
         "mtype": "automated",
         "dp": _clean_meta_text(meta.get("data_provider")),
@@ -679,9 +697,10 @@ const STATE_NAMES = {
   UT:"Utah",VT:"Vermont",VA:"Virginia",WA:"Washington",WV:"West Virginia",
   WI:"Wisconsin",WY:"Wyoming",
   // Canadian provinces and territories — BC and AB arrive via AWDB and
-  // DataBC; YT via the Yukon AquaCache client.
+  // DataBC; YT via the Yukon AquaCache client. AWDB codes its Yukon
+  // partner snow courses "YK" — kept verbatim per DESIGN.md §5.
   AB:"Alberta", BC:"British Columbia", NT:"Northwest Territories",
-  NU:"Nunavut", YT:"Yukon",
+  NU:"Nunavut", YT:"Yukon", YK:"Yukon",
 };
 
 const NET_LABELS = {
@@ -1024,6 +1043,9 @@ function periodicPopupHtml(s) {
   rows.push(`Code: ${s.code} · ${NET_LABELS[s.net] || s.net}`);
   if (s.op) rows.push(`Operator: ${s.op}`);
   if (s.dp) rows.push(`Data provider: ${s.dp}`);
+  for (const v of s.vars || []) {
+    rows.push(`<span style="font-size:11px">${v[0]} variables: ${v[1]}</span>`);
+  }
   rows.push("Periodic / non-daily point observations — no daily chart");
   if (s.url) rows.push(`<a href="${s.url}" target="_blank" rel="noopener noreferrer">Station page</a>`);
   if (s.cam) rows.push(`<a href="${s.cam}" target="_blank" rel="noopener noreferrer">Station camera</a>`);
@@ -1324,8 +1346,9 @@ function onMarkerClick(code) {
     <div class="info-row"><span class="info-key">Data provider:</span><span>${s.dp || "—"} (client: ${clientStr})</span></div>
     <div class="info-row"><span class="info-key">State:</span><span>${stateName}</span></div>
     <div class="info-row"><span class="info-key">Elevation:</span><span>${elevStr}</span></div>
-    <div class="info-row"><span class="info-key">Daily variables:</span><span style="font-size:11px">${s.vars_d||"—"}</span></div>
-    <div class="info-row"><span class="info-key">Hourly variables:</span><span style="font-size:11px">${s.vars_h||"—"}</span></div>
+    ${(s.vars && s.vars.length)
+      ? s.vars.map(v => `<div class="info-row"><span class="info-key">${v[0]} variables:</span><span style="font-size:11px">${v[1]}</span></div>`).join("")
+      : `<div class="info-row"><span class="info-key">Variables:</span><span>—</span></div>`}
     <div class="info-row"><span class="info-key">Earliest record:</span><span>${s.bdate||"—"}</span></div>
     <div class="info-row"><span class="info-key">Latest record:</span><span>${s.edate||"—"}</span></div>
     <div class="info-row"><span class="info-key">Last updated:</span><span>${updStr}</span></div>
@@ -2081,6 +2104,7 @@ def main() -> None:
                 "dp": _clean_meta_text(props.get("data_provider")),
                 "url": _clean_meta_text(props.get("station_url")),
                 "cam": _clean_meta_text(props.get("station_camera_url")),
+                "vars": _vars_by_interval(props.get("data_variables")),
                 "dups": props.get("possible_duplicates") or [],
             })
     logger.info(
@@ -2139,6 +2163,26 @@ def main() -> None:
     if processed == 0 and station_codes:
         raise RuntimeError(
             "No station CSVs were usable. Run fetch-data before live-map."
+        )
+
+    # Keep only duplicate links whose twin is actually charted — a
+    # daily-or-better candidate without a usable CSV is on neither map
+    # layer, so its pan-to link would go nowhere.  The inventory keeps
+    # the full daily<->daily links; this filter is display-only.
+    charted = {(s.get("cli"), c) for c, s in station_data.items()}
+    dropped_links = 0
+    for s in station_data.values():
+        if s.get("dups"):
+            kept = [
+                d for d in s["dups"]
+                if (d.get("client"), d.get("code")) in charted
+            ]
+            dropped_links += len(s["dups"]) - len(kept)
+            s["dups"] = kept
+    if dropped_links:
+        logger.info(
+            f"Dropped {dropped_links} duplicate links to unchartable "
+            f"stations from popups"
         )
 
     available_networks = sorted({v["net"] for v in station_data.values()})

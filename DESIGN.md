@@ -198,6 +198,10 @@ The same physical station may appear once per access path — intentionally.
 De-duplication is the consumer's job, but duplicates are annotated: a
 `possible_duplicates` list (`{code, client, distance_m}`) cross-links
 candidates found by spatial + name matching, and the map surfaces them.
+Links are published only when **both** stations are daily-or-better —
+duplicate notes exist to warn about the same site being charted twice,
+and pairs involving a periodic station don't need the warning. The full
+matching still runs internally (all pairs) to feed operator borrowing.
 
 ## 6. Artifact contract
 
@@ -271,8 +275,10 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   layer: all other point observations (distinct markers, metadata-only
   popups).
 - Popups show operator/data-provider per §5, real data-record dates,
-  station photo and camera links, and "potentially duplicated station"
-  links that pan to the twin marker.
+  station photo and camera links, the station's **complete** variable
+  inventory grouped by interval (every `data_variables` entry, not just
+  daily/hourly), and "potentially duplicated station" links that pan to
+  the twin marker.
 - Network label/shape vocabularies are generated from the inventory, not
   hand-maintained in the template.
 

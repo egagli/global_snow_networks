@@ -22,6 +22,7 @@ from scripts.create_all_stations_geojson import (
     drop_invalid_coordinates,
     make_feature,
     normalize_operator,
+    prune_non_daily_duplicates,
     upgrade_legacy_feature,
 )
 from scripts.get_all_stations_data import (
@@ -280,6 +281,33 @@ def test_annotate_duplicates_and_borrow_operator():
     assert borrowed == 1
     assert feats[0]["properties"]["operator"] == "BC ENV"
     assert "twin 4A30P" in feats[0]["properties"]["notes"]
+
+
+def test_prune_non_daily_duplicates():
+    feats = [
+        make_feature(-120.0, 39.0, {
+            "client": "awdb", "code": "A", "name": "Twin Lakes",
+            "latitude": 39.0, "longitude": -120.0, "daily_or_better": True,
+        }),
+        make_feature(-120.0, 39.0005, {
+            "client": "cdec", "code": "B", "name": "Twin Lakes",
+            "latitude": 39.0005, "longitude": -120.0, "daily_or_better": True,
+        }),
+        make_feature(-120.0, 39.001, {
+            "client": "databc", "code": "C", "name": "Twin Lakes",
+            "latitude": 39.001, "longitude": -120.0, "daily_or_better": False,
+        }),
+    ]
+    annotate_possible_duplicates(feats)
+    assert all(f["properties"]["possible_duplicates"] for f in feats)
+
+    pruned = prune_non_daily_duplicates(feats)
+    assert pruned == 3
+    a, b, c = (f["properties"] for f in feats)
+    # daily <-> daily link survives; anything involving the periodic C is gone
+    assert [d["code"] for d in a["possible_duplicates"]] == ["B"]
+    assert [d["code"] for d in b["possible_duplicates"]] == ["A"]
+    assert c["possible_duplicates"] is None
 
 
 def test_normalize_operator():
