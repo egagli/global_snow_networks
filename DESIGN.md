@@ -269,8 +269,12 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
 
 ## 8. Visualization principles
 
-- The map reads the combined inventory + CSV archive only; no live API calls
-  and no unit conversions in the viz layer.
+- Every **observation** the map shows — marker colours, panel values, charts,
+  percent-of-normal — comes from the combined inventory + CSV archive only,
+  and no unit conversions happen in the viz layer. The build step makes no
+  data API calls.
+- **Context imagery is the one live external call**, and it is decoration, not
+  data (§8.1).
 - Default layer: `daily_or_better` stations with charts. Optional toggle
   layer: all other point observations (distinct markers, metadata-only
   popups).
@@ -281,6 +285,34 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   the twin marker.
 - Network label/shape vocabularies are generated from the inventory, not
   hand-maintained in the template.
+
+### 8.1 Context imagery
+
+The station panel shows recent satellite chips centred on the station. This is
+the only place the viz layer talks to a live service, and it is bound by four
+rules:
+
+1. **Decoration, never data.** Imagery must never feed a marker colour, a
+   panel value, a chart, or a percent-of-normal. Every failure mode —
+   service down, no acquisitions, a scene that will not render — degrades to
+   a message inside the imagery box and leaves the rest of the panel intact.
+2. **Browser-side only.** The generator embeds a config block and no imagery
+   is fetched at build time, so `pixi run live-map` stays offline-safe and no
+   raster assets are committed. Requests happen when a panel opens: one STAC
+   search plus one chip per displayed scene.
+3. **Keyless and public.** Only sources a static page can reach without
+   credentials qualify. Sentinel-2 L2A via Microsoft Planetary Computer
+   (STAC search + bbox renderer) is the current source; HLS needs an
+   Earthdata login and Planet is licensed, so neither is usable here.
+4. **Honest about what is shown.** Acquisition date, platform, and scene
+   cloud cover are always displayed, cloud cover is labelled as
+   whole-scene rather than per-chip, imagery is anchored to the date the
+   slider is on rather than silently showing "now", and a widened search or a
+   granule that only partly covers the chip says so.
+
+Source, band renders, chip sizes, windows, and extents live in
+`IMAGERY_CONFIG` in `scripts/generate_live_map.py`; `enabled: False` turns the
+whole feature off without touching the template.
 
 ## 9. Testing policy
 

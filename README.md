@@ -182,6 +182,8 @@ Primary outputs:
 Features:
 - Interactive station markers and popups (photo, operator, data
   provider, live satellite camera link where available)
+- **Context imagery**: recent Sentinel-2 chips centred on the selected
+  station (see below)
 - Variable toggling (WTEQ/SNWD)
 - Period-of-record and normal-period comparisons
 - Date slider behavior for current water year
@@ -189,6 +191,41 @@ Features:
   courses, aerial markers, non-daily sites) with metadata-only popups
 - "Potentially duplicated station" links that pan to the same physical
   site's other access paths
+
+### Context imagery
+
+Selecting a station adds a **Context imagery** block below the chart in the
+side panel: a Sentinel-2 chip centred on the station, with a ring marking the
+exact station location, a scale bar, and a filmstrip of nearby acquisitions.
+
+| Control | Options | Notes |
+| --- | --- | --- |
+| Scene set | `6 most recent` / `6 least cloudy` | Recent searches the 45 days before the selected date; least-cloudy searches 90 days and ranks by scene cloud cover. In recent order, ★ flags the clearest scene in the strip. |
+| Render | `True colour` / `SWIR false colour` | True colour is B4/B3/B2 stretched 0–10000 so snow keeps texture instead of clipping white (the stock TCI asset blows out on snowpack). SWIR is B11/B8/B4: snow reads cyan, cloud reads white/grey — the view for telling a snowy station from a cloudy one. |
+| Extent | `3 km` / `10 km` / `30 km` | Chip width on the ground. Wide chips near a granule edge may be partly blank, and the panel says so when that happens. |
+
+Behavior worth knowing:
+
+- **Imagery follows the date slider.** Move it to February and you get the
+  scenes around that date, not today's — the imagery matches the SWE values
+  beside it. Scene age relative to the selected date is spelled out in the
+  caption.
+- **Cloud percentages are whole-scene**, covering the full ~110 km granule,
+  not the chip. Judge the chip by eye; the numbers only rank the strip.
+- **Scenes that only clip the chip are skipped** using the granule footprint,
+  falling back to partial coverage (with a note) when nothing better exists.
+- **Polar night and long cloudy spells** widen the search to 400 days rather
+  than reporting nothing, and say so.
+- Clicking `larger ↗` opens a higher-resolution render of the same chip;
+  `scene metadata ↗` opens the STAC item.
+
+Source: Copernicus Sentinel-2 L2A served through the
+[Microsoft Planetary Computer](https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a)
+STAC API and its bbox renderer — keyless, CORS-enabled, and queried by the
+browser only when a panel opens. Nothing is fetched at build time and no
+imagery is committed. If the service is unreachable the block says so and the
+rest of the panel is unaffected (DESIGN.md §8.1). Configuration lives in
+`IMAGERY_CONFIG` in `scripts/generate_live_map.py`.
 
 ### View on GitHub Pages
 
