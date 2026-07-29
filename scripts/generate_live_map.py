@@ -47,6 +47,90 @@ REF_PERIODS = {
 
 N_PAST_WYS = 0
 
+# ── Context imagery (browser-side, best-effort — DESIGN.md §8) ───────────────
+# Microsoft Planetary Computer serves a keyless, CORS-enabled STAC search plus
+# a renderer that crops an arbitrary bbox out of a *single* scene at native
+# resolution, so a station-scale chip needs no build-time raster work and no
+# committed image assets.  Nothing here runs in this script: the browser talks
+# to MPC only when a station panel opens, and every failure degrades to a
+# message.  Station values, marker colours, and charts never depend on it.
+#
+# Sentinel-2 L2A only: 10 m, ~5-day revisit, global, free.  HLS needs an
+# Earthdata login and Planet is licensed, so neither can be reached from a
+# public static page.
+#
+# Renders are lists of (key, value) pairs — the frontend feeds them to
+# URLSearchParams, which encodes them and preserves the repeated `assets` /
+# `rescale` keys that titiler needs in band order.
+IMAGERY_CONFIG = {
+    "enabled": True,
+    "collection": "sentinel-2-l2a",
+    "collection_label": "Sentinel-2 L2A",
+    "search_url": "https://planetarycomputer.microsoft.com/api/stac/v1/search",
+    "render_url": (
+        "https://planetarycomputer.microsoft.com/api/data/v1/item/bbox"
+    ),
+    "item_url": (
+        "https://planetarycomputer.microsoft.com/api/stac/v1/collections"
+        "/sentinel-2-l2a/items"
+    ),
+    "credit": "Copernicus Sentinel-2 L2A via Microsoft Planetary Computer",
+    "credit_url": "https://planetarycomputer.microsoft.com/dataset/sentinel-2-l2a",
+    # Search windows, in days back from the date the slider is on.
+    "recent_window_days": 45,
+    "clearest_window_days": 90,
+    # Polar-night latitudes get no optical acquisitions for months; widen once
+    # rather than reporting "no imagery" for every Norwegian station in January.
+    "empty_window_days": 400,
+    "search_limit": 40,
+    "max_scenes": 6,
+    "chip_max_size": 640,
+    "chip_hires_max_size": 1400,
+    "thumb_max_size": 160,
+    "chip_aspect": 1.5,
+    "extents_km": [3, 10, 30],
+    "default_extent_km": 10,
+    "default_render": "true_color",
+    "renders": {
+        # TCI (the `visual` asset) clips hard on snow — a bare 0–10000
+        # rescale of B04/B03/B02 keeps texture in the snowpack instead of a
+        # white blob.
+        "true_color": {
+            "label": "True colour",
+            "params": [
+                ["assets", "B04"], ["assets", "B03"], ["assets", "B02"],
+                ["rescale", "0,10000"], ["rescale", "0,10000"],
+                ["rescale", "0,10000"],
+                ["color_formula", "gamma RGB 1.3"],
+                ["nodata", "0"],
+            ],
+        },
+        # Snow is dark in SWIR and bright in NIR; cloud is bright in both.
+        # B11/B08/B04 therefore renders snow cyan and cloud white/grey — the
+        # single most useful view for "is that snow or weather?".
+        "swir": {
+            "label": "SWIR false colour (snow vs cloud)",
+            "params": [
+                ["assets", "B11"], ["assets", "B08"], ["assets", "B04"],
+                ["rescale", "0,9000"], ["rescale", "0,11000"],
+                ["rescale", "0,11000"],
+                ["color_formula", "gamma RGB 1.2"],
+                ["nodata", "0"],
+            ],
+        },
+    },
+    # STAC fields extension: the full 40-item response is ~600 kB, trimmed
+    # to ~20 kB.  `geometry` stays — the frontend uses the granule footprint
+    # to skip scenes that only clip the corner of the chip.
+    "search_fields": {
+        "include": [
+            "id", "geometry", "properties.datetime",
+            "properties.eo:cloud_cover", "properties.platform",
+        ],
+        "exclude": ["assets", "links", "stac_extensions", "bbox", "collection"],
+    },
+}
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s",
@@ -498,6 +582,45 @@ select:focus{outline:none;border-color:#4af}
 #station-info .swe-line{margin:6px 0;padding:6px 8px;border-radius:4px;background:#e8f0fe}
 #station-info .snwd-line{margin:6px 0;padding:6px 8px;border-radius:4px;background:#e8fef0}
 #station-info .na-line{color:#888;font-style:italic;font-size:12px}
+#imagery-section{margin:12px 0 4px;padding:8px;border:1px solid #d3dae4;
+                 border-radius:4px;background:#fff}
+#imagery-section.imagery-empty{display:none}
+.imagery-head{display:flex;align-items:baseline;justify-content:space-between;
+              gap:8px;flex-wrap:wrap;margin-bottom:6px}
+.imagery-title{font-size:13px;font-weight:650;color:#1a2a3a}
+.imagery-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.imagery-controls select{font-size:11px;background:#fff;color:#223;
+                         border:1px solid #aab}
+.imagery-frame{position:relative;width:100%;background:#e9edf2;border-radius:3px;
+               overflow:hidden;min-height:60px}
+.imagery-frame img{display:block;width:100%;height:auto}
+.imagery-frame.is-loading img{opacity:0.35}
+/* Ring only, no cross hairs — the lines covered the ground they were
+   pointing at, which is the part you actually want to look at. */
+.imagery-marker{position:absolute;left:50%;top:50%;width:17px;height:17px;
+  transform:translate(-50%,-50%);pointer-events:none;border-radius:50%;
+  border:1.5px solid rgba(255,45,45,0.95);
+  box-shadow:0 0 2px rgba(0,0,0,0.8), inset 0 0 2px rgba(0,0,0,0.5)}
+.imagery-scalebar{position:absolute;left:8px;bottom:8px;height:5px;
+  border:1.5px solid rgba(255,255,255,0.95);border-top:none;
+  background:rgba(0,0,0,0.30);box-shadow:0 0 2px rgba(0,0,0,0.7)}
+.imagery-scalebar span{position:absolute;left:0;bottom:6px;font-size:10px;
+  font-weight:700;color:#fff;white-space:nowrap;text-shadow:0 0 3px rgba(0,0,0,0.95)}
+.imagery-status{position:absolute;left:0;right:0;top:0;bottom:0;display:flex;
+  align-items:center;justify-content:center;text-align:center;padding:10px;
+  font-size:12px;color:#556;font-style:italic}
+.imagery-caption{font-size:12px;color:#333;margin-top:5px;line-height:1.45}
+.imagery-caption a{color:#0b6bcb}
+.imagery-note{font-size:11px;color:#8a5a00;margin-top:3px;line-height:1.4}
+.imagery-strip{display:flex;gap:5px;margin-top:6px;overflow-x:auto;padding-bottom:2px}
+.imagery-thumb{flex:0 0 auto;width:84px;border:2px solid transparent;border-radius:3px;
+  background:#eef1f5;padding:0;cursor:pointer;overflow:hidden;text-align:center}
+.imagery-thumb img{display:block;width:100%;height:56px;object-fit:cover;background:#dde3ea}
+.imagery-thumb.active{border-color:#1a2a3a}
+.imagery-thumb .th-date{display:block;font-size:9.5px;line-height:1.25;color:#333;padding:1px 0 0}
+.imagery-thumb .th-cloud{display:block;font-size:9px;line-height:1.25;color:#667;padding:0 0 2px}
+.imagery-credit{font-size:10px;color:#777;margin-top:5px}
+.imagery-credit a{color:#777}
 #chart-controls{display:flex;gap:6px;margin:8px 0 4px;flex-wrap:wrap}
 .chart-btn{padding:4px 10px;border:1px solid #889;border-radius:3px;background:#fff;
            font-size:12px;cursor:pointer;color:#444}
@@ -653,6 +776,7 @@ select:focus{outline:none;border-color:#4af}
         <b>Shading (Period of Record):</b><br>
         Decile bands from min-10th, 10th-20th, ..., 90th-max (red = low, blue = high)
       </div>
+      <div id="imagery-section" class="imagery-empty"></div>
     </div>
   </div>
 </div>
@@ -1283,8 +1407,10 @@ function initDateSlider() {
 
 // ─── Station popup ───────────────────────────────────────────────────────────
 function onMarkerClick(code) {
+  const isNewStation = st.selectedCode !== code;
   st.selectedCode = code;
   recolorAll();  // highlight selected
+  if (isNewStation) imgClear();
 
   const s = SD[code];
   const panel = document.getElementById("station-panel");
@@ -1379,6 +1505,9 @@ function onMarkerClick(code) {
 
   // Trigger chart load
   loadChart(code, st.chartVar);
+
+  // Context imagery is fire-and-forget — the panel above is already complete.
+  loadImagery(code);
 }
 
 // ─── Chart rendering (payload fetched lazily from charts/*.json) ─────────────
@@ -1845,6 +1974,382 @@ function renderChart(code, variable, stats) {
   document.getElementById("chart-shading-legend").style.display = "block";
 }
 
+// ─── Context imagery (Sentinel-2 chips, fetched live from MPC) ───────────────
+// Best-effort decoration only: the station's numbers, marker colour, and chart
+// come from the committed archive and never wait on this (DESIGN.md §8).
+const IMG_CFG = MAP_META.imagery || {enabled: false};
+
+const img = {
+  code: null,
+  mode: "recent",                              // "recent" | "clearest"
+  render: IMG_CFG.default_render,
+  extentKm: IMG_CFG.default_extent_km,
+  scenes: [],
+  selected: 0,
+  token: 0,
+};
+const imgSearchCache = {};   // `${code}|${endDay}|${windowDays}` -> scene list
+
+function imgIsoDay(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`
+       + `-${String(d.getDate()).padStart(2, "0")}`;
+}
+
+// Imagery follows the date slider, but never searches into the future.
+function imgEndDate() {
+  const sel = dowyToDate(st.dowy, st.wy);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  return sel > today ? today : sel;
+}
+
+// Chip bbox: a ground rectangle `km` wide with the station at dead centre, so
+// the ring overlay marks the station without any pixel maths.
+function imgChipBbox(lat, lon, km, aspect) {
+  const halfW = (km / 2) / (111.320 * Math.cos(lat * Math.PI / 180));
+  const halfH = (km / 2 / aspect) / 110.574;
+  return [lon - halfW, lat - halfH, lon + halfW, lat + halfH];
+}
+
+function imgChipUrl(itemId, bbox, maxSize) {
+  const r = IMG_CFG.renders[img.render] || IMG_CFG.renders[IMG_CFG.default_render];
+  const p = new URLSearchParams();
+  p.append("collection", IMG_CFG.collection);
+  p.append("item", itemId);
+  for (const [k, v] of r.params) p.append(k, v);
+  // Without dst_crs the crop comes back in plate carrée and everything is
+  // vertically squashed by 1/cos(lat) — badly so at Norwegian latitudes.
+  p.append("dst_crs", "EPSG:3857");
+  p.append("max_size", String(maxSize));
+  const bb = bbox.map(v => v.toFixed(6)).join(",");
+  return `${IMG_CFG.render_url}/${bb}.png?${p.toString()}`;
+}
+
+// ── Granule footprint tests: skip scenes that only clip the chip ────────────
+function imgPointInRing(x, y, ring) {
+  let inside = false;
+  for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+    const xi = ring[i][0], yi = ring[i][1], xj = ring[j][0], yj = ring[j][1];
+    if (((yi > y) !== (yj > y)) &&
+        (x < ((xj - xi) * (y - yi)) / (yj - yi) + xi)) {
+      inside = !inside;
+    }
+  }
+  return inside;
+}
+
+function imgGeomContains(geom, x, y) {
+  if (!geom) return false;
+  const polys = geom.type === "Polygon" ? [geom.coordinates]
+              : geom.type === "MultiPolygon" ? geom.coordinates
+              : [];
+  for (const poly of polys) {
+    if (!poly.length || !imgPointInRing(x, y, poly[0])) continue;
+    let inHole = false;
+    for (let h = 1; h < poly.length; h++) {
+      if (imgPointInRing(x, y, poly[h])) { inHole = true; break; }
+    }
+    if (!inHole) return true;
+  }
+  return false;
+}
+
+function imgCoversChip(geom, bbox) {
+  const [w, s, e, n] = bbox;
+  return [[w, s], [w, n], [e, s], [e, n]]
+    .every(([x, y]) => imgGeomContains(geom, x, y));
+}
+
+async function imgSearchScenes(lat, lon, endDate, windowDays) {
+  const start = new Date(endDate.getTime() - windowDays * 864e5);
+  const body = {
+    collections: [IMG_CFG.collection],
+    intersects: {type: "Point", coordinates: [lon, lat]},
+    datetime: `${imgIsoDay(start)}T00:00:00Z/${imgIsoDay(endDate)}T23:59:59Z`,
+    limit: IMG_CFG.search_limit,
+    sortby: [{field: "properties.datetime", direction: "desc"}],
+    fields: IMG_CFG.search_fields,
+  };
+  const resp = await fetch(IMG_CFG.search_url, {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify(body),
+  });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const data = await resp.json();
+  return (data.features || []).map(f => ({
+    id: f.id,
+    date: String(f.properties.datetime || "").slice(0, 10),
+    cloud: f.properties["eo:cloud_cover"],
+    platform: f.properties.platform || "",
+    geom: f.geometry,
+  }));
+}
+
+// Scene-level cloud cover describes the whole 110 km granule, not this
+// station, so it ranks the strip — it never hides a scene.
+function imgPickScenes(all, bbox) {
+  const full = all.filter(s => imgCoversChip(s.geom, bbox));
+  const clipped = full.length === 0 && all.length > 0;
+  const pool = full.length ? full : all;
+  const ranked = img.mode === "clearest"
+    ? pool.slice().sort((a, b) => (a.cloud == null ? 101 : a.cloud)
+                               - (b.cloud == null ? 101 : b.cloud))
+    : pool;   // the search already returns newest-first
+  return {scenes: ranked.slice(0, IMG_CFG.max_scenes), clipped};
+}
+
+function imgScaleBarKm(extentKm) {
+  const steps = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20];
+  let best = steps[0];
+  for (const v of steps) if (v <= extentKm / 3) best = v;
+  return best;
+}
+
+function imgFormatDate(iso) {
+  const parts = String(iso).split("-").map(Number);
+  if (parts.length !== 3 || parts.some(Number.isNaN)) return iso || "—";
+  return `${parts[0]} ${MONTHS[parts[1] - 1]} ${parts[2]}`;
+}
+
+function imgCloudLabel(cloud) {
+  return cloud == null ? "cloud n/a" : `${Math.round(cloud)}% cloud`;
+}
+
+function imgControlsHtml() {
+  const renderOpts = Object.entries(IMG_CFG.renders)
+    .map(([k, v]) => `<option value="${k}"${k === img.render ? " selected" : ""}>`
+                   + `${v.label}</option>`).join("");
+  const extentOpts = IMG_CFG.extents_km
+    .map(k => `<option value="${k}"${k === img.extentKm ? " selected" : ""}>`
+            + `${k} km</option>`).join("");
+  const modeOpts = [
+    ["recent", `${IMG_CFG.max_scenes} most recent`],
+    ["clearest", `${IMG_CFG.max_scenes} least cloudy`],
+  ].map(([k, label]) => `<option value="${k}"${k === img.mode ? " selected" : ""}>`
+                      + `${label}</option>`).join("");
+  return `<div class="imagery-controls">`
+    + `<select id="imagery-mode" title="Which scenes to show">${modeOpts}</select>`
+    + `<select id="imagery-render" title="Band combination">${renderOpts}</select>`
+    + `<select id="imagery-extent" title="Chip width on the ground">${extentOpts}</select>`
+    + `</div>`;
+}
+
+function imgShellHtml(bodyHtml) {
+  const label = IMG_CFG.collection_label || "Satellite";
+  return `<div class="imagery-head">`
+    + `<span class="imagery-title">Context imagery — ${label}</span>`
+    + imgControlsHtml()
+    + `</div>${bodyHtml}`
+    + `<div class="imagery-credit">`
+    + `<a href="${IMG_CFG.credit_url}" target="_blank" rel="noopener noreferrer">`
+    + `${IMG_CFG.credit}</a></div>`;
+}
+
+function imgRenderStatus(message) {
+  const sec = document.getElementById("imagery-section");
+  sec.classList.remove("imagery-empty");
+  sec.innerHTML = imgShellHtml(
+    `<div class="imagery-frame" style="height:120px">`
+    + `<div class="imagery-status">${message}</div></div>`
+  );
+  imgBindControls();
+}
+
+function imgRenderScenes(pick, note) {
+  const sec = document.getElementById("imagery-section");
+  const s = SD[img.code];
+  if (!s) return;
+  sec.classList.remove("imagery-empty");
+
+  if (!pick.scenes.length) {
+    sec.innerHTML = imgShellHtml(
+      `<div class="imagery-frame" style="height:110px"><div class="imagery-status">`
+      + `No ${IMG_CFG.collection_label} acquisitions found for this location `
+      + `on or before ${imgFormatDate(imgIsoDay(imgEndDate()))}.`
+      + `</div></div>`
+    );
+    imgBindControls();
+    return;
+  }
+
+  const bbox = imgChipBbox(s.lat, s.lon, img.extentKm, IMG_CFG.chip_aspect);
+  const idx = Math.min(img.selected, pick.scenes.length - 1);
+  const scene = pick.scenes[idx];
+  const barKm = imgScaleBarKm(img.extentKm);
+  const barPct = (barKm / img.extentKm) * 100;
+  const barLabel = barKm < 1 ? `${barKm * 1000} m` : `${barKm} km`;
+
+  // In date order the newest scene is often the cloudiest; flag the clearest
+  // one in the strip so a usable image is one click away.
+  let clearestIdx = -1;
+  pick.scenes.forEach((sc, i) => {
+    if (sc.cloud == null) return;
+    if (clearestIdx < 0 || sc.cloud < pick.scenes[clearestIdx].cloud) clearestIdx = i;
+  });
+  const flagClearest = img.mode === "recent" && clearestIdx >= 0
+    && pick.scenes.length > 1
+    && (pick.scenes[clearestIdx].cloud ?? 100) < (pick.scenes[0].cloud ?? 0);
+
+  const strip = pick.scenes.map((sc, i) => {
+    const thumb = imgChipUrl(sc.id, bbox, IMG_CFG.thumb_max_size);
+    const mark = (flagClearest && i === clearestIdx) ? " ★" : "";
+    return `<button class="imagery-thumb${i === idx ? " active" : ""}" `
+      + `data-idx="${i}" title="${sc.date} · ${sc.platform} · ${imgCloudLabel(sc.cloud)}`
+      + `${mark ? " · clearest of these scenes" : ""}">`
+      + `<img src="${thumb}" alt="${sc.date} scene" loading="lazy">`
+      + `<span class="th-date">${sc.date.slice(5)}${mark}</span>`
+      + `<span class="th-cloud">${imgCloudLabel(sc.cloud)}</span></button>`;
+  }).join("");
+
+  const daysBack = Math.round(
+    (imgEndDate() - new Date(`${scene.date}T00:00:00`)) / 864e5
+  );
+  const ageStr = Number.isFinite(daysBack) && daysBack > 0
+    ? ` (${daysBack} day${daysBack === 1 ? "" : "s"} before the selected date)`
+    : "";
+
+  sec.innerHTML = imgShellHtml(
+    // aspect-ratio reserves the right space while the chip loads, so the
+    // caption below it does not jump when the image lands.
+    `<div class="imagery-frame is-loading" id="imagery-frame" `
+    + `style="aspect-ratio:${IMG_CFG.chip_aspect}">`
+    + `<img id="imagery-chip" src="${imgChipUrl(scene.id, bbox, IMG_CFG.chip_max_size)}" `
+    + `alt="${IMG_CFG.collection_label} chip for ${s.name} on ${scene.date}">`
+    + `<div class="imagery-status" id="imagery-chip-status">Loading imagery…</div>`
+    + `<div class="imagery-marker"></div>`
+    + `<div class="imagery-scalebar" style="width:${barPct.toFixed(1)}%">`
+    + `<span>${barLabel}</span></div>`
+    + `</div>`
+    + `<div class="imagery-caption"><b>${imgFormatDate(scene.date)}</b>${ageStr}`
+    + ` · ${scene.platform || IMG_CFG.collection_label} · ${imgCloudLabel(scene.cloud)}`
+    + ` · <a href="${imgChipUrl(scene.id, bbox, IMG_CFG.chip_hires_max_size)}" `
+    + `target="_blank" rel="noopener noreferrer">larger ↗</a>`
+    + ` · <a href="${IMG_CFG.item_url}/${encodeURIComponent(scene.id)}" `
+    + `target="_blank" rel="noopener noreferrer">scene metadata ↗</a>`
+    + `<br><span style="font-size:11px;color:#555">Ring marks the station; `
+    + `chip is ${img.extentKm} km across. Cloud % is for the whole scene, `
+    + `not this chip.${flagClearest ? " ★ marks the clearest scene below." : ""}`
+    + `</span></div>`
+    + (note ? `<div class="imagery-note">${note}</div>` : "")
+    + `<div class="imagery-strip">${strip}</div>`
+  );
+
+  const chip = document.getElementById("imagery-chip");
+  const frame = document.getElementById("imagery-frame");
+  const status = document.getElementById("imagery-chip-status");
+  chip.addEventListener("load", () => {
+    frame.classList.remove("is-loading");
+    if (status) status.remove();
+    frame.style.aspectRatio = "auto";   // let the real chip set the height
+  });
+  chip.addEventListener("error", () => {
+    frame.classList.remove("is-loading");
+    chip.style.display = "none";
+    if (status) status.textContent = "This scene could not be rendered.";
+  });
+
+  sec.querySelectorAll(".imagery-thumb").forEach(btn => {
+    btn.addEventListener("click", () => {
+      img.selected = Number(btn.dataset.idx);
+      imgRenderScenes(pick, note);
+    });
+  });
+  imgBindControls();
+}
+
+function imgBindControls() {
+  const modeSel = document.getElementById("imagery-mode");
+  const renderSel = document.getElementById("imagery-render");
+  const extentSel = document.getElementById("imagery-extent");
+  if (modeSel) modeSel.addEventListener("change", e => {
+    img.mode = e.target.value;
+    img.selected = 0;
+    loadImagery(img.code);
+  });
+  if (renderSel) renderSel.addEventListener("change", e => {
+    img.render = e.target.value;
+    loadImagery(img.code);
+  });
+  if (extentSel) extentSel.addEventListener("change", e => {
+    img.extentKm = Number(e.target.value);
+    img.selected = 0;
+    loadImagery(img.code);
+  });
+}
+
+function imgClear() {
+  img.token += 1;         // orphan any search still in flight
+  img.code = null;
+  img.sig = null;
+  img.selected = 0;
+  const sec = document.getElementById("imagery-section");
+  sec.classList.add("imagery-empty");
+  sec.innerHTML = "";
+}
+
+async function loadImagery(code) {
+  if (!IMG_CFG.enabled || !SD[code]) return;
+  const s = SD[code];
+  const endDate = imgEndDate();
+
+  // onMarkerClick re-runs on every variable/reference change too; only redraw
+  // when something imagery actually depends on moved.
+  const sig = `${code}|${imgIsoDay(endDate)}|${img.mode}|${img.render}`
+            + `|${img.extentKm}`;
+  if (sig === img.sig && document.getElementById("imagery-chip")) return;
+  img.sig = sig;
+
+  const token = ++img.token;
+  img.code = code;
+
+  const windowDays = img.mode === "clearest"
+    ? IMG_CFG.clearest_window_days
+    : IMG_CFG.recent_window_days;
+  const key = `${code}|${imgIsoDay(endDate)}|${windowDays}`;
+
+  let entry = imgSearchCache[key];
+  if (!entry) {
+    imgRenderStatus(`Searching ${IMG_CFG.collection_label} scenes…`);
+    try {
+      let all = await imgSearchScenes(s.lat, s.lon, endDate, windowDays);
+      let widenedDays = 0;
+      if (!all.length) {
+        widenedDays = IMG_CFG.empty_window_days;
+        all = await imgSearchScenes(s.lat, s.lon, endDate, widenedDays);
+      }
+      entry = {all, windowDays, widenedDays};
+      imgSearchCache[key] = entry;
+    } catch (e) {
+      if (token !== img.token) return;
+      imgRenderStatus(
+        `Context imagery is unavailable right now (${e.message}). `
+        + `Everything else on this panel is unaffected.`
+      );
+      return;
+    }
+  }
+  if (token !== img.token) return;
+
+  const bbox = imgChipBbox(s.lat, s.lon, img.extentKm, IMG_CFG.chip_aspect);
+  const pick = imgPickScenes(entry.all, bbox);
+  const notes = [];
+  if (entry.widenedDays) {
+    notes.push(
+      `No acquisitions in the ${entry.windowDays} days before the selected `
+      + `date — searched back ${entry.widenedDays} days instead `
+      + `(polar night and long cloudy spells both do this).`
+    );
+  }
+  if (pick.clipped) {
+    notes.push(
+      `No single granule covers a ${img.extentKm} km chip here, so part of `
+      + `the image may be blank — a narrower chip usually fills in.`
+    );
+  }
+  imgRenderScenes(pick, notes.join(" "));
+}
+
 // ─── Control event handlers ────────────────────────────────────────────────────
 document.getElementById("sel-basemap").addEventListener("change", e => {
   Object.values(BASEMAPS).forEach(l => map.removeLayer(l));
@@ -1893,6 +2398,7 @@ document.getElementById("sel-date").addEventListener("input", e => {
 document.getElementById("close-btn").addEventListener("click", () => {
   document.getElementById("station-panel").classList.remove("visible");
   st.selectedCode = null;
+  imgClear();
   recolorAll();
 });
 
@@ -2201,6 +2707,7 @@ def main() -> None:
         "min_years": MIN_YEARS,
         "n_stations": len(station_data),
         "available_networks": available_networks,
+        "imagery": IMAGERY_CONFIG,
     }
 
     logger.info(
