@@ -151,13 +151,28 @@ def test_operator_never_junk(features):
 
 
 def test_possible_duplicates_shape(features):
+    """Links are shaped right and only published between daily-or-better
+    stations (DESIGN.md §5) — periodic pairs are matched internally for
+    operator borrowing but never annotated."""
+    daily = {
+        (f["properties"].get("client"), f["properties"].get("code"))
+        for f in features
+        if f["properties"].get("daily_or_better")
+    }
     for f in features:
-        dups = f["properties"].get("possible_duplicates")
+        p = f["properties"]
+        dups = p.get("possible_duplicates")
         if dups is None:
             continue
+        assert p.get("daily_or_better"), (
+            f"{p.get('code')}: periodic station carries duplicate links"
+        )
         for d in dups:
             assert {"code", "client", "distance_m"} <= set(d), d
             assert d["client"] in KNOWN_CLIENTS, d
+            assert (d["client"], d["code"]) in daily, (
+                f"{p.get('code')}: links non-daily twin {d['code']}"
+            )
 
 
 def test_verified_daily_stations_have_csvs(features):

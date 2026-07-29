@@ -246,7 +246,10 @@ California stations arrive via both AWDB (`MSNT`/`SNOW`) and their
 native clients.  This is intentional (each entry is a distinct access
 path with potentially different variables, QC, or metadata); the
 `possible_duplicates` field cross-links them so consumers can
-de-duplicate however they prefer.
+de-duplicate however they prefer.  Only pairs where **both** stations
+are daily-or-better are published — a duplicate note on a periodic
+snow course adds noise, not signal.  (The full matching still runs
+internally to borrow operators from native twins.)
 
 #### Per-client GeoJSONs
 
@@ -963,7 +966,10 @@ The same physical station may appear multiple times in
 This is intentional — each entry reflects a distinct data access path
 with potentially different variables, QC levels, or metadata.  The
 `possible_duplicates` field cross-links candidates (spatial +
-name matching) so a single-entry view is one filter away.
+name matching) so a single-entry view is one filter away.  Links are
+published only between daily-or-better stations; pairs involving a
+periodic site are matched internally (for operator borrowing) but not
+annotated.
 
 ### 9.3 DataBC ASWS met variables with no archive
 

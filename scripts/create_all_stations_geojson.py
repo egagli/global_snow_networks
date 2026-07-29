@@ -583,6 +583,36 @@ def annotate_possible_duplicates(
     return len(links)
 
 
+def prune_non_daily_duplicates(features: list[dict]) -> int:
+    """Keep ``possible_duplicates`` only between daily-or-better stations.
+
+    Duplicate notes exist to warn consumers (and the map) about the same
+    physical site being charted twice; pairs involving a periodic station
+    don't need the warning.  The full matching still runs first so
+    ``borrow_operators_from_twins`` can use every pair — this prunes what
+    is *published* on the features afterwards.
+    """
+    daily = {
+        (f["properties"].get("client"), f["properties"].get("code"))
+        for f in features
+        if f["properties"].get("daily_or_better")
+    }
+    pruned = 0
+    for f in features:
+        p = f["properties"]
+        dups = p.get("possible_duplicates")
+        if not dups:
+            continue
+        if p.get("daily_or_better"):
+            kept = [d for d in dups if (d.get("client"), d.get("code")) in daily]
+        else:
+            kept = []
+        if len(kept) != len(dups):
+            pruned += 1
+            p["possible_duplicates"] = kept or None
+    return pruned
+
+
 def borrow_operators_from_twins(features: list[dict]) -> int:
     """Fill unknown operators from a uniquely matching native twin.
 
@@ -1677,6 +1707,12 @@ def main() -> None:
     borrowed = borrow_operators_from_twins(all_features_merged)
     if borrowed:
         print(f"Borrowed operators from native twins for {borrowed:,} stations")
+    pruned = prune_non_daily_duplicates(all_features_merged)
+    if pruned:
+        print(
+            f"Pruned duplicate links involving periodic stations "
+            f"on {pruned:,} features"
+        )
 
     print("=" * 60)
     print(
