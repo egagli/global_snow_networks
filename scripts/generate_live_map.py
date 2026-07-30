@@ -53,7 +53,7 @@ N_PAST_WYS = 0
 # resolution, so a station-scale chip needs no build-time raster work and no
 # committed image assets.  Nothing here runs in this script: the browser talks
 # to MPC only when a station panel opens, and every failure degrades to a
-# message.  Station values, marker colours, and charts never depend on it.
+# message.  Station values, marker colors, and charts never depend on it.
 #
 # Sentinel-2 L2A only: 10 m, ~5-day revisit, global, free.  HLS needs an
 # Earthdata login and Planet is licensed, so neither can be reached from a
@@ -69,6 +69,9 @@ IMAGERY_CONFIG = {
     "search_url": "https://planetarycomputer.microsoft.com/api/stac/v1/search",
     "render_url": (
         "https://planetarycomputer.microsoft.com/api/data/v1/item/bbox"
+    ),
+    "stats_url": (
+        "https://planetarycomputer.microsoft.com/api/data/v1/item/statistics"
     ),
     "item_url": (
         "https://planetarycomputer.microsoft.com/api/stac/v1/collections"
@@ -88,35 +91,46 @@ IMAGERY_CONFIG = {
     "chip_hires_max_size": 1400,
     "thumb_max_size": 160,
     "chip_aspect": 1.5,
-    "extents_km": [3, 10, 30],
+    "extent_min_km": 1,
+    "extent_max_km": 30,
+    "extent_step_km": 1,
     "default_extent_km": 10,
     "default_render": "true_color",
+    # Per-chip contrast. A fixed 0–10000 rescale spends almost the whole
+    # output range on brightness the chip does not contain: a 1 km forest
+    # chip spans roughly 1100–1800 reflectance and renders as near-black
+    # mud. The statistics endpoint returns percentiles for the exact chip,
+    # which become the stretch. `stats_min_span` keeps a uniform chip (solid
+    # cloud, solid snow) from having its sensor noise stretched to full range.
+    "stats_percentiles": [2, 98],
+    "stats_max_size": 128,
+    "stats_min_span": 500,
+    # Thumbnails reuse the selected scene's stretch, loosened by this factor
+    # so brighter or darker dates in the strip do not clip to flat white.
+    "thumb_stretch_factor": 1.6,
     "renders": {
-        # TCI (the `visual` asset) clips hard on snow — a bare 0–10000
-        # rescale of B04/B03/B02 keeps texture in the snowpack instead of a
-        # white blob.
+        # TCI (the `visual` asset) clips hard on snow, so these are raw bands.
+        # Per-band percentiles white-balance the chip, which reads far more
+        # naturally than one shared stretch (that leaves forest neon green).
         "true_color": {
-            "label": "True colour",
-            "params": [
-                ["assets", "B04"], ["assets", "B03"], ["assets", "B02"],
-                ["rescale", "0,10000"], ["rescale", "0,10000"],
-                ["rescale", "0,10000"],
-                ["color_formula", "gamma RGB 1.3"],
-                ["nodata", "0"],
-            ],
+            "label": "True color",
+            "bands": ["B04", "B03", "B02"],
+            "stretch": "per_band",
+            "fallback_rescale": [[0, 10000], [0, 10000], [0, 10000]],
+            "color_formula": "gamma RGB 1.1",
         },
         # Snow is dark in SWIR and bright in NIR; cloud is bright in both.
         # B11/B08/B04 therefore renders snow cyan and cloud white/grey — the
-        # single most useful view for "is that snow or weather?".
+        # single most useful view for "is that snow or weather?". That reading
+        # is a *ratio* between the bands, so this render stretches all three
+        # together: stretching per band re-brightens SWIR, turns bare ground
+        # red, and destroys the very distinction the render exists for.
         "swir": {
-            "label": "SWIR false colour (snow vs cloud)",
-            "params": [
-                ["assets", "B11"], ["assets", "B08"], ["assets", "B04"],
-                ["rescale", "0,9000"], ["rescale", "0,11000"],
-                ["rescale", "0,11000"],
-                ["color_formula", "gamma RGB 1.2"],
-                ["nodata", "0"],
-            ],
+            "label": "SWIR false color (snow vs cloud)",
+            "bands": ["B11", "B08", "B04"],
+            "stretch": "common",
+            "fallback_rescale": [[0, 9000], [0, 11000], [0, 11000]],
+            "color_formula": "gamma RGB 1.15",
         },
     },
     # STAC fields extension: the full 40-item response is ~600 kB, trimmed
@@ -591,6 +605,11 @@ select:focus{outline:none;border-color:#4af}
 .imagery-controls{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
 .imagery-controls select{font-size:11px;background:#fff;color:#223;
                          border:1px solid #aab}
+.imagery-extent-ctl{display:inline-flex;align-items:center;gap:5px;
+  border:1px solid #aab;border-radius:3px;padding:1px 6px;background:#fff}
+.imagery-extent-ctl input[type=range]{width:104px;height:14px;cursor:pointer;accent-color:#1a2a3a}
+#imagery-extent-val{font-size:11px;color:#223;font-variant-numeric:tabular-nums;
+  min-width:5ch;text-align:right}
 .imagery-frame{position:relative;width:100%;background:#e9edf2;border-radius:3px;
                overflow:hidden;min-height:60px}
 .imagery-frame img{display:block;width:100%;height:auto}
@@ -1975,7 +1994,7 @@ function renderChart(code, variable, stats) {
 }
 
 // ─── Context imagery (Sentinel-2 chips, fetched live from MPC) ───────────────
-// Best-effort decoration only: the station's numbers, marker colour, and chart
+// Best-effort decoration only: the station's numbers, marker color, and chart
 // come from the committed archive and never wait on this (DESIGN.md §8).
 const IMG_CFG = MAP_META.imagery || {enabled: false};
 
@@ -2011,18 +2030,104 @@ function imgChipBbox(lat, lon, km, aspect) {
   return [lon - halfW, lat - halfH, lon + halfW, lat + halfH];
 }
 
-function imgChipUrl(itemId, bbox, maxSize) {
-  const r = IMG_CFG.renders[img.render] || IMG_CFG.renders[IMG_CFG.default_render];
+function imgRender() {
+  return IMG_CFG.renders[img.render] || IMG_CFG.renders[IMG_CFG.default_render];
+}
+
+function imgBboxStr(bbox) {
+  return bbox.map(v => v.toFixed(6)).join(",");
+}
+
+function imgChipUrl(itemId, bbox, maxSize, rescale) {
+  const r = imgRender();
   const p = new URLSearchParams();
   p.append("collection", IMG_CFG.collection);
   p.append("item", itemId);
-  for (const [k, v] of r.params) p.append(k, v);
+  for (const band of r.bands) p.append("assets", band);
+  for (const [lo, hi] of rescale) p.append("rescale", `${Math.round(lo)},${Math.round(hi)}`);
+  p.append("color_formula", r.color_formula);
+  p.append("nodata", "0");
   // Without dst_crs the crop comes back in plate carrée and everything is
   // vertically squashed by 1/cos(lat) — badly so at Norwegian latitudes.
   p.append("dst_crs", "EPSG:3857");
   p.append("max_size", String(maxSize));
-  const bb = bbox.map(v => v.toFixed(6)).join(",");
-  return `${IMG_CFG.render_url}/${bb}.png?${p.toString()}`;
+  return `${IMG_CFG.render_url}/${imgBboxStr(bbox)}.png?${p.toString()}`;
+}
+
+// ── Per-chip contrast stretch ───────────────────────────────────────────────
+const imgStretchCache = {};   // `${item}|${bbox}|${render}` -> [[lo,hi] x3]
+
+function imgWidenSpan(lo, hi) {
+  const span = hi - lo;
+  if (span >= IMG_CFG.stats_min_span) return [Math.max(0, lo), hi];
+  const mid = (lo + hi) / 2;
+  const half = IMG_CFG.stats_min_span / 2;
+  return [Math.max(0, mid - half), mid + half];
+}
+
+// The strip shares the selected scene's stretch instead of firing six more
+// stats calls. Widening it keeps the other dates — which may be far brighter
+// or darker — from clipping to flat white or black in the thumbnails.
+function imgLoosenStretch(rescale, factor) {
+  return rescale.map(([lo, hi]) => {
+    const mid = (lo + hi) / 2;
+    const half = ((hi - lo) / 2) * factor;
+    return [Math.max(0, mid - half), mid + half];
+  });
+}
+
+async function imgStretchFor(itemId, bbox) {
+  const r = imgRender();
+  const key = `${itemId}|${imgBboxStr(bbox)}|${img.render}`;
+  if (imgStretchCache[key]) return imgStretchCache[key];
+
+  const [w, s, e, n] = bbox;
+  const p = new URLSearchParams();
+  p.append("collection", IMG_CFG.collection);
+  p.append("item", itemId);
+  for (const band of r.bands) p.append("assets", band);
+  for (const pct of IMG_CFG.stats_percentiles) p.append("p", String(pct));
+  p.append("max_size", String(IMG_CFG.stats_max_size));
+
+  let rescale = r.fallback_rescale;
+  try {
+    const resp = await fetch(`${IMG_CFG.stats_url}?${p.toString()}`, {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({
+        type: "Feature", properties: {},
+        geometry: {type: "Polygon",
+                   coordinates: [[[w, s], [e, s], [e, n], [w, n], [w, s]]]},
+      }),
+    });
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+    const data = await resp.json();
+    const stats = (data.properties || data).statistics || {};
+    const [pLo, pHi] = IMG_CFG.stats_percentiles;
+    const bands = r.bands.map(b => {
+      const st = stats[`${b}_b1`] || stats[b];
+      if (!st) return null;
+      const lo = st[`percentile_${pLo}`];
+      const hi = st[`percentile_${pHi}`];
+      return (lo == null || hi == null || hi <= lo) ? null : [lo, hi];
+    });
+    if (bands.every(Boolean)) {
+      rescale = r.stretch === "common"
+        // One stretch for all three bands: the SWIR render's snow-vs-cloud
+        // reading lives in the ratio between them.
+        ? (() => {
+            const [lo, hi] = imgWidenSpan(Math.min(...bands.map(b => b[0])),
+                                          Math.max(...bands.map(b => b[1])));
+            return [[lo, hi], [lo, hi], [lo, hi]];
+          })()
+        : bands.map(([lo, hi]) => imgWidenSpan(lo, hi));
+    }
+  } catch (e) {
+    // Contrast is an enhancement; a failed stats call just means the chip
+    // renders with the render's fixed fallback stretch.
+  }
+  imgStretchCache[key] = rescale;
+  return rescale;
 }
 
 // ── Granule footprint tests: skip scenes that only clip the chip ────────────
@@ -2100,7 +2205,7 @@ function imgPickScenes(all, bbox) {
 }
 
 function imgScaleBarKm(extentKm) {
-  const steps = [0.1, 0.2, 0.5, 1, 2, 5, 10, 20];
+  const steps = [0.1, 0.2, 0.25, 0.5, 1, 2, 2.5, 5, 10];
   let best = steps[0];
   for (const v of steps) if (v <= extentKm / 3) best = v;
   return best;
@@ -2120,9 +2225,12 @@ function imgControlsHtml() {
   const renderOpts = Object.entries(IMG_CFG.renders)
     .map(([k, v]) => `<option value="${k}"${k === img.render ? " selected" : ""}>`
                    + `${v.label}</option>`).join("");
-  const extentOpts = IMG_CFG.extents_km
-    .map(k => `<option value="${k}"${k === img.extentKm ? " selected" : ""}>`
-            + `${k} km</option>`).join("");
+  const extentCtl = `<span class="imagery-extent-ctl" `
+    + `title="Chip width on the ground">`
+    + `<input id="imagery-extent" type="range" min="${IMG_CFG.extent_min_km}" `
+    + `max="${IMG_CFG.extent_max_km}" step="${IMG_CFG.extent_step_km}" `
+    + `value="${img.extentKm}" aria-label="Chip width in km">`
+    + `<span id="imagery-extent-val">${img.extentKm} km</span></span>`;
   const modeOpts = [
     ["recent", `${IMG_CFG.max_scenes} most recent`],
     ["clearest", `${IMG_CFG.max_scenes} least cloudy`],
@@ -2131,7 +2239,7 @@ function imgControlsHtml() {
   return `<div class="imagery-controls">`
     + `<select id="imagery-mode" title="Which scenes to show">${modeOpts}</select>`
     + `<select id="imagery-render" title="Band combination">${renderOpts}</select>`
-    + `<select id="imagery-extent" title="Chip width on the ground">${extentOpts}</select>`
+    + extentCtl
     + `</div>`;
 }
 
@@ -2192,12 +2300,11 @@ function imgRenderScenes(pick, note) {
     && (pick.scenes[clearestIdx].cloud ?? 100) < (pick.scenes[0].cloud ?? 0);
 
   const strip = pick.scenes.map((sc, i) => {
-    const thumb = imgChipUrl(sc.id, bbox, IMG_CFG.thumb_max_size);
     const mark = (flagClearest && i === clearestIdx) ? " ★" : "";
     return `<button class="imagery-thumb${i === idx ? " active" : ""}" `
       + `data-idx="${i}" title="${sc.date} · ${sc.platform} · ${imgCloudLabel(sc.cloud)}`
       + `${mark ? " · clearest of these scenes" : ""}">`
-      + `<img src="${thumb}" alt="${sc.date} scene" loading="lazy">`
+      + `<img data-item="${sc.id}" alt="${sc.date} scene" loading="lazy">`
       + `<span class="th-date">${sc.date.slice(5)}${mark}</span>`
       + `<span class="th-cloud">${imgCloudLabel(sc.cloud)}</span></button>`;
   }).join("");
@@ -2214,7 +2321,7 @@ function imgRenderScenes(pick, note) {
     // caption below it does not jump when the image lands.
     `<div class="imagery-frame is-loading" id="imagery-frame" `
     + `style="aspect-ratio:${IMG_CFG.chip_aspect}">`
-    + `<img id="imagery-chip" src="${imgChipUrl(scene.id, bbox, IMG_CFG.chip_max_size)}" `
+    + `<img id="imagery-chip" `
     + `alt="${IMG_CFG.collection_label} chip for ${s.name} on ${scene.date}">`
     + `<div class="imagery-status" id="imagery-chip-status">Loading imagery…</div>`
     + `<div class="imagery-marker"></div>`
@@ -2223,7 +2330,7 @@ function imgRenderScenes(pick, note) {
     + `</div>`
     + `<div class="imagery-caption"><b>${imgFormatDate(scene.date)}</b>${ageStr}`
     + ` · ${scene.platform || IMG_CFG.collection_label} · ${imgCloudLabel(scene.cloud)}`
-    + ` · <a href="${imgChipUrl(scene.id, bbox, IMG_CFG.chip_hires_max_size)}" `
+    + ` · <a id="imagery-hires" href="#" `
     + `target="_blank" rel="noopener noreferrer">larger ↗</a>`
     + ` · <a href="${IMG_CFG.item_url}/${encodeURIComponent(scene.id)}" `
     + `target="_blank" rel="noopener noreferrer">scene metadata ↗</a>`
@@ -2242,11 +2349,34 @@ function imgRenderScenes(pick, note) {
     frame.classList.remove("is-loading");
     if (status) status.remove();
     frame.style.aspectRatio = "auto";   // let the real chip set the height
+    // A 1 km chip is only ~100 px of real data. Smooth upscaling turns that
+    // into mush; nearest-neighbour keeps the 10 m pixels legible.
+    chip.style.imageRendering =
+      chip.naturalWidth && chip.naturalWidth < chip.clientWidth ? "pixelated" : "auto";
   });
   chip.addEventListener("error", () => {
     frame.classList.remove("is-loading");
     chip.style.display = "none";
     if (status) status.textContent = "This scene could not be rendered.";
+  });
+
+  // Stretch first, then paint: the chip URL carries the rescale, so the
+  // sources cannot be set until the chip's own percentiles come back. The
+  // strip shares the selected scene's stretch rather than firing six more
+  // stats calls.
+  const token = img.token;
+  imgStretchFor(scene.id, bbox).then(rescale => {
+    if (token !== img.token || !document.body.contains(chip)) return;
+    chip.src = imgChipUrl(scene.id, bbox, IMG_CFG.chip_max_size, rescale);
+    const hires = document.getElementById("imagery-hires");
+    if (hires) {
+      hires.href = imgChipUrl(scene.id, bbox, IMG_CFG.chip_hires_max_size, rescale);
+    }
+    const stripRescale = imgLoosenStretch(rescale, IMG_CFG.thumb_stretch_factor);
+    sec.querySelectorAll(".imagery-thumb img").forEach(el => {
+      el.src = imgChipUrl(el.dataset.item, bbox, IMG_CFG.thumb_max_size,
+                          el.dataset.item === scene.id ? rescale : stripRescale);
+    });
   });
 
   sec.querySelectorAll(".imagery-thumb").forEach(btn => {
@@ -2271,11 +2401,21 @@ function imgBindControls() {
     img.render = e.target.value;
     loadImagery(img.code);
   });
-  if (extentSel) extentSel.addEventListener("change", e => {
-    img.extentKm = Number(e.target.value);
-    img.selected = 0;
-    loadImagery(img.code);
-  });
+  const extentVal = document.getElementById("imagery-extent-val");
+  if (extentSel) {
+    // Live label while dragging, but only re-render on release — otherwise
+    // every pixel of slider travel would fire a stats call and seven renders.
+    extentSel.addEventListener("input", e => {
+      if (extentVal) extentVal.textContent = `${Number(e.target.value)} km`;
+    });
+    extentSel.addEventListener("change", e => {
+      const km = Number(e.target.value);
+      if (km === img.extentKm) return;
+      img.extentKm = km;
+      img.selected = 0;
+      loadImagery(img.code);
+    });
+  }
 }
 
 function imgClear() {

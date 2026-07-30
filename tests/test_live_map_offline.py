@@ -26,16 +26,25 @@ def test_imagery_config_shape():
     cfg = IMAGERY_CONFIG
     required = {
         "enabled", "collection", "collection_label", "search_url",
-        "render_url", "item_url", "credit", "credit_url",
+        "render_url", "stats_url", "item_url", "credit", "credit_url",
         "recent_window_days", "clearest_window_days", "empty_window_days",
         "search_limit", "max_scenes", "chip_max_size", "chip_hires_max_size",
-        "thumb_max_size", "chip_aspect", "extents_km", "default_extent_km",
-        "default_render", "renders", "search_fields",
+        "thumb_max_size", "chip_aspect", "extent_min_km", "extent_max_km",
+        "extent_step_km", "default_extent_km", "default_render", "renders",
+        "search_fields", "stats_percentiles", "stats_max_size",
+        "stats_min_span",
     }
     assert required <= set(cfg)
     assert cfg["default_render"] in cfg["renders"]
-    assert cfg["default_extent_km"] in cfg["extents_km"]
-    assert cfg["extents_km"] == sorted(cfg["extents_km"])
+    assert cfg["extent_min_km"] >= 1
+    assert cfg["extent_min_km"] <= cfg["default_extent_km"] <= cfg["extent_max_km"]
+    # The default must land on a step, else the slider snaps somewhere else
+    # the moment it is touched.
+    span = cfg["default_extent_km"] - cfg["extent_min_km"]
+    assert span % cfg["extent_step_km"] == 0
+    # Two percentiles, low then high — the frontend unpacks them positionally.
+    assert len(cfg["stats_percentiles"]) == 2
+    assert cfg["stats_percentiles"][0] < cfg["stats_percentiles"][1]
     # The widened fallback must actually widen, else polar-night stations
     # would re-run the identical search.
     assert cfg["empty_window_days"] > cfg["recent_window_days"]
@@ -44,20 +53,29 @@ def test_imagery_config_shape():
     assert cfg["item_url"].endswith(f"/{cfg['collection']}/items")
 
 
-def test_imagery_renders_are_urlsearchparams_pairs():
-    """The frontend feeds these straight to URLSearchParams."""
+def test_imagery_renders_declare_three_bands_and_a_fallback():
+    """Renders are RGB triples; titiler pairs bands and rescales positionally,
+    so a fallback of the wrong length silently mis-stretches a chip."""
     for key, render in IMAGERY_CONFIG["renders"].items():
-        assert render["label"]
-        pairs = render["params"]
-        assert isinstance(pairs, list) and pairs
-        for pair in pairs:
-            assert isinstance(pair, list) and len(pair) == 2, (key, pair)
-            assert all(isinstance(v, str) for v in pair), (key, pair)
-        keys = [k for k, _ in pairs]
-        # Three bands, and one rescale per band in the same order — titiler
-        # pairs them positionally, so a missing rescale silently mis-stretches.
-        assert keys.count("assets") == 3, key
-        assert keys.count("rescale") == 3, key
+        assert render["label"], key
+        assert "colour" not in render["label"].lower(), key
+        assert len(render["bands"]) == 3, key
+        assert all(isinstance(b, str) for b in render["bands"]), key
+        assert render["stretch"] in ("per_band", "common"), key
+        fallback = render["fallback_rescale"]
+        assert len(fallback) == 3, key
+        for lo, hi in fallback:
+            assert hi > lo >= 0, (key, lo, hi)
+        assert render["color_formula"], key
+
+
+def test_swir_stretches_bands_together():
+    """Snow-vs-cloud in the SWIR render is a ratio between bands. A per-band
+    stretch re-brightens SWIR and destroys the distinction, so this pairing is
+    load-bearing, not stylistic."""
+    swir = IMAGERY_CONFIG["renders"]["swir"]
+    assert swir["bands"] == ["B11", "B08", "B04"]
+    assert swir["stretch"] == "common"
 
 
 def test_imagery_search_fields_keep_geometry():
@@ -134,7 +152,7 @@ def test_build_html_embeds_imagery_config(offline_assets):
     payload = re.search(r"const MAP_META = (\{.*?\});\n", html, re.DOTALL).group(1)
     parsed = json.loads(payload)
     assert parsed["imagery"]["collection"] == IMAGERY_CONFIG["collection"]
-    assert parsed["imagery"]["renders"][IMAGERY_CONFIG["default_render"]]["params"]
+    assert parsed["imagery"]["renders"][IMAGERY_CONFIG["default_render"]]["bands"]
 
 
 def test_build_html_survives_missing_imagery_config(offline_assets):
