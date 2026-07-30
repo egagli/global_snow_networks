@@ -201,8 +201,28 @@ exact station location, a scale bar, and a filmstrip of nearby acquisitions.
 | Control | Options | Notes |
 | --- | --- | --- |
 | Scene set | `6 most recent` / `6 least cloudy` | Recent searches the 45 days before the selected date; least-cloudy searches 90 days and ranks by scene cloud cover. In recent order, ★ flags the clearest scene in the strip. |
-| Render | `True colour` / `SWIR false colour` | True colour is B4/B3/B2 stretched 0–10000 so snow keeps texture instead of clipping white (the stock TCI asset blows out on snowpack). SWIR is B11/B8/B4: snow reads cyan, cloud reads white/grey — the view for telling a snowy station from a cloudy one. |
-| Extent | `3 km` / `10 km` / `30 km` | Chip width on the ground. Wide chips near a granule edge may be partly blank, and the panel says so when that happens. |
+| Render | `True color` / `SWIR false color` | True color is raw B4/B3/B2 (the stock TCI asset blows out on snowpack). SWIR is B11/B8/B4: snow reads cyan, cloud reads white/grey — the view for telling a snowy station from a cloudy one. |
+| Extent | slider, 1–30 km in 1 km steps | Chip width on the ground; re-renders on release, not while dragging. Wide chips near a granule edge may be partly blank, and the panel says so when that happens. |
+
+**Contrast is computed per chip.** A fixed rescale spends the output range on
+brightness a given chip does not contain — a 1 km forest chip spans roughly
+1100–1800 reflectance out of 0–10000 and renders as near-black mud. Each chip
+instead gets 2nd/98th-percentile statistics for its own footprint from the
+same API, and those become the stretch:
+
+- **True color** stretches each band independently, which white-balances the
+  chip and reads far more naturally than one shared stretch.
+- **SWIR** stretches all three bands together on purpose. Snow-vs-cloud lives
+  in the *ratio* between the bands, and stretching per band re-brightens SWIR,
+  turns bare ground red, and destroys the distinction the render exists for.
+- A minimum span keeps a uniform chip (solid cloud, solid snow) from having
+  its sensor noise stretched to full range, and a failed statistics call falls
+  back to the render's fixed rescale.
+
+Below about 5 km a chip is fewer pixels of real data than the panel is wide
+(10 m pixels: a 1 km chip is ~100 px), so it is upscaled with
+nearest-neighbour rather than smoothed — you see the actual Sentinel-2 pixels
+instead of mush.
 
 Behavior worth knowing:
 
