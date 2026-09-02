@@ -1072,24 +1072,39 @@ function updateSliderTrackColor() {
 // yet available" tile, so maxNativeZoom pins the request at 16 and lets
 // Leaflet upscale the rest of the way.
 const ESRI_CANVAS = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
+// The canvas is drawn from OpenStreetMap among other sources, so it carries
+// Esri's full copyright line rather than Esri alone.
+const ESRI_CANVAS_ATTR =
+  "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, " +
+  "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
+  "and the GIS user community";
+// Both taken from the copyrightText each MapServer publishes for itself; topo
+// is OpenStreetMap-derived too and had been crediting only Esri.
+const ESRI_IMAGERY_ATTR =
+  "Tiles &copy; Esri &mdash; Source: Esri, Vantor, Earthstar Geographics, " +
+  "and the GIS User Community";
+const ESRI_TOPO_ATTR =
+  "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, Intermap, USGS, NPS, NRCAN, " +
+  "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
+  "and the GIS User Community";
 const BASEMAPS = {
   esri_light: L.layerGroup([
     L.tileLayer(
       `${ESRI_CANVAS}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`,
-      {attribution:"&copy; Esri",maxZoom:19,maxNativeZoom:16}
+      {attribution:ESRI_CANVAS_ATTR,maxZoom:19,maxNativeZoom:16}
     ),
     L.tileLayer(
       `${ESRI_CANVAS}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`,
-      {attribution:"&copy; Esri",maxZoom:19,maxNativeZoom:16}
+      {attribution:ESRI_CANVAS_ATTR,maxZoom:19,maxNativeZoom:16}
     ),
   ]),
   esri_sat: L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    {attribution:"&copy; Esri",maxZoom:19}
+    {attribution:ESRI_IMAGERY_ATTR,maxZoom:19}
   ),
   esri_topo: L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-    {attribution:"&copy; Esri",maxZoom:19}
+    {attribution:ESRI_TOPO_ATTR,maxZoom:19}
   ),
 };
 
