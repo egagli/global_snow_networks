@@ -738,7 +738,7 @@ select:focus{outline:none;border-color:#4af}
       <div class="ctl-group">
         <span class="ctl-label">Basemap:</span>
         <select id="sel-basemap">
-          <option value="cartodb">CartoDB Light</option>
+          <option value="esri_light">Esri Light Gray</option>
           <option value="esri_sat">Esri WorldImagery</option>
           <option value="esri_topo">Esri Topo</option>
         </select>
@@ -817,7 +817,7 @@ const st = {
   ref: "por",
   wy: MAP_META.current_wy,
   dowy: MAP_META.today_dowy,
-  basemap: "cartodb",
+  basemap: "esri_light",
   selectedCode: null,
   chartVar: "WTEQ",
   visibleNetworks: new Set(MAP_META.available_networks),
@@ -1062,11 +1062,27 @@ function updateSliderTrackColor() {
 }
 
 // ─── Map setup ────────────────────────────────────────────────────────────────
+// The light basemap used to be CARTO Positron. CARTO now requires an API key
+// for its basemap tiles and stamps "API KEY REQUIRED" across any tile fetched
+// without one, so the light option is Esri's key-free canvas instead: a grey
+// base with its labels as a separate layer, grouped so the switcher below can
+// add and remove the pair as a single basemap.
+//
+// That canvas is only tiled to z16; past it Esri serves a grey "Map data not
+// yet available" tile, so maxNativeZoom pins the request at 16 and lets
+// Leaflet upscale the rest of the way.
+const ESRI_CANVAS = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
 const BASEMAPS = {
-  cartodb: L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    {attribution:"&copy; OpenStreetMap contributors &copy; CARTO",maxZoom:19,subdomains:"abcd"}
-  ),
+  esri_light: L.layerGroup([
+    L.tileLayer(
+      `${ESRI_CANVAS}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`,
+      {attribution:"&copy; Esri",maxZoom:19,maxNativeZoom:16}
+    ),
+    L.tileLayer(
+      `${ESRI_CANVAS}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`,
+      {attribution:"&copy; Esri",maxZoom:19,maxNativeZoom:16}
+    ),
+  ]),
   esri_sat: L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
     {attribution:"&copy; Esri",maxZoom:19}
@@ -1079,7 +1095,7 @@ const BASEMAPS = {
 
 const map = L.map("map", {
   center: [43, -112], zoom: 5,
-  layers: [BASEMAPS.cartodb],
+  layers: [BASEMAPS.esri_light],
   zoomControl: true,
 });
 
