@@ -1093,10 +1093,25 @@ const BASEMAPS = {
   ),
 };
 
+// zoomSnap is a quarter level rather than a whole one, and one mouse notch
+// moves one level rather than the two Leaflet gives by default — the wheel had
+// been jumping the map two zoom levels at a time. A quarter, not zero: these
+// basemaps are raster, so any fractional zoom leaves the tiles scaled, and
+// quarter steps keep that softness slight while still feeling continuous.
+//
+// The bounds are stated on the map, not left to be inferred from whichever
+// layers happen to be attached: the switcher swaps basemaps at runtime, and a
+// map with no explicit maxZoom reports Infinity whenever nothing attached
+// declares one.
 const map = L.map("map", {
   center: [43, -112], zoom: 5,
   layers: [BASEMAPS.esri_light],
   zoomControl: true,
+  minZoom: 2,
+  maxZoom: 19,
+  zoomSnap: 0.25,
+  zoomDelta: 0.5,
+  wheelPxPerZoomLevel: 120,
 });
 
 const markerLayer = L.layerGroup().addTo(map);
