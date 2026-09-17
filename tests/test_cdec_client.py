@@ -46,6 +46,9 @@ def test_sensors_types_are_valid():
         "swe", "snwd", "temp", "temp_max", "temp_min", "precip",
         "rh", "wind_spd", "wind_gust", "wind_dir", "wind_run",
         "solar", "baro", "density", "snow_line", "other",
+        # Four CDEC sensors are soil moisture, and DESIGN.md §3.2 lists the
+        # type; this vocabulary was simply missing it.
+        "soil_moisture",
     }
     for num, info in SENSORS.items():
         assert info["type"] in valid_types, (
