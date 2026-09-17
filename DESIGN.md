@@ -57,9 +57,15 @@ variable/sensor name (string). Each entry:
 }
 ```
 
-**Type vocabulary:** `swe`, `snwd`, `temp`, `temp_max`, `temp_min`,
-`precip`, `rh`, `wind_spd`, `wind_gust`, `wind_dir`, `wind_run`, `solar`,
-`baro`, `density`, `snow_line`, `soil_moisture`, `other`.
+**Type vocabulary:** `swe`, `snwd`, `snowfall`, `temp`, `temp_max`,
+`temp_min`, `precip`, `rh`, `wind_spd`, `wind_gust`, `wind_dir`, `wind_run`,
+`solar`, `baro`, `density`, `snow_line`, `soil_moisture`, `other`.
+
+`snowfall` is **new snow accumulated over the interval, as a depth of snow**,
+and is deliberately separate from `precip`. They are not the same quantity and
+not interconvertible: 5 cm of new snow is roughly 5 mm of water, not 50 mm, so
+a consumer that rescales one into the other is off by the snow-to-water ratio.
+`snwd` is the depth of the snow *on the ground*; `snowfall` is what fell.
 
 Every client also exposes `DATA_FLAGS` (flag code → description; empty dict
 with a comment if the source has no flags).
@@ -128,6 +134,7 @@ emitted units by type:
 | --- | --- |
 | `swe` | cm |
 | `snwd` | cm |
+| `snowfall` | cm |
 | `temp*` | °C |
 | `precip*` | mm |
 | `rh`, `density`, `soil_moisture` | % |

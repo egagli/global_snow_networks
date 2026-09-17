@@ -16,6 +16,8 @@ import re
 
 import pytest
 
+from clients._common import TYPES
+
 pytestmark = pytest.mark.live  # hits real network endpoints
 
 from clients.yukon import YukonClient, YukonError
@@ -76,11 +78,7 @@ def test_variables_have_output_units():
 
 
 def test_variables_types_are_valid():
-    valid_types = {
-        "swe", "snwd", "temp", "temp_max", "temp_min", "precip",
-        "rh", "wind_spd", "wind_gust", "wind_dir", "wind_run",
-        "solar", "baro", "density", "snow_line", "other",
-    }
+    valid_types = TYPES
     for key, info in VARIABLES.items():
         assert info["type"] in valid_types, (
             f"VARIABLES[{key!r}] has unknown type {info['type']!r}"

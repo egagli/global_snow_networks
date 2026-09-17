@@ -8,6 +8,8 @@ An internet connection is required.
 
 import pytest
 
+from clients._common import TYPES
+
 pytestmark = pytest.mark.live  # hits real network endpoints
 
 from clients.cdec import CDECClient, CDECError
@@ -42,14 +44,7 @@ def test_sensors_required_fields():
 
 
 def test_sensors_types_are_valid():
-    valid_types = {
-        "swe", "snwd", "temp", "temp_max", "temp_min", "precip",
-        "rh", "wind_spd", "wind_gust", "wind_dir", "wind_run",
-        "solar", "baro", "density", "snow_line", "other",
-        # Four CDEC sensors are soil moisture, and DESIGN.md §3.2 lists the
-        # type; this vocabulary was simply missing it.
-        "soil_moisture",
-    }
+    valid_types = TYPES
     for num, info in SENSORS.items():
         assert info["type"] in valid_types, (
             f"SENSORS[{num}] has unknown type {info['type']!r}"
