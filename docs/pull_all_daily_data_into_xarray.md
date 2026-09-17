@@ -1,5 +1,21 @@
 Some example code to pull all daily data into xarray format......
 
+Both variables stay in **centimetres**, which is what the CSVs hold and what
+DESIGN.md §3.5 makes canonical for `swe` and `snwd`. (An earlier version of
+this snippet converted SWE to millimetres, which disagreed with every other
+consumer of the archive.)
+
+`easysnowdata.stations.archive.load()` does all of the below and rather more —
+station metadata as coordinates, water-year coordinates, a time window applied
+before the grid is built, and a per-station-CSV route for small requests:
+
+```python
+import easysnowdata as esd
+
+ds = esd.stations.archive.load(time="2023-10/2024-09")   # (station, time), cm
+```
+
+
 ```python
 import requests, tarfile, numpy as np, pandas as pd, xarray as xr, geopandas as gpd
 from pathlib import Path
@@ -32,7 +48,7 @@ swe = np.full((len(time), len(sids)), np.nan, dtype='float32')
 snd = np.full_like(swe, np.nan)
 for j, sid in enumerate(frames):
     pos = (frames[sid].index - tmin).days.values
-    swe[pos, j] = frames[sid]['wteq_cm'].values * 10.0   # cm -> mm
+    swe[pos, j] = frames[sid]['wteq_cm'].values          # stays cm
     snd[pos, j] = frames[sid]['snwd_cm'].values          # stays cm
 
 meta = inv.reindex(sids)
