@@ -738,7 +738,7 @@ select:focus{outline:none;border-color:#4af}
       <div class="ctl-group">
         <span class="ctl-label">Basemap:</span>
         <select id="sel-basemap">
-          <option value="cartodb">CartoDB Light</option>
+          <option value="esri_light">Esri Light Gray</option>
           <option value="esri_sat">Esri WorldImagery</option>
           <option value="esri_topo">Esri Topo</option>
         </select>
@@ -817,7 +817,7 @@ const st = {
   ref: "por",
   wy: MAP_META.current_wy,
   dowy: MAP_META.today_dowy,
-  basemap: "cartodb",
+  basemap: "esri_light",
   selectedCode: null,
   chartVar: "WTEQ",
   visibleNetworks: new Set(MAP_META.available_networks),
@@ -1062,25 +1062,71 @@ function updateSliderTrackColor() {
 }
 
 // ─── Map setup ────────────────────────────────────────────────────────────────
+// The light basemap used to be CARTO Positron. CARTO now requires an API key
+// for its basemap tiles and stamps "API KEY REQUIRED" across any tile fetched
+// without one, so the light option is Esri's key-free canvas instead: a grey
+// base with its labels as a separate layer, grouped so the switcher below can
+// add and remove the pair as a single basemap.
+//
+// That canvas is only tiled to z16; past it Esri serves a grey "Map data not
+// yet available" tile, so maxNativeZoom pins the request at 16 and lets
+// Leaflet upscale the rest of the way.
+const ESRI_CANVAS = "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas";
+// The canvas is drawn from OpenStreetMap among other sources, so it carries
+// Esri's full copyright line rather than Esri alone.
+const ESRI_CANVAS_ATTR =
+  "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, " +
+  "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
+  "and the GIS user community";
+// Both taken from the copyrightText each MapServer publishes for itself; topo
+// is OpenStreetMap-derived too and had been crediting only Esri.
+const ESRI_IMAGERY_ATTR =
+  "Tiles &copy; Esri &mdash; Source: Esri, Vantor, Earthstar Geographics, " +
+  "and the GIS User Community";
+const ESRI_TOPO_ATTR =
+  "Tiles &copy; Esri &mdash; Esri, HERE, Garmin, Intermap, USGS, NPS, NRCAN, " +
+  "&copy; <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, " +
+  "and the GIS User Community";
 const BASEMAPS = {
-  cartodb: L.tileLayer(
-    "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
-    {attribution:"&copy; OpenStreetMap contributors &copy; CARTO",maxZoom:19,subdomains:"abcd"}
-  ),
+  esri_light: L.layerGroup([
+    L.tileLayer(
+      `${ESRI_CANVAS}/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}`,
+      {attribution:ESRI_CANVAS_ATTR,maxZoom:19,maxNativeZoom:16}
+    ),
+    L.tileLayer(
+      `${ESRI_CANVAS}/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}`,
+      {attribution:ESRI_CANVAS_ATTR,maxZoom:19,maxNativeZoom:16}
+    ),
+  ]),
   esri_sat: L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    {attribution:"&copy; Esri",maxZoom:19}
+    {attribution:ESRI_IMAGERY_ATTR,maxZoom:19}
   ),
   esri_topo: L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}",
-    {attribution:"&copy; Esri",maxZoom:19}
+    {attribution:ESRI_TOPO_ATTR,maxZoom:19}
   ),
 };
 
+// zoomSnap is a quarter level rather than a whole one, and one mouse notch
+// moves one level rather than the two Leaflet gives by default — the wheel had
+// been jumping the map two zoom levels at a time. A quarter, not zero: these
+// basemaps are raster, so any fractional zoom leaves the tiles scaled, and
+// quarter steps keep that softness slight while still feeling continuous.
+//
+// The bounds are stated on the map, not left to be inferred from whichever
+// layers happen to be attached: the switcher swaps basemaps at runtime, and a
+// map with no explicit maxZoom reports Infinity whenever nothing attached
+// declares one.
 const map = L.map("map", {
   center: [43, -112], zoom: 5,
-  layers: [BASEMAPS.cartodb],
+  layers: [BASEMAPS.esri_light],
   zoomControl: true,
+  minZoom: 2,
+  maxZoom: 19,
+  zoomSnap: 0.25,
+  zoomDelta: 0.5,
+  wheelPxPerZoomLevel: 120,
 });
 
 const markerLayer = L.layerGroup().addTo(map);
