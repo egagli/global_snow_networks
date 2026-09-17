@@ -33,7 +33,9 @@ from clients.yukon.yukon_client import _resolve_variables as yukon_resolve
 
 def test_awdb_resolves_types_and_codes():
     assert _resolve_variables_to_awdb(["swe"]) == ["WTEQ"]
-    assert _resolve_variables_to_awdb(["temp"]) == ["TOBS", "TMAX", "TMIN"]
+    # TAVG leads: the daily mean wins over the instantaneous reading when a
+    # consumer flattens both into one `temp` series.
+    assert _resolve_variables_to_awdb(["temp"]) == ["TAVG", "TOBS", "TMAX", "TMIN"]
     assert _resolve_variables_to_awdb(None)  # all variables
 
 
