@@ -40,22 +40,28 @@ from typing import Any
 
 import requests
 
-from clients.awdb import AWDBClient
-from clients.awdb.awdb_client import (
+from easysnowdata.stations.clients.awdb import AWDBClient
+from easysnowdata.stations.clients.awdb.awdb_client import (
     VARIABLES as AWDB_VARIABLES,
     _AWDB_DURATION_TO_INTERVAL,
 )
-from clients.cdec import CDECClient
-from clients.cdec.cdec_client import SENSORS as CDEC_SENSORS
-from clients.databc import DataBCClient
-from clients.databc.databc_client import VARIABLES as DATABC_VARIABLES
-from clients.nve import NVEClient
-from clients.nve.nve_client import (
+from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.cdec.cdec_client import (
+    SENSORS as CDEC_SENSORS,
+)
+from easysnowdata.stations.clients.databc import DataBCClient
+from easysnowdata.stations.clients.databc.databc_client import (
+    VARIABLES as DATABC_VARIABLES,
+)
+from easysnowdata.stations.clients.nve import NVEClient
+from easysnowdata.stations.clients.nve.nve_client import (
     VARIABLES as NVE_VARIABLES,
     _PARAM_TO_VAR as _NVE_PARAM_TO_VAR,
 )
-from clients.yukon import YukonClient
-from clients.yukon.yukon_client import VARIABLES as YUKON_VARIABLES
+from easysnowdata.stations.clients.yukon import YukonClient
+from easysnowdata.stations.clients.yukon.yukon_client import (
+    VARIABLES as YUKON_VARIABLES,
+)
 
 logging.basicConfig(
     level=logging.INFO,
