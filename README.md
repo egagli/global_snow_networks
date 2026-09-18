@@ -60,9 +60,9 @@ global_snow_networks/
 │   ├── databc/                            #   BC Data Catalogue
 │   ├── nve/                               #   NVE HydAPI (Norway)
 │   └── yukon/                             #   Yukon AquaCache
-│       └── *_stations.geojson             #   Per-client full inventories (generated)
 │
 ├── data/
+│   ├── inventories/*_stations.geojson     # Per-client full inventories (generated)
 │   ├── stations/*.csv                     # One CSV per daily-or-better station
 │   └── all_station_csvs.tar.xz            # Bulk archive of all station CSVs
 │
@@ -111,7 +111,7 @@ The pipeline is split into explicit stages:
 
 ```bash
 # Stage 1: Build station GeoJSON inventories for all clients
-#   Writes per-client GeoJSONs (clients/*/..._stations.geojson)
+#   Writes per-client GeoJSONs (data/inventories/*_stations.geojson)
 #   and the combined all_snow_stations.geojson
 pixi run fetch-stations
 
@@ -310,7 +310,7 @@ internally to borrow operators from native twins.)
 
 #### Per-client GeoJSONs
 
-The per-client GeoJSONs in `clients/*/` carry all available source
+The per-client GeoJSONs in `data/inventories/` carry all available source
 metadata and serve as the complete reference for each data source,
 including sites the combined schema flattens.
 

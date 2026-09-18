@@ -7,9 +7,9 @@ Build station GeoJSON inventories from all configured clients
 
 Two kinds of output per run:
 
-1. **Per-client GeoJSONs** (one per client, written to the client
-   folder) — ALL stations from that source, including periodic snow
-   courses, with all available metadata.
+1. **Per-client GeoJSONs** (``data/inventories/<name>_stations.geojson``,
+   one per client) — ALL stations from that source, including periodic
+   snow courses, with all available metadata.
 
 2. **``all_snow_stations.geojson``** (repo root) — the combined
    inventory of every station from every client, on the universal
@@ -74,15 +74,15 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 
 # Output paths
 ALL_STATIONS_OUT = REPO_ROOT / "all_snow_stations.geojson"
-AWDB_GEOJSON_OUT = REPO_ROOT / "clients" / "awdb" / "awdb_stations.geojson"
-CDEC_GEOJSON_OUT = REPO_ROOT / "clients" / "cdec" / "cdec_stations.geojson"
-DATABC_GEOJSON_OUT = (
-    REPO_ROOT / "clients" / "databc" / "databc_stations.geojson"
-)
-NVE_GEOJSON_OUT = REPO_ROOT / "clients" / "nve" / "nve_stations.geojson"
-YUKON_GEOJSON_OUT = (
-    REPO_ROOT / "clients" / "yukon" / "yukon_stations.geojson"
-)
+# Per-client inventories (DESIGN.md §6.2). They used to sit in the client
+# folders; the clients moved to easysnowdata and these did not, because they
+# are this repo's layer-2 artefacts rather than part of the access layer.
+INVENTORY_DIR = REPO_ROOT / "data" / "inventories"
+AWDB_GEOJSON_OUT = INVENTORY_DIR / "awdb_stations.geojson"
+CDEC_GEOJSON_OUT = INVENTORY_DIR / "cdec_stations.geojson"
+DATABC_GEOJSON_OUT = INVENTORY_DIR / "databc_stations.geojson"
+NVE_GEOJSON_OUT = INVENTORY_DIR / "nve_stations.geojson"
+YUKON_GEOJSON_OUT = INVENTORY_DIR / "yukon_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -910,7 +910,7 @@ def run_awdb_workflow(
     ``all_features``   — ALL AWDB stations with any WTEQ/SNWD element at
                          ANY duration — including periodic snow courses
                          (SNOW) and aerial markers (MPRC) — for
-                         clients/awdb/awdb_stations.geojson.
+                         data/inventories/awdb_stations.geojson.
     ``daily_features`` — the subset with daily-or-better WTEQ/SNWD
                          (for all_snow_stations.geojson).
     """
@@ -1270,7 +1270,7 @@ def run_nve_workflow() -> tuple[list[dict], list[dict]]:
     Fetch NVE snow stations and return (all_features, daily_features).
 
     ``all_features``   — all NVE stations with snow parameters (SWE and/or
-                         snow depth) for clients/nve/nve_stations.geojson.
+                         snow depth) for data/inventories/nve_stations.geojson.
     ``daily_features`` — filtered to stations with daily SWE or depth.
     """
     client = NVEClient()

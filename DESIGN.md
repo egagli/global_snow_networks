@@ -241,7 +241,7 @@ doesn't say. `interval` uses the §3.3 enum.
 Client-specific extras are allowed but namespaced by convention
 (documented per client in `README.md`).
 
-### 6.2 Per-client GeoJSONs (`clients/*/<name>_stations.geojson`)
+### 6.2 Per-client GeoJSONs (`data/inventories/<name>_stations.geojson`)
 
 The complete, unfiltered station list from each source — including periodic
 sites — with all available source metadata. **Never pre-filtered to daily**
