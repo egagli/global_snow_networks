@@ -51,25 +51,31 @@ everything. `refresh_nve` caught only `NVEError`, so an unset key would have
 aborted the run; it resolves the credential up front now and reports a missing
 key as one counted, skipped network.
 
-## Left to do
+## Done as of 2026-09-18
 
-**Move the dependency to conda-forge.** easysnowdata 0.2.0 was released on
-2026-09-17, so `pixi.toml` pins a version rather than a commit now — but from
-PyPI:
+Nothing is outstanding. easysnowdata 0.2.0 is released on PyPI and
+conda-forge, and `pixi.toml` depends on it the ordinary way:
 
 ```toml
-[pypi-dependencies]
+[dependencies]
 easysnowdata = ">=0.2"
 ```
 
-conda-forge is still at 0.0.24, and its recipe needed repairing rather than
-bumping: `host:` still named setuptools long after the build backend became
-hatchling, which fails the build outright under `--no-build-isolation`, and
-the run list had drifted by eighteen packages.
-[conda-forge/easysnowdata-feedstock#10](https://github.com/conda-forge/easysnowdata-feedstock/pull/10)
-fixes it. When that lands, delete this table and put the same line under
-`[dependencies]`; `pixi lock` then moves ~38 PyPI packages per platform to
-conda-forge.
+Two things about that last step, because both cost time and neither is
+obvious:
+
+- **`pixi lock` wrote a lock with `easysnowdata` simply absent, and exited 0.**
+  Twice — first while conda-forge's channel index was still serving 0.0.24
+  (`api.anaconda.org` reports a new version as soon as the artifact uploads,
+  tens of minutes before `repodata.json` serves it), and again from stale
+  cached repodata. Only `pixi install` complained. Check the lock's contents
+  rather than the exit code.
+- **Incrementally updating the old lock produced a broken environment**:
+  `libgdal.so.39: undefined symbol: sqlite3_error_offset`, because the solver
+  kept old pins and landed on an incompatible libgdal/libsqlite pair. The same
+  dependency set solved cleanly in a fresh project, so the fix was to delete
+  `pixi.lock` and re-solve from scratch. That is why the lock changed
+  wholesale in the same commit rather than gaining one package.
 
 ## Open questions, not blocking
 
