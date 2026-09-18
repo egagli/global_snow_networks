@@ -339,8 +339,10 @@ whole feature off without touching the template.
 - A **contract test** validates the committed inventory: schema keys,
   interval vocabulary ∈ enum, every `daily_or_better` station has a CSV or
   an annotated reason, `is_active` sanity.
-- Live-API tests are marked (`pytest.mark.live`) and run on schedule, not on
-  every push.
+- **No live tests run here any more.** They moved to easysnowdata with the
+  clients, which is where the network calls are. Everything left is offline
+  and runs on every push; the `live` marker stays registered in `pytest.ini`
+  so a future live test here is still excluded from `test-unit`.
 
 ## 10. Documentation policy
 

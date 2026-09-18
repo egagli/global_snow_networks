@@ -1,7 +1,7 @@
 [workspace]
 name = "global-snow-networks"
 version = "0.1.0"
-description = "Archive and access tools for global snow point observations (SWE, snow depth) from AWDB, CDEC, DataBC, NVE, and Yukon AquaCache."
+description = "Documented inventory, daily archive and live map of global snow point observations (SWE, snow depth) from AWDB, CDEC, DataBC, NVE, and Yukon AquaCache. The network clients live in easysnowdata."
 authors = ["Eric Gagliano <egagli@uw.edu>"]
 channels = ["conda-forge"]
 platforms = ["linux-64", "osx-arm64", "osx-64", "win-64"]

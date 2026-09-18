@@ -2,8 +2,8 @@ cff-version: 1.2.0
 message: >-
   If you use this software or the station archive it produces, please
   cite it as below, along with the upstream data providers listed in
-  README.md §10.
-title: "global_snow_networks: archive and access tools for global snow point observations"
+  README.md §11.
+title: "global_snow_networks: a documented inventory and daily archive of global snow point observations"
 type: software
 authors:
   - family-names: Gagliano
