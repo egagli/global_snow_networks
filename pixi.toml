@@ -50,6 +50,8 @@ fetch-data-yukon = "python -m scripts.get_all_stations_data --network yukon"
 finalize-data    = "python -m scripts.get_all_stations_data --finalize-only"
 live-map         = "python -m scripts.generate_live_map"
 update-all       = { depends-on = ["fetch-stations", "fetch-data", "live-map"] }
+# Everything left here is offline; the live client suites went to
+# easysnowdata with the clients. `test-unit` keeps the marker filter so a
+# future live test here is still excluded from the fast run.
 test             = "pytest tests/ -v"
 test-unit        = "pytest tests/ -v -m 'not live'"
-test-live        = "pytest tests/ -v -m live"

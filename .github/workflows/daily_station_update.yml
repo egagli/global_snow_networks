@@ -128,10 +128,8 @@ jobs:
   run-tests:
     needs: finalize
     if: needs.finalize.result == 'success' || needs.finalize.result == 'skipped'
+    # ci.yml needs no secrets: every test left in this repo is offline.
     uses: ./.github/workflows/ci.yml
-    # ci.yml references secrets.NVE_API_KEY; a called workflow receives no
-    # secrets unless they are passed explicitly.
-    secrets: inherit
 
   build-and-deploy:
     needs: finalize
