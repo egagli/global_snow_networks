@@ -37,6 +37,12 @@ Python, R, GIS tools, and command-line workflows.
 
 ## 1. Project Structure
 
+The data-access layer is not here: the five network clients and the
+water-year helpers live in
+[easysnowdata](https://github.com/egagli/easysnowdata) (`easysnowdata.stations.clients`,
+`easysnowdata.processing.wateryear`) and this repo imports them.  DESIGN.md §3
+is still their contract.  See [docs/EASYSNOWDATA_MIGRATION.md](docs/EASYSNOWDATA_MIGRATION.md).
+
 ```text
 global_snow_networks/
 ├── DESIGN.md                              # Normative contract (schema, units, semantics)
@@ -46,28 +52,20 @@ global_snow_networks/
 ├── all_snow_stations.geojson              # Combined inventory of ALL stations
 ├── docs/
 │   ├── SOURCES.md                         # Authoritative per-network references
+│   ├── STORAGE.md                         # How the archive is stored, and a proposal
+│   ├── EASYSNOWDATA_MIGRATION.md          # Where the clients went, and what is left
 │   └── UNIFICATION_PLAN.md                # July 2026 unification plan/status
 ├── scripts/
 │   ├── create_all_stations_geojson.py     # Build station GeoJSONs from all clients
 │   ├── get_all_stations_data.py           # Refresh CSVs + probe verification + archive
 │   └── generate_live_map.py               # Build map HTML + chart JSON payloads
 │
-├── clients/                               # Pure data-access layer (DESIGN.md §2)
-│   ├── README.md                          # Client API docs
-│   ├── _common.py                         # Shared retry loop, interval enum, helpers
-│   ├── awdb/                              #   USDA NRCS AWDB REST API
-│   ├── cdec/                              #   CDEC (California)
-│   ├── databc/                            #   BC Data Catalogue
-│   ├── nve/                               #   NVE HydAPI (Norway)
-│   └── yukon/                             #   Yukon AquaCache
-│       └── *_stations.geojson             #   Per-client full inventories (generated)
-│
 ├── data/
+│   ├── inventories/*_stations.geojson     # Per-client full inventories (generated)
 │   ├── stations/*.csv                     # One CSV per daily-or-better station
 │   └── all_station_csvs.tar.xz            # Bulk archive of all station CSVs
 │
 ├── tests/                                 # Offline unit + contract tests; live suites marked
-├── utils/                                 # Water-year / day-of-water-year helpers
 ├── notebooks/                             # Exploration notebooks
 └── .github/workflows/
      ├── daily_station_update.yml           # Nightly refresh pipeline
@@ -100,8 +98,9 @@ export NVE_API_KEY="your-key"
 ```
 
 In GitHub Actions the key is provided via the `NVE_API_KEY` repository
-secret.  Without a key the NVE client logs a warning and all NVE requests
-fail with HTTP 401 (other clients are unaffected).
+secret.  Without a key the pipeline skips NVE with one counted message and
+carries on: easysnowdata's `nve` auth provider raises before any request goes
+out, so there is no round of HTTP 401s (other clients are unaffected).
 
 ---
 
@@ -111,7 +110,7 @@ The pipeline is split into explicit stages:
 
 ```bash
 # Stage 1: Build station GeoJSON inventories for all clients
-#   Writes per-client GeoJSONs (clients/*/..._stations.geojson)
+#   Writes per-client GeoJSONs (data/inventories/*_stations.geojson)
 #   and the combined all_snow_stations.geojson
 pixi run fetch-stations
 
@@ -310,7 +309,7 @@ internally to borrow operators from native twins.)
 
 #### Per-client GeoJSONs
 
-The per-client GeoJSONs in `clients/*/` carry all available source
+The per-client GeoJSONs in `data/inventories/` carry all available source
 metadata and serve as the complete reference for each data source,
 including sites the combined schema flattens.
 
@@ -745,15 +744,25 @@ series if you want them.
 
 ### 7.1 Client architecture
 
-Each data source has a dedicated client module under `clients/`:
+Each data source has a dedicated client module.  They live in
+[easysnowdata](https://github.com/egagli/easysnowdata) as of September 2026
+(DESIGN.md §2); this repo imports them, and DESIGN.md §3 is still their
+contract:
 
+```python
+from easysnowdata.stations.clients.awdb   import AWDBClient
+from easysnowdata.stations.clients.cdec   import CDECClient
+from easysnowdata.stations.clients.databc import DataBCClient
+from easysnowdata.stations.clients.nve    import NVEClient
+from easysnowdata.stations.clients.yukon  import YukonClient
 ```
-clients/awdb/awdb_client.py      → AWDBClient
-clients/cdec/cdec_client.py      → CDECClient
-clients/databc/databc_client.py  → DataBCClient
-clients/nve/nve_client.py        → NVEClient
-clients/yukon/yukon_client.py    → YukonClient
-```
+
+Their API reference is
+[`easysnowdata/stations/clients/README.md`](https://github.com/egagli/easysnowdata/blob/main/easysnowdata/stations/clients/README.md)
+and their tests are that repo's `tests/stations/`.  easysnowdata also wraps
+them in a higher-level API (`easysnowdata.stations.inventory()` / `load()`)
+that returns GeoDataFrames and xarray Datasets; this pipeline uses the raw
+dict-record layer underneath.
 
 **Invariants across all clients** (normative version in
 [DESIGN.md](DESIGN.md) §3):
@@ -783,8 +792,8 @@ Each client module exposes:
 These are importable for documentation and downstream use:
 
 ```python
-from clients.cdec import CDECClient
-from clients.cdec.cdec_client import SENSORS, DATA_FLAGS
+from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.cdec.cdec_client import SENSORS, DATA_FLAGS
 
 print(SENSORS[82])
 # {'name': 'Snow Water Content (Adjusted)', 'short_name': 'SNO ADJ', ...}
@@ -882,8 +891,8 @@ ls /tmp/stations | head
 ### 8.5 Fetch CDEC station data with flags
 
 ```python
-from clients.cdec import CDECClient
-from clients.cdec.cdec_client import SENSORS, DATA_FLAGS
+from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.cdec.cdec_client import SENSORS, DATA_FLAGS
 
 client = CDECClient()
 
@@ -908,7 +917,7 @@ records = client.get_data(
 ### 8.6 Fetch BC snow survey data
 
 ```python
-from clients.databc import DataBCClient
+from easysnowdata.stations.clients.databc import DataBCClient
 
 client = DataBCClient()
 
@@ -937,10 +946,10 @@ print(len(surveys), "survey records")
 ### 8.7 Fetch NVE (Norway) snow data
 
 ```python
-from clients.nve import NVEClient
-from clients.nve.nve_client import VARIABLES, DATA_FLAGS
+from easysnowdata.stations.clients.nve import NVEClient
+from easysnowdata.stations.clients.nve.nve_client import VARIABLES, DATA_FLAGS
 
-client = NVEClient()  # reads NVE_API_KEY from the environment
+client = NVEClient()  # key resolved by easysnowdata's `nve` auth provider
 
 # All NVE stations with snow parameters (daily_parameters shows which
 # have daily series)
@@ -963,7 +972,7 @@ records = client.get_data(
 ### 8.8 Fetch Yukon snow data
 
 ```python
-from clients.yukon import YukonClient
+from easysnowdata.stations.clients.yukon import YukonClient
 
 client = YukonClient()   # no API key needed
 

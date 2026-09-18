@@ -53,11 +53,13 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from clients.awdb import AWDBClient, AWDBError
-from clients.cdec import CDECClient, CDECError
-from clients.databc import DataBCClient, DataBCError
-from clients.nve import NVEClient, NVEError
-from clients.yukon import YukonClient, YukonError
+from easysnowdata import auth
+from easysnowdata.auth import CredentialError
+from easysnowdata.stations.clients.awdb import AWDBClient, AWDBError
+from easysnowdata.stations.clients.cdec import CDECClient, CDECError
+from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
+from easysnowdata.stations.clients.nve import NVEClient, NVEError
+from easysnowdata.stations.clients.yukon import YukonClient, YukonError
 
 # INFO so client-level diagnostics (e.g. NVE series-index coverage) are
 # visible in CI logs.
@@ -561,6 +563,17 @@ def refresh_nve(
     NVE fetches per station+parameter; all IDs are passed in one call.
     """
     if not stations:
+        return
+
+    # The NVE client reads its key through easysnowdata's `nve` auth provider
+    # now, which raises CredentialError rather than letting HydAPI answer 401
+    # to every request. Resolve it once here: a missing key is one counted,
+    # skipped network, not a traceback per batch.
+    try:
+        auth.ensure("nve")
+    except CredentialError as exc:
+        stats.failed_batches += 1
+        print(f"  [NVE] SKIPPED {len(stations)} stations — {exc}")
         return
 
     client = NVEClient()
