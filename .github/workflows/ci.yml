@@ -14,15 +14,10 @@ jobs:
         with:
           environments: dev
 
-      # Pushes run only the fast offline suite; the full live-API suite
-      # runs when invoked from the daily pipeline (workflow_call), which
-      # is when fresh upstream data is actually worth validating.
-      - name: Run offline unit tests
-        if: github.event_name == 'push'
-        run: pixi run -e dev test-unit
-
-      - name: Run full test suite (offline + live API)
-        if: github.event_name != 'push'
-        env:
-          NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
+      # One suite on both triggers. The live client tests moved to
+      # easysnowdata with the clients, so everything left here is offline
+      # and takes a second — including the inventory contract test, which
+      # is the thing worth running after the daily refresh has committed
+      # a new all_snow_stations.geojson.
+      - name: Run tests
         run: pixi run -e dev test

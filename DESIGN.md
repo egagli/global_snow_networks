@@ -1,9 +1,10 @@
 # Design
 
 This document is the **normative contract** for `global_snow_networks`. Every
-other document — `README.md`, `clients/README.md`, the new-client issue
-template — defers to it; where they disagree, this file wins and the others
-are bugs. Migration status toward this contract is tracked in
+other document — `README.md`, the client reference in easysnowdata, the
+new-client issue template — defers to it; where they disagree, this file wins
+and the others are bugs. That includes the clients themselves, which live in
+easysnowdata now (§2): moving the code did not move the contract. Migration status toward this contract is tracked in
 [docs/UNIFICATION_PLAN.md](docs/UNIFICATION_PLAN.md).
 
 ## 1. Purpose and scope
@@ -17,12 +18,14 @@ charts* are restricted to stations with daily-or-better data (§4).
 
 ## 2. The three layers
 
-1. **Clients** (`clients/`) — pure data access. A client can retrieve **any
-   met variable the source serves, at any interval the source serves**
-   (sub-hourly included where available). Clients know nothing about
-   GeoJSONs, CSVs, or the map. This layer will eventually migrate into
-   [easysnowdata](https://github.com/egagli/easysnowdata) as-is (dict-record
-   API); until then, no new coupling to the rest of this repo.
+1. **Clients** (`easysnowdata.stations.clients`) — pure data access. A
+   client can retrieve **any met variable the source serves, at any interval
+   the source serves** (sub-hourly included where available). Clients know
+   nothing about GeoJSONs, CSVs, or the map. This layer
+   [moved into easysnowdata](https://github.com/egagli/easysnowdata) in
+   September 2026 with its history and its dict-record API; this repo imports
+   it. §3 is still its normative contract, and its tests are that repo's
+   `tests/stations/`. **Fix a client there, not here.**
 2. **Archive pipeline** (`scripts/create_all_stations_geojson.py`,
    `scripts/get_all_stations_data.py`) — builds the station inventory and
    pre-downloads daily-or-better SWE/snow-depth into per-station CSVs.
@@ -35,11 +38,11 @@ charts* are restricted to stations with daily-or-better data (§4).
 
 ### 3.1 Module layout
 
-Each source gets `clients/<name>/` containing `__init__.py` and
-`<name>_client.py` defining `<Name>Client` and `<Name>Error(Exception)`.
-Shared helpers (retry loop, date/list coercion, bbox filtering, sentinel
-policy, interval enum, unit conversions) live in `clients/_common.py` — never
-re-implemented per client.
+Each source gets `easysnowdata/stations/clients/<name>/` containing
+`__init__.py` and `<name>_client.py` defining `<Name>Client` and
+`<Name>Error(Exception)`. Shared helpers (retry loop, date/list coercion,
+bbox filtering, sentinel policy, interval enum, unit conversions) live in
+that package's `_common.py` — never re-implemented per client.
 
 ### 3.2 Variable registry
 
@@ -72,7 +75,7 @@ with a comment if the source has no flags).
 
 ### 3.3 Interval enum
 
-One shared vocabulary, defined once in `clients/_common.py`:
+One shared vocabulary, defined once in `easysnowdata.stations.clients._common`:
 
 `periodic`, `monthly`, `semi_monthly`, `daily`, `sub_daily`, `hourly`,
 `sub_hourly`, `instantaneous`, `annual`.
@@ -330,7 +333,9 @@ whole feature off without touching the template.
 ## 9. Testing policy
 
 - Offline unit tests cover pipeline logic (feature builders, probe,
-  resampler, duplicate matcher, chart stats) and client parsing helpers.
+  resampler, duplicate matcher, chart stats). Client parsing helpers are
+  covered by easysnowdata's `tests/stations/`, which is where the clients
+  are.
 - A **contract test** validates the committed inventory: schema keys,
   interval vocabulary ∈ enum, every `daily_or_better` station has a CSV or
   an annotated reason, `is_active` sanity.
@@ -340,8 +345,9 @@ whole feature off without touching the template.
 ## 10. Documentation policy
 
 `DESIGN.md` (this file) owns contracts. `README.md` documents usage, the
-data model as shipped, and per-network detail. `clients/README.md` documents
-each client's API surface and quirks. The new-client issue template is a
+data model as shipped, and per-network detail. The client reference — each
+client's API surface and quirks — moved with the code to
+[`easysnowdata/stations/clients/README.md`](https://github.com/egagli/easysnowdata/blob/main/easysnowdata/stations/clients/README.md). The new-client issue template is a
 checklist that references this file rather than restating it. When code and
 docs disagree, fix whichever is wrong *and* add the missing test or lint
 that would have caught it.

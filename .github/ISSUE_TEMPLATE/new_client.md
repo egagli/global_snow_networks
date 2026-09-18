@@ -35,6 +35,13 @@ The **normative contract** for everything below is
 schema (§6). This checklist sequences the work; it does not restate the
 contract, and where the two disagree, DESIGN.md wins.
 
+**Two repositories.** Step 2 (the client itself) happens in
+[easysnowdata](https://github.com/egagli/easysnowdata), which has owned the
+access layer since September 2026; steps 3-5 (inventory, refresh, map) happen
+here. Open the easysnowdata pull request first and land it, then bump the pin
+in `pixi.toml` and wire the network in here. The contract is still this
+repo's DESIGN.md either way.
+
 Work through the steps **in order**. Mark each task complete before moving to
 the next. Run all test code against the **live API** — do not mock responses.
 The network overview above is a rough approximation and could be wrong or
@@ -66,16 +73,19 @@ exist, trust your own findings and implement it.
 
 ### 2. Create the client module (DESIGN.md §3)
 
-- [ ] Create `clients/<network>/` with `__init__.py` and
-  `<network>_client.py` defining `<Network>Client` and
-  `<Network>Error(Exception)`; export both from `clients/__init__.py`.
+*In easysnowdata, not here.*
+
+- [ ] Create `easysnowdata/stations/clients/<network>/` with `__init__.py`
+  and `<network>_client.py` defining `<Network>Client` and
+  `<Network>Error(Exception)`; export both from that package's
+  `__init__.py`.
 - [ ] Define the module-level `VARIABLES` registry — one entry per native
   variable with `type` / `units` / `output_units` / `description` /
   `notes` / `source` (§3.2 has the type vocabulary) — and `DATA_FLAGS`
   (an empty dict with a comment if the source has no flags).
-- [ ] Use the shared helpers in `clients/_common.py` (retry loop, interval
-  enum, list/date coercion, missing-value sentinels) — never re-implement
-  them per client.
+- [ ] Use the shared helpers in that package's `_common.py` (retry loop,
+  interval enum, list/date coercion, missing-value sentinels) — never
+  re-implement them per client.
 - [ ] Implement `get_all_stations(active_only=False, bbox=None)` per §3.4.
 - [ ] Implement `get_data(...)` per §3.4: flat records, fully metric output
   units (§3.5 table), `datetime` on sub-daily records, `variables=None`
@@ -86,6 +96,9 @@ exist, trust your own findings and implement it.
 - [ ] Verify against the live API: station count + a sample record from
   `get_all_stations()`; 1 year of daily SWE + snow depth for 3 stations
   from `get_data()`.
+- [ ] If the source needs a credential, add an `easysnowdata.auth` provider
+  for it rather than reading the environment in the client (NVE is the
+  worked example).
 
 ### 3. Wire into the inventory (`scripts/create_all_stations_geojson.py`)
 
@@ -99,8 +112,8 @@ exist, trust your own findings and implement it.
 - [ ] Add `run_<network>_workflow()` returning
   `(all_features, daily_features)` and wire it into `main()` with the
   same `try/except` + `--skip-<network>` pattern as existing clients.
-- [ ] Add the per-client GeoJSON path to the staging step in
-  `.github/workflows/daily_station_update.yml`.
+- [ ] The per-client GeoJSON lands in `data/inventories/`, which the daily
+  workflow already stages as a directory — nothing to add there.
 - [ ] Run `pixi run fetch-stations` locally: the per-client GeoJSON is
   valid and the new stations appear in `all_snow_stations.geojson` with
   the full universal schema.
@@ -121,12 +134,14 @@ exist, trust your own findings and implement it.
   `scripts/generate_live_map.py`; run `pixi run live-map` and confirm the
   new stations render with correct popups (the legend builds itself from
   the inventory).
-- [ ] Document the client in `clients/README.md` (API surface, quirks,
-  units) and add the network to the root `README.md` Networks section and
-  comparison table.
-- [ ] Add offline parsing tests plus live-marked tests
-  (`pytest.mark.live`); run `pixi run -e dev test-unit`, including the
-  inventory contract test.
+- [ ] Document the client in easysnowdata's
+  `easysnowdata/stations/clients/README.md` (API surface, quirks, units) and
+  add the network to this repo's `README.md` Networks section and comparison
+  table.
+- [ ] Add the client's offline parsing tests and live-marked tests
+  (`pytest.mark.live`) to easysnowdata's `tests/stations/`, and the
+  pipeline-side tests here; run `pixi run -e dev test-unit` in both,
+  including the inventory contract test.
 
 ---
 
