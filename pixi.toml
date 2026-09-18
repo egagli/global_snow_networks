@@ -22,12 +22,12 @@ beautifulsoup4 = ">=4.14.3,<5"
 
 # The five network clients and the water-year helpers live in easysnowdata now
 # (its REVAMP_PLAN §9.2 option B, and docs/EASYSNOWDATA_MIGRATION.md here).
-# Pinned to a commit rather than a version because the release that first
-# contains `easysnowdata.stations` is not out yet: conda-forge is at 0.0.24 and
-# PyPI at 0.0.25. When 0.2 ships, this whole table becomes one line in
-# [dependencies]: `easysnowdata = ">=0.2"`.
+# Still a pypi-dependency rather than a conda one: 0.2.0 is on PyPI, and
+# conda-forge/easysnowdata-feedstock#10 is the recipe that brings it to
+# conda-forge. Once that lands this table goes away and the line moves up
+# into [dependencies] unchanged.
 [pypi-dependencies]
-easysnowdata = { git = "https://github.com/egagli/easysnowdata.git", rev = "480e638d6e3eb51712c8f3530a6a3ed7184207ed" }
+easysnowdata = ">=0.2"
 
 [feature.dev.dependencies]
 jupyter = "*"
