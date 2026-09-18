@@ -1,8 +1,15 @@
 # global_snow_networks
 
-A Python toolkit for documenting and accessing snow point observations
-(SWE and snow depth) from networks around the world — automated pillows,
-manual snow courses, aerial markers, and mirrored climate stations.
+A documented inventory and daily archive of snow point observations (SWE and
+snow depth) from networks around the world — automated pillows, manual snow
+courses, aerial markers, and mirrored climate stations.
+
+**The data-access layer is not here.** The five network clients live in
+[easysnowdata](https://github.com/egagli/easysnowdata) as
+`easysnowdata.stations.clients`, and this repo imports them to build what it
+publishes. DESIGN.md §3 is still their contract. If you want to *query* a
+network, reach for easysnowdata; if you want the inventory, the daily CSVs or
+the map, you are in the right place.
 
 The normative design contract lives in [DESIGN.md](DESIGN.md); the
 storage strategy is CSV-first:
@@ -37,11 +44,9 @@ Python, R, GIS tools, and command-line workflows.
 
 ## 1. Project Structure
 
-The data-access layer is not here: the five network clients and the
-water-year helpers live in
-[easysnowdata](https://github.com/egagli/easysnowdata) (`easysnowdata.stations.clients`,
-`easysnowdata.processing.wateryear`) and this repo imports them.  DESIGN.md §3
-is still their contract.  See [docs/EASYSNOWDATA_MIGRATION.md](docs/EASYSNOWDATA_MIGRATION.md).
+No `clients/` or `utils/` below: both moved to easysnowdata
+(`easysnowdata.stations.clients`, `easysnowdata.processing.wateryear`) — see
+[docs/EASYSNOWDATA_MIGRATION.md](docs/EASYSNOWDATA_MIGRATION.md).
 
 ```text
 global_snow_networks/
@@ -53,8 +58,9 @@ global_snow_networks/
 ├── docs/
 │   ├── SOURCES.md                         # Authoritative per-network references
 │   ├── STORAGE.md                         # How the archive is stored, and a proposal
-│   ├── EASYSNOWDATA_MIGRATION.md          # Where the clients went, and what is left
-│   └── UNIFICATION_PLAN.md                # July 2026 unification plan/status
+│   ├── EASYSNOWDATA_MIGRATION.md          # Where the clients went
+│   ├── pull_all_daily_data_into_xarray.md # Reading the whole archive into xarray
+│   └── UNIFICATION_PLAN.md                # July 2026 unification plan (historical)
 ├── scripts/
 │   ├── create_all_stations_geojson.py     # Build station GeoJSONs from all clients
 │   ├── get_all_stations_data.py           # Refresh CSVs + probe verification + archive
@@ -65,11 +71,11 @@ global_snow_networks/
 │   ├── stations/*.csv                     # One CSV per daily-or-better station
 │   └── all_station_csvs.tar.xz            # Bulk archive of all station CSVs
 │
-├── tests/                                 # Offline unit + contract tests; live suites marked
+├── tests/                                 # Offline unit + contract tests (the live ones moved with the clients)
 ├── notebooks/                             # Exploration notebooks
 └── .github/workflows/
      ├── daily_station_update.yml           # Nightly refresh pipeline
-     ├── ci.yml                             # Tests (offline on push, live from pipeline)
+     ├── ci.yml                             # Tests — one offline suite, on push and from the pipeline
      └── deploy-pages.yml                   # GitHub Pages map deployment
 ```
 
@@ -87,6 +93,10 @@ pixi install
 # optional interactive shell
 pixi shell
 ```
+
+That resolves [easysnowdata](https://github.com/egagli/easysnowdata) `>=0.2`
+from conda-forge along with everything else — it is where the network clients
+and the water-year helpers live, so the pipeline does not run without it.
 
 ### NVE API key
 
@@ -1135,9 +1145,12 @@ This repository is the fourth generation of an evolving effort:
    sketching a unified API over ~29 networks; its registry-first design
    and "preserve source metadata, duplicates are intentional" principles
    carried into this repo's `DESIGN.md`.
-4. **global_snow_networks** (this repo) — five fully-implemented
-   clients, the combined probe-verified inventory, the daily CSV
-   archive, and the live map.
+4. **global_snow_networks** (this repo) — the combined probe-verified
+   inventory, the daily CSV archive, and the live map. It began with five
+   fully-implemented clients as well; in September 2026 those moved into
+   [easysnowdata](https://github.com/egagli/easysnowdata) with their history
+   (see [docs/EASYSNOWDATA_MIGRATION.md](docs/EASYSNOWDATA_MIGRATION.md)), so
+   there is one copy of the access layer and this repo consumes it.
 
 ---
 
