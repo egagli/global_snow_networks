@@ -220,7 +220,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -524,7 +524,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -828,7 +828,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -1130,7 +1130,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -1564,7 +1564,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -1930,7 +1930,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -2296,7 +2296,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -2676,7 +2676,7 @@ environments:
       - pypi: https://files.pythonhosted.org/packages/0c/d5/c5db1ea3394c6e1732fb3286b3bd878b59507a8f77d32a2cebda7d7b7cd4/donfig-0.8.1.post1-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/0c/a8/59d73f510540e680c5d6232995e47e39603d262f6ec9b8b8879a9bbe912f/earthaccess-0.19.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/c0/05/e5aa90e41d398505e5a58118591cfbe4f8af824ad7e3b346fb755c2f5c77/earthengine_api-1.7.43-py3-none-any.whl
-      - pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+      - pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/69/43/a0096d96d3271640bbda056b9d22249be141a54509859b99002ee6149a01/gcsfs-2026.6.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/aa/5e/fdd72167b57158d743353f71d453200719744d1e75f18b1c8230508db370/geojson-3.3.0-py3-none-any.whl
       - pypi: https://files.pythonhosted.org/packages/18/55/e545e4b0040cb812f65d2abc545c6420f57b687d2af130a447c86d14d00b/google_api_core-2.38.0-py3-none-any.whl
@@ -4100,9 +4100,10 @@ packages:
   - geopandas ; extra == 'tests'
   - numpy ; extra == 'tests'
   requires_python: '>=3.10'
-- pypi: git+https://github.com/egagli/easysnowdata.git?rev=480e638d6e3eb51712c8f3530a6a3ed7184207ed#480e638d6e3eb51712c8f3530a6a3ed7184207ed
+- pypi: https://files.pythonhosted.org/packages/4e/47/08bcdd103f19069021e0e64bc28cd391421d22f866c3a90a7d21516eeed2/easysnowdata-0.2.0-py3-none-any.whl
   name: easysnowdata
-  version: 0.0.27.dev125+g480e638d6
+  version: 0.2.0
+  sha256: a580565061dad9acd202dec4f15f1b3b720034e7984676dcfc64eaffb69ef334
   requires_dist:
   - beautifulsoup4
   - dask
