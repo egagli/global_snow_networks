@@ -53,26 +53,23 @@ key as one counted, skipped network.
 
 ## Left to do
 
-**Release easysnowdata 0.2 and flip the pin.** `pixi.toml` currently pins a
-commit:
+**Move the dependency to conda-forge.** easysnowdata 0.2.0 was released on
+2026-09-17, so `pixi.toml` pins a version rather than a commit now — but from
+PyPI:
 
 ```toml
 [pypi-dependencies]
-easysnowdata = { git = "https://github.com/egagli/easysnowdata.git", rev = "480e638…" }
-```
-
-because the release that first contains `easysnowdata.stations` is not out —
-conda-forge is at 0.0.24, PyPI at 0.0.25, and the git tree resolves to
-0.0.27.dev125. When 0.2 ships, that table becomes one line under
-`[dependencies]`:
-
-```toml
 easysnowdata = ">=0.2"
 ```
 
-and `pixi lock` moves ~38 PyPI packages per platform back to conda-forge.
-Until then the pin is reproducible but does not track upstream fixes: bump the
-`rev` deliberately.
+conda-forge is still at 0.0.24, and its recipe needed repairing rather than
+bumping: `host:` still named setuptools long after the build backend became
+hatchling, which fails the build outright under `--no-build-isolation`, and
+the run list had drifted by eighteen packages.
+[conda-forge/easysnowdata-feedstock#10](https://github.com/conda-forge/easysnowdata-feedstock/pull/10)
+fixes it. When that lands, delete this table and put the same line under
+`[dependencies]`; `pixi lock` then moves ~38 PyPI packages per platform to
+conda-forge.
 
 ## Open questions, not blocking
 
