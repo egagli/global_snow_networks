@@ -21,7 +21,7 @@ from urllib import request
 
 import numpy as np
 import pandas as pd
-from utils import day_of_water_year, water_year
+from easysnowdata.processing.wateryear import day_of_water_year, water_year
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -163,7 +163,8 @@ def _clean_meta_text(raw) -> str:
     return s
 
 
-# Display order/labels for the shared interval enum (clients/_common.py);
+# Display order/labels for the shared interval enum
+# (easysnowdata.stations.clients._common);
 # unknown values render last under their raw name rather than disappearing.
 _INTERVAL_ORDER = (
     "daily", "sub_daily", "hourly", "sub_hourly", "instantaneous",
