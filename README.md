@@ -792,8 +792,8 @@ Each client module exposes:
 These are importable for documentation and downstream use:
 
 ```python
-from clients.cdec import CDECClient
-from clients.cdec.cdec_client import SENSORS, DATA_FLAGS
+from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.cdec.cdec_client import SENSORS, DATA_FLAGS
 
 print(SENSORS[82])
 # {'name': 'Snow Water Content (Adjusted)', 'short_name': 'SNO ADJ', ...}
@@ -891,8 +891,8 @@ ls /tmp/stations | head
 ### 8.5 Fetch CDEC station data with flags
 
 ```python
-from clients.cdec import CDECClient
-from clients.cdec.cdec_client import SENSORS, DATA_FLAGS
+from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.cdec.cdec_client import SENSORS, DATA_FLAGS
 
 client = CDECClient()
 
@@ -917,7 +917,7 @@ records = client.get_data(
 ### 8.6 Fetch BC snow survey data
 
 ```python
-from clients.databc import DataBCClient
+from easysnowdata.stations.clients.databc import DataBCClient
 
 client = DataBCClient()
 
@@ -946,10 +946,10 @@ print(len(surveys), "survey records")
 ### 8.7 Fetch NVE (Norway) snow data
 
 ```python
-from clients.nve import NVEClient
-from clients.nve.nve_client import VARIABLES, DATA_FLAGS
+from easysnowdata.stations.clients.nve import NVEClient
+from easysnowdata.stations.clients.nve.nve_client import VARIABLES, DATA_FLAGS
 
-client = NVEClient()  # reads NVE_API_KEY from the environment
+client = NVEClient()  # key resolved by easysnowdata's `nve` auth provider
 
 # All NVE stations with snow parameters (daily_parameters shows which
 # have daily series)
@@ -972,7 +972,7 @@ records = client.get_data(
 ### 8.8 Fetch Yukon snow data
 
 ```python
-from clients.yukon import YukonClient
+from easysnowdata.stations.clients.yukon import YukonClient
 
 client = YukonClient()   # no API key needed
 

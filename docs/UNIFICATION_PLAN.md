@@ -1,5 +1,12 @@
 # Unification Plan
 
+> **Historical.** This is the July 2026 plan; it is kept for its reasoning and
+> its record of what was wrong, not as a live checklist. Paths under
+> `clients/` and `utils/` in it no longer exist here — that code moved to
+> [easysnowdata](https://github.com/egagli/easysnowdata) in September 2026
+> (see [EASYSNOWDATA_MIGRATION.md](EASYSNOWDATA_MIGRATION.md)), which is also
+> §7.1's "future issue 1", now done.
+
 **Status:** approved 2026-07-28 (with clarifications below) — **implemented** (merged to `main` via PR #26, 2026-07-28); §7 items remain open as future issues
 **Purpose:** unify the repository around a single, formalized design philosophy; fix all bugs found in the July 2026 audit; standardize the clients, artifacts, pipeline, map, docs, and tests so they all say and do the same thing.
 
