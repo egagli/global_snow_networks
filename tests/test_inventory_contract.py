@@ -203,3 +203,13 @@ def test_awdb_is_not_uniformly_inactive(features):
         f"only {active}/{len(awdb)} AWDB stations active — "
         "endDate-sentinel regression?"
     )
+
+
+def test_no_bare_network_property(features):
+    """`network` is not a property; the program is `network_code`, the
+    access path is `client`.  Yukon's display name is `network_name`
+    (renamed 2026-09-22 because easysnowdata reads `network` as the
+    access path, and a bare `network` invited that misreading)."""
+    offenders = [f["properties"]["code"] for f in features
+                 if "network" in f["properties"]]
+    assert not offenders, f"bare `network` property on {offenders[:5]}"
