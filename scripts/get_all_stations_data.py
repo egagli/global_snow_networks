@@ -865,11 +865,25 @@ def main() -> None:
             "per-network jobs have uploaded their CSVs as artifacts."
         ),
     )
+    ap.add_argument(
+        "--archive-only",
+        action="store_true",
+        help=(
+            "Only bundle the existing CSVs into --archive. Used by the "
+            "snapshot release workflow; the bundle is not committed."
+        ),
+    )
     args = ap.parse_args()
 
     geojson_path = Path(args.geojson)
     data_dir = Path(args.data_dir)
     archive_path = Path(args.archive)
+
+    # ── Archive-only mode ─────────────────────────────────────────────────────
+    if args.archive_only:
+        n = build_archive(data_dir, archive_path)
+        print(f"Bundled {n} station CSVs into {archive_path}")
+        return
 
     # ── Finalize-only mode ────────────────────────────────────────────────────
     if args.finalize_only:

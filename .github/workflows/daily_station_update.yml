@@ -106,6 +106,9 @@ jobs:
           path: data/stations/
           merge-multiple: true
 
+      # finalize-data also bundles the CSVs; the bundle is not committed any
+      # more (docs/STORAGE.md §3 step 3 — it is a release asset now), and
+      # _site/ is ignored, so nothing here has to un-stage it.
       - name: Update GeoJSON dates and build archive
         run: pixi run finalize-data
 
@@ -116,7 +119,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/ all_snow_stations.geojson
+          git add data/stations/ data/inventories/ all_snow_stations.geojson
           if git diff --cached --quiet; then
             echo "No changes to commit"
             exit 0

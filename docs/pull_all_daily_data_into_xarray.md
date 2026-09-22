@@ -16,19 +16,33 @@ ds = esd.stations.archive.load(time="2023-10/2024-09")   # (station, time), cm
 ```
 
 
+The chunked store on Pages (README §5.4) is the same observations without
+the download — one water year of every station is under a megabyte:
+
+```python
+import xarray as xr
+
+base = "https://egagli.github.io/global_snow_networks/archive"
+ds = xr.open_zarr(f"{base}/by_time.zarr", consolidated=True)   # (station, time), cm
+wy2024 = ds.sel(time=slice("2023-10-01", "2024-09-30")).load()
+```
+
+The recipe below builds the same grid by hand from the snapshot bundle of the
+latest release (README §5.3), which is what to use for a result that should
+cite a fixed, DOI'd snapshot. It downloads the whole ~27 MB bundle.
+
 ```python
 import requests, tarfile, numpy as np, pandas as pd, xarray as xr, geopandas as gpd
 from pathlib import Path
 
 d = Path("data/snow_pillows"); d.mkdir(parents=True, exist_ok=True)
-base = "https://raw.githubusercontent.com/egagli/global_snow_networks/main"
-for remote, fp in [("all_snow_stations.geojson", d / "all_snow_stations.geojson"),
-                   ("data/all_station_csvs.tar.xz", d / "all_station_csvs.tar.xz")]:
+repo = "https://github.com/egagli/global_snow_networks"
+for url, fp in [(f"{repo}/raw/main/all_snow_stations.geojson", d / "all_snow_stations.geojson"),
+                (f"{repo}/releases/latest/download/all_station_csvs.tar.xz", d / "all_station_csvs.tar.xz")]:
     if not fp.exists():
-        fp.write_bytes(requests.get(f"{base}/{remote}").content)
+        fp.write_bytes(requests.get(url, allow_redirects=True).content)
 if not (d / "stations").exists():
     tarfile.open(d / "all_station_csvs.tar.xz").extractall(d)
-
 inv = gpd.read_file(d / "all_snow_stations.geojson",
                     columns=['code', 'name', 'network_code', 'client', 'state',
                              'latitude', 'longitude', 'elevation_m']).set_index('code')
