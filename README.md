@@ -1220,6 +1220,17 @@ NVE data is published under the Norwegian Licence for Open Government Data
 Yukon snow and water data is published under the Open Government Licence —
 Yukon.
 
+### Citing this archive
+
+Snapshots of the inventory and the daily CSVs are archived on Zenodo from
+each `v*` release (`release-snapshot.yml`). The concept DOI
+[10.5281/zenodo.22904253](https://doi.org/10.5281/zenodo.22904253) always
+resolves to the newest snapshot; each release also has its own version DOI
+(first snapshot `v2026.09.22`:
+[10.5281/zenodo.22904254](https://doi.org/10.5281/zenodo.22904254)), which
+is the one to cite when the exact data matter. `CITATION.cff` carries the
+concept DOI. Cite the upstream providers below as well.
+
 Suggested citations for source data:
 
 > USDA Natural Resources Conservation Service (NRCS). Air and Water Database
