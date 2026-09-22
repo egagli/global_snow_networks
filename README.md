@@ -302,8 +302,12 @@ DESIGN.md §6.1):**
 
 Client-specific extras ride along when present (e.g. AWDB
 `awdb_station_triplet`/`county`/`huc`, CDEC `is_snow_course`/`sensors`/
-`april1_avg_swe_cm`, DataBC/Yukon `station_type`, NVE
-`drainage_basin_key`).
+`april1_avg_swe_cm`, DataBC/Yukon `station_type`, Yukon `network_name`,
+NVE `drainage_basin_key`).  There is deliberately no bare `network`
+property: the program is `network_code` and the access path is `client`.
+Yukon's display name ("Yukon Snow Survey Network") was published as
+`network` until 2026-09-22; easysnowdata reads `network` as the access
+path, so it was renamed to say what it is.
 
 #### Duplicate stations
 
