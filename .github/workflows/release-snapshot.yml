@@ -15,11 +15,27 @@ name: Release Snapshot
 # The daily refresh is deliberately not a release: Zenodo versions are
 # immutable and file-count-capped, which suits a periodic snapshot and not
 # a daily rewrite.
+#
+# Two ways to start it: push a `v*` tag, or run it by hand with the tag name
+# and a target (a branch or commit), in which case `gh release create` makes
+# the tag at that target. The manual path exists because some environments
+# may push branches but not tags.
 
 on:
   push:
     tags:
       - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Snapshot tag to create, e.g. v2026.09.22"
+        required: true
+        type: string
+      target:
+        description: "Branch or commit the tag points at"
+        required: false
+        default: "main"
+        type: string
 
 permissions:
   contents: write
@@ -29,6 +45,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # On a tag push this is the tag; by hand it is the target the tag
+          # will point at, so the assets are built from the snapshot itself.
+          ref: ${{ inputs.target || github.ref }}
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
@@ -36,9 +56,11 @@ jobs:
         run: pixi run zarr-archive
 
       - name: Package release assets
+        env:
+          TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          tag="${GITHUB_REF_NAME}"
+          tag="${TAG_INPUT:-$GITHUB_REF_NAME}"
           mkdir -p release
           # One zip per chunk layout, plus the manifest. A zip (not tar.xz)
           # so the store can still be opened in place over HTTP if wanted;
@@ -53,12 +75,19 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
+          TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          tag="${GITHUB_REF_NAME}"
+          tag="${TAG_INPUT:-$GITHUB_REF_NAME}"
+          target="$(git rev-parse HEAD)"
+          notes="Snapshot of the station inventory and daily archive at ${tag}"
+          notes="${notes} (commit ${target}). The inventory and every station CSV are"
+          notes="${notes} in the tagged source tree, which is what Zenodo archives;"
+          notes="${notes} the Zarr zips are the same observations in chunked form,"
+          notes="${notes} rebuildable with 'pixi run zarr-archive'."
+          # --target creates the tag at this commit when it does not exist yet
+          # (the manual path); on a tag push the tag already points here.
           gh release create "$tag" release/* \
+            --target "$target" \
             --title "Archive snapshot ${tag}" \
-            --generate-notes \
-            --notes "Snapshot of the station inventory and daily archive at tag ${tag}. \
-The CSVs and inventory are in the tagged source tree (and, where enabled, the Zenodo deposit); \
-the Zarr zips are the same observations in chunked form, rebuildable with \`pixi run zarr-archive\`."
+            --notes "$notes"
