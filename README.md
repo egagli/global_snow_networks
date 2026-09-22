@@ -64,6 +64,7 @@ global_snow_networks/
 ├── scripts/
 │   ├── create_all_stations_geojson.py     # Build station GeoJSONs from all clients
 │   ├── get_all_stations_data.py           # Refresh CSVs + probe verification + archive
+│   ├── build_zarr_archive.py              # Chunked (Zarr) form of the archive, for Pages
 │   └── generate_live_map.py               # Build map HTML + chart JSON payloads
 │
 ├── data/
@@ -72,11 +73,11 @@ global_snow_networks/
 │   └── all_station_csvs.tar.xz            # Bulk archive of all station CSVs
 │
 ├── tests/                                 # Offline unit + contract tests (the live ones moved with the clients)
-├── notebooks/                             # Exploration notebooks
 └── .github/workflows/
      ├── daily_station_update.yml           # Nightly refresh pipeline
      ├── ci.yml                             # Tests — one offline suite, on push and from the pipeline
-     └── deploy-pages.yml                   # GitHub Pages map deployment
+     ├── deploy-pages.yml                   # GitHub Pages: map + chunked archive
+     └── release-snapshot.yml               # Citable snapshot on a version tag (GitHub Release → Zenodo)
 ```
 
 ---
@@ -129,6 +130,10 @@ pixi run fetch-data
 
 # Stage 3: Build the interactive live map and per-station chart payloads
 pixi run live-map
+
+# Pages only: the chunked (Zarr) form of the archive, built from the
+# committed CSVs into _site/archive/ — never committed (see §5.4)
+pixi run zarr-archive
 
 # Convenience task for all stages
 pixi run update-all
@@ -347,6 +352,49 @@ Notes:
 ### 5.3 Bulk Archive: `data/all_station_csvs.tar.xz`
 
 All station CSVs are bundled under `stations/` for single-file distribution.
+Reading anything from it costs the whole file (~27 MB): tar has no usable
+random access and xz is one solid stream.  For partial reads use §5.4.
+
+### 5.4 Chunked Archive (Zarr) on GitHub Pages
+
+The same observations as the CSVs, written as Zarr (format 3, consolidated
+metadata, float32 centimetres) and published in the Pages artefact by
+`deploy-pages.yml` — **not committed**, so it costs no git history, and
+Pages serves HTTP range requests, so a reader fetches only the chunks a
+query touches.  `scripts/build_zarr_archive.py` builds it from
+`all_snow_stations.geojson` and `data/stations/*.csv`; the CSVs remain the
+source of truth and the human-readable form.
+
+| URL (under `https://egagli.github.io/global_snow_networks/archive/`) | Chunks | Suits |
+| --- | --- | --- |
+| `by_time.zarr` | `station=all, time=366` | one water year, every station (maps, basin summaries) |
+| `by_station.zarr` | `station=64, time=all` | one station's whole record (charts) |
+| `archive.json` | — | manifest: build time, source commit, sizes, orphan CSVs skipped |
+
+Both stores are ~17 MB and carry `swe` and `snow_depth` on
+`(station, time)`, with the inventory's `name`, `network_code`, `client`,
+`operator`, `state`, `latitude`, `longitude`, `elevation_m` and
+`daily_provenance` as coordinates along `station`.  The `time` axis is
+complete and daily from the earliest to the latest observation; missing
+values are NaN and all-missing chunks are not written.  Measured against a
+static server: one water year for all stations is ~0.7 MB from `by_time`,
+one station's whole record ~0.5 MB from `by_station`, against 27 MB for
+either from the tarball.
+
+```python
+import xarray as xr
+
+base = "https://egagli.github.io/global_snow_networks/archive"
+ds = xr.open_zarr(f"{base}/by_time.zarr", consolidated=True)
+wy2024 = ds["swe"].sel(time=slice("2023-10-01", "2024-09-30")).load()   # cm
+
+ds_s = xr.open_zarr(f"{base}/by_station.zarr", consolidated=True)
+one = ds_s[["swe", "snow_depth"]].sel(station="1000_WA_SNTL").load()
+```
+
+The stores are rebuilt on every Pages deploy, so they track the daily
+refresh; a citable, DOI'd snapshot is a separate, periodic thing
+(`release-snapshot.yml`, docs/STORAGE.md §2.3).
 
 ---
 
@@ -896,6 +944,9 @@ print(df[["wteq_cm", "snwd_cm"]].describe())
 ```
 
 ### 8.4 Load bulk archive
+
+For partial reads over HTTP prefer the chunked store (§5.4); this route
+downloads the whole tarball.
 
 ```bash
 tar -xJf data/all_station_csvs.tar.xz -C /tmp

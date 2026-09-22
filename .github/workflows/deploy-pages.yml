@@ -34,12 +34,21 @@ jobs:
       - name: Build live map
         run: pixi run live-map
 
+      # The chunked form of the daily archive (docs/STORAGE.md §2). Built
+      # here from the CSVs this checkout already has, and published as part
+      # of the Pages artefact — nothing is committed, so it costs no git
+      # history, and Pages serves range requests, so a reader fetches only
+      # the chunks it needs.
+      - name: Build Zarr archive
+        run: pixi run zarr-archive
+
       - name: Stage Pages artifact
         run: |
           mkdir -p _site
           cp live_swe_map.html _site/index.html
           touch _site/.nojekyll
           [ -d charts ] && cp -r charts _site/charts || true
+          test -f _site/archive/archive.json
 
       - uses: actions/upload-pages-artifact@v3
         with:

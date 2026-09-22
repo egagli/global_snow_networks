@@ -266,6 +266,20 @@ than dropping stations. Stations that vanish upstream are retained in the
 inventory with a status note; their CSVs are kept and inventoried, never
 silently orphaned or silently deleted.
 
+### 6.5 Chunked archive (`archive/*.zarr` in the Pages artefact)
+
+The observations of §6.3 in a second published form, for partial reads:
+Zarr format 3 with consolidated metadata (a static host cannot list a
+directory, so a reader must learn the hierarchy from one document), float32
+centimetres, `swe` and `snow_depth` on `(station, time)`, station metadata
+from §6.1 as coordinates. Two stores differing only in chunk layout
+(`by_time`: `station=all, time=366`; `by_station`: `station=64, time=all`),
+plus an `archive.json` manifest naming the source commit. Built from the
+committed CSVs on every Pages deploy and **never committed**: the CSVs stay
+the source of truth, and a value in the store must equal the CSV value for
+that station and date. Anything the CSVs do not hold (flags, other
+variables, sub-daily data), the store does not hold either.
+
 ## 7. Context metadata and references
 
 Wherever the source offers it, capture per station: `station_url` (station
