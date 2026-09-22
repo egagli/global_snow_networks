@@ -79,13 +79,15 @@ obvious:
 
 ## Open questions, not blocking
 
-- **The published inventory's `network` property means something else.** It is
-  a Yukon-only display name ("Yukon Snow Survey Network"), null for the other
-  four clients, while the obvious reading — and easysnowdata's — is the access
-  path, which this repo calls `client`. easysnowdata renames the upstream
-  value to `network_name` on read. Renaming it here would be a breaking change
-  to a published artefact the live map consumes, so it needs a deliberate
-  decision rather than a drive-by fix.
+- ~~**The published inventory's `network` property means something else.**~~
+  **Resolved 2026-09-22: renamed to `network_name`.** The "breaking change"
+  worry turned out to be unfounded: the live map reads `network_code`, not
+  `network`; no script or test in this repo read it; and its only known
+  consumer, easysnowdata's archive reader, guards its rename with an
+  existence check and then sets `network` from `client`, so it works
+  unchanged before and after. The property was a Yukon-only display name on
+  109 features (`network_code` YSS/YKEC already identify the programs). The
+  inventory contract test now asserts no feature carries a bare `network`.
 - **Yukon `precip_snow_cm`** is typed `snowfall` now rather than `precip`, so
   nothing rescales 5 cm of snow into 50 mm of water. `snowfall` is in the
   shared vocabulary and a test in easysnowdata holds the line.

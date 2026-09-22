@@ -1,7 +1,9 @@
 # Archive storage: how it works today, and a proposal to change it
 
-Status: proposal, not decided (written 2026-09-17, while folding `clients/`
-into [easysnowdata](https://github.com/egagli/easysnowdata)).
+Status: **step 1 of 4 implemented 2026-09-22** — the Zarr stores are built
+and published in the Pages artefact (§3 below has the sequence and what is
+still open). Written 2026-09-17, while folding `clients/` into
+[easysnowdata](https://github.com/egagli/easysnowdata).
 
 This describes how the daily archive is built and published today, what that
 costs, and a proposal to publish it as a chunked store instead. Nothing here
@@ -154,24 +156,50 @@ that a Zarr store is not wasted work, since Icechunk stores Zarr.
 
 ---
 
-## 3. What would have to change
+## 3. What has to change, in order
 
-- `scripts/get_all_stations_data.py`: after `build_archive()`, write the store
-  from the same per-station frames it already has in memory.
-- `.github/workflows/deploy-pages.yml`: include the store in the Pages artefact.
-- Stop committing `data/all_station_csvs.tar.xz`; add it to `.gitignore`.
-  Consider a history rewrite to reclaim the 3.7 GB, which is disruptive and
-  should be a separate, deliberate decision.
-- `easysnowdata.stations.archive`: add the store as a source, keeping
-  `github-tarball` and `github-csv` so old pins keep working.
-- A Zenodo deposition step, run on a tag rather than daily.
+1. ✅ **Publish the store on Pages (done 2026-09-22).** `scripts/build_zarr_archive.py`
+   reads the committed inventory and CSVs and writes both layouts of §4
+   (`by_time.zarr`, `by_station.zarr`) plus an `archive.json` manifest into
+   `_site/archive/`; `deploy-pages.yml` runs it before staging the artefact.
+   It is a separate script rather than a step in `get_all_stations_data.py`
+   because the Pages build checks out `main` after the refresh has committed,
+   so the CSVs are already on disk and nothing needs to be handed between
+   jobs. Nothing is committed. Measured on the 2026-09-21 archive against a
+   static server: one water year for all stations 0.7 MB, one station's whole
+   record 0.5 MB, store open 0.14 MB, each store ~17 MB on disk. Format 3
+   with consolidated metadata, accepted with its "not in the v3 spec" warning
+   because a static host cannot list a directory.
+2. ⬜ **`easysnowdata.stations.archive`: add the Pages store as a source**, and
+   make it the default for `load()`, keeping `github-tarball` and
+   `github-csv` so old pins keep working. Until this is released, the
+   tarball must keep being committed: current easysnowdata pins fetch it
+   from the `main` branch.
+3. ⬜ **Stop committing `data/all_station_csvs.tar.xz`** once step 2 is on
+   PyPI and conda-forge — build it into the Pages artefact instead if a
+   single-file download is still wanted. A history rewrite to reclaim the
+   blobs is disruptive and a separate, deliberate decision.
+4. ✅ **Snapshots on a tag (workflow added 2026-09-22; Zenodo side `[needs Eric]`).**
+   `release-snapshot.yml` runs on a `v*` tag: it builds the stores, zips them
+   and attaches them, the inventory and the tarball to a GitHub Release. With
+   the repository's Zenodo–GitHub integration switched on, Zenodo archives the
+   tagged source tree — inventory and every CSV — and mints a version DOI
+   under the concept DOI. That is the citable object; the Zarr zips are a
+   convenience rebuildable from it. The integration has to be enabled once at
+   zenodo.org for this repository, and `CITATION.cff` should then carry the
+   concept DOI. The daily refresh is deliberately not a release.
+
+Also decided along the way, from the best-practices notes: Icechunk cannot be
+served from Pages (its backends are local disk, S3-compatible, GCS and Azure;
+HTTP is only a virtual-chunk target), so §2.4 stays a bucket decision; and
+nothing today mints a DOI per Icechunk tag, so Zenodo stays the citation
+route whichever store serves the reads.
 
 ## 4. Open questions
 
-- Chunking depends on the dominant query. `station=all, time=366` suits
-  "one water year everywhere" (the map, basin summaries); `station=64, time=all`
-  suits "this station's whole record" (the charts). Both are ~17 MB, so
-  publishing **both** is affordable and avoids guessing.
+- ~~Chunking depends on the dominant query.~~ **Both layouts are published**
+  (`by_time`: `station=all, time=366`; `by_station`: `station=64, time=all`),
+  each ~17 MB, so the reader picks by query instead of the writer guessing.
 - Whether to carry more than `wteq_cm` and `snwd_cm`. The clients serve
   temperature, precipitation, wind and humidity, and a chunked store makes
   extra variables much cheaper to carry than extra CSV columns would.

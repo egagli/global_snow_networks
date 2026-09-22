@@ -1,0 +1,64 @@
+name: Release Snapshot
+
+# A citable snapshot of the archive, a few times a year, on a version tag
+# (docs/STORAGE.md §2.3). Pushing a tag like `v2026.10` does two things:
+#
+#  1. This workflow builds the chunked archive from the tagged CSVs and
+#     attaches it, zipped, to a GitHub Release for that tag, alongside the
+#     tarball and inventory that are already in the tree.
+#  2. If the repository's Zenodo–GitHub integration is switched on, Zenodo
+#     archives the tagged source tree — the inventory and every station CSV
+#     — and mints a version DOI under the concept DOI. That is the citable
+#     object; the Zarr zip is a convenience that can always be rebuilt from
+#     it with `pixi run zarr-archive`.
+#
+# The daily refresh is deliberately not a release: Zenodo versions are
+# immutable and file-count-capped, which suits a periodic snapshot and not
+# a daily rewrite.
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.8.3
+
+      - name: Build Zarr archive from the tagged CSVs
+        run: pixi run zarr-archive
+
+      - name: Package release assets
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          mkdir -p release
+          # One zip per chunk layout, plus the manifest. A zip (not tar.xz)
+          # so the store can still be opened in place over HTTP if wanted;
+          # at this size a whole-file download is trivial either way.
+          (cd _site/archive && zip -qr "../../release/by_time.zarr-${tag}.zip" by_time.zarr archive.json)
+          (cd _site/archive && zip -qr "../../release/by_station.zarr-${tag}.zip" by_station.zarr archive.json)
+          cp _site/archive/archive.json "release/archive-${tag}.json"
+          cp all_snow_stations.geojson "release/all_snow_stations-${tag}.geojson"
+          cp data/all_station_csvs.tar.xz "release/all_station_csvs-${tag}.tar.xz"
+          ls -la release
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          tag="${GITHUB_REF_NAME}"
+          gh release create "$tag" release/* \
+            --title "Archive snapshot ${tag}" \
+            --generate-notes \
+            --notes "Snapshot of the station inventory and daily archive at tag ${tag}. \
+The CSVs and inventory are in the tagged source tree (and, where enabled, the Zenodo deposit); \
+the Zarr zips are the same observations in chunked form, rebuildable with \`pixi run zarr-archive\`."
