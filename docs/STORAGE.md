@@ -179,15 +179,16 @@ that a Zarr store is not wasted work, since Icechunk stores Zarr.
    PyPI and conda-forge — build it into the Pages artefact instead if a
    single-file download is still wanted. A history rewrite to reclaim the
    blobs is disruptive and a separate, deliberate decision.
-4. ✅ **Snapshots on a tag (workflow added 2026-09-22; Zenodo side `[needs Eric]`).**
-   `release-snapshot.yml` runs on a `v*` tag: it builds the stores, zips them
-   and attaches them, the inventory and the tarball to a GitHub Release. With
-   the repository's Zenodo–GitHub integration switched on, Zenodo archives the
+4. ✅ **Snapshots on a tag (done 2026-09-22).** `release-snapshot.yml` runs on
+   a `v*` tag, or by hand with a tag name and target: it builds the stores,
+   zips them and attaches them, the inventory and the tarball to a GitHub
+   Release. The Zenodo–GitHub integration is on, so Zenodo archives the
    tagged source tree — inventory and every CSV — and mints a version DOI
-   under the concept DOI. That is the citable object; the Zarr zips are a
-   convenience rebuildable from it. The integration has to be enabled once at
-   zenodo.org for this repository, and `CITATION.cff` should then carry the
-   concept DOI. The daily refresh is deliberately not a release.
+   under the concept DOI **10.5281/zenodo.22904253**, which `CITATION.cff`
+   carries. First snapshot: `v2026.09.22` at `85f4bfc`, version DOI
+   10.5281/zenodo.22904254. The Zarr zips on the release are a convenience
+   rebuildable from the deposit. The daily refresh is deliberately not a
+   release.
 
 Also decided along the way, from the best-practices notes: Icechunk cannot be
 served from Pages (its backends are local disk, S3-compatible, GCS and Azure;
