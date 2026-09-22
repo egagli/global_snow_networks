@@ -1398,7 +1398,7 @@ def yukon_station_to_feature(station: dict) -> dict:
         # "SC" = manual snow course, "AWS" = automated snow-weather station
         # (snow-pillow SWE), "ECCC" = mirrored ECCC climate station.
         "station_type": stype,
-        "network": station.get("network") or None,
+        "network_name": station.get("network") or None,
         "status": station.get("status") or None,
         "is_active": station.get("status") == "Active",
         "station_url": station.get("station_url") or None,

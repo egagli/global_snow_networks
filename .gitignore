@@ -18,10 +18,11 @@ __pycache__/
 # OS
 .DS_Store
 
-# Generated map artifacts — rebuilt fresh by deploy-pages.yml; never track
+# Generated map and archive artifacts — rebuilt fresh by deploy-pages.yml; never track
 live_swe_map.html
 charts/
 .cache/
+_site/
 
 # Local run logs and atomic-write temporaries
 *_run.log
