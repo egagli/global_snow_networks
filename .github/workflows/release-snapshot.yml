@@ -3,9 +3,10 @@ name: Release Snapshot
 # A citable snapshot of the archive, a few times a year, on a version tag
 # (docs/STORAGE.md §2.3). Pushing a tag like `v2026.10` does two things:
 #
-#  1. This workflow builds the chunked archive from the tagged CSVs and
-#     attaches it, zipped, to a GitHub Release for that tag, alongside the
-#     tarball and inventory that are already in the tree.
+#  1. This workflow builds the chunked archive and the CSV bundle from the
+#     tagged CSVs and attaches them to a GitHub Release for that tag,
+#     alongside the inventory. The bundle is attached under a fixed name
+#     too, so the latest release's `all_station_csvs.tar.xz` is a stable URL.
 #  2. If the repository's Zenodo–GitHub integration is switched on, Zenodo
 #     archives the tagged source tree — the inventory and every station CSV
 #     — and mints a version DOI under the concept DOI. That is the citable
@@ -55,6 +56,13 @@ jobs:
       - name: Build Zarr archive from the tagged CSVs
         run: pixi run zarr-archive
 
+      # The bundle is no longer committed (docs/STORAGE.md §3 step 3); it
+      # is built here from the same CSVs and attached twice: once under a
+      # fixed name, so `releases/latest/download/all_station_csvs.tar.xz`
+      # always resolves (easysnowdata's fallback route), once tag-suffixed.
+      - name: Bundle the CSVs
+        run: pixi run build-archive
+
       - name: Package release assets
         env:
           TAG_INPUT: ${{ inputs.tag }}
@@ -69,7 +77,8 @@ jobs:
           (cd _site/archive && zip -qr "../../release/by_station.zarr-${tag}.zip" by_station.zarr archive.json)
           cp _site/archive/archive.json "release/archive-${tag}.json"
           cp all_snow_stations.geojson "release/all_snow_stations-${tag}.geojson"
-          cp data/all_station_csvs.tar.xz "release/all_station_csvs-${tag}.tar.xz"
+          cp _site/all_station_csvs.tar.xz "release/all_station_csvs-${tag}.tar.xz"
+          cp _site/all_station_csvs.tar.xz "release/all_station_csvs.tar.xz"
           ls -la release
 
       - name: Create GitHub Release
