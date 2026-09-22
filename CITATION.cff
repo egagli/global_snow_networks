@@ -12,6 +12,11 @@ authors:
     affiliation: University of Washington
 repository-code: "https://github.com/egagli/global_snow_networks"
 url: "https://egagli.github.io/global_snow_networks/"
+# The concept DOI: it always resolves to the newest Zenodo snapshot. Each
+# `v*` release (release-snapshot.yml) gets its own version DOI under it;
+# cite that one when a specific snapshot matters (first: v2026.09.22,
+# 10.5281/zenodo.22904254).
+doi: 10.5281/zenodo.22904253
 license-url: "https://github.com/egagli/global_snow_networks"
 keywords:
   - snow
