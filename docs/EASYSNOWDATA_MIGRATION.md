@@ -1,6 +1,6 @@
 # Migrating the clients into easysnowdata: what happened, what is left
 
-Status as of 2026-09-17: **done, apart from the version pin.** The counterpart
+Status as of 2026-09-23: **done.** The counterpart
 section is
 [easysnowdata's `REVAMP_PLAN.md` §9](https://github.com/egagli/easysnowdata/blob/main/REVAMP_PLAN.md),
 which decided the move (§9.2, option B) and records which repository answers
@@ -53,13 +53,20 @@ key as one counted, skipped network.
 
 ## Done as of 2026-09-18
 
-Nothing is outstanding. easysnowdata 0.2.0 is released on PyPI and
-conda-forge, and `pixi.toml` depends on it the ordinary way:
+Nothing is outstanding. easysnowdata 0.2.0 was released on PyPI and
+conda-forge, and `pixi.toml` depends on it the ordinary way. The pin was
+raised to `>=0.3.2` on 2026-09-23, the first release that reads the archive
+as it is published now ([`STORAGE.md`](STORAGE.md) §3); until then the lock
+had stayed on 0.2.0, so the pipeline ran the 0.2.0 clients.
 
 ```toml
 [dependencies]
-easysnowdata = ">=0.2"
+easysnowdata = ">=0.3.2"
 ```
+
+The same change dropped `lxml`, `beautifulsoup4`, `aiohttp`, `fsspec`,
+`tqdm` and `shapely` from `pixi.toml`: the clients needed them, and nothing
+left here imports them.
 
 Two things about that last step, because both cost time and neither is
 obvious:
@@ -91,7 +98,7 @@ obvious:
 - **Yukon `precip_snow_cm`** is typed `snowfall` now rather than `precip`, so
   nothing rescales 5 cm of snow into 50 mm of water. `snowfall` is in the
   shared vocabulary and a test in easysnowdata holds the line.
-- **Archive storage.** See [`STORAGE.md`](STORAGE.md): the daily `tar.xz` is a
-  27 MB blob committed daily that duplicates the CSV tree, and `.git` is now
-  3.7 GB against a ~510 MB working tree. A chunked store in the Pages artefact
-  would be smaller and allow partial reads.
+- ~~**Archive storage.**~~ **Resolved 2026-09-23.** The daily-committed
+  `tar.xz` is retired: the archive is served as two Zarr stores on Pages, the
+  bundle is a snapshot release asset, and the path was purged from history.
+  See [`STORAGE.md`](STORAGE.md) §3.

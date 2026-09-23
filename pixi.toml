@@ -11,23 +11,18 @@ python = ">=3.12"
 ipykernel = "*"
 numpy = ">=1.26"
 pandas = ">=2.2"
+# Not imported by the scripts; the README and docs examples use it.
 geopandas = ">=1.0"
-shapely = ">=2.0"
 requests = ">=2.31"
-lxml = ">=5.0"
-tqdm = ">=4.66"
-fsspec = ">=2026.3.0,<2027"
-aiohttp = ">=3.13.4,<4"
-beautifulsoup4 = ">=4.14.3,<5"
 # The chunked form of the archive (scripts/build_zarr_archive.py). Both
 # already arrive through easysnowdata; declared so the build does not
 # depend on that staying true.
 xarray = ">=2026.7"
 zarr = ">=3.3"
-# The five network clients and the water-year helpers live here now, not in
-# this repo — easysnowdata's REVAMP_PLAN §9.2 option B, and
-# docs/EASYSNOWDATA_MIGRATION.md here.
-easysnowdata = ">=0.2"
+# The five network clients and the water-year helpers live in easysnowdata,
+# not in this repo (docs/EASYSNOWDATA_MIGRATION.md). 0.3.2 is the first
+# release that reads the archive as it is published now (docs/STORAGE.md §3).
+easysnowdata = ">=0.3.2"
 
 [feature.dev.dependencies]
 jupyter = "*"
