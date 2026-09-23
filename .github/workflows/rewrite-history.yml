@@ -1,0 +1,77 @@
+name: Rewrite History
+
+# Purge one path from every commit and force-push the result. Run by hand,
+# once, with the path spelled out and a typed confirmation. Written for
+# retiring data/all_station_csvs.tar.xz (docs/STORAGE.md §3): a ~27 MB xz
+# blob committed daily for two months, incompressible by git, which had
+# grown the repository to over 3 GB and cost the daily pipeline two full
+# checkouts of that history a day.
+#
+# Runs here rather than on a laptop because the runner clones a full mirror
+# at line speed and pushes with the workflow token, which may move tags and
+# force-push branches. Every commit SHA changes; clones must be re-cloned;
+# tags are moved to the rewritten commits, so releases and Zenodo deposits
+# (attached to tag names) are unaffected. GitHub keeps the old objects until
+# it runs garbage collection, which Support does on request, so the size
+# shown on github.com drops only after that.
+
+on:
+  workflow_dispatch:
+    inputs:
+      path:
+        description: "Path to purge from all history"
+        required: true
+        default: "data/all_station_csvs.tar.xz"
+        type: string
+      confirm:
+        description: "Type REWRITE to confirm"
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  rewrite:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Refuse without confirmation
+        if: inputs.confirm != 'REWRITE'
+        run: |
+          echo "confirm must be REWRITE" >&2
+          exit 1
+
+      - name: Mirror the repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git clone --mirror "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" mirror.git
+          cd mirror.git
+          echo "before: $(git count-objects -vH | grep size-pack)"
+          echo "commits touching the path: $(git rev-list --count --all -- "${{ inputs.path }}")"
+
+      - name: Purge the path from every commit
+        run: |
+          set -euo pipefail
+          pip install --quiet git-filter-repo
+          cd mirror.git
+          git filter-repo --invert-paths --path "${{ inputs.path }}" --force
+          git reflog expire --expire=now --all
+          git gc --prune=now --aggressive
+          echo "after: $(git count-objects -vH | grep size-pack)"
+          echo "still referenced: $(git rev-list --count --all -- "${{ inputs.path }}")"
+
+      - name: Force-push branches and tags
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          cd mirror.git
+          # filter-repo strips the remote; restore it. Branches and tags only —
+          # refs/pull/* are GitHub's and refuse writes.
+          git remote add origin "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" 2>/dev/null || true
+          git push --force origin 'refs/heads/*:refs/heads/*'
+          git push --force origin 'refs/tags/*:refs/tags/*'
+          echo "pushed:"
+          git ls-remote --heads --tags origin
