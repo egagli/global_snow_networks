@@ -163,6 +163,27 @@ def _clean_meta_text(raw) -> str:
     return s
 
 
+_NUPOINT_BASE = "https://pvs.nupointsystems.com"
+
+
+def _camera_snapshot_url(cam: str) -> str:
+    """Latest still frame for a live-camera link, or "" if unknown.
+
+    BC's satellite cameras (NuPoint) serve the newest frame at
+    ``latest.php?pass=<token>`` for the same token their photo-slider
+    page takes, so the panel can show the frame and still link the page.
+    """
+    if not cam.startswith(_NUPOINT_BASE):
+        return ""
+    if "/latest.php" in cam:
+        return cam
+    query = cam.split("#", 1)[0].partition("?")[2]
+    for part in query.split("&"):
+        if part.startswith("pass="):
+            return f"{_NUPOINT_BASE}/latest.php?{part}"
+    return ""
+
+
 # Display order/labels for the shared interval enum
 # (easysnowdata.stations.clients._common);
 # unknown values render last under their raw name rather than disappearing.
@@ -522,6 +543,9 @@ def process_station_from_csv(
         "mtype": "automated",
         "dp": _clean_meta_text(meta.get("data_provider")),
         "cam": _clean_meta_text(meta.get("station_camera_url")),
+        "camimg": _camera_snapshot_url(
+            _clean_meta_text(meta.get("station_camera_url"))
+        ),
         "prov": _clean_meta_text(meta.get("daily_provenance")),
         "dups": meta.get("possible_duplicates") or [],
         "wteq": cur.get("WTEQ", {}).get("val"),
@@ -590,6 +614,15 @@ select:focus{outline:none;border-color:#4af}
 #station-photo-credit{font-size:10px;color:#666;margin-top:2px}
 #station-photo-no-img{font-size:12px;color:#888;font-style:italic;padding:8px 0}
 #station-camera-link{margin-top:4px;font-size:12px;font-weight:600}
+#station-camera-wrap{margin-top:10px;display:flex;flex-direction:column;align-items:flex-start;
+                     max-width:100%}
+#station-camera-title{font-size:12px;font-weight:650;color:#1a2a3a;margin-bottom:3px}
+#station-camera-img{width:auto;max-width:100%;height:220px;object-fit:contain;border-radius:4px;
+                    border:1px solid #ccd;display:block}
+.cam-badge{position:absolute;top:-6px;right:-7px;width:10px;height:8px;pointer-events:none}
+.cam-badge.sel{top:-5px;right:-8px;width:12px;height:10px}
+#network-legend .cam-note{display:flex;align-items:center;gap:6px;margin-top:5px;padding-top:4px;
+                          border-top:1px solid #ddd;font-size:11px;color:#333}
 #station-camera-link a{color:#0b6bcb;text-decoration:none}
 #station-camera-link a:hover{text-decoration:underline}
 #station-info .info-row{display:flex;gap:4px}
@@ -768,6 +801,7 @@ select:focus{outline:none;border-color:#4af}
         <div id="network-legend">
           <h3>Network</h3>
           <div id="network-legend-rows"></div>
+          <div class="cam-note" id="cam-legend-note" style="display:none"></div>
         </div>
       <div id="legend">
         <h3>% of Normal</h3>
@@ -1134,7 +1168,16 @@ const markerLayer = L.layerGroup().addTo(map);
 const leafletMarkers = {};
 
 // ─── Build SVG icon ───────────────────────────────────────────────────────────
-function buildIcon(network, measurementType, color, isSelected) {
+// Tiny camera glyph pinned to a marker's top-right for live-camera sites.
+const CAM_GLYPH = '<svg viewBox="0 0 12 10" xmlns="http://www.w3.org/2000/svg">'
+  + '<path d="M1 2.5h2.4L4.4 1h3.2l1 1.5H11v6.5H1z" fill="#fff" stroke="#1a2a3a" stroke-width="1" stroke-linejoin="round"/>'
+  + '<circle cx="6" cy="5.6" r="1.9" fill="#1a2a3a"/></svg>';
+
+function camBadge(hasCam, isSelected) {
+  return hasCam ? `<span class="cam-badge${isSelected ? " sel" : ""}">${CAM_GLYPH}</span>` : "";
+}
+
+function buildIcon(network, measurementType, color, isSelected, hasCam = false) {
   const sz = isSelected ? 18 : 10;
   const sw = isSelected ? 2.2 : 0.8;
   const bc = isSelected ? "#000" : "rgba(0,0,0,0.35)";
@@ -1206,7 +1249,9 @@ function buildIcon(network, measurementType, color, isSelected) {
       break;
   }
   return L.divIcon({
-    html: `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">${ring}${inner}</svg>`,
+    html: `<div style="position:relative;width:${sz}px;height:${sz}px">`
+      + `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="display:block">${ring}${inner}</svg>`
+      + camBadge(hasCam, isSelected) + `</div>`,
     iconSize: [sz, sz],
     iconAnchor: [sz/2, sz/2],
     className: "",
@@ -1217,13 +1262,15 @@ function buildIcon(network, measurementType, color, isSelected) {
 const periodicMarkers = {};  // "client|code" -> marker
 const periodicLayer = L.layerGroup();
 
-function periodicIcon(isSelected) {
+function periodicIcon(isSelected, hasCam = false) {
   const sz = isSelected ? 16 : 11;
   const c = sz / 2;
   return L.divIcon({
-    html: `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}">`
+    html: `<div style="position:relative;width:${sz}px;height:${sz}px">`
+      + `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="display:block">`
       + `<circle cx="${c}" cy="${c}" r="${c - 1.5}" fill="none" `
-      + `stroke="#555" stroke-width="1.6" stroke-dasharray="2.5,1.8"/></svg>`,
+      + `stroke="#555" stroke-width="1.6" stroke-dasharray="2.5,1.8"/></svg>`
+      + camBadge(hasCam, isSelected) + `</div>`,
     iconSize: [sz, sz],
     iconAnchor: [c, c],
     className: "",
@@ -1250,7 +1297,7 @@ function periodicPopupHtml(s) {
 function initPeriodicMarkers() {
   for (const s of PD) {
     const m = L.marker([s.lat, s.lon], {
-      icon: periodicIcon(false), zIndexOffset: 50,
+      icon: periodicIcon(false, !!s.cam), zIndexOffset: 50,
     });
     m.bindPopup(periodicPopupHtml(s), {maxWidth: 300});
     m.bindTooltip(
@@ -1302,7 +1349,7 @@ function initMarkers() {
     if (!st.visibleNetworks.has(s.net)) continue;
     const obs = getStationPct(code, st.dowy, st.wy, st.variable, st.ref);
     const color = markerColorForObs(obs);
-    const icon = buildIcon(s.net, s.mtype, color, false);
+    const icon = buildIcon(s.net, s.mtype, color, false, !!s.cam);
     const m = L.marker([s.lat, s.lon], {icon, zIndexOffset: 100})
       .addTo(markerLayer);
     m._stationCode = code;
@@ -1331,7 +1378,7 @@ function recolorAll() {
     const obs = getStationPct(code, st.dowy, st.wy, st.variable, st.ref);
     const isSelected = code === st.selectedCode;
     const color = markerColorForObs(obs);
-    m.setIcon(buildIcon(s.net, s.mtype, color, isSelected));
+    m.setIcon(buildIcon(s.net, s.mtype, color, isSelected, !!s.cam));
 
     const varSummary = formatObsSummary(code, st.variable);
     m.setTooltipContent(
@@ -1488,8 +1535,20 @@ function onMarkerClick(code) {
   const updStr = s.upd ? s.upd.replace("T", " ").replace("Z", " UTC") : "—";
   const stationUrl = s.url || "";
 
+  // Static site photo first; a live camera (if any) always goes below it,
+  // never in its place.
   const cameraLinkHtml = s.cam
     ? `<div id="station-camera-link"><a href="${s.cam}" target="_blank" rel="noopener noreferrer">🛰 View live satellite camera</a></div>`
+    : "";
+  const cameraHtml = s.cam
+    ? `<div id="station-camera-wrap">`
+      + `<div id="station-camera-title">Live camera — latest frame</div>`
+      + (s.camimg
+        ? `<a href="${s.cam}" target="_blank" rel="noopener noreferrer">`
+          + `<img id="station-camera-img" src="${s.camimg}" alt="${s.name} live camera, latest frame" loading="lazy" referrerpolicy="no-referrer"></a>`
+        : "")
+      + cameraLinkHtml
+      + `</div>`
     : "";
   let stationPhotoHtml = "";
   if (s.img) {
@@ -1497,10 +1556,10 @@ function onMarkerClick(code) {
     stationPhotoHtml = `<div id="station-photo-wrap">`
       + `<img id="station-photo" src="${s.img}" alt="${s.name} station photo" loading="lazy" referrerpolicy="no-referrer">`
       + `<div id="station-photo-credit">Photo credit: <a href="${s.img}" target="_blank" rel="noopener noreferrer">${operator}</a></div>`
-      + cameraLinkHtml
+      + cameraHtml
       + `</div>`;
   } else {
-    stationPhotoHtml = `<div id="station-photo-wrap"><div id="station-photo-no-img">No station image available</div>${cameraLinkHtml}</div>`;
+    stationPhotoHtml = `<div id="station-photo-wrap"><div id="station-photo-no-img">No station image available</div>${cameraHtml}</div>`;
   }
 
   // SWE + snow depth lines
@@ -2654,8 +2713,19 @@ function initNetworkFilter() {
   }
 }
 
+function initCameraLegendNote() {
+  const nCam = Object.values(SD).filter(s => s.cam).length
+    + PD.filter(s => s.cam).length;
+  if (!nCam) return;
+  const el = document.getElementById("cam-legend-note");
+  el.innerHTML = `<span style="display:inline-block;width:12px;height:10px">${CAM_GLYPH}</span>`
+    + `<span>Live camera (${nCam})</span>`;
+  el.style.display = "flex";
+}
+
 // ─── Initialise ───────────────────────────────────────────────────────────────
 initDateSlider();
+initCameraLegendNote();
 initNetworkFilter();
 initMarkers();
 initPeriodicMarkers();

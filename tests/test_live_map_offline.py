@@ -15,6 +15,7 @@ import pytest
 from scripts.generate_live_map import (
     IMAGERY_CONFIG,
     _HTML_TEMPLATE,
+    _camera_snapshot_url,
     _vars_by_interval,
     build_html,
 )
@@ -161,6 +162,19 @@ def test_build_html_survives_missing_imagery_config(offline_assets):
     html = build_html(meta, STATION_STUB, [])
     assert 'id="imagery-section"' in html
     assert '"imagery"' not in html.split("const SD =")[0].split("const MAP_META = ")[1]
+
+
+# ── live cameras ─────────────────────────────────────────────────────────────
+
+def test_camera_snapshot_url_from_slider_page():
+    slider = ("https://pvs.nupointsystems.com/api/photo-slider-by-nsn"
+              "?pass=%F3uq%2C%F7#images-1")
+    assert _camera_snapshot_url(slider) == (
+        "https://pvs.nupointsystems.com/latest.php?pass=%F3uq%2C%F7")
+    latest = "https://pvs.nupointsystems.com/latest.php?pass=x"
+    assert _camera_snapshot_url(latest) == latest
+    assert _camera_snapshot_url("https://example.com/cam?pass=x") == ""
+    assert _camera_snapshot_url("") == ""
 
 
 # ── variable inventory grouping ──────────────────────────────────────────────
