@@ -1,9 +1,10 @@
 # Archive storage: how it works today, and a proposal to change it
 
-Status: **step 1 of 4 implemented 2026-09-22** — the Zarr stores are built
-and published in the Pages artefact (§3 below has the sequence and what is
-still open). Written 2026-09-17, while folding `clients/` into
-[easysnowdata](https://github.com/egagli/easysnowdata).
+Status: **all four steps of §3 implemented, 2026-09-22–23** — the Zarr stores
+are built and published in the Pages artefact, the bundle is a release asset,
+and it was purged from history (§3 has the sequence; §4 what is still open). Written 2026-09-17, while the clients were moving to
+[easysnowdata](https://github.com/egagli/easysnowdata) (done since; see
+[`EASYSNOWDATA_MIGRATION.md`](EASYSNOWDATA_MIGRATION.md)).
 
 This describes how the daily archive is built and published today, what that
 costs, and a proposal to publish it as a chunked store instead. Nothing here
