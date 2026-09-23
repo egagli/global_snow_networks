@@ -23,6 +23,8 @@ live_swe_map.html
 charts/
 .cache/
 _site/
+# The CSV bundle: a release asset since 2026-09 (docs/STORAGE.md §3), not a tracked file
+data/all_station_csvs.tar.xz
 
 # Local run logs and atomic-write temporaries
 *_run.log

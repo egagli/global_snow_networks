@@ -1,11 +1,12 @@
 name: Release Snapshot
 
-# A citable snapshot of the archive, a few times a year, on a version tag
-# (docs/STORAGE.md §2.3). Pushing a tag like `v2026.10` does two things:
+# A citable snapshot of the archive, monthly and on demand, on a version tag
+# (docs/STORAGE.md §2.3). A snapshot does two things:
 #
-#  1. This workflow builds the chunked archive from the tagged CSVs and
-#     attaches it, zipped, to a GitHub Release for that tag, alongside the
-#     tarball and inventory that are already in the tree.
+#  1. This workflow builds the chunked archive and the CSV bundle from the
+#     tagged CSVs and attaches them to a GitHub Release for that tag,
+#     alongside the inventory. The bundle is attached under a fixed name
+#     too, so the latest release's `all_station_csvs.tar.xz` is a stable URL.
 #  2. If the repository's Zenodo–GitHub integration is switched on, Zenodo
 #     archives the tagged source tree — the inventory and every station CSV
 #     — and mints a version DOI under the concept DOI. That is the citable
@@ -16,12 +17,18 @@ name: Release Snapshot
 # immutable and file-count-capped, which suits a periodic snapshot and not
 # a daily rewrite.
 #
-# Two ways to start it: push a `v*` tag, or run it by hand with the tag name
-# and a target (a branch or commit), in which case `gh release create` makes
-# the tag at that target. The manual path exists because some environments
-# may push branches but not tags.
+# Three ways to start it: the monthly schedule (the 1st, after that day's
+# refresh has finished, tag `vYYYY.MM.DD`), a pushed `v*` tag, or by hand
+# with a tag name and a target (a branch or commit). In the last two cases
+# `gh release create` makes the tag at the target when it does not exist.
+# The manual path exists because some environments may push branches but
+# not tags; the schedule exists so a version DOI is never more than a month
+# old (weekly was considered and rejected: each Zenodo version is a full
+# ~105 MB copy of the tree, and nothing needs a snapshot that often).
 
 on:
+  schedule:
+    - cron: "30 9 1 * *"
   push:
     tags:
       - "v*"
@@ -52,15 +59,34 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
-      - name: Build Zarr archive from the tagged CSVs
-        run: pixi run zarr-archive
-
-      - name: Package release assets
+      - name: Decide the tag
         env:
           TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          tag="${TAG_INPUT:-$GITHUB_REF_NAME}"
+          if [ -n "${TAG_INPUT:-}" ]; then
+            tag="$TAG_INPUT"                       # by hand
+          elif [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            tag="v$(date -u +%Y.%m.%d)"            # monthly
+          else
+            tag="$GITHUB_REF_NAME"                 # a pushed tag
+          fi
+          echo "tag=$tag" >> "$GITHUB_ENV"
+          echo "Snapshot tag: $tag"
+
+      - name: Build Zarr archive from the tagged CSVs
+        run: pixi run zarr-archive
+
+      # The bundle is no longer committed (docs/STORAGE.md §3 step 3); it
+      # is built here from the same CSVs and attached twice: once under a
+      # fixed name, so `releases/latest/download/all_station_csvs.tar.xz`
+      # always resolves (easysnowdata's fallback route), once tag-suffixed.
+      - name: Bundle the CSVs
+        run: pixi run build-archive
+
+      - name: Package release assets
+        run: |
+          set -euo pipefail
           mkdir -p release
           # One zip per chunk layout, plus the manifest. A zip (not tar.xz)
           # so the store can still be opened in place over HTTP if wanted;
@@ -69,16 +95,15 @@ jobs:
           (cd _site/archive && zip -qr "../../release/by_station.zarr-${tag}.zip" by_station.zarr archive.json)
           cp _site/archive/archive.json "release/archive-${tag}.json"
           cp all_snow_stations.geojson "release/all_snow_stations-${tag}.geojson"
-          cp data/all_station_csvs.tar.xz "release/all_station_csvs-${tag}.tar.xz"
+          cp _site/all_station_csvs.tar.xz "release/all_station_csvs-${tag}.tar.xz"
+          cp _site/all_station_csvs.tar.xz "release/all_station_csvs.tar.xz"
           ls -la release
 
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          tag="${TAG_INPUT:-$GITHUB_REF_NAME}"
           target="$(git rev-parse HEAD)"
           notes="Snapshot of the station inventory and daily archive at ${tag}"
           notes="${notes} (commit ${target}). The inventory and every station CSV are"

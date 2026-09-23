@@ -19,7 +19,10 @@ storage strategy is CSV-first:
   `daily_or_better` marking the probe-verified daily subset
 - one CSV time-series file per daily-or-better station
   (`data/stations/*.csv`)
-- a compressed bundle for bulk transfer (`data/all_station_csvs.tar.xz`)
+- the same observations as chunked Zarr stores on the GitHub Pages site,
+  for partial reads over HTTP (§5.4)
+- a compressed bundle of the CSVs on each snapshot release, with a Zenodo
+  DOI (§5.3)
 
 This design favors transparency, interoperability, and easy downstream use in
 Python, R, GIS tools, and command-line workflows.
@@ -69,8 +72,7 @@ global_snow_networks/
 │
 ├── data/
 │   ├── inventories/*_stations.geojson     # Per-client full inventories (generated)
-│   ├── stations/*.csv                     # One CSV per daily-or-better station
-│   └── all_station_csvs.tar.xz            # Bulk archive of all station CSVs
+│   └── stations/*.csv                     # One CSV per daily-or-better station
 │
 ├── tests/                                 # Offline unit + contract tests (the live ones moved with the clients)
 └── .github/workflows/
@@ -174,7 +176,8 @@ What it does:
    `daily_verified`, and the record-date fields — sporadic manual
    readings never masquerade as daily stations (DESIGN.md §4).
    Inactive stations with a regular historical record stay archived.
-5. Writes `data/all_station_csvs.tar.xz`.
+5. Bundles the CSVs into `_site/all_station_csvs.tar.xz` (not committed;
+   the snapshot release attaches the same bundle, see §5.3).
 
 For stations with **no native daily series**, `--resample-probe` fetches
 their sub-daily record and resamples to daily means over the
@@ -349,11 +352,20 @@ Notes:
 - Data flags are not stored in CSVs.  Use the respective client's
   `get_data(include_flags=True)` for flag information.
 
-### 5.3 Bulk Archive: `data/all_station_csvs.tar.xz`
+### 5.3 Bulk Archive: `all_station_csvs.tar.xz` on each snapshot release
 
-All station CSVs are bundled under `stations/` for single-file distribution.
-Reading anything from it costs the whole file (~27 MB): tar has no usable
-random access and xz is one solid stream.  For partial reads use §5.4.
+All station CSVs bundled under `stations/`, attached to every `v*` release
+under a fixed name and a tag-suffixed one, so
+`https://github.com/egagli/global_snow_networks/releases/latest/download/all_station_csvs.tar.xz`
+always resolves to the newest snapshot.  Each release is also archived on
+Zenodo with a version DOI (§11), which makes this the route for a result
+that should cite a fixed snapshot.  It is a snapshot, a few times a year,
+not the daily archive; reading anything from it costs the whole file
+(~27 MB).  For the daily archive and partial reads use §5.4.
+
+Until 2026-09-22 the bundle was committed on `main` after every daily
+refresh, which had grown `.git` to several gigabytes; that file is gone.
+easysnowdata ≤ 0.3.1 read it and must upgrade to 0.3.2 or later.
 
 ### 5.4 Chunked Archive (Zarr) on GitHub Pages
 
@@ -943,13 +955,15 @@ df = pd.read_csv("data/stations/303_CO_SNTL.csv", parse_dates=["date"])
 print(df[["wteq_cm", "snwd_cm"]].describe())
 ```
 
-### 8.4 Load bulk archive
+### 8.4 Load the snapshot bundle
 
-For partial reads over HTTP prefer the chunked store (§5.4); this route
-downloads the whole tarball.
+For the daily archive and partial reads prefer the chunked store (§5.4);
+this route downloads the whole bundle of the latest snapshot release.
 
 ```bash
-tar -xJf data/all_station_csvs.tar.xz -C /tmp
+curl -sSL -o all_station_csvs.tar.xz \
+  https://github.com/egagli/global_snow_networks/releases/latest/download/all_station_csvs.tar.xz
+tar -xJf all_station_csvs.tar.xz -C /tmp
 ls /tmp/stations | head
 ```
 

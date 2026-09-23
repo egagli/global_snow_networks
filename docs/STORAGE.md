@@ -170,15 +170,31 @@ that a Zarr store is not wasted work, since Icechunk stores Zarr.
    record 0.5 MB, store open 0.14 MB, each store ~17 MB on disk. Format 3
    with consolidated metadata, accepted with its "not in the v3 spec" warning
    because a static host cannot list a directory.
-2. ⬜ **`easysnowdata.stations.archive`: add the Pages store as a source**, and
-   make it the default for `load()`, keeping `github-tarball` and
-   `github-csv` so old pins keep working. Until this is released, the
-   tarball must keep being committed: current easysnowdata pins fetch it
-   from the `main` branch.
-3. ⬜ **Stop committing `data/all_station_csvs.tar.xz`** once step 2 is on
-   PyPI and conda-forge — build it into the Pages artefact instead if a
-   single-file download is still wanted. A history rewrite to reclaim the
-   blobs is disruptive and a separate, deliberate decision.
+2. ✅ **`easysnowdata.stations.archive` reads the Pages store by default
+   (0.3.1, 2026-09-22)**, choosing the layout from the request and falling
+   back to the bundle with a warning when the store cannot be read;
+   `github-tarball` and `github-csv` remain as named sources.
+3. ✅ **Stop committing `data/all_station_csvs.tar.xz` (done 2026-09-22).**
+   The bundle is a release asset now: `release-snapshot.yml` builds it from
+   the tagged CSVs (`pixi run build-archive`) and attaches it under a fixed
+   name, so `releases/latest/download/all_station_csvs.tar.xz` always
+   resolves, and tag-suffixed. The daily refresh still builds it, into the
+   ignored `_site/`, and commits only `data/stations/`, `data/inventories/`
+   and the inventory. Why a release asset and not the Pages artefact: the
+   bundle is easysnowdata's fallback for when the Pages store cannot be
+   read, and a copy on Pages would go down with the store; Releases are
+   served from elsewhere. The cost is that the fallback is a snapshot,
+   possibly months behind, which easysnowdata ≥ 0.3.2 says in its warning
+   and records in the result's `snapshot_tag`. easysnowdata ≤ 0.3.1 read
+   the committed file and must upgrade. **History rewrite: decided
+   2026-09-23.** `.github/workflows/rewrite-history.yml` purges the path
+   from every commit with git-filter-repo and force-pushes branches and
+   tags from an Actions runner (run by hand, with a typed confirmation).
+   Every SHA changes and clones must be re-cloned; tags move with their
+   commits, so the releases and Zenodo deposits are unaffected. GitHub shows
+   the smaller size only after Support runs garbage collection. SHAs quoted
+   in this file and in release notes from before the rewrite are of the old
+   history.
 4. ✅ **Snapshots on a tag (done 2026-09-22).** `release-snapshot.yml` runs on
    a `v*` tag, or by hand with a tag name and target: it builds the stores,
    zips them and attaches them, the inventory and the tarball to a GitHub
@@ -188,7 +204,12 @@ that a Zarr store is not wasted work, since Icechunk stores Zarr.
    carries. First snapshot: `v2026.09.22` at `85f4bfc`, version DOI
    10.5281/zenodo.22904254. The Zarr zips on the release are a convenience
    rebuildable from the deposit. The daily refresh is deliberately not a
-   release.
+   release. **Cadence (decided 2026-09-23): monthly**, on the 1st at 09:30
+   UTC by schedule (tag `vYYYY.MM.DD`), plus on demand — by hand from the
+   Actions tab, or by pushing a `v*` tag — whenever a paper needs a DOI at
+   submission. Weekly was considered and rejected: each Zenodo version is a
+   full ~105 MB copy of the tree, so weekly would deposit ~5.5 GB and mint
+   52 DOIs a year for a fallback that is only read while Pages is down.
 
 Also decided along the way, from the best-practices notes: Icechunk cannot be
 served from Pages (its backends are local disk, S3-compatible, GCS and Azure;
