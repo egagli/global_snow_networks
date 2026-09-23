@@ -197,7 +197,12 @@ that a Zarr store is not wasted work, since Icechunk stores Zarr.
    carries. First snapshot: `v2026.09.22` at `85f4bfc`, version DOI
    10.5281/zenodo.22904254. The Zarr zips on the release are a convenience
    rebuildable from the deposit. The daily refresh is deliberately not a
-   release.
+   release. **Cadence (decided 2026-09-23): monthly**, on the 1st at 09:30
+   UTC by schedule (tag `vYYYY.MM.DD`), plus on demand — by hand from the
+   Actions tab, or by pushing a `v*` tag — whenever a paper needs a DOI at
+   submission. Weekly was considered and rejected: each Zenodo version is a
+   full ~105 MB copy of the tree, so weekly would deposit ~5.5 GB and mint
+   52 DOIs a year for a fallback that is only read while Pages is down.
 
 Also decided along the way, from the best-practices notes: Icechunk cannot be
 served from Pages (its backends are local disk, S3-compatible, GCS and Azure;

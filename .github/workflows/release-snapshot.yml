@@ -1,7 +1,7 @@
 name: Release Snapshot
 
-# A citable snapshot of the archive, a few times a year, on a version tag
-# (docs/STORAGE.md §2.3). Pushing a tag like `v2026.10` does two things:
+# A citable snapshot of the archive, monthly and on demand, on a version tag
+# (docs/STORAGE.md §2.3). A snapshot does two things:
 #
 #  1. This workflow builds the chunked archive and the CSV bundle from the
 #     tagged CSVs and attaches them to a GitHub Release for that tag,
@@ -17,12 +17,18 @@ name: Release Snapshot
 # immutable and file-count-capped, which suits a periodic snapshot and not
 # a daily rewrite.
 #
-# Two ways to start it: push a `v*` tag, or run it by hand with the tag name
-# and a target (a branch or commit), in which case `gh release create` makes
-# the tag at that target. The manual path exists because some environments
-# may push branches but not tags.
+# Three ways to start it: the monthly schedule (the 1st, after that day's
+# refresh has finished, tag `vYYYY.MM.DD`), a pushed `v*` tag, or by hand
+# with a tag name and a target (a branch or commit). In the last two cases
+# `gh release create` makes the tag at the target when it does not exist.
+# The manual path exists because some environments may push branches but
+# not tags; the schedule exists so a version DOI is never more than a month
+# old (weekly was considered and rejected: each Zenodo version is a full
+# ~105 MB copy of the tree, and nothing needs a snapshot that often).
 
 on:
+  schedule:
+    - cron: "30 9 1 * *"
   push:
     tags:
       - "v*"
@@ -53,6 +59,21 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
+      - name: Decide the tag
+        env:
+          TAG_INPUT: ${{ inputs.tag }}
+        run: |
+          set -euo pipefail
+          if [ -n "${TAG_INPUT:-}" ]; then
+            tag="$TAG_INPUT"                       # by hand
+          elif [ "$GITHUB_EVENT_NAME" = "schedule" ]; then
+            tag="v$(date -u +%Y.%m.%d)"            # monthly
+          else
+            tag="$GITHUB_REF_NAME"                 # a pushed tag
+          fi
+          echo "tag=$tag" >> "$GITHUB_ENV"
+          echo "Snapshot tag: $tag"
+
       - name: Build Zarr archive from the tagged CSVs
         run: pixi run zarr-archive
 
@@ -64,11 +85,8 @@ jobs:
         run: pixi run build-archive
 
       - name: Package release assets
-        env:
-          TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          tag="${TAG_INPUT:-$GITHUB_REF_NAME}"
           mkdir -p release
           # One zip per chunk layout, plus the manifest. A zip (not tar.xz)
           # so the store can still be opened in place over HTTP if wanted;
@@ -84,10 +102,8 @@ jobs:
       - name: Create GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
-          TAG_INPUT: ${{ inputs.tag }}
         run: |
           set -euo pipefail
-          tag="${TAG_INPUT:-$GITHUB_REF_NAME}"
           target="$(git rev-parse HEAD)"
           notes="Snapshot of the station inventory and daily archive at ${tag}"
           notes="${notes} (commit ${target}). The inventory and every station CSV are"
