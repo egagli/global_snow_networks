@@ -186,8 +186,15 @@ that a Zarr store is not wasted work, since Icechunk stores Zarr.
    served from elsewhere. The cost is that the fallback is a snapshot,
    possibly months behind, which easysnowdata ≥ 0.3.2 says in its warning
    and records in the result's `snapshot_tag`. easysnowdata ≤ 0.3.1 read
-   the committed file and must upgrade. A history rewrite to reclaim the
-   old blobs is disruptive and a separate, deliberate decision.
+   the committed file and must upgrade. **History rewrite: decided
+   2026-09-23.** `.github/workflows/rewrite-history.yml` purges the path
+   from every commit with git-filter-repo and force-pushes branches and
+   tags from an Actions runner (run by hand, with a typed confirmation).
+   Every SHA changes and clones must be re-cloned; tags move with their
+   commits, so the releases and Zenodo deposits are unaffected. GitHub shows
+   the smaller size only after Support runs garbage collection. SHAs quoted
+   in this file and in release notes from before the rewrite are of the old
+   history.
 4. ✅ **Snapshots on a tag (done 2026-09-22).** `release-snapshot.yml` runs on
    a `v*` tag, or by hand with a tag name and target: it builds the stores,
    zips them and attaches them, the inventory and the tarball to a GitHub
