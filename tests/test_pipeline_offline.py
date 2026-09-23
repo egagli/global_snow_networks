@@ -19,6 +19,7 @@ from scripts.create_all_stations_geojson import (
     annotate_possible_duplicates,
     borrow_operators_from_twins,
     carry_forward_record_dates,
+    databc_station_to_feature,
     drop_invalid_coordinates,
     make_feature,
     normalize_operator,
@@ -344,3 +345,23 @@ def test_upgrade_legacy_feature():
     assert "Operator" not in p and "dailySWE" not in p
     # universal fields materialized
     assert "station_camera_url" in p
+
+
+def test_databc_camera_never_fills_the_photo_slot():
+    """A live-camera snapshot is not a site photo (1C38P had no AQRT photo)."""
+    cam = "https://pvs.nupointsystems.com/latest.php?pass=abc"
+    base = {"station_type": "ASWS", "latitude": 50.0, "longitude": -120.0,
+            "status": "Active", "camera_url": cam}
+    no_photo = databc_station_to_feature({**base, "location_id": "9Z99P"})
+    p = no_photo["properties"]
+    assert p["station_image_url"] is None
+    assert p["station_camera_url"] == cam
+
+    photo = "https://bcmoe-prod.aquaticinformatics.net/Data/GetFileById/1"
+    with_photo = databc_station_to_feature(
+        {**base, "location_id": "9Z99P", "station_image_url": photo})
+    assert with_photo["properties"]["station_image_url"] == photo
+
+    # The tabled photo-slider page wins over the bare WFS snapshot as the link.
+    tabled = databc_station_to_feature({**base, "location_id": "1C38P"})
+    assert "photo-slider" in tabled["properties"]["station_camera_url"]

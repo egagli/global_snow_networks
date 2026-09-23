@@ -1107,11 +1107,15 @@ def databc_station_to_feature(station: dict) -> dict:
         "status": station.get("status") or None,
         "is_active": str(station.get("status", "")).lower() == "active",
         "station_url": station.get("station_url") or None,
+        # The photo slot holds the AQRT site photo only.  The WFS
+        # CAMERA_URL is a live snapshot, so it belongs with the camera,
+        # never in place of a missing photo.
         "station_image_url": (
-            station.get("station_image_url") or station.get("camera_url")
-            if stype == "ASWS" else None
+            station.get("station_image_url") if stype == "ASWS" else None
         ),
-        "station_camera_url": BC_CAMERA_URLS.get(loc_id),
+        "station_camera_url": (
+            BC_CAMERA_URLS.get(loc_id) or station.get("camera_url") or None
+        ),
         "metadata_fetched_at": date.today().isoformat(),
     }
     props.update(_daily_candidate_props(_databc_data_variables(station)))
