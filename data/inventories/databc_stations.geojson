@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-10-03",
+    "generated": "2026-10-04",
     "source": "BC Data Catalogue \u2014 BC Ministry of Environment (BC OpenMaps WFS)",
     "client": "databc",
     "description": "All BC snow survey stations: ASWS (automated, daily SWE) and MSS (manual snow courses, periodic). Only ASWS stations appear in all_snow_stations.geojson.",
@@ -156,7 +156,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -308,7 +308,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -460,7 +460,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -612,7 +612,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -764,7 +764,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -916,7 +916,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1068,7 +1068,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1220,7 +1220,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1372,7 +1372,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1524,7 +1524,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1676,7 +1676,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1828,7 +1828,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -1980,7 +1980,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -2132,7 +2132,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -2284,7 +2284,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -2436,7 +2436,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -2588,7 +2588,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -2740,7 +2740,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -2892,7 +2892,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3044,7 +3044,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3196,7 +3196,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3348,7 +3348,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3500,7 +3500,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3652,7 +3652,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3804,7 +3804,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -3956,7 +3956,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -4108,7 +4108,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -4260,7 +4260,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -4412,7 +4412,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -4564,7 +4564,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -4716,7 +4716,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -4868,7 +4868,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5020,7 +5020,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5172,7 +5172,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5324,7 +5324,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5476,7 +5476,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5628,7 +5628,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5780,7 +5780,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -5932,7 +5932,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6084,7 +6084,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6236,7 +6236,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6388,7 +6388,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6540,7 +6540,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6692,7 +6692,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6844,7 +6844,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -6996,7 +6996,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -7148,7 +7148,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -7300,7 +7300,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -7452,7 +7452,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -7604,7 +7604,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -7756,7 +7756,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -7908,7 +7908,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8060,7 +8060,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8212,7 +8212,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8364,7 +8364,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8516,7 +8516,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8668,7 +8668,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8820,7 +8820,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -8972,7 +8972,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -9124,7 +9124,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -9276,7 +9276,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -9428,7 +9428,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -9580,7 +9580,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -9732,7 +9732,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -9884,7 +9884,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10036,7 +10036,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10188,7 +10188,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10340,7 +10340,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10492,7 +10492,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10644,7 +10644,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10796,7 +10796,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -10948,7 +10948,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -11100,7 +11100,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -11252,7 +11252,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -11404,7 +11404,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -11556,7 +11556,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -11708,7 +11708,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -11860,7 +11860,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12012,7 +12012,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12164,7 +12164,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12316,7 +12316,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12468,7 +12468,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12620,7 +12620,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12772,7 +12772,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -12924,7 +12924,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13076,7 +13076,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13228,7 +13228,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13380,7 +13380,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13532,7 +13532,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13684,7 +13684,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13836,7 +13836,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -13988,7 +13988,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -14140,7 +14140,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -14292,7 +14292,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -14444,7 +14444,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -14596,7 +14596,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -14748,7 +14748,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -14900,7 +14900,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15052,7 +15052,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15204,7 +15204,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15356,7 +15356,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15508,7 +15508,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15660,7 +15660,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15812,7 +15812,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -15964,7 +15964,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -16116,7 +16116,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -16268,7 +16268,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -16420,7 +16420,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -16572,7 +16572,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -16724,7 +16724,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -16876,7 +16876,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17028,7 +17028,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17180,7 +17180,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17332,7 +17332,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17484,7 +17484,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17636,7 +17636,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17788,7 +17788,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -17940,7 +17940,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -18092,7 +18092,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -18244,7 +18244,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -18396,7 +18396,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -18548,7 +18548,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -18700,7 +18700,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -18852,7 +18852,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19004,7 +19004,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19156,7 +19156,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19308,7 +19308,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19460,7 +19460,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19612,7 +19612,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19764,7 +19764,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -19916,7 +19916,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20068,7 +20068,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20220,7 +20220,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20372,7 +20372,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20524,7 +20524,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20676,7 +20676,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20828,7 +20828,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -20980,7 +20980,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -21132,7 +21132,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -21284,7 +21284,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -21436,7 +21436,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -21588,7 +21588,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -21740,7 +21740,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -21892,7 +21892,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22044,7 +22044,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22196,7 +22196,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22348,7 +22348,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22500,7 +22500,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22652,7 +22652,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22804,7 +22804,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -22956,7 +22956,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -23108,7 +23108,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -23260,7 +23260,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -23412,7 +23412,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -23564,7 +23564,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -23716,7 +23716,7 @@
         "daily_verified": false,
         "daily_provenance": "native",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "ASWS"
       }
     },
@@ -23802,7 +23802,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -23888,7 +23888,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -23974,7 +23974,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24060,7 +24060,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24146,7 +24146,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24232,7 +24232,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24318,7 +24318,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24404,7 +24404,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24490,7 +24490,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24576,7 +24576,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24662,7 +24662,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24748,7 +24748,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24834,7 +24834,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -24920,7 +24920,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25006,7 +25006,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25092,7 +25092,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25178,7 +25178,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25264,7 +25264,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25350,7 +25350,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25436,7 +25436,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25522,7 +25522,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25608,7 +25608,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25694,7 +25694,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25780,7 +25780,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25866,7 +25866,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -25952,7 +25952,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26038,7 +26038,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26124,7 +26124,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26210,7 +26210,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26296,7 +26296,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26382,7 +26382,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26468,7 +26468,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26554,7 +26554,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26640,7 +26640,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26726,7 +26726,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26812,7 +26812,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26898,7 +26898,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -26984,7 +26984,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27070,7 +27070,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27156,7 +27156,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27242,7 +27242,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27328,7 +27328,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27414,7 +27414,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27500,7 +27500,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27586,7 +27586,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27672,7 +27672,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27758,7 +27758,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27844,7 +27844,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -27930,7 +27930,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28016,7 +28016,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28102,7 +28102,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28188,7 +28188,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28274,7 +28274,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28360,7 +28360,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28446,7 +28446,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28532,7 +28532,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28618,7 +28618,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28704,7 +28704,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28790,7 +28790,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28876,7 +28876,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -28962,7 +28962,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29048,7 +29048,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29134,7 +29134,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29220,7 +29220,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29306,7 +29306,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29392,7 +29392,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29478,7 +29478,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29564,7 +29564,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29650,7 +29650,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29736,7 +29736,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29822,7 +29822,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29908,7 +29908,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -29994,7 +29994,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30080,7 +30080,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30166,7 +30166,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30252,7 +30252,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30338,7 +30338,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30424,7 +30424,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30510,7 +30510,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30596,7 +30596,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30682,7 +30682,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30768,7 +30768,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30854,7 +30854,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -30940,7 +30940,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31026,7 +31026,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31112,7 +31112,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31198,7 +31198,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31284,7 +31284,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31370,7 +31370,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31456,7 +31456,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31542,7 +31542,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31628,7 +31628,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31714,7 +31714,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31800,7 +31800,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31886,7 +31886,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -31972,7 +31972,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32058,7 +32058,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32144,7 +32144,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32230,7 +32230,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32316,7 +32316,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32402,7 +32402,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32488,7 +32488,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32574,7 +32574,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32660,7 +32660,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32746,7 +32746,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32832,7 +32832,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -32918,7 +32918,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33004,7 +33004,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33090,7 +33090,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33176,7 +33176,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33262,7 +33262,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33348,7 +33348,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33434,7 +33434,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33520,7 +33520,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33606,7 +33606,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33692,7 +33692,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33778,7 +33778,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33864,7 +33864,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -33950,7 +33950,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34036,7 +34036,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34122,7 +34122,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34208,7 +34208,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34294,7 +34294,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34380,7 +34380,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34466,7 +34466,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34552,7 +34552,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34638,7 +34638,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34724,7 +34724,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34810,7 +34810,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34896,7 +34896,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -34982,7 +34982,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35068,7 +35068,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35154,7 +35154,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35240,7 +35240,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35326,7 +35326,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35412,7 +35412,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35498,7 +35498,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35584,7 +35584,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35670,7 +35670,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35756,7 +35756,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35842,7 +35842,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -35928,7 +35928,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36014,7 +36014,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36100,7 +36100,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36186,7 +36186,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36272,7 +36272,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36358,7 +36358,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36444,7 +36444,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36530,7 +36530,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36616,7 +36616,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36702,7 +36702,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36788,7 +36788,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36874,7 +36874,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -36960,7 +36960,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37046,7 +37046,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37132,7 +37132,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37218,7 +37218,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37304,7 +37304,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37390,7 +37390,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37476,7 +37476,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37562,7 +37562,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37648,7 +37648,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37734,7 +37734,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37820,7 +37820,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37906,7 +37906,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -37992,7 +37992,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38078,7 +38078,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38164,7 +38164,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38250,7 +38250,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38336,7 +38336,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38422,7 +38422,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38508,7 +38508,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38594,7 +38594,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38680,7 +38680,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38766,7 +38766,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38852,7 +38852,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -38938,7 +38938,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39024,7 +39024,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39110,7 +39110,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39196,7 +39196,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39282,7 +39282,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39368,7 +39368,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39454,7 +39454,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39540,7 +39540,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39626,7 +39626,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39712,7 +39712,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39798,7 +39798,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39884,7 +39884,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -39970,7 +39970,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40056,7 +40056,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40142,7 +40142,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40228,7 +40228,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40314,7 +40314,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40400,7 +40400,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40486,7 +40486,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40572,7 +40572,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40658,7 +40658,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40744,7 +40744,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40830,7 +40830,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -40916,7 +40916,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41002,7 +41002,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41088,7 +41088,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41174,7 +41174,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41260,7 +41260,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41346,7 +41346,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41432,7 +41432,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41518,7 +41518,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41604,7 +41604,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41690,7 +41690,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41776,7 +41776,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41862,7 +41862,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -41948,7 +41948,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42034,7 +42034,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42120,7 +42120,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42206,7 +42206,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42292,7 +42292,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42378,7 +42378,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42464,7 +42464,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42550,7 +42550,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42636,7 +42636,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42722,7 +42722,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42808,7 +42808,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42894,7 +42894,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -42980,7 +42980,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43066,7 +43066,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43152,7 +43152,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43238,7 +43238,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43324,7 +43324,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43410,7 +43410,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43496,7 +43496,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43582,7 +43582,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43668,7 +43668,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43754,7 +43754,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43840,7 +43840,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -43926,7 +43926,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44012,7 +44012,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44098,7 +44098,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44184,7 +44184,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44270,7 +44270,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44356,7 +44356,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44442,7 +44442,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44528,7 +44528,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44614,7 +44614,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44700,7 +44700,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44786,7 +44786,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44872,7 +44872,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -44958,7 +44958,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45044,7 +45044,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45130,7 +45130,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45216,7 +45216,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45302,7 +45302,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45388,7 +45388,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45474,7 +45474,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45560,7 +45560,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45646,7 +45646,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45732,7 +45732,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45818,7 +45818,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45904,7 +45904,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -45990,7 +45990,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46076,7 +46076,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46162,7 +46162,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46248,7 +46248,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46334,7 +46334,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46420,7 +46420,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46506,7 +46506,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46592,7 +46592,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46678,7 +46678,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46764,7 +46764,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46850,7 +46850,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -46936,7 +46936,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47022,7 +47022,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47108,7 +47108,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47194,7 +47194,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47280,7 +47280,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47366,7 +47366,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47452,7 +47452,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47538,7 +47538,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47624,7 +47624,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47710,7 +47710,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47796,7 +47796,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47882,7 +47882,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -47968,7 +47968,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48054,7 +48054,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48140,7 +48140,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48226,7 +48226,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48312,7 +48312,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48398,7 +48398,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48484,7 +48484,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48570,7 +48570,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48656,7 +48656,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48742,7 +48742,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48828,7 +48828,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -48914,7 +48914,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49000,7 +49000,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49086,7 +49086,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49172,7 +49172,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49258,7 +49258,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49344,7 +49344,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49430,7 +49430,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49516,7 +49516,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49602,7 +49602,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49688,7 +49688,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49774,7 +49774,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49860,7 +49860,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -49946,7 +49946,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50032,7 +50032,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50118,7 +50118,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50204,7 +50204,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50290,7 +50290,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50376,7 +50376,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50462,7 +50462,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50548,7 +50548,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50634,7 +50634,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50720,7 +50720,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50806,7 +50806,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50892,7 +50892,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -50978,7 +50978,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51064,7 +51064,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51150,7 +51150,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51236,7 +51236,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51322,7 +51322,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51408,7 +51408,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51494,7 +51494,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51580,7 +51580,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51666,7 +51666,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51752,7 +51752,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51838,7 +51838,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -51924,7 +51924,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52010,7 +52010,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52096,7 +52096,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52182,7 +52182,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52268,7 +52268,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52354,7 +52354,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52440,7 +52440,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52526,7 +52526,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52612,7 +52612,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52698,7 +52698,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52784,7 +52784,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52870,7 +52870,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -52956,7 +52956,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53042,7 +53042,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53128,7 +53128,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53214,7 +53214,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53300,7 +53300,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53386,7 +53386,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53472,7 +53472,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53558,7 +53558,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53644,7 +53644,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53730,7 +53730,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53816,7 +53816,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53902,7 +53902,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -53988,7 +53988,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54074,7 +54074,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54160,7 +54160,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54246,7 +54246,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54332,7 +54332,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54418,7 +54418,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54504,7 +54504,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54590,7 +54590,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54676,7 +54676,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54762,7 +54762,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54848,7 +54848,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -54934,7 +54934,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55020,7 +55020,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55106,7 +55106,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55192,7 +55192,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55278,7 +55278,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55364,7 +55364,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55450,7 +55450,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55536,7 +55536,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55622,7 +55622,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55708,7 +55708,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55794,7 +55794,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55880,7 +55880,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -55966,7 +55966,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56052,7 +56052,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56138,7 +56138,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56224,7 +56224,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56310,7 +56310,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56396,7 +56396,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56482,7 +56482,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56568,7 +56568,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56654,7 +56654,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56740,7 +56740,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56826,7 +56826,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56912,7 +56912,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -56998,7 +56998,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -57084,7 +57084,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -57170,7 +57170,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     },
@@ -57256,7 +57256,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-03",
+        "metadata_fetched_at": "2026-10-04",
         "station_type": "MSS"
       }
     }
