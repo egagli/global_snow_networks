@@ -619,8 +619,6 @@ select:focus{outline:none;border-color:#4af}
 #station-camera-title{font-size:12px;font-weight:650;color:#1a2a3a;margin-bottom:3px}
 #station-camera-img{width:auto;max-width:100%;height:220px;object-fit:contain;border-radius:4px;
                     border:1px solid #ccd;display:block}
-.cam-badge{position:absolute;top:-6px;right:-7px;width:10px;height:8px;pointer-events:none}
-.cam-badge.sel{top:-5px;right:-8px;width:12px;height:10px}
 #network-legend .cam-note{display:flex;align-items:center;gap:6px;margin-top:5px;padding-top:4px;
                           border-top:1px solid #ddd;font-size:11px;color:#333}
 #station-camera-link a{color:#0b6bcb;text-decoration:none}
@@ -1164,118 +1162,152 @@ const map = L.map("map", {
   wheelPxPerZoomLevel: 120,
 });
 
+// ─── Station symbols (canvas) ─────────────────────────────────────────────────
+// Every station symbol is painted onto one shared <canvas> rather than being
+// its own DOM element. Thousands of divIcon markers made pan and zoom stutter:
+// the browser had to lay out, reposition and composite each one on every
+// frame. A canvas repaints them as a single image. `tolerance` widens the
+// hit area a little, since the symbols are only ~10 px across.
+//
+// Daily and periodic markers share this one renderer on purpose. Stacked
+// canvases each swallow the mouse events meant for the ones beneath, so a
+// second renderer for the periodic overlay would make whichever sits lower
+// unclickable. Draw order on a canvas is insertion order, which is why the
+// daily markers are raised whenever the periodic overlay is switched on.
+const stationRenderer = L.canvas({padding: 0.5, tolerance: 3});
 const markerLayer = L.layerGroup().addTo(map);
 const leafletMarkers = {};
 
-// ─── Build SVG icon ───────────────────────────────────────────────────────────
 // Tiny camera glyph pinned to a marker's top-right for live-camera sites.
+// The SVG string feeds the legend; the Path2D draws the same body on the map.
 const CAM_GLYPH = '<svg viewBox="0 0 12 10" xmlns="http://www.w3.org/2000/svg">'
   + '<path d="M1 2.5h2.4L4.4 1h3.2l1 1.5H11v6.5H1z" fill="#fff" stroke="#1a2a3a" stroke-width="1" stroke-linejoin="round"/>'
   + '<circle cx="6" cy="5.6" r="1.9" fill="#1a2a3a"/></svg>';
+const CAM_BODY = new Path2D("M1 2.5h2.4L4.4 1h3.2l1 1.5H11v6.5H1z");
 
-function camBadge(hasCam, isSelected) {
-  return hasCam ? `<span class="cam-badge${isSelected ? " sel" : ""}">${CAM_GLYPH}</span>` : "";
+function drawCamBadge(ctx, p, half, isSelected) {
+  // Glyph box (12x10 viewBox) sits just past the symbol's top-right corner.
+  const w = isSelected ? 12 : 10;
+  const x0 = p.x + half - (isSelected ? 4 : 3);
+  const y0 = p.y - half - (isSelected ? 5 : 6);
+  ctx.save();
+  ctx.translate(x0, y0);
+  ctx.scale(w / 12, w / 12);
+  ctx.globalAlpha = 1;
+  if (ctx.setLineDash) ctx.setLineDash([]);
+  ctx.fillStyle = "#fff";
+  ctx.strokeStyle = "#1a2a3a";
+  ctx.lineWidth = 1;
+  ctx.lineJoin = "round";
+  ctx.fill(CAM_BODY);
+  ctx.stroke(CAM_BODY);
+  ctx.beginPath();
+  ctx.arc(6, 5.6, 1.9, 0, Math.PI * 2);
+  ctx.fillStyle = "#1a2a3a";
+  ctx.fill();
+  ctx.restore();
 }
 
-function buildIcon(network, measurementType, color, isSelected, hasCam = false) {
-  const sz = isSelected ? 18 : 10;
-  const sw = isSelected ? 2.2 : 0.8;
-  const bc = isSelected ? "#000" : "rgba(0,0,0,0.35)";
-  const ring = isSelected
-    ? `<circle cx="${sz/2}" cy="${sz/2}" r="${sz/2 - 0.8}" fill="none" stroke="#fff" stroke-width="1.6"/>`
-    : "";
-  const cx = sz / 2;
-  const cy = sz / 2;
-  const r = sz / 2 - sw / 2;
+// Network -> [sides, rotation in degrees] for the regular-polygon symbols.
+// The legend's NET_SHAPES draws the same shapes as SVG.
+const NET_POLYGONS = {
+  SNTLT: [3, -90], CCSS: [3, 90], BCSS: [6, -90], SNOW: [4, -45],
+  MSNT: [5, -90], SCAN: [6, -90], NVE: [4, 0], YSS: [8, -90], YKEC: [3, 0],
+};
 
-  function regularPolygonPoints(sides, rotationDeg = -90) {
-    const pts = [];
+function stationShape(network, measurementType) {
+  if (NET_POLYGONS[network] || network === "MPRC" || network === "COOP") return network;
+  if (network === "SNTL") return "circle";
+  return measurementType === "manual" ? "MPRC" : "circle";
+}
+
+// Adds the outline of `shape` (centre x,y, radius r) to the current path.
+function traceShape(ctx, shape, x, y, r) {
+  const poly = NET_POLYGONS[shape];
+  if (poly) {
+    const [sides, rot] = poly;
     for (let i = 0; i < sides; i++) {
-      const a = ((rotationDeg + (360 * i) / sides) * Math.PI) / 180;
-      pts.push(`${(cx + r * Math.cos(a)).toFixed(2)},${(cy + r * Math.sin(a)).toFixed(2)}`);
+      const a = ((rot + (360 * i) / sides) * Math.PI) / 180;
+      const px = x + r * Math.cos(a), py = y + r * Math.sin(a);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
     }
-    return pts.join(" ");
+    ctx.closePath();
+  } else if (shape === "MPRC") {
+    ctx.rect(x - r, y - r, 2 * r, 2 * r);
+  } else if (shape === "COOP") {
+    // Plus sign, traced as one outline so the arms don't double-stroke.
+    const b = Math.max(0.6, r * 0.24);
+    const pts = [[-b,-r],[b,-r],[b,-b],[r,-b],[r,b],[b,b],[b,r],[-b,r],[-b,b],[-r,b],[-r,-b],[-b,-b]];
+    pts.forEach(([dx, dy], i) => i ? ctx.lineTo(x + dx, y + dy) : ctx.moveTo(x + dx, y + dy));
+    ctx.closePath();
+  } else {
+    ctx.arc(x, y, r, 0, Math.PI * 2);
   }
+}
 
-  let inner;
-  switch (network) {
-    case "SNTLT":
-      inner = `<polygon points="${regularPolygonPoints(3, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "CCSS":
-      inner = `<polygon points="${regularPolygonPoints(3, 90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "BCSS":
-      inner = `<polygon points="${regularPolygonPoints(6, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "MPRC":
-      inner = `<rect x="${sw/2}" y="${sw/2}" width="${sz-sw}" height="${sz-sw}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "SNOW":
-      inner = `<polygon points="${regularPolygonPoints(4, -45)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "MSNT":
-      inner = `<polygon points="${regularPolygonPoints(5, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "SCAN":
-      inner = `<polygon points="${regularPolygonPoints(6, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "COOP": {
-      const bar = Math.max(1.2, sz * 0.22);
-      inner = [
-        `<rect x="${(cx - bar / 2).toFixed(2)}" y="${(sw/2).toFixed(2)}" width="${bar.toFixed(2)}" height="${(sz - sw).toFixed(2)}" fill="${color}" stroke="${bc}" stroke-width="${(sw * 0.7).toFixed(2)}"/>`,
-        `<rect x="${(sw/2).toFixed(2)}" y="${(cy - bar / 2).toFixed(2)}" width="${(sz - sw).toFixed(2)}" height="${bar.toFixed(2)}" fill="${color}" stroke="${bc}" stroke-width="${(sw * 0.7).toFixed(2)}"/>`
-      ].join("");
-      break;
+// A CircleMarker (so Leaflet's canvas hit-testing, tooltips and popups all
+// work unchanged) that paints a network shape instead of a circle. Only ever
+// used with stationRenderer: _updatePath writes straight to its context.
+const StationMarker = L.CircleMarker.extend({
+  options: {shape: "circle", cam: false, selected: false},
+
+  _updateBounds() {
+    L.CircleMarker.prototype._updateBounds.call(this);
+    // The camera badge overhangs the symbol; widen the dirty rectangle so a
+    // partial repaint doesn't clip it. Hit-testing still uses the radius.
+    if (this.options.cam) {
+      const pad = L.point(9, 9);
+      this._pxBounds = L.bounds(this._pxBounds.min.subtract(pad), this._pxBounds.max.add(pad));
     }
-    case "SNTL":
-      inner = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "NVE":
-      inner = `<polygon points="${regularPolygonPoints(4, 0)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "YSS":
-      inner = `<polygon points="${regularPolygonPoints(8, -90)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    case "YKEC":
-      inner = `<polygon points="${regularPolygonPoints(3, 0)}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      break;
-    default:
-      if (measurementType === "manual") {
-        inner = `<rect x="${sw/2}" y="${sw/2}" width="${sz-sw}" height="${sz-sw}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      } else {
-        inner = `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${color}" stroke="${bc}" stroke-width="${sw}"/>`;
-      }
-      break;
-  }
-  return L.divIcon({
-    html: `<div style="position:relative;width:${sz}px;height:${sz}px">`
-      + `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="display:block">${ring}${inner}</svg>`
-      + camBadge(hasCam, isSelected) + `</div>`,
-    iconSize: [sz, sz],
-    iconAnchor: [sz/2, sz/2],
-    className: "",
-  });
+  },
+
+  _updatePath() {
+    const R = this._renderer;
+    if (!R._drawing || this._empty()) return;
+    const ctx = R._ctx, p = this._point, o = this.options;
+    const half = this._radius;
+    if (o.selected) {
+      // White halo so the selected station reads on any basemap.
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, half - 0.8, 0, Math.PI * 2);
+      if (ctx.setLineDash) ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 1.6;
+      ctx.strokeStyle = "#fff";
+      ctx.stroke();
+    }
+    ctx.beginPath();
+    traceShape(ctx, o.shape, p.x, p.y, half - (o.stroke ? o.weight / 2 : 0));
+    R._fillStroke(ctx, this);
+    if (o.cam) drawCamBadge(ctx, p, half, o.selected);
+  },
+});
+
+// Size and stroke of a daily station's symbol; colour comes from the data.
+function dailyStyle(color, isSelected) {
+  return {
+    radius: isSelected ? 9 : 5,
+    weight: isSelected ? 2.2 : 0.8,
+    color: isSelected ? "#000" : "rgba(0,0,0,0.35)",
+    opacity: 1,
+    fillColor: color,
+    fillOpacity: 1,
+    selected: isSelected,
+  };
+}
+
+// Keeps daily markers (and the selected one above them) drawn over the
+// periodic overlay, which is added to the same canvas later.
+function raiseDailyMarkers() {
+  markerLayer.eachLayer(m => m.bringToFront());
+  const sel = st.selectedCode && leafletMarkers[st.selectedCode];
+  if (sel && markerLayer.hasLayer(sel)) sel.bringToFront();
 }
 
 // ─── Periodic / non-daily point observations (toggle overlay) ────────────────
 const periodicMarkers = {};  // "client|code" -> marker
 const periodicLayer = L.layerGroup();
-
-function periodicIcon(isSelected, hasCam = false) {
-  const sz = isSelected ? 16 : 11;
-  const c = sz / 2;
-  return L.divIcon({
-    html: `<div style="position:relative;width:${sz}px;height:${sz}px">`
-      + `<svg width="${sz}" height="${sz}" viewBox="0 0 ${sz} ${sz}" style="display:block">`
-      + `<circle cx="${c}" cy="${c}" r="${c - 1.5}" fill="none" `
-      + `stroke="#555" stroke-width="1.6" stroke-dasharray="2.5,1.8"/></svg>`
-      + camBadge(hasCam, isSelected) + `</div>`,
-    iconSize: [sz, sz],
-    iconAnchor: [c, c],
-    className: "",
-  });
-}
+periodicLayer.on("add", raiseDailyMarkers);
 
 function periodicPopupHtml(s) {
   const rows = [];
@@ -1296,15 +1328,16 @@ function periodicPopupHtml(s) {
 
 function initPeriodicMarkers() {
   for (const s of PD) {
-    const m = L.marker([s.lat, s.lon], {
-      icon: periodicIcon(false, !!s.cam), zIndexOffset: 50,
+    const m = new StationMarker([s.lat, s.lon], {
+      renderer: stationRenderer, shape: "circle", cam: !!s.cam,
+      radius: 5.5, fill: false, color: "#555", weight: 1.6, dashArray: "2.5,1.8",
     });
     m.bindPopup(periodicPopupHtml(s), {maxWidth: 300});
     m.bindTooltip(
       `<b>${s.name}</b><br>Code: ${s.code}<br>`
       + `${NET_LABELS[s.net] || s.net} — periodic`
       + (s.cam ? "<br>🛰 live satellite camera" : ""),
-      {sticky: true, direction: "top"}
+      {direction: "top", offset: [0, -6]}
     );
     m.addTo(periodicLayer);
     periodicMarkers[`${s.cli}|${s.code}`] = m;
@@ -1349,15 +1382,16 @@ function initMarkers() {
     if (!st.visibleNetworks.has(s.net)) continue;
     const obs = getStationPct(code, st.dowy, st.wy, st.variable, st.ref);
     const color = markerColorForObs(obs);
-    const icon = buildIcon(s.net, s.mtype, color, false, !!s.cam);
-    const m = L.marker([s.lat, s.lon], {icon, zIndexOffset: 100})
-      .addTo(markerLayer);
+    const m = new StationMarker([s.lat, s.lon], {
+      renderer: stationRenderer, shape: stationShape(s.net, s.mtype), cam: !!s.cam,
+      ...dailyStyle(color, false),
+    }).addTo(markerLayer);
     m._stationCode = code;
 
     const varSummary = formatObsSummary(code, st.variable);
     m.bindTooltip(
       `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}${s.cam ? "<br>🛰 live satellite camera" : ""}`,
-      {sticky: true, direction: "top"}
+      {direction: "top", offset: [0, -6]}
     );
     m.on("click", () => onMarkerClick(code));
     leafletMarkers[code] = m;
@@ -1378,18 +1412,14 @@ function recolorAll() {
     const obs = getStationPct(code, st.dowy, st.wy, st.variable, st.ref);
     const isSelected = code === st.selectedCode;
     const color = markerColorForObs(obs);
-    m.setIcon(buildIcon(s.net, s.mtype, color, isSelected, !!s.cam));
+    m.setStyle(dailyStyle(color, isSelected));  // CircleMarker.setStyle applies radius too
 
     const varSummary = formatObsSummary(code, st.variable);
     m.setTooltipContent(
       `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}${s.cam ? "<br>🛰 live satellite camera" : ""}`
     );
 
-    if (isSelected) {
-      m.setZIndexOffset(1000);
-    } else {
-      m.setZIndexOffset(100);
-    }
+    if (isSelected) m.bringToFront();
   }
 }
 
