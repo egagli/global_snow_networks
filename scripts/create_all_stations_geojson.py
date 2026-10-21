@@ -71,6 +71,11 @@ from easysnowdata.stations.clients.nve.nve_client import (
     VARIABLES as NVE_VARIABLES,
     _PARAM_TO_VAR as _NVE_PARAM_TO_VAR,
 )
+from easysnowdata.stations.clients.slf import SLFClient
+from easysnowdata.stations.clients.slf.slf_client import (
+    DATASETS as SLF_DATASET_SPECS,
+    VARIABLES as SLF_VARIABLES,
+)
 from easysnowdata.stations.clients.yukon import YukonClient
 from easysnowdata.stations.clients.yukon.yukon_client import (
     VARIABLES as YUKON_VARIABLES,
@@ -98,6 +103,7 @@ NVE_GEOJSON_OUT = INVENTORY_DIR / "nve_stations.geojson"
 YUKON_GEOJSON_OUT = INVENTORY_DIR / "yukon_stations.geojson"
 HYDROQUEBEC_GEOJSON_OUT = INVENTORY_DIR / "hydroquebec_stations.geojson"
 ALBERTA_GEOJSON_OUT = INVENTORY_DIR / "alberta_stations.geojson"
+SLF_GEOJSON_OUT = INVENTORY_DIR / "slf_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -181,6 +187,7 @@ DATA_PROVIDERS: dict[str, str] = {
     "yukon": "Yukon Water Data (AquaCache)",
     "hydroquebec": "Hydro-Québec open data (CC BY-NC 4.0)",
     "alberta": "Alberta River Basins (AEPA)",
+    "slf": "WSL SLF (measurement-data.slf.ch, EnviDat)",
 }
 
 # Carried on every Alberta feature: the app states no licence, only a
@@ -545,6 +552,17 @@ def _haversine_m(lat1, lon1, lat2, lon2) -> float:
     return 2 * r * math.asin(math.sqrt(a))
 
 
+def _access_path(props: dict) -> tuple:
+    """What makes two features separate routes to a station (DESIGN.md §5).
+
+    Usually the client.  SLF serves several datasets through one client,
+    each with its own station ids — an IMIS station and a manual study plot
+    can stand on the same site (Weissfluhjoch WFJ2 / 5WJ0) — so for SLF the
+    dataset is part of the access path.
+    """
+    return props.get("client"), props.get("slf_dataset")
+
+
 def annotate_possible_duplicates(
     features: list[dict],
     near_m: float = 1000.0,
@@ -558,6 +576,8 @@ def annotate_possible_duplicates(
     are candidates when they are within ``near_m`` metres, or within
     ``name_match_m`` metres with the same case-folded name.  Each side
     gets a ``possible_duplicates`` list of ``{code, client, distance_m}``.
+    "Different clients" means different access paths (:func:`_access_path`),
+    so co-located SLF datasets are linked too.
     """
     # Grid-bucket at ~0.1° so only nearby pairs are compared
     cell = 0.1
@@ -582,7 +602,7 @@ def annotate_possible_duplicates(
                 if j <= i:
                     continue
                 pj = features[j]["properties"]
-                if pi.get("client") == pj.get("client"):
+                if _access_path(pi) == _access_path(pj):
                     continue
                 pair = (i, j)
                 if pair in seen_pairs:
@@ -1894,6 +1914,128 @@ def run_alberta_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── SLF workflow ──────────────────────────────────────────────────────────────
+
+# SLF datasets in the inventory, and the code prefix that keeps each
+# dataset's station ids globally unique (an IMIS id like "ADE2" is a
+# plausible code in another network).  IMIS and the study plots are daily
+# depth networks; GCOS is the biweekly manual SWE series at 11 study plots,
+# inventoried as periodic only.
+SLF_DATASETS: dict[str, str] = {
+    "imis": "SLF-IMIS-",
+    "study_plot": "SLF-SP-",
+    "gcos": "SLF-GCOS-",
+}
+SLF_ATTRIBUTION = (
+    "WSL Institute for Snow and Avalanche Research SLF (www.slf.ch), "
+    "CC BY 4.0"
+)
+
+
+def slf_code(dataset: str, station_id: str) -> str:
+    """The archive code for an SLF station: dataset prefix + SLF's id."""
+    return f"{SLF_DATASETS[dataset]}{station_id}"
+
+
+def _slf_data_variables(dataset: str) -> list[dict]:
+    """data_variables for an SLF station, from the dataset's variable table.
+
+    SLF publishes one table per dataset, not per station, and no period of
+    record per series, so the per-variable dates are null.  Each variable
+    is listed at its native cadence (the first interval the client lists).
+    """
+    dvars: list[dict] = []
+    for name, spec in SLF_DATASET_SPECS[dataset]["variables"].items():
+        vinfo = SLF_VARIABLES[name]
+        dvars.append({
+            "name": name,
+            "type": vinfo["type"],
+            "interval": spec["intervals"][0],
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": vinfo["notes"],
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
+        })
+    return dvars
+
+
+def slf_station_to_feature(station: dict) -> dict:
+    """Convert an SLF station dict (any dataset) to a GeoJSON feature."""
+    dataset = station["dataset"]
+    spec = SLF_DATASET_SPECS[dataset]
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+
+    props: dict[str, Any] = {
+        "code": slf_code(dataset, sid),
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": "CH",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": DATA_PROVIDERS["slf"],
+        # Verbatim from SLF: IMIS, BEOB (study plots), GCOS.
+        "network_code": station.get("network") or dataset.upper(),
+        "notes": (
+            f"{spec['title']}, DOI {spec['doi']}, licence {spec['license']}. "
+            f"Credit {SLF_ATTRIBUTION.split(',')[0]} with a link to "
+            "www.slf.ch."
+        ),
+        "begin_date": None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "slf_dataset": dataset,
+        "slf_station_id": sid,
+        "station_type": station.get("station_type") or None,
+        "measurement_method": station.get("measurement_method") or None,
+        "doi": spec["doi"],
+        "license": spec["license"],
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_slf_data_variables(dataset)))
+
+    return make_feature(lon, lat, props)
+
+
+def run_slf_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch SLF stations from every dataset in :data:`SLF_DATASETS`.
+
+    Returns (all_features, daily_features).  A dataset whose listing fails
+    is logged and left out; the others still return.  ``daily_features``
+    are the IMIS stations and study plots (daily snow depth); GCOS is
+    periodic.
+    """
+    all_features: list[dict] = []
+    print("=" * 60)
+    print("[SLF] Fetching IMIS stations, study plots and GCOS SWE sites")
+    for dataset in SLF_DATASETS:
+        try:
+            stations = SLFClient(dataset=dataset).get_all_stations()
+        except Exception as exc:
+            logger.error("SLF %s station fetch failed: %s", dataset, exc)
+            continue
+        active = sum(1 for s in stations if s.get("status") == "Active")
+        print(f"  {dataset}: {len(stations):,} stations ({active} active)")
+        all_features.extend(slf_station_to_feature(s) for s in stations)
+
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -1949,6 +2091,11 @@ def main() -> None:
         "--skip-alberta",
         action="store_true",
         help="Skip Alberta River Basins client",
+    )
+    ap.add_argument(
+        "--skip-slf",
+        action="store_true",
+        help="Skip SLF (IMIS, study plots, GCOS) client",
     )
     args = ap.parse_args()
 
@@ -2237,6 +2384,51 @@ def main() -> None:
         daily_count += len(ab_daily)
         print(f"[Alberta] {len(ab_daily):,} daily stations added to merged GeoJSON")
 
+    # ── SLF ───────────────────────────────────────────────────────────────────
+    if not args.skip_slf:
+        slf_all: list[dict] = []
+        slf_daily: list[dict] = []
+        try:
+            slf_all, slf_daily = run_slf_workflow()
+        except Exception as exc:
+            logger.warning("[SLF] Workflow failed: %s", exc)
+        slf_all, slf_daily, fresh = keep_previous_if_empty(
+            "SLF", SLF_GEOJSON_OUT, slf_all, slf_daily
+        )
+        if fresh:
+            write_geojson(
+                SLF_GEOJSON_OUT,
+                slf_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "WSL SLF — measurement-data.slf.ch (IMIS, study "
+                        "plots) and EnviDat (GCOS SWE)"
+                    ),
+                    "client": "slf",
+                    "license": "CC BY 4.0 (IMIS, study plots); ODbL 1.0 + DbCL 1.0 (GCOS)",
+                    "attribution": SLF_ATTRIBUTION,
+                    "description": (
+                        "SLF IMIS automatic stations and manual study plots "
+                        "(daily snow depth), and the 11 GCOS sites (biweekly "
+                        "manual SWE, periodic). Codes are SLF-IMIS-<id>, "
+                        "SLF-SP-<id> and SLF-GCOS-<id>; slf_station_id holds "
+                        "SLF's own id."
+                    ),
+                    "references": [
+                        "https://measurement-data.slf.ch/",
+                        "https://doi.org/10.16904/envidat.406",
+                        "https://doi.org/10.16904/envidat.408",
+                        "https://doi.org/10.16904/15",
+                        "https://www.slf.ch/en/services-and-products/slf-data-service/",
+                    ],
+                    "total": len(slf_all),
+                },
+            )
+        all_features_merged.extend(slf_all)
+        daily_count += len(slf_daily)
+        print(f"[SLF] {len(slf_daily):,} daily stations added to merged GeoJSON")
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -2297,7 +2489,8 @@ def main() -> None:
                 "stations (SWE and/or snow depth) from AWDB (US + partner "
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
                 "(Norway), Yukon AquaCache, Hydro-Québec (Québec; CC "
-                "BY-NC 4.0, non-commercial) and Alberta River Basins "
+                "BY-NC 4.0, non-commercial), Alberta River Basins and "
+                "SLF (Switzerland) "
                 "— including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "

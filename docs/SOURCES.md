@@ -75,3 +75,14 @@ Per-network documentation, APIs, portals, and design literature
   <https://geospatial.alberta.ca/europa/rest/services/arb/alberta_river_basins/MapServer>
 - Government of Alberta copyright and disclaimer:
   <https://www.alberta.ca/disclaimer.aspx>
+
+## SLF (Switzerland)
+
+- SLF Data Service terms: <https://www.slf.ch/en/services-and-products/slf-data-service/>
+- IMIS automatic stations: <https://measurement-data.slf.ch/imis/>,
+  DOI <https://doi.org/10.16904/envidat.406>
+- Manual measuring network (study plots):
+  <https://measurement-data.slf.ch/study-plot/>, DOI
+  <https://doi.org/10.16904/envidat.408>
+- GCOS SWE data (11 sites, biweekly): <https://www.envidat.ch/dataset/gcos-swe-data>,
+  DOI <https://doi.org/10.16904/15>

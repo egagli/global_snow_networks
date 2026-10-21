@@ -53,7 +53,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: [awdb, cdec, databc, nve, yukon, hydroquebec, alberta]
+        network: [awdb, cdec, databc, nve, yukon, hydroquebec, alberta, slf]
     steps:
       - uses: actions/checkout@v4
         with:

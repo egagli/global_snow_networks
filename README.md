@@ -301,7 +301,7 @@ DESIGN.md §6.1):**
 | `state` | State / province / country code |
 | `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
 | `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
-| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"` |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"` |
 | `data_provider` | Human-readable organization/portal behind that access path |
 | `status`, `is_active` | Active status as reported/derived |
 | `begin_date`, `end_date` | Period of record from source metadata |
@@ -955,6 +955,50 @@ Timestamps are MST (UTC−7) all year. Elevation is not published (null).
 - Alberta River Basins: https://rivers.alberta.ca/
 - Government of Alberta disclaimer: https://www.alberta.ca/disclaimer.aspx
 
+### 6.12 SLF — IMIS automatic stations and manual study plots (Switzerland)
+
+**Data source:** WSL Institute for Snow and Avalanche Research SLF —
+[measurement-data.slf.ch](https://measurement-data.slf.ch/) file service
+(one CSV per station, whole record, rebuilt daily), plus EnviDat for GCOS
+**Client:** `slf` (three datasets, one client)
+**Stations (2026-10-21):** 179 IMIS stations (141 active) and 135 study
+plots (100 active), all archived; 11 GCOS SWE sites, inventory only
+**Coverage:** Swiss Alps and Jura; IMIS mostly 2,000–3,000 m
+**Period of record:** study plots from the 1930s (Weissfluhjoch from 1936);
+IMIS from 1992
+**Temporal resolution:** daily (IMIS also serves 30-minute data, not
+archived)
+**Operator:** WSL SLF
+
+**Depth only.** Neither network measures SWE, so their CSVs carry `snwd_cm`
+and an empty `wteq_cm`. The only open SWE is GCOS's manual snow pit about
+every two weeks (`SLF-GCOS-…`, periodic: inventoried, not archived). New-snow
+series (`HN_1D`, `HNW_1D`) are listed in `data_variables` but not archived;
+IMIS `HN_1D` is SNOWPACK model output, not a measurement.
+
+| Dataset | Code | `network_code` | Daily value | DOI | Licence |
+|---|---|---|---|---|---|
+| IMIS | `SLF-IMIS-<id>` (e.g. `SLF-IMIS-WFJ2`) | `IMIS` | ultrasonic HS, median over the last 24 h | [10.16904/envidat.406](https://doi.org/10.16904/envidat.406) | CC BY 4.0 |
+| Study plots | `SLF-SP-<id>` (e.g. `SLF-SP-5WJ0`) | `BEOB` | manual morning HS reading | [10.16904/envidat.408](https://doi.org/10.16904/envidat.408) | CC BY 4.0 |
+| GCOS | `SLF-GCOS-<id>` | `GCOS` | — (periodic SWE and HS) | [10.16904/15](https://doi.org/10.16904/15) | ODbL 1.0 + DbCL 1.0 |
+
+**Codes carry a dataset prefix** because SLF's ids (`ADE2`, `5WJ0`) could
+collide with other networks' codes; SLF's own id is kept as
+`slf_station_id` and the dataset as `slf_dataset`. An IMIS station and a
+study plot can share a site (Weissfluhjoch `WFJ2` / `5WJ0`); they are
+separate access paths and are cross-linked by `possible_duplicates`.
+
+**Attribution.** CC BY 4.0: credit "WSL Institute for Snow and Avalanche
+Research SLF" with a link to www.slf.ch and cite the dataset DOI. SLF's
+terms also ask users not to overload its infrastructure; the nightly
+refresh downloads one file per station.
+
+**Links**
+- SLF Data Service terms: https://www.slf.ch/en/services-and-products/slf-data-service/
+- IMIS files: https://measurement-data.slf.ch/imis/
+- Study-plot files: https://measurement-data.slf.ch/study-plot/
+- GCOS SWE data: https://www.envidat.ch/dataset/gcos-swe-data
+
 ---
 
 ## 7. Data Access Methods and Design Philosophy
@@ -1383,6 +1427,8 @@ no commercial use.** Its stations' CSVs in this archive carry the same
 restriction.
 Alberta River Basins data carry no stated licence, only a disclaimer that
 they are provisional and unreviewed (§6.11).
+SLF IMIS and study-plot data are CC BY 4.0 (credit WSL SLF, cite the DOI);
+the GCOS SWE data are ODbL 1.0 + DbCL 1.0 (§6.12).
 
 ### Citing this archive
 

@@ -205,6 +205,10 @@ Three distinct concepts, three distinct fields:
   that access path (e.g. "USDA NRCS AWDB", "CDEC").
 
 The same physical station may appear once per access path — intentionally.
+An access path is normally the client; where one client serves several
+datasets with their own station ids (SLF's IMIS stations and manual study
+plots), the dataset is part of it, so co-located SLF stations are
+cross-linked too.
 De-duplication is the consumer's job, but duplicates are annotated: a
 `possible_duplicates` list (`{code, client, distance_m}`) cross-links
 candidates found by spatial + name matching, and the map surfaces them.

@@ -18,6 +18,7 @@ DATA_DIR = REPO_ROOT / "data" / "stations"
 
 KNOWN_CLIENTS = {
     "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec", "alberta",
+    "slf",
 }
 
 # Interval vocabulary (DESIGN.md §3.3)
