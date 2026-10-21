@@ -40,6 +40,9 @@ CSV schema (all clients)
   Alberta: SD in cm, AEPA's A.DayMean.
   SLF IMIS: HS in cm, median over the 24 h ending at the date's
   stamp; SLF study plots: manual morning HS reading in cm.
+  SNIH: pillow SWE in mm ÷ 10 — the validated daily record, then (after
+  ``snih_validated_through``) the median of the day's raw telemetry after
+  the spike filter (:func:`snih_daily_from_raw`).
 
 Hydro-Québec's feed keeps only ~10 days, so its CSVs are *merged* into
 rather than replaced (``StationWriter.store(merge=True)``): the archive
@@ -78,6 +81,7 @@ from easysnowdata.stations.clients.hydroquebec import (
 )
 from easysnowdata.stations.clients.nve import NVEClient, NVEError
 from easysnowdata.stations.clients.slf import SLFClient, SLFError
+from easysnowdata.stations.clients.snih import SNIHClient, SNIHError
 from easysnowdata.stations.clients.yukon import YukonClient, YukonError
 
 # INFO so client-level diagnostics (e.g. NVE series-index coverage) are
@@ -215,6 +219,24 @@ def check_daily_cadence(df: pd.DataFrame) -> tuple[bool, bool]:
 PASSED_PROVENANCE: dict[str, str] = {"hydroquebec": "resampled_hourly"}
 
 
+def passed_provenance(props: dict) -> str:
+    """``daily_provenance`` for a station that passes the probe.
+
+    Native unless its client has no daily product (:data:`PASSED_PROVENANCE`)
+    or — SNIH — the station's CSV continues past its validated daily
+    record with resampled raw telemetry: its latest record date (stamped
+    from the CSV just before the probe) is after
+    ``snih_validated_through``, or it never had a validated record.
+    """
+    client = str(props.get("client") or "")
+    if client == "snih":
+        through = props.get("snih_validated_through")
+        latest = props.get("latest_record_date")
+        raw = not through or (latest is not None and str(latest) > str(through))
+        return "resampled_sub_daily" if raw else "native"
+    return PASSED_PROVENANCE.get(client, "native")
+
+
 def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
     """Stamp probe-verified daily fields onto a feature from CSV content.
 
@@ -238,12 +260,12 @@ def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
         existing = props.get("notes") or ""
         if "cadence check failed" not in existing:
             props["notes"] = f"{existing} {note}".strip()
-    elif not props.get("daily_provenance") or (
-        props.get("daily_provenance") == "none"
-    ):
-        props["daily_provenance"] = PASSED_PROVENANCE.get(
-            str(props.get("client") or ""), "native"
-        )
+    elif props.get("client") == "snih" or not props.get(
+        "daily_provenance"
+    ) or props.get("daily_provenance") == "none":
+        # SNIH is re-derived every time: a station's CSV moves from
+        # validated-only to validated + raw as telemetry arrives.
+        props["daily_provenance"] = passed_provenance(props)
     return passed
 
 
@@ -1234,6 +1256,138 @@ def refresh_slf(
         print(f"  [SLF] {dataset}: updated {updated} station CSVs")
 
 
+# ── SNIH refresh ──────────────────────────────────────────────────────────────
+
+# Spike filter for SNIH raw pillow telemetry (pipeline layer: the client
+# passes raw values through, clamped only to 0–15 m).  Raw values show
+# isolated spikes (Laguna Diamante reached 14,370 mm, Las Leñas 4,007 mm)
+# next to plausible 10 mm steps and real storms.  A spike is a value that
+# jumps away from BOTH neighbours by more than the bound, in the same
+# direction, while staying a single reading (raw, every 4–6 h) or a single
+# day (after daily aggregation).  A level shift that persists is not a
+# spike and is kept.  50 mm between consecutive 4–6-hourly readings and
+# 150 mm between consecutive days are above what snowfall or melt does
+# at these pillows.
+SNIH_RAW_SPIKE_CM = 5.0
+SNIH_DAILY_SPIKE_CM = 15.0
+# Telemetry starts in 2009; nothing raw exists before.
+SNIH_RAW_START = date(2009, 1, 1)
+
+
+def _drop_isolated_spikes(values: list[float | None], bound: float) -> list[float | None]:
+    """None out values that leave both neighbours by > *bound*, same way."""
+    out = list(values)
+    for i in range(1, len(values) - 1):
+        v, a, b = values[i], values[i - 1], values[i + 1]
+        if v is None or a is None or b is None:
+            continue
+        up = v - a > bound and v - b > bound
+        down = a - v > bound and b - v > bound
+        if up or down:
+            out[i] = None
+    return out
+
+
+def snih_daily_from_raw(records: list[dict]) -> dict[str, float]:
+    """Daily SWE (cm) from SNIH raw sub-daily pillow records.
+
+    Records are the client's ``interval="sub_daily"`` output for one
+    station (``date`` is the Argentina local day).  Isolated raw spikes are
+    dropped (:data:`SNIH_RAW_SPIKE_CM`), each day becomes the **median** of
+    its remaining readings (robust to a spike the first pass missed), and
+    isolated daily spikes are dropped (:data:`SNIH_DAILY_SPIKE_CM`).
+    Returns ``{date: value}``; dropped days are absent.
+    """
+    rows = sorted(
+        (r for r in records if r.get("value") is not None),
+        key=lambda r: str(r.get("datetime") or r.get("date")),
+    )
+    kept = _drop_isolated_spikes([float(r["value"]) for r in rows], SNIH_RAW_SPIKE_CM)
+    by_day: dict[str, list[float]] = {}
+    for r, v in zip(rows, kept):
+        if v is not None:
+            by_day.setdefault(str(r["date"])[:10], []).append(v)
+    days = sorted(by_day)
+    medians = [float(np.median(by_day[d])) for d in days]
+    daily = _drop_isolated_spikes(medians, SNIH_DAILY_SPIKE_CM)
+    return {d: round(v, 3) for d, v in zip(days, daily) if v is not None}
+
+
+def snih_series(
+    validated: list[dict],
+    raw: list[dict],
+    validated_through: str | None,
+) -> pd.DataFrame:
+    """One station's daily CSV frame: validated record, then raw-derived.
+
+    Validated values are used for every date up to *validated_through*;
+    raw telemetry only fills dates after it, so the two are never mixed
+    within the validated period (DESIGN.md §4).
+    """
+    rows = [r for r in validated if r.get("type") == "swe"]
+    cut = validated_through or ""
+    for d, v in snih_daily_from_raw(raw).items():
+        if d > cut:
+            rows.append({"date": d, "type": "swe", "value": v})
+    return _station_records_to_df(rows)
+
+
+def refresh_snih(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh SNIH snow-pillow CSVs (full record, replaced).
+
+    ``stations`` is a list of (feature_index, code) tuples; each feature's
+    ``snih_station_id`` and ``snih_validated_through`` come from stage 1.
+    Per station: the validated daily SWE record, then raw telemetry from
+    the day after it (or the pillow's association date) to yesterday in
+    Argentina time — today is incomplete.  See :func:`snih_series`.
+    """
+    stats = writer.stats
+    features = writer.features
+    if not stations:
+        return
+
+    end = (today or datetime.now(timezone(timedelta(hours=-3))).date()) - timedelta(days=1)
+    client = SNIHClient()
+    print(f"  [SNIH] Fetching pillow SWE for {len(stations)} stations...")
+    updated = 0
+    for feat_idx, code in stations:
+        p = features[feat_idx]["properties"]
+        sid = str(p.get("snih_station_id") or code.removeprefix("SNIH-"))
+        through = p.get("snih_validated_through")
+        try:
+            validated = client.get_data(
+                station_ids=[sid], variables=["SWE_PILLOW"], interval="daily",
+                end_date=end.isoformat(),
+            )
+            got = [r["date"] for r in validated if r.get("value") is not None]
+            # The record itself is the authority on where it ends.
+            through = max(got) if got else through
+            start = SNIH_RAW_START
+            if through:
+                start = max(start, date.fromisoformat(through) + timedelta(days=1))
+            raw = []
+            if start <= end:
+                raw = client.get_data(
+                    station_ids=[sid], variables=["SWE_PILLOW"],
+                    interval="sub_daily", begin_date=start.isoformat(),
+                    end_date=end.isoformat(),
+                )
+        except SNIHError as exc:
+            stats.failed_batches += 1
+            print(f"  [SNIH] {code} FAILED ({exc})")
+            continue
+        if validated or raw:
+            stats.fetched += 1
+        df = snih_series(validated, raw, through)
+        if writer.store(feat_idx, code, "snih", df):
+            updated += 1
+    print(f"  [SNIH] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -1337,7 +1491,7 @@ def main() -> None:
         "--network",
         choices=[
             "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec",
-            "alberta", "slf",
+            "alberta", "slf", "snih",
         ],
         default=None,
         help=(
@@ -1431,6 +1585,7 @@ def main() -> None:
     hydroquebec_stations: list[tuple[int, str]] = []
     alberta_stations: list[tuple[int, str]] = []
     slf_stations: list[tuple[int, str]] = []
+    snih_stations: list[tuple[int, str]] = []
 
     stats = RefreshStats()
     for idx, feat in enumerate(features):
@@ -1465,6 +1620,8 @@ def main() -> None:
             alberta_stations.append((idx, code))
         elif client_name == "slf":
             slf_stations.append((idx, code))
+        elif client_name == "snih":
+            snih_stations.append((idx, code))
         else:
             # No silent fallback (DESIGN.md §3.6): a feature without a
             # known client cannot be refreshed.  Loud, counted, skipped —
@@ -1487,6 +1644,7 @@ def main() -> None:
     )
     run_alberta = (network in (None, "alberta")) and bool(alberta_stations)
     run_slf = (network in (None, "slf")) and bool(slf_stations)
+    run_snih = (network in (None, "snih")) and bool(snih_stations)
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
@@ -1497,6 +1655,7 @@ def main() -> None:
         len(hydroquebec_stations) if run_hydroquebec else 0,
         len(alberta_stations) if run_alberta else 0,
         len(slf_stations) if run_slf else 0,
+        len(snih_stations) if run_snih else 0,
     ])
 
     print("=" * 70)
@@ -1514,6 +1673,7 @@ def main() -> None:
         f"{len(hydroquebec_stations) if run_hydroquebec else 'skip'}  "
         f"Alberta: {len(alberta_stations) if run_alberta else 'skip'}  "
         f"SLF: {len(slf_stations) if run_slf else 'skip'}  "
+        f"SNIH: {len(snih_stations) if run_snih else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -1548,6 +1708,8 @@ def main() -> None:
         refresh_alberta(alberta_stations, writer)
     if run_slf:
         refresh_slf(slf_stations, writer)
+    if run_snih:
+        refresh_snih(snih_stations, writer)
     if network == "hydroquebec" and not run_hydroquebec:
         # The inventory has no Hydro-Québec stations to refresh — e.g.
         # stage 1 could not list them.  Say so where the run summary shows it.

@@ -188,7 +188,15 @@ loop handles transient HTTP errors and honours `Retry-After` on 429.
 - **Inactive stations with a regular daily record stay in** — pre-downloaded,
   archived, and on the map. Active status affects display metadata only,
   never inclusion.
-- Resampled stations carry provenance (`daily_provenance`).
+- Resampled stations carry provenance (`daily_provenance`: `native`,
+  `resampled_hourly`, `resampled_sub_hourly`, `resampled_sub_daily` or
+  `none`).
+- **Validated and raw are never mixed within a period.** Where a source
+  serves a validated daily record and, after it ends, only raw telemetry
+  (SNIH), the archive uses the validated record up to its last date
+  (`snih_validated_through`) and raw-derived daily values only after it.
+  Raw values pass a pipeline-side spike filter first (documented in
+  `scripts/get_all_stations_data.py`); clients stay pass-through.
 
 ## 5. Station identity: network, operator, data provider
 

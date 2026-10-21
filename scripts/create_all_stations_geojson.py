@@ -72,6 +72,10 @@ from easysnowdata.stations.clients.nve.nve_client import (
     _PARAM_TO_VAR as _NVE_PARAM_TO_VAR,
 )
 from easysnowdata.stations.clients.slf import SLFClient
+from easysnowdata.stations.clients.snih import SNIHClient
+from easysnowdata.stations.clients.snih.snih_client import (
+    TERMS_URL as SNIH_TERMS_URL,
+)
 from easysnowdata.stations.clients.slf.slf_client import (
     DATASETS as SLF_DATASET_SPECS,
     VARIABLES as SLF_VARIABLES,
@@ -104,6 +108,7 @@ YUKON_GEOJSON_OUT = INVENTORY_DIR / "yukon_stations.geojson"
 HYDROQUEBEC_GEOJSON_OUT = INVENTORY_DIR / "hydroquebec_stations.geojson"
 ALBERTA_GEOJSON_OUT = INVENTORY_DIR / "alberta_stations.geojson"
 SLF_GEOJSON_OUT = INVENTORY_DIR / "slf_stations.geojson"
+SNIH_GEOJSON_OUT = INVENTORY_DIR / "snih_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -188,6 +193,7 @@ DATA_PROVIDERS: dict[str, str] = {
     "hydroquebec": "Hydro-Québec open data (CC BY-NC 4.0)",
     "alberta": "Alberta River Basins (AEPA)",
     "slf": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+    "snih": "SNIH / SIPH Argentina (Base de Datos Hidrológica Integrada)",
 }
 
 # Carried on every Alberta feature: the app states no licence, only a
@@ -2036,6 +2042,145 @@ def run_slf_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── SNIH workflow ─────────────────────────────────────────────────────────────
+
+# SNIH codes are bare integers ("19145"), which other networks can use too;
+# the prefix keeps the archive code (and its CSV name) unique.
+SNIH_PREFIX = "SNIH-"
+SNIH_NOTE = (
+    "SNIH (Secretaría de Infraestructura y Política Hídrica, Argentina) "
+    "terms of use: free use including commercial use and redistribution, "
+    "citing SIPH and/or the network and the date of the last update "
+    f"({SNIH_TERMS_URL}). Validated daily pillow SWE ends in 2023–2024; "
+    "later daily values are resampled from raw, unvalidated telemetry "
+    "(see snih_validated_through)."
+)
+
+
+def snih_code(station_id: str) -> str:
+    return f"{SNIH_PREFIX}{station_id}"
+
+
+def _snih_data_variables(meta: dict) -> list[dict]:
+    """data_variables from ``SNIHClient.get_metadata`` (real periods).
+
+    The client lists each variable once per interval it serves — pillow
+    SWE as ``"daily"`` (validated) and ``"sub_daily"`` (raw telemetry) —
+    with begin/end/n_obs read from the historical series.
+    """
+    return [
+        {
+            "name": e["name"],
+            "type": e["type"],
+            "interval": e["interval"],
+            "units": e["units"],
+            "description": e["description"],
+            "notes": e["notes"],
+            "begin_date": e.get("begin_date"),
+            "end_date": e.get("end_date"),
+            "n_obs": e.get("n_obs"),
+        }
+        for e in meta.get("data_variables") or []
+    ]
+
+
+def snih_validated_through(meta: dict) -> str | None:
+    """Last date of the station's validated daily pillow SWE, or None."""
+    for e in meta.get("data_variables") or []:
+        if e["name"] == "SWE_PILLOW" and e["interval"] == "daily":
+            return e.get("end_date")
+    return None
+
+
+def snih_station_to_feature(meta: dict) -> dict:
+    """Convert a ``SNIHClient.get_metadata`` dict to a GeoJSON feature."""
+    sid = str(meta.get("station_id") or "").strip()
+    lat = meta.get("latitude")
+    lon = meta.get("longitude")
+    validated_through = snih_validated_through(meta)
+
+    props: dict[str, Any] = {
+        "code": snih_code(sid),
+        "name": meta.get("name") or sid,
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": meta.get("elevation_m"),   # -999 / 0 → None in-client
+        "state": "AR",
+        # The network SNIH names (Red Hidrológica Nacional / Red
+        # Meteorológica RMET); the agency running each station is not
+        # stated and is not guessed (DESIGN.md §5).
+        "operator": None,
+        "client": "snih",
+        "data_provider": DATA_PROVIDERS["snih"],
+        "network_code": "RMET" if "RMET" in str(meta.get("network")) else "RHN",
+        "network_name": meta.get("network") or None,
+        "notes": SNIH_NOTE,
+        "begin_date": None,
+        "end_date": None,
+        "status": meta.get("status") or None,
+        "is_active": meta.get("status") == "Active",
+        "station_url": meta.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "snih_station_id": sid,
+        "province": meta.get("province") or None,
+        "country": "AR",
+        "measurement_method": meta.get("measurement_method") or None,
+        "last_raw_obs": meta.get("last_raw_obs") or None,
+        "snih_validated_through": validated_through,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_snih_data_variables(meta)))
+    # Raw telemetry beyond the validated record is resampled to daily by
+    # the pipeline (DESIGN.md §4); a pillow that reports it is not
+    # "native" even when it also has a validated history.
+    if props["daily_or_better"] and meta.get("status") == "Active":
+        props["daily_provenance"] = "resampled_sub_daily"
+    return make_feature(lon, lat, props)
+
+
+def run_snih_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch SNIH snow stations and return (all_features, daily_features).
+
+    Uses ``get_metadata`` per station rather than the bare listing: it
+    reads each series' real period, including where the validated daily
+    pillow SWE ends — the boundary the refresh switches to raw telemetry
+    at.  About 100 s for the 50 snow stations.
+    """
+    client = SNIHClient()
+
+    print("=" * 60)
+    print("[SNIH] Fetching Argentine snow stations (pillows and courses)")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total SNIH snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("SNIH station fetch failed: %s", exc)
+        return [], []
+
+    metas = []
+    for s in stations:
+        try:
+            metas.append(client.get_metadata(s["station_id"]))
+        except Exception as exc:
+            # Keep the station from the listing, without series periods.
+            logger.warning("SNIH metadata for %s failed: %s", s["station_id"], exc)
+            metas.append({**s, "data_variables": []})
+
+    pillows = sum(1 for m in metas if 73 in (m.get("snow_codes") or []))
+    active = sum(1 for m in metas if m.get("status") == "Active")
+    print(f"  Snow pillows: {pillows}  |  Reporting (30 days): {active}")
+
+    all_features = [snih_station_to_feature(m) for m in metas]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -2096,6 +2241,11 @@ def main() -> None:
         "--skip-slf",
         action="store_true",
         help="Skip SLF (IMIS, study plots, GCOS) client",
+    )
+    ap.add_argument(
+        "--skip-snih",
+        action="store_true",
+        help="Skip SNIH (Argentina) client",
     )
     args = ap.parse_args()
 
@@ -2429,6 +2579,46 @@ def main() -> None:
         daily_count += len(slf_daily)
         print(f"[SLF] {len(slf_daily):,} daily stations added to merged GeoJSON")
 
+    # ── SNIH ──────────────────────────────────────────────────────────────────
+    if not args.skip_snih:
+        snih_all: list[dict] = []
+        snih_daily: list[dict] = []
+        try:
+            snih_all, snih_daily = run_snih_workflow()
+        except Exception as exc:
+            logger.warning("[SNIH] Workflow failed: %s", exc)
+        snih_all, snih_daily, fresh = keep_previous_if_empty(
+            "SNIH", SNIH_GEOJSON_OUT, snih_all, snih_daily
+        )
+        if fresh:
+            write_geojson(
+                SNIH_GEOJSON_OUT,
+                snih_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "SNIH — Base de Datos Hidrológica Integrada "
+                        "(snih.hidricosargentina.gob.ar page methods)"
+                    ),
+                    "client": "snih",
+                    "license": "SNIH terms of use (free use incl. commercial; cite SIPH / the network and the last-update date)",
+                    "description": (
+                        "The 50 SNIH stations with a snow parameter: 34 snow "
+                        "pillows (validated daily SWE to 2023–2024, raw "
+                        "telemetry to the present) and manual snow courses "
+                        "(periodic). Codes are SNIH-<Codigo>."
+                    ),
+                    "references": [
+                        "https://snih.hidricosargentina.gob.ar/",
+                        SNIH_TERMS_URL,
+                    ],
+                    "total": len(snih_all),
+                },
+            )
+        all_features_merged.extend(snih_all)
+        daily_count += len(snih_daily)
+        print(f"[SNIH] {len(snih_daily):,} daily stations added to merged GeoJSON")
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -2489,8 +2679,8 @@ def main() -> None:
                 "stations (SWE and/or snow depth) from AWDB (US + partner "
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
                 "(Norway), Yukon AquaCache, Hydro-Québec (Québec; CC "
-                "BY-NC 4.0, non-commercial), Alberta River Basins and "
-                "SLF (Switzerland) "
+                "BY-NC 4.0, non-commercial), Alberta River Basins, SLF "
+                "(Switzerland) and SNIH (Argentina) "
                 "— including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "

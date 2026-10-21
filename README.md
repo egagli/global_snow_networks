@@ -301,7 +301,7 @@ DESIGN.md §6.1):**
 | `state` | State / province / country code |
 | `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
 | `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
-| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"` |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"`, `"snih"` |
 | `data_provider` | Human-readable organization/portal behind that access path |
 | `status`, `is_active` | Active status as reported/derived |
 | `begin_date`, `end_date` | Period of record from source metadata |
@@ -999,6 +999,58 @@ refresh downloads one file per station.
 - Study-plot files: https://measurement-data.slf.ch/study-plot/
 - GCOS SWE data: https://www.envidat.ch/dataset/gcos-swe-data
 
+### 6.13 SNIH — Argentine snow pillows (RHN / RMET)
+
+**Data source:** Sistema Nacional de Información Hídrica (SNIH), Base de
+Datos Hidrológica Integrada — the ASP.NET page methods behind the public map
+(no documented API)
+**Client:** `snih`
+**Stations (2026-10-21):** 51 with a snow parameter; 35 snow pillows
+archived (29 reporting raw telemetry in the last 30 days); the rest are
+manual snow courses or river/weather stations with no snow values
+(inventory only)
+**Coverage:** the Argentine Andes, Jujuy to Santa Cruz (24–52° S) — the
+first Southern Hemisphere SWE in the archive
+**Period of record:** validated daily SWE from 1989 (Toscas, Laguna Atuel);
+raw telemetry to the present
+**Operator:** not stated per station; `network_name` is the network SNIH
+names — Red Hidrológica Nacional (`RHN`) or Red Meteorológica RMET (`RMET`)
+
+**Licence.** SNIH's terms of use (https://snih.hidricosargentina.gob.ar/Terminos.aspx):
+the data are public and free, and any use is allowed, including commercial
+use and redistribution, provided users cite SIPH and/or the contributing
+network, state the date of the last update, and keep the original meaning
+and the source metadata.
+
+**Two products, never mixed.** Validated daily pillow SWE ends in 2023–2024
+at every station, and the ten RMET pillows (2024–2026) have none.
+Everything after that is raw, unvalidated telemetry every 4–6 hours. Each
+station's CSV holds the validated record up to `snih_validated_through`, and
+raw-derived daily values only after it. `daily_provenance` is
+`resampled_sub_daily` when raw days are present, `native` when the CSV is
+validated only.
+
+**Raw telemetry is filtered.** It is noisy: 10 mm steps, long runs of 0, and
+spikes (Laguna Diamante reached 14,370 mm). Before resampling, the pipeline
+drops any reading that jumps more than 5 cm away from *both* neighbours in
+the same direction; each day becomes the median of the rest; and a day that
+leaves both neighbouring days by more than 15 cm is dropped. A level shift
+that persists is kept. Runs of 0 are kept: they cannot be told apart from
+bare ground.
+
+**Codes** are `SNIH-<Codigo>` (e.g. `SNIH-19145`, Toscas), because SNIH's
+bare integer codes could collide with other networks'. Elevation is missing
+(`-999` or `0`) at 22 stations and is null there, never 0.
+
+| Parameter | Native units | Stored as |
+|---|---|---|
+| 73 Altura E.A.N. en Snow Pillow | mm | `wteq_cm` (÷ 10) |
+| 70 / 72 / 74 (snow course depth, density, SWE) | cm, g/cm³, mm | not archived (periodic) |
+
+**Links**
+- SNIH portal: https://snih.hidricosargentina.gob.ar/
+- Terms of use: https://snih.hidricosargentina.gob.ar/Terminos.aspx
+
 ---
 
 ## 7. Data Access Methods and Design Philosophy
@@ -1429,6 +1481,8 @@ Alberta River Basins data carry no stated licence, only a disclaimer that
 they are provisional and unreviewed (§6.11).
 SLF IMIS and study-plot data are CC BY 4.0 (credit WSL SLF, cite the DOI);
 the GCOS SWE data are ODbL 1.0 + DbCL 1.0 (§6.12).
+SNIH data are free to use, including commercially, citing SIPH and/or the
+network and the date of the last update (§6.13).
 
 ### Citing this archive
 

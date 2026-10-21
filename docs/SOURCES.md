@@ -86,3 +86,8 @@ Per-network documentation, APIs, portals, and design literature
   <https://doi.org/10.16904/envidat.408>
 - GCOS SWE data (11 sites, biweekly): <https://www.envidat.ch/dataset/gcos-swe-data>,
   DOI <https://doi.org/10.16904/15>
+
+## SNIH (Argentina)
+
+- SNIH portal: <https://snih.hidricosargentina.gob.ar/>
+- Terms of use: <https://snih.hidricosargentina.gob.ar/Terminos.aspx>

@@ -18,7 +18,7 @@ DATA_DIR = REPO_ROOT / "data" / "stations"
 
 KNOWN_CLIENTS = {
     "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec", "alberta",
-    "slf",
+    "slf", "snih",
 }
 
 # Interval vocabulary (DESIGN.md §3.3)
@@ -45,6 +45,7 @@ DATA_VARIABLE_KEYS = {
 }
 
 PROVENANCE_ENUM = {"native", "resampled_hourly", "resampled_sub_hourly",
+                   "resampled_sub_daily",
                    "none"}
 
 
