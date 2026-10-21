@@ -89,6 +89,7 @@ class RefreshStats:
     updated_csvs: int = 0
     skipped_empty: int = 0
     unroutable: int = 0
+    refused_shrink: int = 0
     by_client: dict[str, int] = field(default_factory=dict)
 
 
@@ -121,12 +122,17 @@ def write_csv_atomically(csv_path: Path, df: pd.DataFrame) -> None:
         tmp_path = Path(tmp.name)
         writer = csv.writer(tmp)
         writer.writerow(["date", "wteq_cm", "snwd_cm"])
-        for _, row in df.iterrows():
+        # Coerce to numbers first: a stray string "nan" (or any other
+        # non-number) must become an empty cell too, never be passed
+        # through as text (DESIGN.md §6.3).
+        swe = pd.to_numeric(df["wteq_cm"], errors="coerce")
+        snwd = pd.to_numeric(df["snwd_cm"], errors="coerce")
+        for d, w, sd in zip(df["date"], swe, snwd):
             # Missing observations are empty cells, never the string "nan"
             writer.writerow([
-                row["date"],
-                "" if pd.isna(row["wteq_cm"]) else row["wteq_cm"],
-                "" if pd.isna(row["snwd_cm"]) else row["snwd_cm"],
+                d,
+                "" if pd.isna(w) else w,
+                "" if pd.isna(sd) else sd,
             ])
     tmp_path.replace(csv_path)
 
@@ -217,7 +223,15 @@ def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
 def is_fetch_candidate(props: dict) -> bool:
     """Stations worth fetching: advertised daily-or-better candidates
     plus anything previously verified (keeps inactive-but-historical
-    stations refreshed)."""
+    stations refreshed).
+
+    Stations retained after vanishing from their source's station list
+    (``upstream_status == "missing"``, DESIGN.md §6.4) are not fetched:
+    the source no longer serves them, and their archived CSV is kept as
+    it is.
+    """
+    if props.get("upstream_status") == "missing":
+        return False
     return bool(
         props.get("has_daily_swe")
         or props.get("has_daily_snwd")
@@ -309,6 +323,304 @@ def build_archive(data_dir: Path, archive_path: Path) -> int:
     return len(csv_files)
 
 
+# ── Shrink guard and revision log (DESIGN.md §6.3, §6.6) ─────────────────────
+
+# A replacement CSV may lose this many populated rows (either column
+# non-null) before it is refused: max(absolute, fraction of the old count).
+SHRINK_MAX_LOST_ROWS = 30
+SHRINK_MAX_LOST_FRACTION = 0.05
+# ...and its earliest populated date may move this much later.
+SHRINK_MAX_START_SHIFT_DAYS = 30
+
+# Two values closer than this are the same observation (float noise from
+# a unit conversion is not a revision).
+REVISION_TOLERANCE = 1e-6
+
+DEFAULT_REVISIONS_DIR = REPO_ROOT / "data" / "revisions"
+REVISION_COLUMNS = [
+    "detected_utc", "code", "client", "date", "variable",
+    "old_value", "new_value", "kind",
+]
+_VALUE_COLUMNS = ("wteq_cm", "snwd_cm")
+
+
+def read_station_csv(csv_path: Path) -> pd.DataFrame | None:
+    """Read a committed station CSV as ``date`` strings + float columns.
+
+    Returns None when there is no file (a new station).  Non-numeric
+    cells (e.g. a legacy literal ``nan``) read as missing.
+    """
+    if not csv_path.exists():
+        return None
+    df = pd.read_csv(
+        csv_path, dtype={"date": str}, float_precision="round_trip"
+    )
+    for col in _VALUE_COLUMNS:
+        if col not in df.columns:
+            df[col] = np.nan
+        df[col] = pd.to_numeric(df[col], errors="coerce")
+    return df[["date", *_VALUE_COLUMNS]]
+
+
+def _as_numeric(df: pd.DataFrame) -> pd.DataFrame:
+    """``date`` as strings, value columns as floats (None → NaN)."""
+    out = df[["date", *_VALUE_COLUMNS]].copy()
+    out["date"] = out["date"].astype(str)
+    for col in _VALUE_COLUMNS:
+        out[col] = pd.to_numeric(out[col], errors="coerce")
+    return out
+
+
+def _populated(df: pd.DataFrame) -> pd.DataFrame:
+    return df.dropna(subset=list(_VALUE_COLUMNS), how="all")
+
+
+def shrink_reason(old: pd.DataFrame, new: pd.DataFrame) -> str | None:
+    """Why replacing *old* with *new* would lose history, or None.
+
+    The nightly refresh re-downloads every station's full record and
+    replaces its CSV, which is how upstream revisions reach the archive
+    (DESIGN.md §6.6).  Only an *empty* payload used to be refused, so a
+    truncated-but-non-empty response would silently delete history.  A
+    replacement is refused when it loses more than
+    max(SHRINK_MAX_LOST_ROWS, SHRINK_MAX_LOST_FRACTION × old) populated
+    rows, or when its earliest populated date moves more than
+    SHRINK_MAX_START_SHIFT_DAYS later.
+    """
+    old_pop = _populated(_as_numeric(old))
+    new_pop = _populated(_as_numeric(new))
+    n_old, n_new = len(old_pop), len(new_pop)
+    lost = n_old - n_new
+    allowed = max(SHRINK_MAX_LOST_ROWS, SHRINK_MAX_LOST_FRACTION * n_old)
+    if lost > allowed:
+        return (
+            f"populated rows {n_old:,} → {n_new:,} "
+            f"(loses {lost:,}, more than {allowed:,.0f})"
+        )
+    if n_old and n_new:
+        old_start = pd.Timestamp(min(old_pop["date"]))
+        new_start = pd.Timestamp(min(new_pop["date"]))
+        shift = (new_start - old_start).days
+        if shift > SHRINK_MAX_START_SHIFT_DAYS:
+            return (
+                f"record start {old_start.date()} → {new_start.date()} "
+                f"({shift} days later)"
+            )
+    return None
+
+
+def _fmt_value(v: float) -> str:
+    return "" if pd.isna(v) else str(v)
+
+
+def diff_revisions(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
+    """Cells of *old*'s period that *new* changes (DESIGN.md §6.6).
+
+    Compares every date up to the old file's last date; dates *new*
+    appends beyond it are new observations, not revisions.  Returns
+    columns ``date, variable, old_value, new_value, kind`` with kind
+    ``revised`` (value → different value), ``filled`` (blank → value)
+    or ``removed`` (value → blank, or the date is gone).  Values are
+    strings as written in the CSV; blank is ``""``.
+    """
+    out_cols = ["date", "variable", "old_value", "new_value", "kind"]
+    old, new = _as_numeric(old), _as_numeric(new)
+    if old.empty:
+        return pd.DataFrame(columns=out_cols)
+    old_last = max(old["date"])
+    merged = old.merge(
+        new[new["date"] <= old_last],
+        on="date", how="outer", suffixes=("_old", "_new"),
+    )
+    parts = []
+    for col in _VALUE_COLUMNS:
+        o, n = merged[f"{col}_old"], merged[f"{col}_new"]
+        o_na, n_na = o.isna(), n.isna()
+        changed = (o - n).abs() > REVISION_TOLERANCE
+        kind = pd.Series(pd.NA, index=merged.index, dtype="object")
+        kind[o_na & ~n_na] = "filled"
+        kind[~o_na & n_na] = "removed"
+        kind[~o_na & ~n_na & changed] = "revised"
+        hit = kind.notna()
+        if not hit.any():
+            continue
+        parts.append(pd.DataFrame({
+            "date": merged.loc[hit, "date"],
+            "variable": col,
+            "old_value": o[hit].map(_fmt_value),
+            "new_value": n[hit].map(_fmt_value),
+            "kind": kind[hit],
+        }))
+    if not parts:
+        return pd.DataFrame(columns=out_cols)
+    return (
+        pd.concat(parts, ignore_index=True)
+        .sort_values(["date", "variable"], ignore_index=True)
+    )
+
+
+@dataclass
+class RevisionLog:
+    """Rows for ``data/revisions/`` collected during one refresh run.
+
+    A full run appends them to ``YYYY-MM.csv`` (month of detection).  A
+    per-network job (``--network``) writes ``pending/<network>.csv``
+    instead, because parallel jobs cannot safely append to one file;
+    ``--finalize-only`` merges the pending files into the month files.
+    """
+
+    detected_utc: str
+    frames: list[pd.DataFrame] = field(default_factory=list)
+
+    def add(self, code: str, client: str, rows: pd.DataFrame) -> None:
+        if rows.empty:
+            return
+        rows = rows.copy()
+        rows.insert(0, "client", client)
+        rows.insert(0, "code", code)
+        rows.insert(0, "detected_utc", self.detected_utc)
+        self.frames.append(rows[REVISION_COLUMNS])
+
+    def add_refusal(
+        self, code: str, client: str, old: pd.DataFrame,
+        new: pd.DataFrame,
+    ) -> None:
+        """One ``refused_shrink`` row: ``variable`` is ``rows`` and the
+        values are populated-row counts, ``date`` the old record start."""
+        old_pop = _populated(old)
+        self.add(code, client, pd.DataFrame([{
+            "date": min(old_pop["date"]) if len(old_pop) else "",
+            "variable": "rows",
+            "old_value": str(len(old_pop)),
+            "new_value": str(len(_populated(new))),
+            "kind": "refused_shrink",
+        }]))
+
+    def table(self) -> pd.DataFrame:
+        if not self.frames:
+            return pd.DataFrame(columns=REVISION_COLUMNS)
+        return pd.concat(self.frames, ignore_index=True)
+
+    def summary(self) -> list[str]:
+        """Nightly summary lines: rows per client and kind, oldest date."""
+        df = self.table()
+        if df.empty:
+            return ["Revisions                : none"]
+        lines = [f"Revisions logged         : {len(df):,}"]
+        for client, grp in df.groupby("client"):
+            kinds = ", ".join(
+                f"{k} {n:,}" for k, n in grp["kind"].value_counts().items()
+            )
+            dated = grp.loc[grp["kind"] != "refused_shrink", "date"]
+            oldest = f", oldest {min(dated)}" if len(dated) else ""
+            lines.append(
+                f"  {client:<22} : {grp['code'].nunique():,} stations; "
+                f"{kinds}{oldest}"
+            )
+        return lines
+
+    def write(self, revisions_dir: Path, network: str | None = None) -> int:
+        df = self.table()
+        if df.empty:
+            return 0
+        if network:
+            path = revisions_dir / "pending" / f"{network}.csv"
+            _write_revision_file(path, df)
+        else:
+            append_revisions(revisions_dir, df)
+        return len(df)
+
+
+def _write_revision_file(path: Path, df: pd.DataFrame) -> None:
+    """Atomic write of a whole revision file (temp file + rename)."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    tmp_path = path.with_suffix(path.suffix + ".tmp")
+    df[REVISION_COLUMNS].to_csv(tmp_path, index=False)
+    tmp_path.replace(path)
+
+
+def append_revisions(revisions_dir: Path, df: pd.DataFrame) -> None:
+    """Append revision rows to ``<revisions_dir>/YYYY-MM.csv`` by the
+    month of ``detected_utc``.  Each month file is rewritten whole and
+    renamed into place, so an interrupted run never leaves half a row."""
+    if df.empty:
+        return
+    months = df["detected_utc"].str[:7]
+    for month, rows in df.groupby(months):
+        path = revisions_dir / f"{month}.csv"
+        if path.exists():
+            existing = pd.read_csv(path, dtype=str, keep_default_na=False)
+            rows = pd.concat([existing, rows], ignore_index=True)
+        _write_revision_file(path, rows)
+
+
+def merge_pending_revisions(revisions_dir: Path) -> int:
+    """Fold per-network ``pending/*.csv`` files into the month files and
+    delete them (``--finalize-only``).  Returns rows merged."""
+    pending = sorted((revisions_dir / "pending").glob("*.csv"))
+    total = 0
+    for path in pending:
+        df = pd.read_csv(path, dtype=str, keep_default_na=False)
+        append_revisions(revisions_dir, df)
+        total += len(df)
+        path.unlink()
+    return total
+
+
+@dataclass
+class StationWriter:
+    """Writes refreshed station CSVs for every client (one code path).
+
+    Before an existing CSV is replaced, the replacement is checked by
+    :func:`shrink_reason` and diffed into the revision log.  A refused
+    replacement keeps the old CSV and leaves the feature's dates and
+    probe verdict untouched.
+    """
+
+    features: list[dict]
+    data_dir: Path
+    refreshed_at_utc: str
+    stats: RefreshStats
+    revisions: RevisionLog
+    # Codes allowed to shrink this run; "all" allows every station.
+    allow_shrink: frozenset[str] = frozenset()
+
+    def store(
+        self, feat_idx: int, code: str, client: str, df: pd.DataFrame,
+    ) -> bool:
+        if df.empty:
+            self.stats.skipped_empty += 1
+            return False
+        df = _as_numeric(df)
+        csv_path = station_csv_path(self.data_dir, code)
+        old = read_station_csv(csv_path)
+        if old is not None:
+            reason = shrink_reason(old, df)
+            if reason and not (
+                "all" in self.allow_shrink or code in self.allow_shrink
+            ):
+                self.stats.refused_shrink += 1
+                logging.warning(
+                    "[%s] %s: refusing to replace CSV — %s. Kept the "
+                    "archived file; rerun with --allow-shrink %s if the "
+                    "upstream change is real.",
+                    client, code, reason, code,
+                )
+                self.revisions.add_refusal(code, client, old, df)
+                return False
+            self.revisions.add(code, client, diff_revisions(old, df))
+        write_csv_atomically(csv_path, df)
+        earliest, latest = compute_record_dates(df)
+        feature = self.features[feat_idx]
+        update_geojson_dates(
+            feature, earliest, latest, self.refreshed_at_utc
+        )
+        verify_feature_from_csv(feature, df)
+        self.stats.updated_csvs += 1
+        self.stats.by_client[client] = self.stats.by_client.get(client, 0) + 1
+        return True
+
+
 # ── Shared helpers ────────────────────────────────────────────────────────────
 
 def _station_records_to_df(station_records: list[dict]) -> pd.DataFrame:
@@ -337,15 +649,13 @@ def _station_records_to_df(station_records: list[dict]) -> pd.DataFrame:
 
 def refresh_awdb(
     stations: list[tuple[int, str, str]],
-    features: list[dict],
-    data_dir: Path,
-    refreshed_at_utc: str,
-    stats: RefreshStats,
+    writer: StationWriter,
 ) -> None:
     """Refresh AWDB station CSVs.
 
     ``stations`` is a list of (feature_index, code, triplet) tuples.
     """
+    stats = writer.stats
     client = AWDBClient()
     total_batches = (len(stations) + AWDB_BATCH - 1) // AWDB_BATCH
     for start in range(0, len(stations), AWDB_BATCH):
@@ -385,19 +695,8 @@ def refresh_awdb(
             if not station_recs:
                 continue
             df = _station_records_to_df(station_recs)
-            if df.empty:
-                stats.skipped_empty += 1
-                continue
-            csv_path = station_csv_path(data_dir, code)
-            write_csv_atomically(csv_path, df)
-            earliest, latest = compute_record_dates(df)
-            update_geojson_dates(
-                features[feat_idx], earliest, latest, refreshed_at_utc
-            )
-            verify_feature_from_csv(features[feat_idx], df)
-            stats.updated_csvs += 1
-            stats.by_client["awdb"] = stats.by_client.get("awdb", 0) + 1
-            updated += 1
+            if writer.store(feat_idx, code, "awdb", df):
+                updated += 1
 
         print(f"updated {updated}")
 
@@ -406,15 +705,13 @@ def refresh_awdb(
 
 def refresh_cdec(
     stations: list[tuple[int, str]],
-    features: list[dict],
-    data_dir: Path,
-    refreshed_at_utc: str,
-    stats: RefreshStats,
+    writer: StationWriter,
 ) -> None:
     """Refresh CDEC station CSVs.
 
     ``stations`` is a list of (feature_index, station_id) tuples.
     """
+    stats = writer.stats
     client = CDECClient()
     station_ids = [sid for _, sid in stations]
     idx_by_id = {sid: idx for idx, sid in stations}
@@ -457,19 +754,8 @@ def refresh_cdec(
                 continue
             station_recs = by_station.get(sid, [])
             df = _station_records_to_df(station_recs)
-            if df.empty:
-                stats.skipped_empty += 1
-                continue
-            csv_path = station_csv_path(data_dir, sid)
-            write_csv_atomically(csv_path, df)
-            earliest, latest = compute_record_dates(df)
-            update_geojson_dates(
-                features[feat_idx], earliest, latest, refreshed_at_utc
-            )
-            verify_feature_from_csv(features[feat_idx], df)
-            stats.updated_csvs += 1
-            stats.by_client["cdec"] = stats.by_client.get("cdec", 0) + 1
-            updated += 1
+            if writer.store(feat_idx, sid, "cdec", df):
+                updated += 1
 
         print(f"updated {updated}")
 
@@ -478,10 +764,7 @@ def refresh_cdec(
 
 def refresh_databc(
     stations: list[tuple[int, str]],
-    features: list[dict],
-    data_dir: Path,
-    refreshed_at_utc: str,
-    stats: RefreshStats,
+    writer: StationWriter,
 ) -> None:
     """Refresh DataBC ASWS station CSVs.
 
@@ -489,6 +772,7 @@ def refresh_databc(
     SWE is fetched from SWDaily.csv (mm → cm).
     Snow depth is fetched from SD.csv / SD_Archive.csv (cm).
     """
+    stats = writer.stats
     if not stations:
         return
 
@@ -529,20 +813,8 @@ def refresh_databc(
             continue
 
         df = _station_records_to_df(by_station.get(lid_str, []))
-        if df.empty:
-            stats.skipped_empty += 1
-            continue
-
-        csv_path = station_csv_path(data_dir, lid_str)
-        write_csv_atomically(csv_path, df)
-        earliest, latest = compute_record_dates(df)
-        update_geojson_dates(
-            features[feat_idx], earliest, latest, refreshed_at_utc
-        )
-        verify_feature_from_csv(features[feat_idx], df)
-        stats.updated_csvs += 1
-        stats.by_client["databc"] = stats.by_client.get("databc", 0) + 1
-        updated += 1
+        if writer.store(feat_idx, lid_str, "databc", df):
+            updated += 1
 
     print(f"  [DataBC] updated {updated} station CSVs")
 
@@ -551,10 +823,7 @@ def refresh_databc(
 
 def refresh_nve(
     stations: list[tuple[int, str]],
-    features: list[dict],
-    data_dir: Path,
-    refreshed_at_utc: str,
-    stats: RefreshStats,
+    writer: StationWriter,
     resample_probe: bool = False,
 ) -> None:
     """Refresh NVE station CSVs.
@@ -562,6 +831,8 @@ def refresh_nve(
     ``stations`` is a list of (feature_index, station_id) tuples.
     NVE fetches per station+parameter; all IDs are passed in one call.
     """
+    stats = writer.stats
+    features = writer.features
     if not stations:
         return
 
@@ -647,19 +918,8 @@ def refresh_nve(
         if feat_idx is None:
             continue
         df = _station_records_to_df(by_station.get(sid, []))
-        if df.empty:
-            stats.skipped_empty += 1
-            continue
-        csv_path = station_csv_path(data_dir, sid)
-        write_csv_atomically(csv_path, df)
-        earliest, latest = compute_record_dates(df)
-        update_geojson_dates(
-            features[feat_idx], earliest, latest, refreshed_at_utc
-        )
-        verify_feature_from_csv(features[feat_idx], df)
-        stats.updated_csvs += 1
-        stats.by_client["nve"] = stats.by_client.get("nve", 0) + 1
-        updated += 1
+        if writer.store(feat_idx, sid, "nve", df):
+            updated += 1
 
     print(f"  [NVE] updated {updated} station CSVs")
 
@@ -668,10 +928,7 @@ def refresh_nve(
 
 def refresh_yukon(
     stations: list[tuple[int, str]],
-    features: list[dict],
-    data_dir: Path,
-    refreshed_at_utc: str,
-    stats: RefreshStats,
+    writer: StationWriter,
 ) -> None:
     """Refresh Yukon (AquaCache) station CSVs.
 
@@ -684,6 +941,7 @@ def refresh_yukon(
     manual snow courses are periodic and are excluded from
     all_snow_stations.geojson upstream.
     """
+    stats = writer.stats
     if not stations:
         return
 
@@ -726,19 +984,8 @@ def refresh_yukon(
         if feat_idx is None:
             continue
         df = _station_records_to_df(by_station.get(sid, []))
-        if df.empty:
-            stats.skipped_empty += 1
-            continue
-        csv_path = station_csv_path(data_dir, sid)
-        write_csv_atomically(csv_path, df)
-        earliest, latest = compute_record_dates(df)
-        update_geojson_dates(
-            features[feat_idx], earliest, latest, refreshed_at_utc
-        )
-        verify_feature_from_csv(features[feat_idx], df)
-        stats.updated_csvs += 1
-        stats.by_client["yukon"] = stats.by_client.get("yukon", 0) + 1
-        updated += 1
+        if writer.store(feat_idx, sid, "yukon", df):
+            updated += 1
 
     print(f"  [Yukon] updated {updated} station CSVs")
 
@@ -749,12 +996,15 @@ def finalize_from_csvs(
     geojson_path: Path,
     data_dir: Path,
     archive_path: Path,
+    revisions_dir: Path = DEFAULT_REVISIONS_DIR,
 ) -> None:
     """Update GeoJSON date metadata from existing CSVs, then build archive.
 
     Used by the ``--finalize-only`` mode after parallel per-network jobs have
     written their CSVs as GitHub Actions artifacts and those artifacts have
-    been downloaded into ``data_dir``.
+    been downloaded into ``data_dir``.  Their revision-log rows arrive
+    as ``revisions_dir/pending/*.csv`` and are merged into the month files
+    here (DESIGN.md §6.6).
     """
     if not geojson_path.exists():
         raise FileNotFoundError(f"GeoJSON not found: {geojson_path}")
@@ -807,6 +1057,9 @@ def finalize_from_csvs(
 
     write_json_atomically(geojson_path, geojson)
     print(f"GeoJSON updated: {geojson_path}")
+
+    merged = merge_pending_revisions(revisions_dir)
+    print(f"Revision log: {merged:,} rows merged into {revisions_dir}")
 
     report_orphan_csvs(data_dir, features)
     archived_count = build_archive(
@@ -866,6 +1119,23 @@ def main() -> None:
         ),
     )
     ap.add_argument(
+        "--revisions-dir",
+        default=str(DEFAULT_REVISIONS_DIR),
+        help="Revision log directory (DESIGN.md §6.6)",
+    )
+    ap.add_argument(
+        "--allow-shrink",
+        action="append",
+        default=[],
+        metavar="CODES",
+        help=(
+            "Station codes (comma-separated, repeatable) whose CSV may be "
+            "replaced even though the new record is much shorter, or "
+            "`all`. Without it such replacements are refused and logged "
+            "(shrink guard, DESIGN.md §6.3)."
+        ),
+    )
+    ap.add_argument(
         "--archive-only",
         action="store_true",
         help=(
@@ -878,6 +1148,11 @@ def main() -> None:
     geojson_path = Path(args.geojson)
     data_dir = Path(args.data_dir)
     archive_path = Path(args.archive)
+    revisions_dir = Path(args.revisions_dir)
+    allow_shrink = frozenset(
+        c.strip() for arg in args.allow_shrink for c in arg.split(",")
+        if c.strip()
+    )
 
     # ── Archive-only mode ─────────────────────────────────────────────────────
     if args.archive_only:
@@ -887,7 +1162,9 @@ def main() -> None:
 
     # ── Finalize-only mode ────────────────────────────────────────────────────
     if args.finalize_only:
-        finalize_from_csvs(geojson_path, data_dir, archive_path)
+        finalize_from_csvs(
+            geojson_path, data_dir, archive_path, revisions_dir
+        )
         return
 
     if not geojson_path.exists():
@@ -976,35 +1253,39 @@ def main() -> None:
     refreshed_at_utc = datetime.now(timezone.utc).isoformat(
         timespec="seconds"
     )
+    writer = StationWriter(
+        features=features,
+        data_dir=data_dir,
+        refreshed_at_utc=refreshed_at_utc,
+        stats=stats,
+        revisions=RevisionLog(detected_utc=refreshed_at_utc),
+        allow_shrink=allow_shrink,
+    )
 
     if run_awdb:
-        refresh_awdb(
-            awdb_stations, features, data_dir, refreshed_at_utc, stats
-        )
+        refresh_awdb(awdb_stations, writer)
     if run_cdec:
-        refresh_cdec(
-            cdec_stations, features, data_dir, refreshed_at_utc, stats
-        )
+        refresh_cdec(cdec_stations, writer)
     if run_databc:
-        refresh_databc(
-            databc_stations, features, data_dir, refreshed_at_utc, stats
-        )
+        refresh_databc(databc_stations, writer)
     if run_nve:
         refresh_nve(
-            nve_stations, features, data_dir, refreshed_at_utc, stats,
-            resample_probe=args.resample_probe,
+            nve_stations, writer, resample_probe=args.resample_probe,
         )
     if run_yukon:
-        refresh_yukon(
-            yukon_stations, features, data_dir, refreshed_at_utc, stats
-        )
+        refresh_yukon(yukon_stations, writer)
 
     # In per-network mode: CSVs written, skip GeoJSON update and archive.
     # The downstream finalize job handles those via --finalize-only.
+    logged = writer.revisions.write(revisions_dir, network=network)
     if network:
         print(f"\n[{network.upper()}] CSVs written to {data_dir}")
         print(f"  updated: {stats.updated_csvs:,}  "
-              f"failed: {stats.failed_batches:,}")
+              f"failed: {stats.failed_batches:,}  "
+              f"refused (shrink): {stats.refused_shrink:,}  "
+              f"revision rows: {logged:,}")
+        for line in writer.revisions.summary():
+            print(line)
         return
 
     # Update GeoJSON metadata (full run only)
@@ -1029,6 +1310,9 @@ def main() -> None:
     print(f"Empty station payloads   : {stats.skipped_empty:,}")
     print(f"Failed batches           : {stats.failed_batches:,}")
     print(f"Unroutable stations      : {stats.unroutable:,}")
+    print(f"Refused (shrink guard)   : {stats.refused_shrink:,}")
+    for line in writer.revisions.summary():
+        print(line)
     print(f"Archive members          : {archived_count:,}")
     print(f"Archive written          : {archive_path}")
     print(f"GeoJSON updated          : {geojson_path}")

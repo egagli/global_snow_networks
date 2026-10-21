@@ -542,6 +542,8 @@ def process_station_from_csv(
         "upd": upd,
         "mtype": "automated",
         "dp": _clean_meta_text(meta.get("data_provider")),
+        # set only for stations retained after vanishing upstream (§6.4)
+        "gone": _clean_meta_text(meta.get("missing_upstream_since")),
         "cam": _clean_meta_text(meta.get("station_camera_url")),
         "camimg": _camera_snapshot_url(
             _clean_meta_text(meta.get("station_camera_url"))
@@ -1315,6 +1317,7 @@ function periodicPopupHtml(s) {
   rows.push(`Code: ${s.code} · ${NET_LABELS[s.net] || s.net}`);
   if (s.op) rows.push(`Operator: ${s.op}`);
   if (s.dp) rows.push(`Data provider: ${s.dp}`);
+  if (s.gone) rows.push(`<i>No longer listed by its source since ${s.gone}; kept in the inventory</i>`);
   for (const v of s.vars || []) {
     rows.push(`<span style="font-size:11px">${v[0]} variables: ${v[1]}</span>`);
   }
@@ -1633,6 +1636,7 @@ function onMarkerClick(code) {
     <div class="info-row"><span class="info-key">Network:</span><span>${netLabel}</span></div>
     <div class="info-row"><span class="info-key">Operator:</span><span>${operatorStr}</span></div>
     <div class="info-row"><span class="info-key">Data provider:</span><span>${s.dp || "—"} (client: ${clientStr})</span></div>
+    ${s.gone ? `<div class="info-row"><span class="info-key">Upstream:</span><span>no longer listed by its source since ${s.gone}; archived record kept, no longer refreshed</span></div>` : ""}
     <div class="info-row"><span class="info-key">State:</span><span>${stateName}</span></div>
     <div class="info-row"><span class="info-key">Elevation:</span><span>${elevStr}</span></div>
     ${(s.vars && s.vars.length)
@@ -2891,6 +2895,9 @@ def main() -> None:
                 "metadata_fetched_at": _clean_meta_text(
                     props.get("metadata_fetched_at")
                 ),
+                "missing_upstream_since": _clean_meta_text(
+                    props.get("missing_upstream_since")
+                ),
             }
         else:
             periodic_data.append({
@@ -2902,6 +2909,7 @@ def main() -> None:
                 "cli": _clean_meta_text(props.get("client")),
                 "op": _clean_meta_text(props.get("operator")),
                 "dp": _clean_meta_text(props.get("data_provider")),
+                "gone": _clean_meta_text(props.get("missing_upstream_since")),
                 "url": _clean_meta_text(props.get("station_url")),
                 "cam": _clean_meta_text(props.get("station_camera_url")),
                 "vars": _vars_by_interval(props.get("data_variables")),

@@ -72,6 +72,7 @@ global_snow_networks/
 │
 ├── data/
 │   ├── inventories/*_stations.geojson     # Per-client full inventories (generated)
+│   ├── revisions/YYYY-MM.csv              # Log of upstream revisions to archived values
 │   └── stations/*.csv                     # One CSV per daily-or-better station
 │
 ├── tests/                                 # Offline unit + contract tests (the live ones moved with the clients)
@@ -170,13 +171,22 @@ What it does:
 
 1. Reads daily-or-better candidates from `all_snow_stations.geojson`.
 2. Routes each station to the appropriate client based on its `client` field.
-3. Writes/replaces station CSVs atomically on successful fetch.
-4. **Verifies** each station against the fetched data: a cadence check
+   Stations retained after vanishing upstream (`upstream_status: "missing"`)
+   are skipped.
+3. Writes/replaces station CSVs atomically on successful fetch — unless
+   the new record is much shorter than the archived one (the **shrink
+   guard**: loses more than max(30, 5 %) of the populated rows, or starts
+   more than 30 days later). Such a replacement is refused, the old CSV
+   kept and the refusal logged; `--allow-shrink CODE[,CODE…]` (or `all`)
+   accepts it once the loss is confirmed real (DESIGN.md §6.3).
+4. Logs every archived value the replacement changed to
+   `data/revisions/YYYY-MM.csv` (§5.5).
+5. **Verifies** each station against the fetched data: a cadence check
    (≥ 30 observations and a dense 90-day window) sets `daily_or_better`,
    `daily_verified`, and the record-date fields — sporadic manual
    readings never masquerade as daily stations (DESIGN.md §4).
    Inactive stations with a regular historical record stay archived.
-5. Bundles the CSVs into `_site/all_station_csvs.tar.xz` (not committed;
+6. Bundles the CSVs into `_site/all_station_csvs.tar.xz` (not committed;
    the snapshot release attaches the same bundle, see §5.3).
 
 For stations with **no native daily series**, `--resample-probe` fetches
@@ -307,6 +317,8 @@ DESIGN.md §6.1):**
 | `daily_provenance` | `native`, `resampled_hourly`, or `none` |
 | `possible_duplicates` | `{code, client, distance_m}` links to the same physical site via other clients |
 | `metadata_fetched_at` | Date the metadata was fetched |
+| `upstream_status` | `listed`, or `missing` once the source stops listing the station |
+| `missing_upstream_since` | First rebuild that missed the station; `null` while listed |
 
 Client-specific extras ride along when present (e.g. AWDB
 `awdb_station_triplet`/`county`/`huc`, CDEC `is_snow_course`/`sensors`/
@@ -316,6 +328,14 @@ property: the program is `network_code` and the access path is `client`.
 Yukon's display name ("Yukon Snow Survey Network") was published as
 `network` until 2026-09-22; easysnowdata reads `network` as the access
 path, so it was renamed to say what it is.
+
+#### Stations that vanish upstream
+
+A station its source stops listing is **kept** (DESIGN.md §6.4): it stays
+in the inventory, on the map and in the Zarr store with its archived CSV,
+marked `upstream_status: "missing"` with the date it was first missed and
+a note, and is no longer refreshed. If the source lists it again, it is
+refreshed again as normal.
 
 #### Duplicate stations
 
@@ -407,6 +427,19 @@ one = ds_s[["swe", "snow_depth"]].sel(station="1000_WA_SNTL").load()
 The stores are rebuilt on every Pages deploy, so they track the daily
 refresh; a citable, DOI'd snapshot is a separate, periodic thing
 (`release-snapshot.yml`, docs/STORAGE.md §2.3).
+
+### 5.5 Revision Log: `data/revisions/YYYY-MM.csv`
+
+Every nightly refresh re-downloads each station's full record, so upstream
+revisions — NRCS corrections, CDEC adjustments, NVE reprocessing — reach the
+CSVs however late they come. The revision log says what changed: one row
+per changed cell, `detected_utc,code,client,date,variable,old_value,new_value,kind`,
+with `kind` one of `revised`, `filled`, `removed` or `refused_shrink`
+(DESIGN.md §6.6; [`data/revisions/README.md`](data/revisions/README.md)).
+Days appended at the end of a record are not revisions. A typical night
+revises a few hundred values from the last week or two; an occasional
+reprocessing rewrites years (NVE `2.36.0`, 2026-10-21: 1,331 snow-depth
+values back to 2008). For a fixed set of values, cite a snapshot (§5.3).
 
 ---
 
@@ -1208,8 +1241,10 @@ This repository is the fourth generation of an evolving effort:
    (DOI [10.5281/zenodo.17246162](https://doi.org/10.5281/zenodo.17246162)).
 2. **snotel_ccss_stations_v2** (early 2026) — rebuilt on the AWDB REST
    API with inline QC flags, per-station audit logs of NRCS retroactive
-   corrections, and adaptive lookback.  Retired March 2026.  (Reviving
-   its flags/audit machinery in this repo is tracked as future work.)
+   corrections, and adaptive lookback.  Retired March 2026.  Its audit
+   logs returned in October 2026 as the revision log (§5.5); inline QC
+   flags are still open in
+   [#24](https://github.com/egagli/global_snow_networks/issues/24).
 3. **global_snow_point_obs** (March 2026) — an architecture spike
    sketching a unified API over ~29 networks; its registry-first design
    and "preserve source metadata, duplicates are intentional" principles

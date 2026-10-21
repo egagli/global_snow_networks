@@ -153,6 +153,8 @@ UNIVERSAL_FIELDS: tuple[str, ...] = (
     "daily_provenance",
     "possible_duplicates",
     "metadata_fetched_at",
+    "upstream_status",
+    "missing_upstream_since",
 )
 
 # Human-readable organization/portal behind each access path (DESIGN.md §5)
@@ -810,6 +812,105 @@ def carry_forward_record_dates(
         if touched:
             applied += 1
     return applied
+
+
+# A share of one client's previous stations vanishing in a single rebuild
+# that is more likely a partial upstream response than real retirements.
+# They are retained either way; this only makes the log say so loudly.
+_VANISH_WARN_FRACTION = 0.10
+
+
+def _missing_note(client: str, since: str) -> str:
+    return (
+        f"Not in the {client} station list since {since}; retained with "
+        f"its archived record (DESIGN.md §6.4)."
+    )
+
+
+def retain_vanished_stations(
+    previous_path: Path, features: list[dict], today: str
+) -> int:
+    """Keep stations that vanished upstream in the inventory (DESIGN.md §6.4).
+
+    The inventory is rebuilt from source station lists every run, so a
+    station its source stops listing would otherwise drop out of
+    ``all_snow_stations.geojson``, the map and the Zarr store, leaving its
+    CSV an orphan.  Every feature of the previously committed inventory
+    whose (client, code) is absent from *features* is carried forward
+    with its record dates and probe verdict, marked
+    ``upstream_status = "missing"`` with ``missing_upstream_since`` (the
+    first rebuild that missed it, kept across rebuilds) and a note.  The
+    refresh does not fetch missing stations (``is_fetch_candidate``).
+
+    A station that reappears upstream is fresh again: the new feature
+    wins and carries no missing markers.  A client with **no** features
+    in this rebuild (skipped, or an outage with nothing to fall back on)
+    has its previous features carried forward unmarked — that is an
+    outage, not a retirement.
+
+    Stamps ``upstream_status = "listed"`` on every fresh feature and
+    appends the retained ones to *features* in place.  Returns the number
+    of features marked missing.
+    """
+    for f in features:
+        p = f.setdefault("properties", {})
+        p["upstream_status"] = "listed"
+        p["missing_upstream_since"] = None
+    try:
+        with previous_path.open(encoding="utf-8") as fp:
+            previous = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError):
+        return 0
+    fresh = {
+        (f["properties"].get("client"), f["properties"].get("code"))
+        for f in features
+    }
+    clients_present = {client for client, _ in fresh}
+    prev_by_client = Counter(
+        f.get("properties", {}).get("client") for f in previous
+    )
+    missing = 0
+    outage: Counter = Counter()
+    vanished: Counter = Counter()
+    for f in previous:
+        p = f.get("properties", {})
+        client, code = p.get("client"), p.get("code")
+        if (client, code) in fresh:
+            continue
+        f = upgrade_legacy_feature(f)
+        p = f["properties"]
+        if client not in clients_present:
+            # Whole client absent this run: keep its last state as it was.
+            outage[client] += 1
+            features.append(f)
+            continue
+        if p.get("upstream_status") != "missing":
+            p["upstream_status"] = "missing"
+            p["missing_upstream_since"] = today
+            note = _missing_note(client, today)
+            existing = p.get("notes") or ""
+            p["notes"] = f"{existing} {note}".strip()
+            vanished[client] += 1
+        missing += 1
+        features.append(f)
+    for client, n in outage.items():
+        logger.error(
+            "[%s] no stations in this rebuild — carried its %d previous "
+            "features forward unchanged", client, n,
+        )
+    for client, n in vanished.items():
+        level = (
+            logging.ERROR
+            if n > _VANISH_WARN_FRACTION * prev_by_client[client]
+            else logging.WARNING
+        )
+        logger.log(
+            level,
+            "[%s] %d station(s) newly missing from the source station "
+            "list — retained as upstream_status=missing (DESIGN.md §6.4)",
+            client, n,
+        )
+    return missing
 
 
 # ── AWDB workflow ─────────────────────────────────────────────────────────────
@@ -1706,6 +1807,14 @@ def main() -> None:
 
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
+    retained = retain_vanished_stations(
+        Path(args.output), all_features_merged, today
+    )
+    if retained:
+        print(
+            f"Retained {retained:,} stations missing from their source "
+            f"station list (DESIGN.md §6.4)"
+        )
     carried = carry_forward_record_dates(
         Path(args.output), all_features_merged
     )
