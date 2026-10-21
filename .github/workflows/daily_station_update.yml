@@ -23,6 +23,10 @@ jobs:
       - name: Create station GeoJSONs
         env:
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
+          # CEAZA-Met's registered user name; until the secret exists the
+          # network is skipped with one log line (its terms ask users to
+          # register before downloading).
+          CEAZA_USER: ${{ secrets.CEAZA_USER }}
         run: pixi run fetch-stations
 
       - name: Commit station GeoJSONs
@@ -53,7 +57,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        network: [awdb, cdec, databc, nve, yukon, hydroquebec, alberta, slf, snih]
+        network: [awdb, cdec, databc, nve, yukon, hydroquebec, alberta, slf, snih, ceaza]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -64,8 +68,9 @@ jobs:
       - name: Fetch ${{ matrix.network }} station data
         continue-on-error: true
         env:
-          # Only the NVE client reads this; harmless for the others.
+          # Only the NVE and CEAZA clients read these; harmless for the others.
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
+          CEAZA_USER: ${{ secrets.CEAZA_USER }}
         run: pixi run fetch-data-${{ matrix.network }}
 
       # Upload ONLY the CSVs this job actually refreshed.  The checkout

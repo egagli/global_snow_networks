@@ -51,6 +51,13 @@ from easysnowdata.stations.clients.awdb.awdb_client import (
     _AWDB_DURATION_TO_INTERVAL,
 )
 from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.ceaza import CEAZAClient
+from easysnowdata.stations.clients.ceaza.ceaza_client import (
+    ATTRIBUTION as CEAZA_ATTRIBUTION,
+    HOME_URL as CEAZA_HOME_URL,
+    OWNERS as CEAZA_OWNERS,
+    VARIABLES as CEAZA_VARIABLES,
+)
 from easysnowdata.stations.clients.cdec.cdec_client import (
     SENSORS as CDEC_SENSORS,
 )
@@ -85,6 +92,8 @@ from easysnowdata.stations.clients.yukon.yukon_client import (
     VARIABLES as YUKON_VARIABLES,
 )
 
+from scripts.get_all_stations_data import ceaza_sensor_plan, ceaza_user
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s %(levelname)s %(message)s",
@@ -109,6 +118,7 @@ HYDROQUEBEC_GEOJSON_OUT = INVENTORY_DIR / "hydroquebec_stations.geojson"
 ALBERTA_GEOJSON_OUT = INVENTORY_DIR / "alberta_stations.geojson"
 SLF_GEOJSON_OUT = INVENTORY_DIR / "slf_stations.geojson"
 SNIH_GEOJSON_OUT = INVENTORY_DIR / "snih_stations.geojson"
+CEAZA_GEOJSON_OUT = INVENTORY_DIR / "ceaza_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -194,6 +204,7 @@ DATA_PROVIDERS: dict[str, str] = {
     "alberta": "Alberta River Basins (AEPA)",
     "slf": "WSL SLF (measurement-data.slf.ch, EnviDat)",
     "snih": "SNIH / SIPH Argentina (Base de Datos Hidrológica Integrada)",
+    "ceaza": "CEAZA-Met (Datos provistos por el laboratorio de meteorología CEAZA)",
 }
 
 # Carried on every Alberta feature: the app states no licence, only a
@@ -2181,6 +2192,117 @@ def run_snih_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── CEAZA workflow ────────────────────────────────────────────────────────────
+
+CEAZA_PREFIX = "CEAZA-"
+CEAZA_NOTE = (
+    f"{CEAZA_ATTRIBUTION} ({CEAZA_HOME_URL}). No licence is stated; the "
+    "terms of use ask users to register a user name and to credit the "
+    "source with a link. Raw logger output, not quality controlled."
+)
+
+
+def ceaza_code(station_id: str) -> str:
+    return f"{CEAZA_PREFIX}{station_id}"
+
+
+def _ceaza_data_variables(sensors: list[dict]) -> list[dict]:
+    """One data_variables entry per served sensor (a station can have two
+    of one variable; each record names its sensor)."""
+    dvars: list[dict] = []
+    for sen in sensors:
+        vinfo = CEAZA_VARIABLES.get(sen.get("variable") or "")
+        if vinfo is None:
+            continue
+        dvars.append({
+            "name": f"{sen['variable']}:{sen['sensor']}",
+            "type": vinfo["type"],
+            "interval": "daily",
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": (
+                f"{vinfo['notes']} Sensor {sen['sensor']} at "
+                f"{sen.get('height_m')} m; daily = the service's mean over "
+                "the UTC−4 day."
+            ),
+            "begin_date": sen.get("begin_date"),
+            "end_date": sen.get("end_date"),
+            "n_obs": None,
+        })
+    return dvars
+
+
+def ceaza_station_to_feature(station: dict, sensors: list[dict]) -> dict:
+    """Convert a CEAZA-Met station dict (+ its sensor list) to a feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+    owner = station.get("owner")
+
+    props: dict[str, Any] = {
+        "code": ceaza_code(sid),
+        "name": station.get("name") or sid,
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": "CL",
+        # Only owners the client names unambiguously (DESIGN.md §5).
+        "operator": CEAZA_OWNERS.get(owner or ""),
+        "owner_code": owner,
+        "client": "ceaza",
+        "data_provider": DATA_PROVIDERS["ceaza"],
+        "network_code": "CEAZA",
+        "notes": CEAZA_NOTE,
+        "begin_date": station.get("begin_date") or None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "ceaza_station_id": sid,
+        "measurement_method": station.get("measurement_method") or None,
+        # Which sensor the archive uses for which dates (one per variable
+        # per date; see get_all_stations_data.ceaza_sensor_plan).
+        "ceaza_sensor_plan": ceaza_sensor_plan(sensors) or None,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_ceaza_data_variables(sensors)))
+    return make_feature(lon, lat, props)
+
+
+def run_ceaza_workflow(user: str) -> tuple[list[dict], list[dict]]:
+    """
+    Fetch CEAZA-Met snow stations; return (all_features, daily_features).
+
+    Two requests: the station list and the network-wide sensor list.  Only
+    called with a registered user name (``CEAZA_USER``).
+    """
+    client = CEAZAClient(user=user)
+
+    print("=" * 60)
+    print("[CEAZA] Fetching CEAZA-Met snow stations")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total CEAZA snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("CEAZA station fetch failed: %s", exc)
+        return [], []
+
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    print(f"  Active (90 days): {active}")
+    all_features = [
+        ceaza_station_to_feature(s, client.get_sensors(s["station_id"]))
+        for s in stations
+    ]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -2246,6 +2368,11 @@ def main() -> None:
         "--skip-snih",
         action="store_true",
         help="Skip SNIH (Argentina) client",
+    )
+    ap.add_argument(
+        "--skip-ceaza",
+        action="store_true",
+        help="Skip CEAZA-Met (Chile) client",
     )
     args = ap.parse_args()
 
@@ -2619,6 +2746,56 @@ def main() -> None:
         daily_count += len(snih_daily)
         print(f"[SNIH] {len(snih_daily):,} daily stations added to merged GeoJSON")
 
+    # ── CEAZA ─────────────────────────────────────────────────────────────────
+    # CEAZA-Met's terms ask for a registered user name before any use, so
+    # the station list is not read either until CEAZA_USER is set.  A
+    # previously built inventory is still carried (keep_previous_if_empty).
+    if not args.skip_ceaza:
+        ceaza_all: list[dict] = []
+        ceaza_daily: list[dict] = []
+        user = ceaza_user()
+        if not user:
+            print(
+                "[CEAZA] skipped: CEAZA_USER is not set (CEAZA-Met asks "
+                "users to register a user name first)"
+            )
+        else:
+            try:
+                ceaza_all, ceaza_daily = run_ceaza_workflow(user)
+            except Exception as exc:
+                logger.warning("[CEAZA] Workflow failed: %s", exc)
+        if user or CEAZA_GEOJSON_OUT.exists():
+            ceaza_all, ceaza_daily, fresh = keep_previous_if_empty(
+                "CEAZA", CEAZA_GEOJSON_OUT, ceaza_all, ceaza_daily
+            )
+            if fresh:
+                write_geojson(
+                    CEAZA_GEOJSON_OUT,
+                    ceaza_all,
+                    {
+                        "generated": today,
+                        "source": "CEAZA-Met web service — https://www.ceazamet.cl/ws/pop_ws.php",
+                        "client": "ceaza",
+                        "license": None,
+                        "attribution": CEAZA_ATTRIBUTION,
+                        "description": (
+                            "CEAZA-Met stations with a snow sensor (depth, "
+                            "SWE or snow weight), Coquimbo and Atacama "
+                            "Andes, Chile. Raw logger data, not quality "
+                            "controlled; ceaza_sensor_plan says which sensor "
+                            "the archive uses for which dates."
+                        ),
+                        "references": [
+                            CEAZA_HOME_URL,
+                            "https://www.ceazamet.cl/ws/pop_ws_doc.php",
+                        ],
+                        "total": len(ceaza_all),
+                    },
+                )
+            all_features_merged.extend(ceaza_all)
+            daily_count += len(ceaza_daily)
+            print(f"[CEAZA] {len(ceaza_daily):,} daily stations added to merged GeoJSON")
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -2680,7 +2857,7 @@ def main() -> None:
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
                 "(Norway), Yukon AquaCache, Hydro-Québec (Québec; CC "
                 "BY-NC 4.0, non-commercial), Alberta River Basins, SLF "
-                "(Switzerland) and SNIH (Argentina) "
+                "(Switzerland), SNIH (Argentina) and CEAZA-Met (Chile) "
                 "— including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "

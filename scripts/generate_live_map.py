@@ -882,7 +882,7 @@ const STATE_NAMES = {
   // partner snow courses "YK" — kept verbatim per DESIGN.md §5.
   AB:"Alberta", BC:"British Columbia", NT:"Northwest Territories",
   NU:"Nunavut", YT:"Yukon", YK:"Yukon", QC:"Québec",
-  CH:"Switzerland", AR:"Argentina",
+  CH:"Switzerland", AR:"Argentina", CL:"Chile",
 };
 
 const NET_LABELS = {
@@ -896,6 +896,7 @@ const NET_LABELS = {
   ARB:"Alberta River Basins",
   IMIS:"SLF IMIS", BEOB:"SLF study plot", GCOS:"SLF GCOS SWE",
   RHN:"SNIH Red Hidrológica Nacional", RMET:"SNIH Red Meteorológica",
+  CEAZA:"CEAZA-Met",
 };
 
 // SVG shape markup for each network code (12×12 viewBox)
@@ -917,6 +918,7 @@ const NET_SHAPES = {
   BEOB:'<polygon points="6.00,1.00 8.94,1.95 10.76,4.45 10.76,7.55 8.94,10.05 6.00,11.00 3.06,10.05 1.24,7.55 1.24,4.45 3.06,1.95" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   RHN:'<polygon points="6.00,11.00 1.24,7.55 3.06,1.95 8.94,1.95 10.76,7.55" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   RMET:'<polygon points="6.00,11.00 2.09,9.12 1.13,4.89 3.83,1.50 8.17,1.50 10.87,4.89 9.91,9.12" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  CEAZA:'<polygon points="1.00,6.00 8.50,1.67 8.50,10.33" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   HQ:'<polygon points="6.00,1.00 9.91,2.88 10.87,7.11 8.17,10.50 3.83,10.50 1.13,7.11 2.09,2.88" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
@@ -1227,7 +1229,7 @@ const NET_POLYGONS = {
   SNTLT: [3, -90], CCSS: [3, 90], BCSS: [6, -90], SNOW: [4, -45],
   MSNT: [5, -90], SCAN: [6, -90], NVE: [4, 0], YSS: [8, -90], YKEC: [3, 0],
   HQ: [7, -90], ARB: [9, -90], IMIS: [6, 0], BEOB: [10, -90],
-  RHN: [5, 90], RMET: [7, 90],
+  RHN: [5, 90], RMET: [7, 90], CEAZA: [3, 180],
 };
 
 function stationShape(network, measurementType) {

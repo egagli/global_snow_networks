@@ -40,6 +40,9 @@ CSV schema (all clients)
   Alberta: SD in cm, AEPA's A.DayMean.
   SLF IMIS: HS in cm, median over the 24 h ending at the date's
   stamp; SLF study plots: manual morning HS reading in cm.
+  CEAZA: SWE sensor (ae_mm ÷ 10, ae_cm, or snow weight pnkg kg/m² ÷ 10)
+  and depth (ani_cm), the service's own daily mean over the UTC−4 day,
+  one sensor per variable per date (:func:`ceaza_sensor_plan`).
   SNIH: pillow SWE in mm ÷ 10 — the validated daily record, then (after
   ``snih_validated_through``) the median of the day's raw telemetry after
   the spike filter (:func:`snih_daily_from_raw`).
@@ -57,6 +60,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import tarfile
 import logging
 from dataclasses import dataclass, field
@@ -73,6 +77,7 @@ from easysnowdata import auth
 from easysnowdata.auth import CredentialError
 from easysnowdata.stations.clients.alberta import AlbertaClient, AlbertaError
 from easysnowdata.stations.clients.awdb import AWDBClient, AWDBError
+from easysnowdata.stations.clients.ceaza import CEAZAClient, CEAZAError
 from easysnowdata.stations.clients.cdec import CDECClient, CDECError
 from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
 from easysnowdata.stations.clients.hydroquebec import (
@@ -1388,6 +1393,129 @@ def refresh_snih(
     print(f"  [SNIH] updated {updated} station CSVs")
 
 
+# ── CEAZA refresh ─────────────────────────────────────────────────────────────
+
+# CEAZA-Met's terms ask every user to register a user name before
+# downloading (ceazamet@ceaza.cl).  Until the CEAZA_USER secret is set the
+# network is skipped — inventory and data alike — with one log line.
+CEAZA_USER_ENV = "CEAZA_USER"
+# Snow variables (tm_cod) by archive column type.
+CEAZA_TYPE_CODES: dict[str, tuple[str, ...]] = {
+    "swe": ("ae_mm", "ae_cm", "pnkg"),
+    "snwd": ("ani_cm",),
+}
+# Nightly window once a station is archived: the data are raw logger
+# output that CEAZA does not revise, so the full record is fetched only
+# the first time (no CSV yet) and later nights merge the last 90 days in.
+# That keeps the nightly volume to what the registration e-mail states.
+CEAZA_LOOKBACK_DAYS = 90
+
+
+def ceaza_user() -> str | None:
+    return os.environ.get(CEAZA_USER_ENV) or None
+
+
+def ceaza_sensor_plan(sensors: list[dict]) -> dict[str, list[dict]]:
+    """One sensor per variable per date, for each archive column type.
+
+    Some stations carry two sensors of one type: paired sensors that
+    disagree (El Tapado SWE by a median 15 mm, Llano de Las Liebres snow
+    weight by 32 kg/m²) or a replacement (El Tapado depth, TPFSNOWD to
+    2023, TPFANSHM31 from 2018).  The sensor with the newest last reading
+    is used for its whole period; an older sensor fills only the dates
+    before that period began, never a date the newer one covers.  Returns
+    ``{type: [{sensor, variable, from, to}, ...]}``, newest segment first.
+    """
+    plan: dict[str, list[dict]] = {}
+    for vtype, codes in CEAZA_TYPE_CODES.items():
+        candidates = sorted(
+            (s for s in sensors if s.get("variable") in codes and s.get("begin_date")),
+            key=lambda s: (s.get("end_date") or "", s.get("begin_date") or ""),
+            reverse=True,
+        )
+        segments: list[dict] = []
+        covered_from: str | None = None
+        for sen in candidates:
+            begin, end = sen["begin_date"], sen.get("end_date") or date.today().isoformat()
+            if covered_from is not None:
+                end = min(end, (date.fromisoformat(covered_from) - timedelta(days=1)).isoformat())
+            if begin > end:
+                continue
+            segments.append({
+                "sensor": sen["sensor"], "variable": sen["variable"],
+                "from": begin, "to": end,
+            })
+            covered_from = begin
+        if segments:
+            plan[vtype] = segments
+    return plan
+
+
+def refresh_ceaza(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh CEAZA-Met snow CSVs from the service's daily aggregates.
+
+    ``stations`` is a list of (feature_index, code) tuples; each feature's
+    ``ceaza_station_id`` is CEAZA's ``e_cod``.  The sensor plan comes from
+    the network-wide sensor list (:func:`ceaza_sensor_plan`).  A station
+    without a CSV gets its full record; an archived one gets the last
+    :data:`CEAZA_LOOKBACK_DAYS` days, merged in (``merge=True``).
+    Skipped, with one line, when ``CEAZA_USER`` is not set.
+
+    Requests per run: 2 list requests (stations, sensors) plus one
+    ``GetSerieSensor`` per sensor segment that overlaps the window — per
+    10-year block on a first, full fetch.
+    """
+    stats = writer.stats
+    features = writer.features
+    if not stations:
+        return
+    user = ceaza_user()
+    if not user:
+        print(
+            f"  [CEAZA] skipped {len(stations)} stations — {CEAZA_USER_ENV} "
+            "is not set (CEAZA-Met asks users to register first)"
+        )
+        return
+
+    end = (today or datetime.now(timezone(timedelta(hours=-4))).date()) - timedelta(days=1)
+    client = CEAZAClient(user=user)
+    print(f"  [CEAZA] Fetching daily SWE + snow depth for {len(stations)} stations...")
+    updated = 0
+    for feat_idx, code in stations:
+        sid = str(features[feat_idx]["properties"].get("ceaza_station_id") or "")
+        archived = station_csv_path(writer.data_dir, code).exists()
+        begin = end - timedelta(days=CEAZA_LOOKBACK_DAYS) if archived else None
+        rows: list[dict] = []
+        try:
+            plan = ceaza_sensor_plan(client.get_sensors(sid))
+            for vtype, segments in plan.items():
+                for seg in segments:
+                    lo = max(seg["from"], begin.isoformat()) if begin else seg["from"]
+                    hi = min(seg["to"], end.isoformat())
+                    if lo > hi:
+                        continue
+                    for r in client.get_data(
+                        station_ids=[sid], variables=[seg["variable"]],
+                        sensors=[seg["sensor"]], interval="daily",
+                        begin_date=lo, end_date=hi,
+                    ):
+                        rows.append({**r, "type": vtype})
+        except CEAZAError as exc:
+            stats.failed_batches += 1
+            print(f"  [CEAZA] {code} FAILED ({exc})")
+            continue
+        if rows:
+            stats.fetched += 1
+        df = _station_records_to_df(rows)
+        if writer.store(feat_idx, code, "ceaza", df, merge=archived):
+            updated += 1
+    print(f"  [CEAZA] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -1491,7 +1619,7 @@ def main() -> None:
         "--network",
         choices=[
             "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec",
-            "alberta", "slf", "snih",
+            "alberta", "slf", "snih", "ceaza",
         ],
         default=None,
         help=(
@@ -1586,6 +1714,7 @@ def main() -> None:
     alberta_stations: list[tuple[int, str]] = []
     slf_stations: list[tuple[int, str]] = []
     snih_stations: list[tuple[int, str]] = []
+    ceaza_stations: list[tuple[int, str]] = []
 
     stats = RefreshStats()
     for idx, feat in enumerate(features):
@@ -1622,6 +1751,8 @@ def main() -> None:
             slf_stations.append((idx, code))
         elif client_name == "snih":
             snih_stations.append((idx, code))
+        elif client_name == "ceaza":
+            ceaza_stations.append((idx, code))
         else:
             # No silent fallback (DESIGN.md §3.6): a feature without a
             # known client cannot be refreshed.  Loud, counted, skipped —
@@ -1645,6 +1776,7 @@ def main() -> None:
     run_alberta = (network in (None, "alberta")) and bool(alberta_stations)
     run_slf = (network in (None, "slf")) and bool(slf_stations)
     run_snih = (network in (None, "snih")) and bool(snih_stations)
+    run_ceaza = (network in (None, "ceaza")) and bool(ceaza_stations)
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
@@ -1656,6 +1788,7 @@ def main() -> None:
         len(alberta_stations) if run_alberta else 0,
         len(slf_stations) if run_slf else 0,
         len(snih_stations) if run_snih else 0,
+        len(ceaza_stations) if run_ceaza else 0,
     ])
 
     print("=" * 70)
@@ -1674,6 +1807,7 @@ def main() -> None:
         f"Alberta: {len(alberta_stations) if run_alberta else 'skip'}  "
         f"SLF: {len(slf_stations) if run_slf else 'skip'}  "
         f"SNIH: {len(snih_stations) if run_snih else 'skip'}  "
+        f"CEAZA: {len(ceaza_stations) if run_ceaza else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -1710,6 +1844,8 @@ def main() -> None:
         refresh_slf(slf_stations, writer)
     if run_snih:
         refresh_snih(snih_stations, writer)
+    if run_ceaza:
+        refresh_ceaza(ceaza_stations, writer)
     if network == "hydroquebec" and not run_hydroquebec:
         # The inventory has no Hydro-Québec stations to refresh — e.g.
         # stage 1 could not list them.  Say so where the run summary shows it.

@@ -91,3 +91,11 @@ Per-network documentation, APIs, portals, and design literature
 
 - SNIH portal: <https://snih.hidricosargentina.gob.ar/>
 - Terms of use: <https://snih.hidricosargentina.gob.ar/Terminos.aspx>
+
+## CEAZA-Met (Chile)
+
+- CEAZA-Met: <https://www.ceazamet.cl/>
+- Web service documentation and terms of use ("Condiciones de uso"):
+  <https://www.ceazamet.cl/ws/pop_ws_doc.php>
+- Registration: e-mail ceazamet@ceaza.cl (name, e-mail, organisation,
+  sector, intended use, download frequency, daily volume)

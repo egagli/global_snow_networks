@@ -301,7 +301,7 @@ DESIGN.md §6.1):**
 | `state` | State / province / country code |
 | `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
 | `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
-| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"`, `"snih"` |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"`, `"snih"`, `"ceaza"` |
 | `data_provider` | Human-readable organization/portal behind that access path |
 | `status`, `is_active` | Active status as reported/derived |
 | `begin_date`, `end_date` | Period of record from source metadata |
@@ -1051,6 +1051,59 @@ bare integer codes could collide with other networks'. Elevation is missing
 - SNIH portal: https://snih.hidricosargentina.gob.ar/
 - Terms of use: https://snih.hidricosargentina.gob.ar/Terminos.aspx
 
+### 6.14 CEAZA-Met (Chile)
+
+> **Datos provistos por el laboratorio de meteorología CEAZA** —
+> [www.ceazamet.cl](https://www.ceazamet.cl/). This attribution, with the
+> link, is what CEAZA-Met's terms of use ask for. Every CEAZA feature
+> carries it in `notes` and `data_provider`.
+
+**Data source:** CEAZA-Met web service (`pop_ws.php`: `GetListaEstaciones`,
+`GetListaSensores`, `GetSerieSensor`)
+**Client:** `ceaza`
+**Stations:** the 17 CEAZA-Met stations with a snow sensor (10 reporting in
+October 2026), out of about 95
+**Coverage:** the high Andes of Coquimbo and Atacama, 30–32° S,
+2,284–4,306 m
+**Period of record:** snow from about 2011
+**Temporal resolution:** daily = the service's mean over the UTC−4 day
+**Operator:** the station owner the service names (CEAZA, INIA, DGA, IEB,
+ULS); other owner codes are kept as `owner_code` only
+
+**Registration first.** CEAZA-Met's terms ask every user to request a user
+name by e-mail before downloading. Until the `CEAZA_USER` repository secret
+holds that user name, the nightly job skips CEAZA entirely — station list
+and data — with one log line. Once set, it is passed to the service as
+`user=`.
+
+**One sensor per variable per date.** Some stations have two sensors of one
+type that disagree (El Tapado SWE by a median 15 mm; Llano de Las Liebres
+snow weight by 32 kg/m²) or a replacement (El Tapado depth: `TPFSNOWD` to
+2023, `TPFANSHM31` from 2018). The archive uses the sensor with the newest
+last reading for its whole period; an older sensor fills only the dates
+before that period began. `ceaza_sensor_plan` on each feature lists the
+sensor and dates used for each variable.
+
+**Snow variables.** Depth `ani_cm`; SWE from `ae_mm` (mm ÷ 10), `ae_cm`, or
+snow weight `pnkg` (kg/m², which is mm of water, ÷ 10). The values are raw
+logger output, not quality controlled. The client nulls values outside
+0–15 m; negatives are nulled, not set to zero.
+
+**Request volume.** A station's first refresh fetches its full record; after
+that, each night fetches the last 90 days and merges them in. CEAZA does not
+revise its raw data, so corrections older than 90 days are not picked up.
+Estimated from the client's documented sensor list (about 24 sensor periods
+in the plan, 10 stations reporting):
+
+| | Requests | Volume |
+|---|---|---|
+| Nightly, steady state | about 16: station and sensor lists twice (inventory, then refresh), plus about 12 series | about 0.5 MB |
+| First run (backfill, once) | about 50 | about 13 MB |
+
+**Links**
+- CEAZA-Met: https://www.ceazamet.cl/
+- Web service documentation and terms of use: https://www.ceazamet.cl/ws/pop_ws_doc.php
+
 ---
 
 ## 7. Data Access Methods and Design Philosophy
@@ -1483,6 +1536,9 @@ SLF IMIS and study-plot data are CC BY 4.0 (credit WSL SLF, cite the DOI);
 the GCOS SWE data are ODbL 1.0 + DbCL 1.0 (§6.12).
 SNIH data are free to use, including commercially, citing SIPH and/or the
 network and the date of the last update (§6.13).
+CEAZA-Met states no licence; its terms ask users to register and to credit
+"Datos provistos por el laboratorio de meteorología CEAZA" with a link to
+www.ceazamet.cl (§6.14).
 
 ### Citing this archive
 
