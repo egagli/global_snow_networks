@@ -57,11 +57,13 @@ Nothing is outstanding. easysnowdata 0.2.0 was released on PyPI and
 conda-forge, and `pixi.toml` depends on it the ordinary way. The pin was
 raised to `>=0.3.2` on 2026-09-23, the first release that reads the archive
 as it is published now ([`STORAGE.md`](STORAGE.md) §3); until then the lock
-had stayed on 0.2.0, so the pipeline ran the 0.2.0 clients.
+had stayed on 0.2.0, so the pipeline ran the 0.2.0 clients. It was raised
+again to `>=0.3.3` on 2026-10-21, the first release with the clients for
+Hydro-Québec, Alberta, SNIH, CEAZA, DWD, SLF and GHCN-D (#39–#45).
 
 ```toml
 [dependencies]
-easysnowdata = ">=0.3.2"
+easysnowdata = ">=0.3.3"
 ```
 
 The same change dropped `lxml`, `beautifulsoup4`, `aiohttp`, `fsspec`,

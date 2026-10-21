@@ -227,7 +227,13 @@ feature; `null` when unavailable, never omitted):
 `latest_record_date`, `station_url`, `station_image_url`,
 `station_camera_url`, `notes`, `data_variables`, `has_daily_swe`,
 `has_daily_snwd`, `daily_or_better`, `daily_verified`,
-`daily_provenance`, `possible_duplicates`, `metadata_fetched_at`.
+`daily_provenance`, `possible_duplicates`, `metadata_fetched_at`,
+`upstream_status`, `missing_upstream_since`.
+
+`upstream_status` is `listed` when the station is in its source's current
+station list and `missing` when it has vanished from it and is retained
+under §6.4; `missing_upstream_since` is the first rebuild that missed it
+(`null` while listed).
 
 `has_daily_swe` / `has_daily_snwd` are **advertised** candidates,
 rebuilt from source metadata on every inventory rebuild.
@@ -259,12 +265,32 @@ string `nan`. Daily-or-better stations only. Flags, other variables, and
 sub-daily data are not stored — use the clients. Writes are atomic
 (temp file + rename); the same applies to GeoJSON and archive writes.
 
+Each nightly refresh re-downloads a station's full record and replaces its
+CSV, which is how upstream revisions reach the archive (§6.6). Because a
+truncated-but-non-empty upstream response would otherwise delete history,
+a replacement is **refused** — the old CSV kept, the feature's dates and
+probe verdict untouched, a `refused_shrink` row logged — when it loses
+more than max(30, 5 %) of the old file's populated rows (either column
+non-null) or moves the earliest populated date more than 30 days later.
+`--allow-shrink <code>|all` overrides it once the loss is confirmed real.
+
 ### 6.4 Retention (correction over exclusion)
 
 Detect bad upstream data and correct it (with a `notes` explanation) rather
 than dropping stations. Stations that vanish upstream are retained in the
 inventory with a status note; their CSVs are kept and inventoried, never
 silently orphaned or silently deleted.
+
+Concretely: each inventory rebuild carries forward every feature of the
+previous `all_snow_stations.geojson` whose (client, code) its source no
+longer lists, with its record dates and probe verdict (so it stays on the
+map and in the Zarr store), `upstream_status: "missing"`,
+`missing_upstream_since`, and a note. Missing stations are not fetched.
+If a station reappears upstream, the fresh feature wins and the markers
+go. A client absent from a rebuild altogether (skipped, or an outage with
+no previous per-client file to fall back on) is an outage, not a
+retirement: its previous features are carried forward unmarked. The
+contract test fails on any CSV without an inventory feature.
 
 ### 6.5 Chunked archive (`archive/*.zarr` in the Pages artefact)
 
@@ -279,6 +305,32 @@ committed CSVs on every Pages deploy and **never committed**: the CSVs stay
 the source of truth, and a value in the store must equal the CSV value for
 that station and date. Anything the CSVs do not hold (flags, other
 variables, sub-daily data), the store does not hold either.
+
+### 6.6 Revision log (`data/revisions/YYYY-MM.csv`)
+
+Sources revise published data — NRCS QC, CDEC adjustments, NVE
+reprocessing whole series — and the full-record refresh (§6.3) carries
+those revisions into the CSVs. The revision log records what changed so a
+CSV value that differs from last week's is never a mystery
+([#24](https://github.com/egagli/global_snow_networks/issues/24), the
+audit-log half; inline QC flags remain open there).
+
+When a CSV is replaced, every cell up to the **old** file's last date is
+compared with the new one; appended days are new observations, not
+revisions. Each difference is one row, appended to the file for the
+month of detection:
+
+`detected_utc,code,client,date,variable,old_value,new_value,kind`
+
+`variable` is `wteq_cm` or `snwd_cm`; `kind` is `revised` (value →
+different value, beyond 1e-6), `filled` (blank, or a date the CSV did not
+have, → value), `removed` (value → blank, or the date is gone) or
+`refused_shrink` (§6.3; `variable` is `rows`, the values are
+populated-row counts, `date` the old record start). Values are the CSV
+text, blank for missing. Per-network jobs write
+`data/revisions/pending/<network>.csv` and `--finalize-only` merges them,
+since parallel jobs cannot append to one file. Month files are rewritten
+whole and renamed into place.
 
 ## 7. Context metadata and references
 

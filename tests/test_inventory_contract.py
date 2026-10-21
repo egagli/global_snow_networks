@@ -33,6 +33,7 @@ UNIVERSAL_FIELDS = {
     "station_camera_url", "notes", "data_variables", "has_daily_swe",
     "has_daily_snwd", "daily_or_better", "daily_verified",
     "daily_provenance", "possible_duplicates", "metadata_fetched_at",
+    "upstream_status", "missing_upstream_since",
 }
 
 DATA_VARIABLE_KEYS = {
@@ -213,3 +214,26 @@ def test_no_bare_network_property(features):
     offenders = [f["properties"]["code"] for f in features
                  if "network" in f["properties"]]
     assert not offenders, f"bare `network` property on {offenders[:5]}"
+
+
+def test_upstream_status_and_missing_since_agree(features):
+    """Stations that vanished upstream are retained, marked, and dated
+    (DESIGN.md §6.4); every other station is ``listed``."""
+    for f in features:
+        p = f["properties"]
+        status, since = p.get("upstream_status"), p.get("missing_upstream_since")
+        assert status in {"listed", "missing"}, (p.get("code"), status)
+        if status == "missing":
+            assert isinstance(since, str) and len(since) == 10, p.get("code")
+        else:
+            assert since is None, p.get("code")
+
+
+def test_no_orphan_csvs(features):
+    """Every station CSV has an inventory feature (DESIGN.md §6.4): a
+    station that vanishes upstream is retained, never orphaned."""
+    codes = {str(f["properties"].get("code")) for f in features}
+    orphans = sorted(
+        p.stem for p in DATA_DIR.glob("*.csv") if p.stem not in codes
+    )
+    assert not orphans, f"{len(orphans)} orphan CSVs, e.g. {orphans[:10]}"

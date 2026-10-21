@@ -26,7 +26,12 @@ _site/
 # The CSV bundle: a release asset since 2026-09 (docs/STORAGE.md §3), not a tracked file
 data/all_station_csvs.tar.xz
 
+# Per-network revision-log staging; merged into data/revisions/YYYY-MM.csv
+# by --finalize-only (DESIGN.md §6.6)
+data/revisions/pending/
+
 # Local run logs and atomic-write temporaries
 *_run.log
 *.geojson.tmp
 *.tar.xz.tmp
+*.csv.tmp
