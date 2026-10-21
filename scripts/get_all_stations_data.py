@@ -27,6 +27,8 @@ CSV schema (all clients)
   the station's local day).
   Hydro-Québec: GMON SWE in mm ÷ 10, last valid value of the
   America/Toronto local day (published hourly, changes every 6 h).
+  Alberta: pillow SW in mm ÷ 10, AEPA's own daily mean (A.DayMean) over
+  the MST day.
 - ``snwd_cm``: Snow depth in centimetres.
   AWDB: SNWD element (inches × 2.54, converted by AWDBClient).
   CDEC: sensor 18 (Snow Depth), inches × 2.54.
@@ -35,6 +37,7 @@ CSV schema (all clients)
   Yukon: /timeseries/measurementsDaily value in cm (daily mean over the
   station's local day).
   Hydro-Québec: hourly depth in cm, last valid value of the local day.
+  Alberta: SD in cm, AEPA's A.DayMean.
 
 Hydro-Québec's feed keeps only ~10 days, so its CSVs are *merged* into
 rather than replaced (``StationWriter.store(merge=True)``): the archive
@@ -63,6 +66,7 @@ import pandas as pd
 
 from easysnowdata import auth
 from easysnowdata.auth import CredentialError
+from easysnowdata.stations.clients.alberta import AlbertaClient, AlbertaError
 from easysnowdata.stations.clients.awdb import AWDBClient, AWDBError
 from easysnowdata.stations.clients.cdec import CDECClient, CDECError
 from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
@@ -1127,6 +1131,55 @@ def refresh_hydroquebec(
     print(f"  [Hydro-Québec] updated {updated} station CSVs")
 
 
+# ── Alberta refresh ───────────────────────────────────────────────────────────
+
+def refresh_alberta(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+) -> None:
+    """Refresh Alberta River Basins station CSVs (full record, replaced).
+
+    ``stations`` is a list of (feature_index, station_number) tuples —
+    only AEPA's and the other non-mirror operators' automated stations;
+    BC Snow Survey and SNOTEL mirrors never reach here.  Daily values are
+    the source's own ``A.DayMean`` aggregate over the MST day (the client
+    computes a mean of the native samples only where that aggregate is
+    missing).  The client downloads one series per station × parameter
+    and logs and skips a failed download, so a station can come back
+    partial; the shrink guard keeps its archived record in that case.
+    """
+    stats = writer.stats
+    if not stations:
+        return
+
+    client = AlbertaClient()
+    n = len(stations)
+    print(f"  [Alberta] Fetching daily SWE + snow depth for {n} stations...")
+    updated = 0
+    n_records = 0
+    for feat_idx, sid in stations:
+        # One call per station: a station is two downloads at most.
+        try:
+            records = client.get_data(
+                station_ids=[sid],
+                variables=["swe", "snwd"],
+                interval="daily",
+                end_date=date.today().isoformat(),
+            )
+        except AlbertaError as exc:   # the catalog query failed
+            stats.failed_batches += 1
+            print(f"  [Alberta] {sid} FAILED ({exc})")
+            continue
+        n_records += len(records)
+        if records:
+            stats.fetched += 1
+        df = _station_records_to_df(records)
+        if writer.store(feat_idx, sid, "alberta", df):
+            updated += 1
+    print(f"  [Alberta] ok ({n_records} records)")
+    print(f"  [Alberta] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -1228,7 +1281,10 @@ def main() -> None:
     )
     ap.add_argument(
         "--network",
-        choices=["awdb", "cdec", "databc", "nve", "yukon", "hydroquebec"],
+        choices=[
+            "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec",
+            "alberta",
+        ],
         default=None,
         help=(
             "Only refresh this network's stations. "
@@ -1319,6 +1375,7 @@ def main() -> None:
     nve_stations: list[tuple[int, str]] = []
     yukon_stations: list[tuple[int, str]] = []
     hydroquebec_stations: list[tuple[int, str]] = []
+    alberta_stations: list[tuple[int, str]] = []
 
     stats = RefreshStats()
     for idx, feat in enumerate(features):
@@ -1349,6 +1406,8 @@ def main() -> None:
             yukon_stations.append((idx, code))
         elif client_name == "hydroquebec":
             hydroquebec_stations.append((idx, code))
+        elif client_name == "alberta":
+            alberta_stations.append((idx, code))
         else:
             # No silent fallback (DESIGN.md §3.6): a feature without a
             # known client cannot be refreshed.  Loud, counted, skipped —
@@ -1369,6 +1428,7 @@ def main() -> None:
     run_hydroquebec = (
         (network in (None, "hydroquebec")) and bool(hydroquebec_stations)
     )
+    run_alberta = (network in (None, "alberta")) and bool(alberta_stations)
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
@@ -1377,6 +1437,7 @@ def main() -> None:
         len(nve_stations) if run_nve else 0,
         len(yukon_stations) if run_yukon else 0,
         len(hydroquebec_stations) if run_hydroquebec else 0,
+        len(alberta_stations) if run_alberta else 0,
     ])
 
     print("=" * 70)
@@ -1392,6 +1453,7 @@ def main() -> None:
         f"Yukon: {len(yukon_stations) if run_yukon else 'skip'}  "
         f"Hydro-Québec: "
         f"{len(hydroquebec_stations) if run_hydroquebec else 'skip'}  "
+        f"Alberta: {len(alberta_stations) if run_alberta else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -1422,7 +1484,9 @@ def main() -> None:
         refresh_yukon(yukon_stations, writer)
     if run_hydroquebec:
         refresh_hydroquebec(hydroquebec_stations, writer)
-    elif network == "hydroquebec":
+    if run_alberta:
+        refresh_alberta(alberta_stations, writer)
+    if network == "hydroquebec" and not run_hydroquebec:
         # The inventory has no Hydro-Québec stations to refresh — e.g.
         # stage 1 could not list them.  Say so where the run summary shows it.
         msg = "no Hydro-Québec stations in the inventory to refresh"

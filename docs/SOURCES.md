@@ -67,3 +67,11 @@ Per-network documentation, APIs, portals, and design literature
   <https://www.hydroquebec.com/data/documents-donnees/donnees-ouvertes/json/Donnees_VUE_STATIONS_ET_TARAGES.json>
 - Licence, CC BY-NC 4.0: <https://creativecommons.org/licenses/by-nc/4.0/>
 - GMON history (CanSWE, Vionnet et al.): <https://doi.org/10.5281/zenodo.4734371>
+
+## Alberta River Basins
+
+- Alberta River Basins web app: <https://rivers.alberta.ca/>
+- Station catalog (ArcGIS MapServer, reached through the app's proxy):
+  <https://geospatial.alberta.ca/europa/rest/services/arb/alberta_river_basins/MapServer>
+- Government of Alberta copyright and disclaimer:
+  <https://www.alberta.ca/disclaimer.aspx>

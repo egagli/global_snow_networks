@@ -40,6 +40,11 @@ from typing import Any
 
 import requests
 
+from easysnowdata.stations.clients.alberta import AlbertaClient
+from easysnowdata.stations.clients.alberta.alberta_client import (
+    OPERATORS as ALBERTA_OPERATORS,
+    VARIABLES as ALBERTA_VARIABLES,
+)
 from easysnowdata.stations.clients.awdb import AWDBClient
 from easysnowdata.stations.clients.awdb.awdb_client import (
     VARIABLES as AWDB_VARIABLES,
@@ -92,6 +97,7 @@ DATABC_GEOJSON_OUT = INVENTORY_DIR / "databc_stations.geojson"
 NVE_GEOJSON_OUT = INVENTORY_DIR / "nve_stations.geojson"
 YUKON_GEOJSON_OUT = INVENTORY_DIR / "yukon_stations.geojson"
 HYDROQUEBEC_GEOJSON_OUT = INVENTORY_DIR / "hydroquebec_stations.geojson"
+ALBERTA_GEOJSON_OUT = INVENTORY_DIR / "alberta_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -174,7 +180,16 @@ DATA_PROVIDERS: dict[str, str] = {
     "nve": "NVE HydAPI",
     "yukon": "Yukon Water Data (AquaCache)",
     "hydroquebec": "Hydro-Québec open data (CC BY-NC 4.0)",
+    "alberta": "Alberta River Basins (AEPA)",
 }
+
+# Carried on every Alberta feature: the app states no licence, only a
+# download disclaimer.
+ALBERTA_NOTE = (
+    "Alberta River Basins (rivers.alberta.ca) states no licence; its download "
+    "disclaimer says the data are provisional, unreviewed and may change. "
+    "Read through the endpoints the public page uses (no documented API)."
+)
 
 # Canonical operator spellings.  Values of None mean "treat as unknown"
 # (DESIGN.md §5: never guess an operator).
@@ -1700,6 +1715,185 @@ def run_hydroquebec_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── Alberta workflow ──────────────────────────────────────────────────────────
+
+# Alberta River Basins republishes stations that are archived through their
+# own operator's client.  Archiving the mirror too would put a second CSV of
+# the same series in the archive, so mirrors are inventoried, linked to their
+# twin (``mirror_of``) and never fetched.  A mirror is told apart by its
+# name suffix, or — for the BC pillows the app lists without a name — by
+# the province/state it reports.
+ALBERTA_MIRROR_SUFFIX: dict[str, str] = {"BC": "databc", "Snotel": "awdb"}
+ALBERTA_MIRROR_STATE: dict[str, str] = {"BC": "databc", "MT": "awdb"}
+
+
+def alberta_mirror_client(station: dict) -> str | None:
+    """The client that archives *station*'s series itself, or None."""
+    suffix = station.get("operator_code")
+    if suffix in ALBERTA_MIRROR_SUFFIX:
+        return ALBERTA_MIRROR_SUFFIX[suffix]
+    return ALBERTA_MIRROR_STATE.get(str(station.get("state") or ""))
+
+
+def _alberta_data_variables(station: dict) -> list[dict]:
+    """Build data_variables for an Alberta River Basins station.
+
+    The catalog gives one period for the station, not one per series, so
+    the per-variable dates are null.  ``SW``/``SD`` are ``"daily"``
+    because the source publishes its own daily aggregate (``A.DayMean``);
+    snow surveys are ``"periodic"``; air temperature is native 15-minute.
+    """
+    dvars: list[dict] = []
+    for param in station.get("parameters") or []:
+        vinfo = ALBERTA_VARIABLES.get(param)
+        if vinfo is None:
+            continue
+        intervals = vinfo["intervals"]
+        interval = (
+            "daily" if "daily" in intervals and vinfo["type"] != "temp"
+            else intervals[0]
+        )
+        dvars.append({
+            "name": param,
+            "type": vinfo["type"],
+            "interval": interval,
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": vinfo["notes"],
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
+        })
+    return dvars
+
+
+def alberta_station_to_feature(station: dict) -> dict:
+    """Convert an Alberta River Basins station dict to a GeoJSON feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+    suffix = station.get("operator_code")
+    mirror = alberta_mirror_client(station)
+
+    notes = ALBERTA_NOTE
+    if mirror:
+        notes = (
+            f"{notes} Mirror of a station archived through the {mirror} "
+            "client (see mirror_of); inventoried here, not archived twice."
+        )
+
+    props: dict[str, Any] = {
+        "code": sid,
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": station.get("state") or None,
+        # Only the suffixes the client expands unambiguously (DESIGN.md §5).
+        "operator": ALBERTA_OPERATORS.get(suffix or ""),
+        "operator_code": suffix,
+        "client": "alberta",
+        "data_provider": DATA_PROVIDERS["alberta"],
+        "network_code": "ARB",
+        "notes": notes,
+        "begin_date": station.get("begin_date") or None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "source_status": station.get("source_status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "measurement_method": station.get("measurement_method") or None,
+        "mirror_client": mirror,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_alberta_data_variables(station)))
+    if mirror:
+        props.update({
+            "has_daily_swe": False,
+            "has_daily_snwd": False,
+            "daily_or_better": False,
+            "daily_provenance": "none",
+        })
+
+    return make_feature(lon, lat, props)
+
+
+def link_alberta_mirrors(features: list[dict]) -> int:
+    """Point each Alberta mirror at its twin(s) (``mirror_of``).
+
+    Runs after :func:`annotate_possible_duplicates` and before
+    :func:`prune_non_daily_duplicates`, which would drop the mirror's
+    links because the mirror is not daily-or-better.  A DataBC twin is
+    also matched by its identical station code.  Returns the number of
+    mirrors linked.
+    """
+    by_key = {
+        (f["properties"].get("client"), f["properties"].get("code"))
+        for f in features
+    }
+    linked = 0
+    for f in features:
+        p = f["properties"]
+        mirror = p.get("mirror_client")
+        if p.get("client") != "alberta" or not mirror:
+            continue
+        twins = [
+            dict(d) for d in p.get("possible_duplicates") or []
+            if d.get("client") == mirror
+        ]
+        if mirror == "databc" and (mirror, p.get("code")) in by_key and not any(
+            d["code"] == p.get("code") for d in twins
+        ):
+            twins.append(
+                {"code": p.get("code"), "client": mirror, "distance_m": None}
+            )
+        if twins:
+            p["mirror_of"] = twins
+            linked += 1
+    return linked
+
+
+def run_alberta_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch Alberta River Basins snow stations; return (all_features, daily_features).
+
+    ``all_features``   — every snow station: AEPA pillows and depth sensors,
+                         the other operators' depth stations, manual snow
+                         courses, and the BC / SNOTEL mirrors.
+    ``daily_features`` — automated SWE or depth stations that are not
+                         mirrors.
+    """
+    client = AlbertaClient()
+
+    print("=" * 60)
+    print("[Alberta] Fetching Alberta River Basins snow stations")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total Alberta snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("Alberta station fetch failed: %s", exc)
+        return [], []
+
+    mirrors = Counter(alberta_mirror_client(s) for s in stations)
+    print(
+        f"  Pillow SWE: {sum(1 for s in stations if s.get('has_pillow_swe'))}"
+        f"  |  Snow courses: {sum(1 for s in stations if s.get('has_survey'))}"
+        f"  |  Mirrors of DataBC: {mirrors.get('databc', 0)}, "
+        f"of AWDB: {mirrors.get('awdb', 0)}"
+    )
+
+    all_features = [alberta_station_to_feature(s) for s in stations]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -1750,6 +1944,11 @@ def main() -> None:
         "--skip-hydroquebec",
         action="store_true",
         help="Skip Hydro-Québec client",
+    )
+    ap.add_argument(
+        "--skip-alberta",
+        action="store_true",
+        help="Skip Alberta River Basins client",
     )
     args = ap.parse_args()
 
@@ -1995,6 +2194,49 @@ def main() -> None:
             f"merged GeoJSON"
         )
 
+    # ── Alberta ───────────────────────────────────────────────────────────────
+    if not args.skip_alberta:
+        ab_all: list[dict] = []
+        ab_daily: list[dict] = []
+        try:
+            ab_all, ab_daily = run_alberta_workflow()
+        except Exception as exc:
+            logger.warning("[Alberta] Workflow failed: %s", exc)
+        ab_all, ab_daily, fresh = keep_previous_if_empty(
+            "Alberta", ALBERTA_GEOJSON_OUT, ab_all, ab_daily
+        )
+        if fresh:
+            write_geojson(
+                ALBERTA_GEOJSON_OUT,
+                ab_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "Alberta River Basins (rivers.alberta.ca) — the "
+                        "public page's ArcGIS catalog and WISKI download"
+                    ),
+                    "client": "alberta",
+                    "license": None,
+                    "description": (
+                        "All Alberta River Basins stations with automated or "
+                        "manual SWE / snow depth: AEPA pillows, other "
+                        "operators' depth sensors, snow courses (periodic), "
+                        "and BC Snow Survey / SNOTEL mirrors (inventory only, "
+                        "linked by mirror_of; archived through their own "
+                        "clients). No licence is stated; data are "
+                        "provisional per the download disclaimer."
+                    ),
+                    "references": [
+                        "https://rivers.alberta.ca/",
+                        "https://www.alberta.ca/disclaimer.aspx",
+                    ],
+                    "total": len(ab_all),
+                },
+            )
+        all_features_merged.extend(ab_all)
+        daily_count += len(ab_daily)
+        print(f"[Alberta] {len(ab_daily):,} daily stations added to merged GeoJSON")
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -2013,6 +2255,9 @@ def main() -> None:
 
     linked = annotate_possible_duplicates(all_features_merged)
     print(f"Cross-linked possible duplicates on {linked:,} features")
+    mirrored = link_alberta_mirrors(all_features_merged)
+    if mirrored:
+        print(f"Linked {mirrored:,} Alberta mirrors to their twins")
     borrowed = borrow_operators_from_twins(all_features_merged)
     if borrowed:
         print(f"Borrowed operators from native twins for {borrowed:,} stations")
@@ -2051,8 +2296,9 @@ def main() -> None:
                 "Combined inventory of ALL known snow point-observation "
                 "stations (SWE and/or snow depth) from AWDB (US + partner "
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
-                "(Norway), Yukon AquaCache and Hydro-Québec (Québec; CC "
-                "BY-NC 4.0, non-commercial) — including periodic snow "
+                "(Norway), Yukon AquaCache, Hydro-Québec (Québec; CC "
+                "BY-NC 4.0, non-commercial) and Alberta River Basins "
+                "— including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "
                 "daily-or-better record; the CSV archive and live map "
