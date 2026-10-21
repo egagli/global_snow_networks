@@ -16,7 +16,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 INVENTORY = REPO_ROOT / "all_snow_stations.geojson"
 DATA_DIR = REPO_ROOT / "data" / "stations"
 
-KNOWN_CLIENTS = {"awdb", "cdec", "databc", "nve", "yukon"}
+KNOWN_CLIENTS = {"awdb", "cdec", "databc", "nve", "yukon", "hydroquebec"}
 
 # Interval vocabulary (DESIGN.md §3.3)
 INTERVAL_ENUM = {

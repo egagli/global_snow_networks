@@ -42,17 +42,22 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   # ── Stage 2: fetch each network in parallel ────────────────────────────────
+  # Runs even when stage 1 failed, from the last committed inventory
+  # (github.sha): Hydro-Québec's feed keeps only ~10 days, so a night it
+  # misses is lost for good, and yesterday's station list is good enough
+  # for every network.
   fetch-data:
     needs: create-stations-geojson
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        network: [awdb, cdec, databc, nve, yukon]
+        network: [awdb, cdec, databc, nve, yukon, hydroquebec]
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+          ref: ${{ needs.create-stations-geojson.outputs.sha || github.sha }}
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
@@ -95,15 +100,17 @@ jobs:
     needs:
       - create-stations-geojson
       - fetch-data
-    # Run even if some fetch jobs failed so partial data is still committed.
-    if: always() && needs.create-stations-geojson.result == 'success'
+    # Run even if some fetch jobs failed so partial data is still committed,
+    # and even if stage 1 failed (then from the last committed inventory,
+    # as stage 2 did) so a Hydro-Québec night is never dropped.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+          ref: ${{ needs.create-stations-geojson.outputs.sha || github.sha }}
           fetch-depth: 0
 
       - uses: prefix-dev/setup-pixi@v0.8.3

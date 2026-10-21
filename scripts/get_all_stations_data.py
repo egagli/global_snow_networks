@@ -25,6 +25,8 @@ CSV schema (all clients)
   NVE: parameter 2003 in metres × 100.
   Yukon: /timeseries/measurementsDaily value in mm ÷ 10 (daily mean over
   the station's local day).
+  Hydro-Québec: GMON SWE in mm ÷ 10, last valid value of the
+  America/Toronto local day (published hourly, changes every 6 h).
 - ``snwd_cm``: Snow depth in centimetres.
   AWDB: SNWD element (inches × 2.54, converted by AWDBClient).
   CDEC: sensor 18 (Snow Depth), inches × 2.54.
@@ -32,6 +34,11 @@ CSV schema (all clients)
   NVE: parameter 2002 in cm.
   Yukon: /timeseries/measurementsDaily value in cm (daily mean over the
   station's local day).
+  Hydro-Québec: hourly depth in cm, last valid value of the local day.
+
+Hydro-Québec's feed keeps only ~10 days, so its CSVs are *merged* into
+rather than replaced (``StationWriter.store(merge=True)``): the archive
+is the only place its history exists.
 
 Data flags are not stored in CSV files.  Use the respective client's
 ``get_data(include_flags=True)`` method if flag information is needed.
@@ -45,10 +52,11 @@ import json
 import tarfile
 import logging
 from dataclasses import dataclass, field
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
@@ -58,6 +66,10 @@ from easysnowdata.auth import CredentialError
 from easysnowdata.stations.clients.awdb import AWDBClient, AWDBError
 from easysnowdata.stations.clients.cdec import CDECClient, CDECError
 from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
+from easysnowdata.stations.clients.hydroquebec import (
+    HydroQuebecClient,
+    HydroQuebecError,
+)
 from easysnowdata.stations.clients.nve import NVEClient, NVEError
 from easysnowdata.stations.clients.yukon import YukonClient, YukonError
 
@@ -190,6 +202,12 @@ def check_daily_cadence(df: pd.DataFrame) -> tuple[bool, bool]:
     )
 
 
+# Clients whose archived daily values are always aggregated from a
+# sub-daily series (no native daily product), so a station that passes the
+# probe is never "native" (DESIGN.md §4).
+PASSED_PROVENANCE: dict[str, str] = {"hydroquebec": "resampled_hourly"}
+
+
 def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
     """Stamp probe-verified daily fields onto a feature from CSV content.
 
@@ -216,7 +234,9 @@ def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
     elif not props.get("daily_provenance") or (
         props.get("daily_provenance") == "none"
     ):
-        props["daily_provenance"] = "native"
+        props["daily_provenance"] = PASSED_PROVENANCE.get(
+            str(props.get("client") or ""), "native"
+        )
     return passed
 
 
@@ -413,6 +433,25 @@ def _fmt_value(v: float) -> str:
     return "" if pd.isna(v) else str(v)
 
 
+def merge_with_archive(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
+    """*new* laid over *old*, for sources that serve only a recent window.
+
+    A rolling-window feed (Hydro-Québec keeps ~10 days) cannot replace an
+    archived CSV: everything older than the window would be lost.  Dates
+    only in *old* are kept; for dates in both, a value in *new* wins and a
+    blank in *new* keeps the archived value (a sensor gap in today's
+    response is not evidence that yesterday's reading was wrong).
+    """
+    old, new = _as_numeric(old), _as_numeric(new)
+    merged = old.merge(new, on="date", how="outer", suffixes=("_old", ""))
+    for col in _VALUE_COLUMNS:
+        merged[col] = merged[col].combine_first(merged[f"{col}_old"])
+    return (
+        merged[["date", *_VALUE_COLUMNS]]
+        .sort_values("date", ignore_index=True)
+    )
+
+
 def diff_revisions(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
     """Cells of *old*'s period that *new* changes (DESIGN.md §6.6).
 
@@ -575,6 +614,11 @@ class StationWriter:
     :func:`shrink_reason` and diffed into the revision log.  A refused
     replacement keeps the old CSV and leaves the feature's dates and
     probe verdict untouched.
+
+    ``merge=True`` is for rolling-window sources: the response is laid
+    over the archived CSV (:func:`merge_with_archive`) instead of
+    replacing it, so a short response never reads as lost history, and
+    changed values inside the window still reach the revision log.
     """
 
     features: list[dict]
@@ -587,6 +631,7 @@ class StationWriter:
 
     def store(
         self, feat_idx: int, code: str, client: str, df: pd.DataFrame,
+        merge: bool = False,
     ) -> bool:
         if df.empty:
             self.stats.skipped_empty += 1
@@ -594,6 +639,8 @@ class StationWriter:
         df = _as_numeric(df)
         csv_path = station_csv_path(self.data_dir, code)
         old = read_station_csv(csv_path)
+        if old is not None and merge:
+            df = merge_with_archive(old, df)
         if old is not None:
             reason = shrink_reason(old, df)
             if reason and not (
@@ -990,6 +1037,96 @@ def refresh_yukon(
     print(f"  [Yukon] updated {updated} station CSVs")
 
 
+# ── Hydro-Québec refresh ──────────────────────────────────────────────────────
+
+# The feed's declared timezone; the client aggregates hourly values over
+# this local day.
+HYDROQUEBEC_TZ = "America/Toronto"
+# Ask for more than the ~10-day window so nothing it still holds is missed.
+HYDROQUEBEC_LOOKBACK_DAYS = 15
+HYDROQUEBEC_BATCH = 50
+
+
+def refresh_hydroquebec(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh Hydro-Québec station CSVs by merging the rolling window in.
+
+    ``stations`` is a list of (feature_index, identifiant) tuples.  The
+    feed holds only ~10 days of hourly data, so each night's daily values
+    are merged into the archived CSV (``merge=True``) — older history
+    exists nowhere else.  Daily values are the client's aggregation: the
+    last valid SWE / depth of the America/Toronto local day.  The current
+    local day is left out because it is incomplete; storing it would log a
+    "revision" for every station every night.
+
+    A run that returns no records at all is reported as a GitHub Actions
+    error annotation, since every missed night is lost for good.
+    """
+    stats = writer.stats
+    if not stations:
+        return
+
+    local_today = today or datetime.now(ZoneInfo(HYDROQUEBEC_TZ)).date()
+    end = local_today - timedelta(days=1)
+    begin = end - timedelta(days=HYDROQUEBEC_LOOKBACK_DAYS)
+
+    client = HydroQuebecClient()
+    station_ids = [sid for _, sid in stations]
+    idx_by_id = {sid: idx for idx, sid in stations}
+
+    n = len(station_ids)
+    print(
+        f"  [Hydro-Québec] Fetching daily SWE + snow depth for {n} stations "
+        f"({begin} – {end})..."
+    )
+    records: list[dict] = []
+    for start in range(0, n, HYDROQUEBEC_BATCH):
+        batch = station_ids[start:start + HYDROQUEBEC_BATCH]
+        try:
+            records.extend(client.get_data(
+                station_ids=batch,
+                variables=["swe", "snwd"],
+                interval="daily",
+                begin_date=begin.isoformat(),
+                end_date=end.isoformat(),
+            ))
+        except HydroQuebecError as exc:
+            stats.failed_batches += 1
+            print(
+                f"  [Hydro-Québec] batch "
+                f"{start // HYDROQUEBEC_BATCH + 1} FAILED ({exc})"
+            )
+    print(f"  [Hydro-Québec] ok ({len(records)} records)")
+    if not records:
+        msg = (
+            f"Hydro-Québec returned no records for {n} stations — the feed "
+            "keeps only ~10 days, so a missed night is lost for good"
+        )
+        logging.error(msg)
+        print(f"::error title=Hydro-Québec refresh::{msg}")
+
+    by_station: dict[str, list[dict]] = {}
+    for r in records:
+        sid = str(r.get("station_id") or "")
+        if sid:
+            by_station.setdefault(sid, []).append(r)
+    stats.fetched += len(by_station)
+
+    updated = 0
+    for sid in station_ids:
+        feat_idx = idx_by_id.get(sid)
+        if feat_idx is None:
+            continue
+        df = _station_records_to_df(by_station.get(sid, []))
+        if writer.store(feat_idx, sid, "hydroquebec", df, merge=True):
+            updated += 1
+
+    print(f"  [Hydro-Québec] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -1091,7 +1228,7 @@ def main() -> None:
     )
     ap.add_argument(
         "--network",
-        choices=["awdb", "cdec", "databc", "nve", "yukon"],
+        choices=["awdb", "cdec", "databc", "nve", "yukon", "hydroquebec"],
         default=None,
         help=(
             "Only refresh this network's stations. "
@@ -1181,6 +1318,7 @@ def main() -> None:
     databc_stations: list[tuple[int, str]] = []
     nve_stations: list[tuple[int, str]] = []
     yukon_stations: list[tuple[int, str]] = []
+    hydroquebec_stations: list[tuple[int, str]] = []
 
     stats = RefreshStats()
     for idx, feat in enumerate(features):
@@ -1209,6 +1347,8 @@ def main() -> None:
             nve_stations.append((idx, code))
         elif client_name == "yukon":
             yukon_stations.append((idx, code))
+        elif client_name == "hydroquebec":
+            hydroquebec_stations.append((idx, code))
         else:
             # No silent fallback (DESIGN.md §3.6): a feature without a
             # known client cannot be refreshed.  Loud, counted, skipped —
@@ -1226,6 +1366,9 @@ def main() -> None:
     run_databc = (network in (None, "databc")) and bool(databc_stations)
     run_nve = (network in (None, "nve")) and bool(nve_stations)
     run_yukon = (network in (None, "yukon")) and bool(yukon_stations)
+    run_hydroquebec = (
+        (network in (None, "hydroquebec")) and bool(hydroquebec_stations)
+    )
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
@@ -1233,6 +1376,7 @@ def main() -> None:
         len(databc_stations) if run_databc else 0,
         len(nve_stations) if run_nve else 0,
         len(yukon_stations) if run_yukon else 0,
+        len(hydroquebec_stations) if run_hydroquebec else 0,
     ])
 
     print("=" * 70)
@@ -1246,6 +1390,8 @@ def main() -> None:
         f"DataBC: {len(databc_stations) if run_databc else 'skip'}  "
         f"NVE: {len(nve_stations) if run_nve else 'skip'}  "
         f"Yukon: {len(yukon_stations) if run_yukon else 'skip'}  "
+        f"Hydro-Québec: "
+        f"{len(hydroquebec_stations) if run_hydroquebec else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -1274,6 +1420,14 @@ def main() -> None:
         )
     if run_yukon:
         refresh_yukon(yukon_stations, writer)
+    if run_hydroquebec:
+        refresh_hydroquebec(hydroquebec_stations, writer)
+    elif network == "hydroquebec":
+        # The inventory has no Hydro-Québec stations to refresh — e.g.
+        # stage 1 could not list them.  Say so where the run summary shows it.
+        msg = "no Hydro-Québec stations in the inventory to refresh"
+        logging.error(msg)
+        print(f"::error title=Hydro-Québec refresh::{msg}")
 
     # In per-network mode: CSVs written, skip GeoJSON update and archive.
     # The downstream finalize job handles those via --finalize-only.

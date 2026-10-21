@@ -57,3 +57,13 @@ Per-network documentation, APIs, portals, and design literature
 - Snow surveys and water supply forecasts:
   <https://yukon.ca/en/science-and-natural-resources/water/snow-surveys-and-water-supply-forecasts>
 - AquaCache upstream project: <https://github.com/YukonWRB/AquaCache>
+
+## Hydro-Québec
+
+- Open data dataset (Opendatasoft):
+  <https://donnees.hydroquebec.com/explore/dataset/donnees-hydrometeorologiques/>
+- API: <https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets/donnees-hydrometeorologiques>
+- Upstream JSON the portal flattens:
+  <https://www.hydroquebec.com/data/documents-donnees/donnees-ouvertes/json/Donnees_VUE_STATIONS_ET_TARAGES.json>
+- Licence, CC BY-NC 4.0: <https://creativecommons.org/licenses/by-nc/4.0/>
+- GMON history (CanSWE, Vionnet et al.): <https://doi.org/10.5281/zenodo.4734371>

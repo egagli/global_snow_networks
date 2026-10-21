@@ -4,7 +4,7 @@ A documented inventory and daily archive of snow point observations (SWE and
 snow depth) from networks around the world — automated pillows, manual snow
 courses, aerial markers, and mirrored climate stations.
 
-**The data-access layer is not here.** The five network clients live in
+**The data-access layer is not here.** The network clients live in
 [easysnowdata](https://github.com/egagli/easysnowdata) as
 `easysnowdata.stations.clients`, and this repo imports them to build what it
 publishes. DESIGN.md §3 is still their contract. If you want to *query* a
@@ -301,7 +301,7 @@ DESIGN.md §6.1):**
 | `state` | State / province / country code |
 | `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
 | `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
-| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"` |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"` |
 | `data_provider` | Human-readable organization/portal behind that access path |
 | `status`, `is_active` | Active status as reported/derived |
 | `begin_date`, `end_date` | Period of record from source metadata |
@@ -845,6 +845,61 @@ series if you want them.
 | Open Yukon | Web | Dataset landing pages and historical bulletin PDFs. |
 | AquaCache (upstream) | Database | The open-source R/Postgres project the API is built on. |
 
+### 6.10 Hydro-Québec (HQ)
+
+> **Licence: CC BY-NC 4.0 — attribution required, no commercial use.**
+> This is the only network in the archive whose data may not be reused
+> commercially. Attribute "Hydro-Québec" and link the
+> [dataset page](https://donnees.hydroquebec.com/explore/dataset/donnees-hydrometeorologiques/).
+> Every Hydro-Québec feature carries `license`, `license_url` and a note
+> saying so, and its `data_provider` names the licence.
+
+**Data source:** Hydro-Québec open data (Opendatasoft), dataset
+`donnees-hydrometeorologiques`
+**Client:** `hydroquebec`
+**Stations:** about 95 GMON SWE sensors and about 137 stations with snow
+depth (counts from the client's live check, 2026-10-14)
+**Coverage:** Hydro-Québec's hydroelectric watersheds — Côte-Nord,
+Nord-du-Québec, Mauricie, Outaouais, Saguenay–Lac-Saint-Jean
+**Period of record:** from this archive's first nightly refresh
+(October 2026) — see below
+**Temporal resolution:** SWE published hourly, changing every 6 h; snow depth
+hourly
+**Operator:** Hydro-Québec
+
+**The feed keeps only a rolling ~10 days, with no archive endpoint.** This
+archive is therefore the record: each night's values are *merged* into the
+station's CSV instead of replacing it (DESIGN.md §6.3), and a night the
+pipeline misses is lost for good. The nightly job runs Hydro-Québec even when
+the inventory rebuild fails, and a refresh that returns nothing raises an
+error annotation on the workflow run. GMON history before October 2026 is in
+CanSWE (Vionnet et al., [Zenodo](https://doi.org/10.5281/zenodo.4734371)),
+under `HQ-…` ids; it is not yet linked here.
+
+**Daily values.** Hydro-Québec publishes no daily product. The archive stores
+the client's aggregation: the **last valid value of the America/Toronto local
+day** for both SWE and depth (`daily_provenance: resampled_hourly`). The
+current local day is left out until it is complete. The probe needs about 30
+days before a new station counts as `daily_or_better`, so the first stations
+reach the map around mid-November 2026.
+
+**Snow variables:**
+
+| Variable (native label) | Native units | Stored as |
+|---|---|---|
+| Équivalent en eau de la neige (GMON passive gamma) | mm | `wteq_cm` (÷ 10) |
+| Épaisseur de neige | cm | `snwd_cm` (as-is) |
+
+**Caveats.** Early-season GMON readings can be spurious over bare ground (the
+client saw one station alternating 0 / 75 mm every 6 h with depth near zero),
+so cross-check SWE against depth before trusting autumn values. Depth hovers
+around zero with negative noise, which the client nulls. Elevation is missing
+for most non-SWE sites (null, never 0).
+
+**Links**
+- Dataset: https://donnees.hydroquebec.com/explore/dataset/donnees-hydrometeorologiques/
+- Licence: https://creativecommons.org/licenses/by-nc/4.0/
+
 ---
 
 ## 7. Data Access Methods and Design Philosophy
@@ -1268,6 +1323,9 @@ NVE data is published under the Norwegian Licence for Open Government Data
 (NLOD).
 Yukon snow and water data is published under the Open Government Licence —
 Yukon.
+**Hydro-Québec data is published under CC BY-NC 4.0: attribution required,
+no commercial use.** Its stations' CSVs in this archive carry the same
+restriction.
 
 ### Citing this archive
 

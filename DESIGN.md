@@ -274,6 +274,17 @@ more than max(30, 5 %) of the old file's populated rows (either column
 non-null) or moves the earliest populated date more than 30 days later.
 `--allow-shrink <code>|all` overrides it once the loss is confirmed real.
 
+**Rolling-window sources are merged, not replaced.** A source that serves
+only a recent window (Hydro-Québec: ~10 days, no archive) has no full
+record to re-download, and replacing its CSV would delete everything older
+than the window. Its response is laid over the archived CSV instead: dates
+only in the archive are kept, a value in the response wins for dates in
+both (and still reaches the revision log, §6.6), and a blank in the
+response keeps the archived value. The shrink guard then sees no loss. For
+such a source the archive is the only copy of its history, so the nightly
+job must not skip it: stage 2 and finalize run from the last committed
+inventory when stage 1 fails.
+
 ### 6.4 Retention (correction over exclusion)
 
 Detect bad upstream data and correct it (with a `notes` explanation) rather

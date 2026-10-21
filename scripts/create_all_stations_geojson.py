@@ -53,6 +53,14 @@ from easysnowdata.stations.clients.databc import DataBCClient
 from easysnowdata.stations.clients.databc.databc_client import (
     VARIABLES as DATABC_VARIABLES,
 )
+from easysnowdata.stations.clients.hydroquebec import HydroQuebecClient
+from easysnowdata.stations.clients.hydroquebec.hydroquebec_client import (
+    DATASET_PAGE as HYDROQUEBEC_DATASET_PAGE,
+    LICENSE as HYDROQUEBEC_LICENSE,
+    LICENSE_URL as HYDROQUEBEC_LICENSE_URL,
+    VARIABLES as HYDROQUEBEC_VARIABLES,
+    WINDOW_DAYS as HYDROQUEBEC_WINDOW_DAYS,
+)
 from easysnowdata.stations.clients.nve import NVEClient
 from easysnowdata.stations.clients.nve.nve_client import (
     VARIABLES as NVE_VARIABLES,
@@ -83,6 +91,7 @@ CDEC_GEOJSON_OUT = INVENTORY_DIR / "cdec_stations.geojson"
 DATABC_GEOJSON_OUT = INVENTORY_DIR / "databc_stations.geojson"
 NVE_GEOJSON_OUT = INVENTORY_DIR / "nve_stations.geojson"
 YUKON_GEOJSON_OUT = INVENTORY_DIR / "yukon_stations.geojson"
+HYDROQUEBEC_GEOJSON_OUT = INVENTORY_DIR / "hydroquebec_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -164,6 +173,7 @@ DATA_PROVIDERS: dict[str, str] = {
     "databc": "BC Data Catalogue / BC ENV",
     "nve": "NVE HydAPI",
     "yukon": "Yukon Water Data (AquaCache)",
+    "hydroquebec": "Hydro-Québec open data (CC BY-NC 4.0)",
 }
 
 # Canonical operator spellings.  Values of None mean "treat as unknown"
@@ -1561,6 +1571,135 @@ def run_yukon_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── Hydro-Québec workflow ─────────────────────────────────────────────────────
+
+# Note carried on every Hydro-Québec feature: the licence is the one in this
+# archive that restricts reuse, and the feed holds no history.
+HYDROQUEBEC_NOTE = (
+    f"Hydro-Québec open data, {HYDROQUEBEC_LICENSE} "
+    f"({HYDROQUEBEC_LICENSE_URL}): attribution required, no commercial use. "
+    f"The feed keeps only a rolling ~{HYDROQUEBEC_WINDOW_DAYS}-day window, so "
+    "this archive's CSV is the accumulated record from the first nightly "
+    "refresh on; GMON history before that is in CanSWE (HQ- stations)."
+)
+
+
+def _hydroquebec_data_variables(station: dict) -> list[dict]:
+    """Build data_variables for a Hydro-Québec station.
+
+    Every series is published hourly (SWE changes only every 6 h, the
+    hours in between repeat the last GMON reading), so each entry is
+    ``"hourly"``.  ``begin_date``/``end_date``/``n_obs`` describe the
+    rolling window the feed held when the inventory was built, not a
+    period of record.
+    """
+    dvars: list[dict] = []
+    for label, info in (station.get("variables") or {}).items():
+        vinfo = HYDROQUEBEC_VARIABLES.get(label)
+        if vinfo is None:
+            continue
+        dvars.append({
+            "name": label,
+            "type": vinfo["type"],
+            "interval": "hourly",
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": (
+                f"{vinfo['notes']} Dates and n_obs cover the rolling "
+                "window only."
+            ),
+            "begin_date": (info.get("first") or "")[:10] or None,
+            "end_date": (info.get("last") or "")[:10] or None,
+            "n_obs": info.get("n_obs"),
+        })
+    return dvars
+
+
+def hydroquebec_station_to_feature(station: dict) -> dict:
+    """Convert a Hydro-Québec station dict to a GeoJSON feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+
+    props: dict[str, Any] = {
+        "code": sid,
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": "QC",
+        "operator": "Hydro-Québec",
+        "client": "hydroquebec",
+        "data_provider": DATA_PROVIDERS["hydroquebec"],
+        "network_code": "HQ",
+        "notes": HYDROQUEBEC_NOTE,
+        # Commissioning date; the feed itself starts ~10 days ago.
+        "begin_date": station.get("commissioned") or None,
+        "end_date": station.get("decommissioned") or None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "hq_code": station.get("hq_code") or None,
+        "region": station.get("region") or None,
+        "measurement_method": station.get("measurement_method") or None,
+        "license": HYDROQUEBEC_LICENSE,
+        "license_url": HYDROQUEBEC_LICENSE_URL,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_hydroquebec_data_variables(station)))
+    # No native daily product: the pipeline stores the client's
+    # local-day aggregation of the hourly series (DESIGN.md §4).
+    if props["daily_or_better"]:
+        props["daily_provenance"] = "resampled_hourly"
+
+    return make_feature(lon, lat, props)
+
+
+def run_hydroquebec_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch Hydro-Québec snow stations and return (all_features, daily_features).
+
+    ``all_features``   — every station listing SWE or snow depth in the
+                         current window (the GMON network and the
+                         depth-only weather stations).
+    ``daily_features`` — all of them: every snow series is hourly, which is
+                         daily-or-better once aggregated.
+    """
+    client = HydroQuebecClient()
+
+    print("=" * 60)
+    print("[Hydro-Québec] Fetching snow stations (rolling ~10-day feed)")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total Hydro-Québec snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("Hydro-Québec station fetch failed: %s", exc)
+        return [], []
+    if not stations:
+        # The feed keeps ~10 days; a silent empty listing is how the
+        # archive would start losing data.
+        logger.error("[Hydro-Québec] station list is EMPTY")
+
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    swe_count = sum(1 for s in stations if s.get("has_swe"))
+    snwd_count = sum(1 for s in stations if s.get("has_snwd"))
+    print(
+        f"  Active: {active}  |  With SWE: {swe_count}  "
+        f"|  With snow depth: {snwd_count}"
+    )
+
+    all_features = [hydroquebec_station_to_feature(s) for s in stations]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -1606,6 +1745,11 @@ def main() -> None:
         "--skip-yukon",
         action="store_true",
         help="Skip Yukon (AquaCache) client",
+    )
+    ap.add_argument(
+        "--skip-hydroquebec",
+        action="store_true",
+        help="Skip Hydro-Québec client",
     )
     args = ap.parse_args()
 
@@ -1805,6 +1949,52 @@ def main() -> None:
             f"[Yukon] {len(yukon_daily):,} daily stations added to merged GeoJSON"
         )
 
+    # ── Hydro-Québec ──────────────────────────────────────────────────────────
+    if not args.skip_hydroquebec:
+        hq_all: list[dict] = []
+        hq_daily: list[dict] = []
+        try:
+            hq_all, hq_daily = run_hydroquebec_workflow()
+        except Exception as exc:
+            logger.warning("[Hydro-Québec] Workflow failed: %s", exc)
+        hq_all, hq_daily, fresh = keep_previous_if_empty(
+            "Hydro-Québec", HYDROQUEBEC_GEOJSON_OUT, hq_all, hq_daily
+        )
+        if fresh:
+            write_geojson(
+                HYDROQUEBEC_GEOJSON_OUT,
+                hq_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "Hydro-Québec open data (Opendatasoft), dataset "
+                        "donnees-hydrometeorologiques"
+                    ),
+                    "client": "hydroquebec",
+                    "license": HYDROQUEBEC_LICENSE,
+                    "license_url": HYDROQUEBEC_LICENSE_URL,
+                    "description": (
+                        "Hydro-Québec stations listing SWE (GMON passive "
+                        "gamma, 6-hourly) or snow depth (hourly). The feed "
+                        "holds only a rolling ~10-day window; the archive "
+                        "accumulates it nightly. CC BY-NC 4.0: attribution "
+                        "required, no commercial use."
+                    ),
+                    "references": [
+                        HYDROQUEBEC_DATASET_PAGE,
+                        HYDROQUEBEC_LICENSE_URL,
+                        "https://doi.org/10.5281/zenodo.4734371",
+                    ],
+                    "total": len(hq_all),
+                },
+            )
+        all_features_merged.extend(hq_all)
+        daily_count += len(hq_daily)
+        print(
+            f"[Hydro-Québec] {len(hq_daily):,} daily stations added to "
+            f"merged GeoJSON"
+        )
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -1861,7 +2051,8 @@ def main() -> None:
                 "Combined inventory of ALL known snow point-observation "
                 "stations (SWE and/or snow depth) from AWDB (US + partner "
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
-                "(Norway), and Yukon AquaCache — including periodic snow "
+                "(Norway), Yukon AquaCache and Hydro-Québec (Québec; CC "
+                "BY-NC 4.0, non-commercial) — including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "
                 "daily-or-better record; the CSV archive and live map "

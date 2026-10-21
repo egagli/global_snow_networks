@@ -881,7 +881,7 @@ const STATE_NAMES = {
   // DataBC; YT via the Yukon AquaCache client. AWDB codes its Yukon
   // partner snow courses "YK" — kept verbatim per DESIGN.md §5.
   AB:"Alberta", BC:"British Columbia", NT:"Northwest Territories",
-  NU:"Nunavut", YT:"Yukon", YK:"Yukon",
+  NU:"Nunavut", YT:"Yukon", YK:"Yukon", QC:"Québec",
 };
 
 const NET_LABELS = {
@@ -891,6 +891,7 @@ const NET_LABELS = {
   CCSS:"CCSS", BCSS:"BC Snow Survey",
   NVE:"NVE (Norway)",
   YSS:"Yukon Snow Survey", YKEC:"ECCC Yukon",
+  HQ:"Hydro-Québec (CC BY-NC)",
 };
 
 // SVG shape markup for each network code (12×12 viewBox)
@@ -907,6 +908,7 @@ const NET_SHAPES = {
   NVE:'<polygon points="6,1 11,6 6,11 1,6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   YSS:'<polygon points="6,1 9.54,2.46 11,6 9.54,9.54 6,11 2.46,9.54 1,6 2.46,2.46" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   YKEC:'<polygon points="11,6 3.5,10.33 3.5,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  HQ:'<polygon points="6.00,1.00 9.91,2.88 10.87,7.11 8.17,10.50 3.83,10.50 1.13,7.11 2.09,2.88" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -1215,6 +1217,7 @@ function drawCamBadge(ctx, p, half, isSelected) {
 const NET_POLYGONS = {
   SNTLT: [3, -90], CCSS: [3, 90], BCSS: [6, -90], SNOW: [4, -45],
   MSNT: [5, -90], SCAN: [6, -90], NVE: [4, 0], YSS: [8, -90], YKEC: [3, 0],
+  HQ: [7, -90],
 };
 
 function stationShape(network, measurementType) {
