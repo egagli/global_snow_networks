@@ -57,3 +57,45 @@ Per-network documentation, APIs, portals, and design literature
 - Snow surveys and water supply forecasts:
   <https://yukon.ca/en/science-and-natural-resources/water/snow-surveys-and-water-supply-forecasts>
 - AquaCache upstream project: <https://github.com/YukonWRB/AquaCache>
+
+## Hydro-Québec
+
+- Open data dataset (Opendatasoft):
+  <https://donnees.hydroquebec.com/explore/dataset/donnees-hydrometeorologiques/>
+- API: <https://donnees.hydroquebec.com/api/explore/v2.1/catalog/datasets/donnees-hydrometeorologiques>
+- Upstream JSON the portal flattens:
+  <https://www.hydroquebec.com/data/documents-donnees/donnees-ouvertes/json/Donnees_VUE_STATIONS_ET_TARAGES.json>
+- Licence, CC BY-NC 4.0: <https://creativecommons.org/licenses/by-nc/4.0/>
+- GMON history (CanSWE, Vionnet et al.): <https://doi.org/10.5281/zenodo.4734371>
+
+## Alberta River Basins
+
+- Alberta River Basins web app: <https://rivers.alberta.ca/>
+- Station catalog (ArcGIS MapServer, reached through the app's proxy):
+  <https://geospatial.alberta.ca/europa/rest/services/arb/alberta_river_basins/MapServer>
+- Government of Alberta copyright and disclaimer:
+  <https://www.alberta.ca/disclaimer.aspx>
+
+## SLF (Switzerland)
+
+- SLF Data Service terms: <https://www.slf.ch/en/services-and-products/slf-data-service/>
+- IMIS automatic stations: <https://measurement-data.slf.ch/imis/>,
+  DOI <https://doi.org/10.16904/envidat.406>
+- Manual measuring network (study plots):
+  <https://measurement-data.slf.ch/study-plot/>, DOI
+  <https://doi.org/10.16904/envidat.408>
+- GCOS SWE data (11 sites, biweekly): <https://www.envidat.ch/dataset/gcos-swe-data>,
+  DOI <https://doi.org/10.16904/15>
+
+## SNIH (Argentina)
+
+- SNIH portal: <https://snih.hidricosargentina.gob.ar/>
+- Terms of use: <https://snih.hidricosargentina.gob.ar/Terminos.aspx>
+
+## CEAZA-Met (Chile)
+
+- CEAZA-Met: <https://www.ceazamet.cl/>
+- Web service documentation and terms of use ("Condiciones de uso"):
+  <https://www.ceazamet.cl/ws/pop_ws_doc.php>
+- Registration: e-mail ceazamet@ceaza.cl (name, e-mail, organisation,
+  sector, intended use, download frequency, daily volume)

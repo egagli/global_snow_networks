@@ -16,7 +16,10 @@ REPO_ROOT = Path(__file__).resolve().parent.parent
 INVENTORY = REPO_ROOT / "all_snow_stations.geojson"
 DATA_DIR = REPO_ROOT / "data" / "stations"
 
-KNOWN_CLIENTS = {"awdb", "cdec", "databc", "nve", "yukon"}
+KNOWN_CLIENTS = {
+    "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec", "alberta",
+    "slf", "snih", "ceaza",
+}
 
 # Interval vocabulary (DESIGN.md §3.3)
 INTERVAL_ENUM = {
@@ -42,6 +45,7 @@ DATA_VARIABLE_KEYS = {
 }
 
 PROVENANCE_ENUM = {"native", "resampled_hourly", "resampled_sub_hourly",
+                   "resampled_sub_daily",
                    "none"}
 
 

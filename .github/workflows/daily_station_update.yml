@@ -23,6 +23,10 @@ jobs:
       - name: Create station GeoJSONs
         env:
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
+          # CEAZA-Met's registered user name; until the secret exists the
+          # network is skipped with one log line (its terms ask users to
+          # register before downloading).
+          CEAZA_USER: ${{ secrets.CEAZA_USER }}
         run: pixi run fetch-stations
 
       - name: Commit station GeoJSONs
@@ -42,25 +46,31 @@ jobs:
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
 
   # ── Stage 2: fetch each network in parallel ────────────────────────────────
+  # Runs even when stage 1 failed, from the last committed inventory
+  # (github.sha): Hydro-Québec's feed keeps only ~10 days, so a night it
+  # misses is lost for good, and yesterday's station list is good enough
+  # for every network.
   fetch-data:
     needs: create-stations-geojson
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        network: [awdb, cdec, databc, nve, yukon]
+        network: [awdb, cdec, databc, nve, yukon, hydroquebec, alberta, slf, snih, ceaza]
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+          ref: ${{ needs.create-stations-geojson.outputs.sha || github.sha }}
 
       - uses: prefix-dev/setup-pixi@v0.8.3
 
       - name: Fetch ${{ matrix.network }} station data
         continue-on-error: true
         env:
-          # Only the NVE client reads this; harmless for the others.
+          # Only the NVE and CEAZA clients read these; harmless for the others.
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
+          CEAZA_USER: ${{ secrets.CEAZA_USER }}
         run: pixi run fetch-data-${{ matrix.network }}
 
       # Upload ONLY the CSVs this job actually refreshed.  The checkout
@@ -95,15 +105,17 @@ jobs:
     needs:
       - create-stations-geojson
       - fetch-data
-    # Run even if some fetch jobs failed so partial data is still committed.
-    if: always() && needs.create-stations-geojson.result == 'success'
+    # Run even if some fetch jobs failed so partial data is still committed,
+    # and even if stage 1 failed (then from the last committed inventory,
+    # as stage 2 did) so a Hydro-Québec night is never dropped.
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ needs.create-stations-geojson.outputs.sha }}
+          ref: ${{ needs.create-stations-geojson.outputs.sha || github.sha }}
           fetch-depth: 0
 
       - uses: prefix-dev/setup-pixi@v0.8.3

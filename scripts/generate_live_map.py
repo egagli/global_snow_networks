@@ -881,7 +881,8 @@ const STATE_NAMES = {
   // DataBC; YT via the Yukon AquaCache client. AWDB codes its Yukon
   // partner snow courses "YK" — kept verbatim per DESIGN.md §5.
   AB:"Alberta", BC:"British Columbia", NT:"Northwest Territories",
-  NU:"Nunavut", YT:"Yukon", YK:"Yukon",
+  NU:"Nunavut", YT:"Yukon", YK:"Yukon", QC:"Québec",
+  CH:"Switzerland", AR:"Argentina", CL:"Chile",
 };
 
 const NET_LABELS = {
@@ -891,6 +892,11 @@ const NET_LABELS = {
   CCSS:"CCSS", BCSS:"BC Snow Survey",
   NVE:"NVE (Norway)",
   YSS:"Yukon Snow Survey", YKEC:"ECCC Yukon",
+  HQ:"Hydro-Québec (CC BY-NC)",
+  ARB:"Alberta River Basins",
+  IMIS:"SLF IMIS", BEOB:"SLF study plot", GCOS:"SLF GCOS SWE",
+  RHN:"SNIH Red Hidrológica Nacional", RMET:"SNIH Red Meteorológica",
+  CEAZA:"CEAZA-Met",
 };
 
 // SVG shape markup for each network code (12×12 viewBox)
@@ -907,6 +913,13 @@ const NET_SHAPES = {
   NVE:'<polygon points="6,1 11,6 6,11 1,6" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   YSS:'<polygon points="6,1 9.54,2.46 11,6 9.54,9.54 6,11 2.46,9.54 1,6 2.46,2.46" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   YKEC:'<polygon points="11,6 3.5,10.33 3.5,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  ARB:'<polygon points="6.00,1.00 9.21,2.17 10.92,5.13 10.33,8.50 7.71,10.70 4.29,10.70 1.67,8.50 1.08,5.13 2.79,2.17" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  IMIS:'<polygon points="11.00,6.00 8.50,10.33 3.50,10.33 1.00,6.00 3.50,1.67 8.50,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  BEOB:'<polygon points="6.00,1.00 8.94,1.95 10.76,4.45 10.76,7.55 8.94,10.05 6.00,11.00 3.06,10.05 1.24,7.55 1.24,4.45 3.06,1.95" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  RHN:'<polygon points="6.00,11.00 1.24,7.55 3.06,1.95 8.94,1.95 10.76,7.55" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  RMET:'<polygon points="6.00,11.00 2.09,9.12 1.13,4.89 3.83,1.50 8.17,1.50 10.87,4.89 9.91,9.12" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  CEAZA:'<polygon points="1.00,6.00 8.50,1.67 8.50,10.33" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  HQ:'<polygon points="6.00,1.00 9.91,2.88 10.87,7.11 8.17,10.50 3.83,10.50 1.13,7.11 2.09,2.88" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -1215,6 +1228,8 @@ function drawCamBadge(ctx, p, half, isSelected) {
 const NET_POLYGONS = {
   SNTLT: [3, -90], CCSS: [3, 90], BCSS: [6, -90], SNOW: [4, -45],
   MSNT: [5, -90], SCAN: [6, -90], NVE: [4, 0], YSS: [8, -90], YKEC: [3, 0],
+  HQ: [7, -90], ARB: [9, -90], IMIS: [6, 0], BEOB: [10, -90],
+  RHN: [5, 90], RMET: [7, 90], CEAZA: [3, 180],
 };
 
 function stationShape(network, measurementType) {

@@ -25,6 +25,10 @@ CSV schema (all clients)
   NVE: parameter 2003 in metres × 100.
   Yukon: /timeseries/measurementsDaily value in mm ÷ 10 (daily mean over
   the station's local day).
+  Hydro-Québec: GMON SWE in mm ÷ 10, last valid value of the
+  America/Toronto local day (published hourly, changes every 6 h).
+  Alberta: pillow SW in mm ÷ 10, AEPA's own daily mean (A.DayMean) over
+  the MST day.
 - ``snwd_cm``: Snow depth in centimetres.
   AWDB: SNWD element (inches × 2.54, converted by AWDBClient).
   CDEC: sensor 18 (Snow Depth), inches × 2.54.
@@ -32,6 +36,20 @@ CSV schema (all clients)
   NVE: parameter 2002 in cm.
   Yukon: /timeseries/measurementsDaily value in cm (daily mean over the
   station's local day).
+  Hydro-Québec: hourly depth in cm, last valid value of the local day.
+  Alberta: SD in cm, AEPA's A.DayMean.
+  SLF IMIS: HS in cm, median over the 24 h ending at the date's
+  stamp; SLF study plots: manual morning HS reading in cm.
+  CEAZA: SWE sensor (ae_mm ÷ 10, ae_cm, or snow weight pnkg kg/m² ÷ 10)
+  and depth (ani_cm), the service's own daily mean over the UTC−4 day,
+  one sensor per variable per date (:func:`ceaza_sensor_plan`).
+  SNIH: pillow SWE in mm ÷ 10 — the validated daily record, then (after
+  ``snih_validated_through``) the median of the day's raw telemetry after
+  the spike filter (:func:`snih_daily_from_raw`).
+
+Hydro-Québec's feed keeps only ~10 days, so its CSVs are *merged* into
+rather than replaced (``StationWriter.store(merge=True)``): the archive
+is the only place its history exists.
 
 Data flags are not stored in CSV files.  Use the respective client's
 ``get_data(include_flags=True)`` method if flag information is needed.
@@ -42,23 +60,33 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import os
 import tarfile
 import logging
 from dataclasses import dataclass, field
-from datetime import date, datetime, timezone
+from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 from typing import Any
+from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
 
 from easysnowdata import auth
 from easysnowdata.auth import CredentialError
+from easysnowdata.stations.clients.alberta import AlbertaClient, AlbertaError
 from easysnowdata.stations.clients.awdb import AWDBClient, AWDBError
+from easysnowdata.stations.clients.ceaza import CEAZAClient, CEAZAError
 from easysnowdata.stations.clients.cdec import CDECClient, CDECError
 from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
+from easysnowdata.stations.clients.hydroquebec import (
+    HydroQuebecClient,
+    HydroQuebecError,
+)
 from easysnowdata.stations.clients.nve import NVEClient, NVEError
+from easysnowdata.stations.clients.slf import SLFClient, SLFError
+from easysnowdata.stations.clients.snih import SNIHClient, SNIHError
 from easysnowdata.stations.clients.yukon import YukonClient, YukonError
 
 # INFO so client-level diagnostics (e.g. NVE series-index coverage) are
@@ -190,6 +218,30 @@ def check_daily_cadence(df: pd.DataFrame) -> tuple[bool, bool]:
     )
 
 
+# Clients whose archived daily values are always aggregated from a
+# sub-daily series (no native daily product), so a station that passes the
+# probe is never "native" (DESIGN.md §4).
+PASSED_PROVENANCE: dict[str, str] = {"hydroquebec": "resampled_hourly"}
+
+
+def passed_provenance(props: dict) -> str:
+    """``daily_provenance`` for a station that passes the probe.
+
+    Native unless its client has no daily product (:data:`PASSED_PROVENANCE`)
+    or — SNIH — the station's CSV continues past its validated daily
+    record with resampled raw telemetry: its latest record date (stamped
+    from the CSV just before the probe) is after
+    ``snih_validated_through``, or it never had a validated record.
+    """
+    client = str(props.get("client") or "")
+    if client == "snih":
+        through = props.get("snih_validated_through")
+        latest = props.get("latest_record_date")
+        raw = not through or (latest is not None and str(latest) > str(through))
+        return "resampled_sub_daily" if raw else "native"
+    return PASSED_PROVENANCE.get(client, "native")
+
+
 def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
     """Stamp probe-verified daily fields onto a feature from CSV content.
 
@@ -213,10 +265,12 @@ def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
         existing = props.get("notes") or ""
         if "cadence check failed" not in existing:
             props["notes"] = f"{existing} {note}".strip()
-    elif not props.get("daily_provenance") or (
-        props.get("daily_provenance") == "none"
-    ):
-        props["daily_provenance"] = "native"
+    elif props.get("client") == "snih" or not props.get(
+        "daily_provenance"
+    ) or props.get("daily_provenance") == "none":
+        # SNIH is re-derived every time: a station's CSV moves from
+        # validated-only to validated + raw as telemetry arrives.
+        props["daily_provenance"] = passed_provenance(props)
     return passed
 
 
@@ -413,6 +467,25 @@ def _fmt_value(v: float) -> str:
     return "" if pd.isna(v) else str(v)
 
 
+def merge_with_archive(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
+    """*new* laid over *old*, for sources that serve only a recent window.
+
+    A rolling-window feed (Hydro-Québec keeps ~10 days) cannot replace an
+    archived CSV: everything older than the window would be lost.  Dates
+    only in *old* are kept; for dates in both, a value in *new* wins and a
+    blank in *new* keeps the archived value (a sensor gap in today's
+    response is not evidence that yesterday's reading was wrong).
+    """
+    old, new = _as_numeric(old), _as_numeric(new)
+    merged = old.merge(new, on="date", how="outer", suffixes=("_old", ""))
+    for col in _VALUE_COLUMNS:
+        merged[col] = merged[col].combine_first(merged[f"{col}_old"])
+    return (
+        merged[["date", *_VALUE_COLUMNS]]
+        .sort_values("date", ignore_index=True)
+    )
+
+
 def diff_revisions(old: pd.DataFrame, new: pd.DataFrame) -> pd.DataFrame:
     """Cells of *old*'s period that *new* changes (DESIGN.md §6.6).
 
@@ -575,6 +648,11 @@ class StationWriter:
     :func:`shrink_reason` and diffed into the revision log.  A refused
     replacement keeps the old CSV and leaves the feature's dates and
     probe verdict untouched.
+
+    ``merge=True`` is for rolling-window sources: the response is laid
+    over the archived CSV (:func:`merge_with_archive`) instead of
+    replacing it, so a short response never reads as lost history, and
+    changed values inside the window still reach the revision log.
     """
 
     features: list[dict]
@@ -587,6 +665,7 @@ class StationWriter:
 
     def store(
         self, feat_idx: int, code: str, client: str, df: pd.DataFrame,
+        merge: bool = False,
     ) -> bool:
         if df.empty:
             self.stats.skipped_empty += 1
@@ -594,6 +673,8 @@ class StationWriter:
         df = _as_numeric(df)
         csv_path = station_csv_path(self.data_dir, code)
         old = read_station_csv(csv_path)
+        if old is not None and merge:
+            df = merge_with_archive(old, df)
         if old is not None:
             reason = shrink_reason(old, df)
             if reason and not (
@@ -990,6 +1071,451 @@ def refresh_yukon(
     print(f"  [Yukon] updated {updated} station CSVs")
 
 
+# ── Hydro-Québec refresh ──────────────────────────────────────────────────────
+
+# The feed's declared timezone; the client aggregates hourly values over
+# this local day.
+HYDROQUEBEC_TZ = "America/Toronto"
+# Ask for more than the ~10-day window so nothing it still holds is missed.
+HYDROQUEBEC_LOOKBACK_DAYS = 15
+HYDROQUEBEC_BATCH = 50
+
+
+def refresh_hydroquebec(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh Hydro-Québec station CSVs by merging the rolling window in.
+
+    ``stations`` is a list of (feature_index, identifiant) tuples.  The
+    feed holds only ~10 days of hourly data, so each night's daily values
+    are merged into the archived CSV (``merge=True``) — older history
+    exists nowhere else.  Daily values are the client's aggregation: the
+    last valid SWE / depth of the America/Toronto local day.  The current
+    local day is left out because it is incomplete; storing it would log a
+    "revision" for every station every night.
+
+    A run that returns no records at all is reported as a GitHub Actions
+    error annotation, since every missed night is lost for good.
+    """
+    stats = writer.stats
+    if not stations:
+        return
+
+    local_today = today or datetime.now(ZoneInfo(HYDROQUEBEC_TZ)).date()
+    end = local_today - timedelta(days=1)
+    begin = end - timedelta(days=HYDROQUEBEC_LOOKBACK_DAYS)
+
+    client = HydroQuebecClient()
+    station_ids = [sid for _, sid in stations]
+    idx_by_id = {sid: idx for idx, sid in stations}
+
+    n = len(station_ids)
+    print(
+        f"  [Hydro-Québec] Fetching daily SWE + snow depth for {n} stations "
+        f"({begin} – {end})..."
+    )
+    records: list[dict] = []
+    for start in range(0, n, HYDROQUEBEC_BATCH):
+        batch = station_ids[start:start + HYDROQUEBEC_BATCH]
+        try:
+            records.extend(client.get_data(
+                station_ids=batch,
+                variables=["swe", "snwd"],
+                interval="daily",
+                begin_date=begin.isoformat(),
+                end_date=end.isoformat(),
+            ))
+        except HydroQuebecError as exc:
+            stats.failed_batches += 1
+            print(
+                f"  [Hydro-Québec] batch "
+                f"{start // HYDROQUEBEC_BATCH + 1} FAILED ({exc})"
+            )
+    print(f"  [Hydro-Québec] ok ({len(records)} records)")
+    if not records:
+        msg = (
+            f"Hydro-Québec returned no records for {n} stations — the feed "
+            "keeps only ~10 days, so a missed night is lost for good"
+        )
+        logging.error(msg)
+        print(f"::error title=Hydro-Québec refresh::{msg}")
+
+    by_station: dict[str, list[dict]] = {}
+    for r in records:
+        sid = str(r.get("station_id") or "")
+        if sid:
+            by_station.setdefault(sid, []).append(r)
+    stats.fetched += len(by_station)
+
+    updated = 0
+    for sid in station_ids:
+        feat_idx = idx_by_id.get(sid)
+        if feat_idx is None:
+            continue
+        df = _station_records_to_df(by_station.get(sid, []))
+        if writer.store(feat_idx, sid, "hydroquebec", df, merge=True):
+            updated += 1
+
+    print(f"  [Hydro-Québec] updated {updated} station CSVs")
+
+
+# ── Alberta refresh ───────────────────────────────────────────────────────────
+
+def refresh_alberta(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+) -> None:
+    """Refresh Alberta River Basins station CSVs (full record, replaced).
+
+    ``stations`` is a list of (feature_index, station_number) tuples —
+    only AEPA's and the other non-mirror operators' automated stations;
+    BC Snow Survey and SNOTEL mirrors never reach here.  Daily values are
+    the source's own ``A.DayMean`` aggregate over the MST day (the client
+    computes a mean of the native samples only where that aggregate is
+    missing).  The client downloads one series per station × parameter
+    and logs and skips a failed download, so a station can come back
+    partial; the shrink guard keeps its archived record in that case.
+    """
+    stats = writer.stats
+    if not stations:
+        return
+
+    client = AlbertaClient()
+    n = len(stations)
+    print(f"  [Alberta] Fetching daily SWE + snow depth for {n} stations...")
+    updated = 0
+    n_records = 0
+    for feat_idx, sid in stations:
+        # One call per station: a station is two downloads at most.
+        try:
+            records = client.get_data(
+                station_ids=[sid],
+                variables=["swe", "snwd"],
+                interval="daily",
+                end_date=date.today().isoformat(),
+            )
+        except AlbertaError as exc:   # the catalog query failed
+            stats.failed_batches += 1
+            print(f"  [Alberta] {sid} FAILED ({exc})")
+            continue
+        n_records += len(records)
+        if records:
+            stats.fetched += 1
+        df = _station_records_to_df(records)
+        if writer.store(feat_idx, sid, "alberta", df):
+            updated += 1
+    print(f"  [Alberta] ok ({n_records} records)")
+    print(f"  [Alberta] updated {updated} station CSVs")
+
+
+# ── SLF refresh ───────────────────────────────────────────────────────────────
+
+def refresh_slf(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+) -> None:
+    """Refresh SLF IMIS and study-plot CSVs (full record, replaced).
+
+    ``stations`` is a list of (feature_index, code) tuples; each feature's
+    ``slf_dataset`` and ``slf_station_id`` say which SLF file to read (the
+    code carries a dataset prefix that SLF does not know).  SLF's file
+    service holds one CSV per station with its whole record, rebuilt
+    daily, so this is one download per station.  Depth only: neither
+    network measures SWE, and its new-snow series are not archived.
+    """
+    stats = writer.stats
+    features = writer.features
+    if not stations:
+        return
+
+    by_dataset: dict[str, list[tuple[int, str, str]]] = {}
+    for feat_idx, code in stations:
+        p = features[feat_idx]["properties"]
+        by_dataset.setdefault(str(p.get("slf_dataset")), []).append(
+            (feat_idx, code, str(p.get("slf_station_id") or ""))
+        )
+
+    for dataset, members in by_dataset.items():
+        client = SLFClient(dataset=dataset)
+        print(
+            f"  [SLF] Fetching daily snow depth for {len(members)} "
+            f"{dataset} stations..."
+        )
+        updated = 0
+        for feat_idx, code, sid in members:
+            try:
+                records = client.get_data(
+                    station_ids=[sid], variables=["snwd"], interval="daily",
+                )
+            except SLFError as exc:
+                stats.failed_batches += 1
+                print(f"  [SLF] {code} FAILED ({exc})")
+                continue
+            if records:
+                stats.fetched += 1
+            df = _station_records_to_df(records)
+            if writer.store(feat_idx, code, "slf", df):
+                updated += 1
+        print(f"  [SLF] {dataset}: updated {updated} station CSVs")
+
+
+# ── SNIH refresh ──────────────────────────────────────────────────────────────
+
+# Spike filter for SNIH raw pillow telemetry (pipeline layer: the client
+# passes raw values through, clamped only to 0–15 m).  Raw values show
+# isolated spikes (Laguna Diamante reached 14,370 mm, Las Leñas 4,007 mm)
+# next to plausible 10 mm steps and real storms.  A spike is a value that
+# jumps away from BOTH neighbours by more than the bound, in the same
+# direction, while staying a single reading (raw, every 4–6 h) or a single
+# day (after daily aggregation).  A level shift that persists is not a
+# spike and is kept.  50 mm between consecutive 4–6-hourly readings and
+# 150 mm between consecutive days are above what snowfall or melt does
+# at these pillows.
+SNIH_RAW_SPIKE_CM = 5.0
+SNIH_DAILY_SPIKE_CM = 15.0
+# Telemetry starts in 2009; nothing raw exists before.
+SNIH_RAW_START = date(2009, 1, 1)
+
+
+def _drop_isolated_spikes(values: list[float | None], bound: float) -> list[float | None]:
+    """None out values that leave both neighbours by > *bound*, same way."""
+    out = list(values)
+    for i in range(1, len(values) - 1):
+        v, a, b = values[i], values[i - 1], values[i + 1]
+        if v is None or a is None or b is None:
+            continue
+        up = v - a > bound and v - b > bound
+        down = a - v > bound and b - v > bound
+        if up or down:
+            out[i] = None
+    return out
+
+
+def snih_daily_from_raw(records: list[dict]) -> dict[str, float]:
+    """Daily SWE (cm) from SNIH raw sub-daily pillow records.
+
+    Records are the client's ``interval="sub_daily"`` output for one
+    station (``date`` is the Argentina local day).  Isolated raw spikes are
+    dropped (:data:`SNIH_RAW_SPIKE_CM`), each day becomes the **median** of
+    its remaining readings (robust to a spike the first pass missed), and
+    isolated daily spikes are dropped (:data:`SNIH_DAILY_SPIKE_CM`).
+    Returns ``{date: value}``; dropped days are absent.
+    """
+    rows = sorted(
+        (r for r in records if r.get("value") is not None),
+        key=lambda r: str(r.get("datetime") or r.get("date")),
+    )
+    kept = _drop_isolated_spikes([float(r["value"]) for r in rows], SNIH_RAW_SPIKE_CM)
+    by_day: dict[str, list[float]] = {}
+    for r, v in zip(rows, kept):
+        if v is not None:
+            by_day.setdefault(str(r["date"])[:10], []).append(v)
+    days = sorted(by_day)
+    medians = [float(np.median(by_day[d])) for d in days]
+    daily = _drop_isolated_spikes(medians, SNIH_DAILY_SPIKE_CM)
+    return {d: round(v, 3) for d, v in zip(days, daily) if v is not None}
+
+
+def snih_series(
+    validated: list[dict],
+    raw: list[dict],
+    validated_through: str | None,
+) -> pd.DataFrame:
+    """One station's daily CSV frame: validated record, then raw-derived.
+
+    Validated values are used for every date up to *validated_through*;
+    raw telemetry only fills dates after it, so the two are never mixed
+    within the validated period (DESIGN.md §4).
+    """
+    rows = [r for r in validated if r.get("type") == "swe"]
+    cut = validated_through or ""
+    for d, v in snih_daily_from_raw(raw).items():
+        if d > cut:
+            rows.append({"date": d, "type": "swe", "value": v})
+    return _station_records_to_df(rows)
+
+
+def refresh_snih(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh SNIH snow-pillow CSVs (full record, replaced).
+
+    ``stations`` is a list of (feature_index, code) tuples; each feature's
+    ``snih_station_id`` and ``snih_validated_through`` come from stage 1.
+    Per station: the validated daily SWE record, then raw telemetry from
+    the day after it (or the pillow's association date) to yesterday in
+    Argentina time — today is incomplete.  See :func:`snih_series`.
+    """
+    stats = writer.stats
+    features = writer.features
+    if not stations:
+        return
+
+    end = (today or datetime.now(timezone(timedelta(hours=-3))).date()) - timedelta(days=1)
+    client = SNIHClient()
+    print(f"  [SNIH] Fetching pillow SWE for {len(stations)} stations...")
+    updated = 0
+    for feat_idx, code in stations:
+        p = features[feat_idx]["properties"]
+        sid = str(p.get("snih_station_id") or code.removeprefix("SNIH-"))
+        through = p.get("snih_validated_through")
+        try:
+            validated = client.get_data(
+                station_ids=[sid], variables=["SWE_PILLOW"], interval="daily",
+                end_date=end.isoformat(),
+            )
+            got = [r["date"] for r in validated if r.get("value") is not None]
+            # The record itself is the authority on where it ends.
+            through = max(got) if got else through
+            start = SNIH_RAW_START
+            if through:
+                start = max(start, date.fromisoformat(through) + timedelta(days=1))
+            raw = []
+            if start <= end:
+                raw = client.get_data(
+                    station_ids=[sid], variables=["SWE_PILLOW"],
+                    interval="sub_daily", begin_date=start.isoformat(),
+                    end_date=end.isoformat(),
+                )
+        except SNIHError as exc:
+            stats.failed_batches += 1
+            print(f"  [SNIH] {code} FAILED ({exc})")
+            continue
+        if validated or raw:
+            stats.fetched += 1
+        df = snih_series(validated, raw, through)
+        if writer.store(feat_idx, code, "snih", df):
+            updated += 1
+    print(f"  [SNIH] updated {updated} station CSVs")
+
+
+# ── CEAZA refresh ─────────────────────────────────────────────────────────────
+
+# CEAZA-Met's terms ask every user to register a user name before
+# downloading (ceazamet@ceaza.cl).  Until the CEAZA_USER secret is set the
+# network is skipped — inventory and data alike — with one log line.
+CEAZA_USER_ENV = "CEAZA_USER"
+# Snow variables (tm_cod) by archive column type.
+CEAZA_TYPE_CODES: dict[str, tuple[str, ...]] = {
+    "swe": ("ae_mm", "ae_cm", "pnkg"),
+    "snwd": ("ani_cm",),
+}
+# Nightly window once a station is archived: the data are raw logger
+# output that CEAZA does not revise, so the full record is fetched only
+# the first time (no CSV yet) and later nights merge the last 90 days in.
+# That keeps the nightly volume to what the registration e-mail states.
+CEAZA_LOOKBACK_DAYS = 90
+
+
+def ceaza_user() -> str | None:
+    return os.environ.get(CEAZA_USER_ENV) or None
+
+
+def ceaza_sensor_plan(sensors: list[dict]) -> dict[str, list[dict]]:
+    """One sensor per variable per date, for each archive column type.
+
+    Some stations carry two sensors of one type: paired sensors that
+    disagree (El Tapado SWE by a median 15 mm, Llano de Las Liebres snow
+    weight by 32 kg/m²) or a replacement (El Tapado depth, TPFSNOWD to
+    2023, TPFANSHM31 from 2018).  The sensor with the newest last reading
+    is used for its whole period; an older sensor fills only the dates
+    before that period began, never a date the newer one covers.  Returns
+    ``{type: [{sensor, variable, from, to}, ...]}``, newest segment first.
+    """
+    plan: dict[str, list[dict]] = {}
+    for vtype, codes in CEAZA_TYPE_CODES.items():
+        candidates = sorted(
+            (s for s in sensors if s.get("variable") in codes and s.get("begin_date")),
+            key=lambda s: (s.get("end_date") or "", s.get("begin_date") or ""),
+            reverse=True,
+        )
+        segments: list[dict] = []
+        covered_from: str | None = None
+        for sen in candidates:
+            begin, end = sen["begin_date"], sen.get("end_date") or date.today().isoformat()
+            if covered_from is not None:
+                end = min(end, (date.fromisoformat(covered_from) - timedelta(days=1)).isoformat())
+            if begin > end:
+                continue
+            segments.append({
+                "sensor": sen["sensor"], "variable": sen["variable"],
+                "from": begin, "to": end,
+            })
+            covered_from = begin
+        if segments:
+            plan[vtype] = segments
+    return plan
+
+
+def refresh_ceaza(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh CEAZA-Met snow CSVs from the service's daily aggregates.
+
+    ``stations`` is a list of (feature_index, code) tuples; each feature's
+    ``ceaza_station_id`` is CEAZA's ``e_cod``.  The sensor plan comes from
+    the network-wide sensor list (:func:`ceaza_sensor_plan`).  A station
+    without a CSV gets its full record; an archived one gets the last
+    :data:`CEAZA_LOOKBACK_DAYS` days, merged in (``merge=True``).
+    Skipped, with one line, when ``CEAZA_USER`` is not set.
+
+    Requests per run: 2 list requests (stations, sensors) plus one
+    ``GetSerieSensor`` per sensor segment that overlaps the window — per
+    10-year block on a first, full fetch.
+    """
+    stats = writer.stats
+    features = writer.features
+    if not stations:
+        return
+    user = ceaza_user()
+    if not user:
+        print(
+            f"  [CEAZA] skipped {len(stations)} stations — {CEAZA_USER_ENV} "
+            "is not set (CEAZA-Met asks users to register first)"
+        )
+        return
+
+    end = (today or datetime.now(timezone(timedelta(hours=-4))).date()) - timedelta(days=1)
+    client = CEAZAClient(user=user)
+    print(f"  [CEAZA] Fetching daily SWE + snow depth for {len(stations)} stations...")
+    updated = 0
+    for feat_idx, code in stations:
+        sid = str(features[feat_idx]["properties"].get("ceaza_station_id") or "")
+        archived = station_csv_path(writer.data_dir, code).exists()
+        begin = end - timedelta(days=CEAZA_LOOKBACK_DAYS) if archived else None
+        rows: list[dict] = []
+        try:
+            plan = ceaza_sensor_plan(client.get_sensors(sid))
+            for vtype, segments in plan.items():
+                for seg in segments:
+                    lo = max(seg["from"], begin.isoformat()) if begin else seg["from"]
+                    hi = min(seg["to"], end.isoformat())
+                    if lo > hi:
+                        continue
+                    for r in client.get_data(
+                        station_ids=[sid], variables=[seg["variable"]],
+                        sensors=[seg["sensor"]], interval="daily",
+                        begin_date=lo, end_date=hi,
+                    ):
+                        rows.append({**r, "type": vtype})
+        except CEAZAError as exc:
+            stats.failed_batches += 1
+            print(f"  [CEAZA] {code} FAILED ({exc})")
+            continue
+        if rows:
+            stats.fetched += 1
+        df = _station_records_to_df(rows)
+        if writer.store(feat_idx, code, "ceaza", df, merge=archived):
+            updated += 1
+    print(f"  [CEAZA] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -1091,7 +1617,10 @@ def main() -> None:
     )
     ap.add_argument(
         "--network",
-        choices=["awdb", "cdec", "databc", "nve", "yukon"],
+        choices=[
+            "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec",
+            "alberta", "slf", "snih", "ceaza",
+        ],
         default=None,
         help=(
             "Only refresh this network's stations. "
@@ -1181,6 +1710,11 @@ def main() -> None:
     databc_stations: list[tuple[int, str]] = []
     nve_stations: list[tuple[int, str]] = []
     yukon_stations: list[tuple[int, str]] = []
+    hydroquebec_stations: list[tuple[int, str]] = []
+    alberta_stations: list[tuple[int, str]] = []
+    slf_stations: list[tuple[int, str]] = []
+    snih_stations: list[tuple[int, str]] = []
+    ceaza_stations: list[tuple[int, str]] = []
 
     stats = RefreshStats()
     for idx, feat in enumerate(features):
@@ -1209,6 +1743,16 @@ def main() -> None:
             nve_stations.append((idx, code))
         elif client_name == "yukon":
             yukon_stations.append((idx, code))
+        elif client_name == "hydroquebec":
+            hydroquebec_stations.append((idx, code))
+        elif client_name == "alberta":
+            alberta_stations.append((idx, code))
+        elif client_name == "slf":
+            slf_stations.append((idx, code))
+        elif client_name == "snih":
+            snih_stations.append((idx, code))
+        elif client_name == "ceaza":
+            ceaza_stations.append((idx, code))
         else:
             # No silent fallback (DESIGN.md §3.6): a feature without a
             # known client cannot be refreshed.  Loud, counted, skipped —
@@ -1226,6 +1770,13 @@ def main() -> None:
     run_databc = (network in (None, "databc")) and bool(databc_stations)
     run_nve = (network in (None, "nve")) and bool(nve_stations)
     run_yukon = (network in (None, "yukon")) and bool(yukon_stations)
+    run_hydroquebec = (
+        (network in (None, "hydroquebec")) and bool(hydroquebec_stations)
+    )
+    run_alberta = (network in (None, "alberta")) and bool(alberta_stations)
+    run_slf = (network in (None, "slf")) and bool(slf_stations)
+    run_snih = (network in (None, "snih")) and bool(snih_stations)
+    run_ceaza = (network in (None, "ceaza")) and bool(ceaza_stations)
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
@@ -1233,6 +1784,11 @@ def main() -> None:
         len(databc_stations) if run_databc else 0,
         len(nve_stations) if run_nve else 0,
         len(yukon_stations) if run_yukon else 0,
+        len(hydroquebec_stations) if run_hydroquebec else 0,
+        len(alberta_stations) if run_alberta else 0,
+        len(slf_stations) if run_slf else 0,
+        len(snih_stations) if run_snih else 0,
+        len(ceaza_stations) if run_ceaza else 0,
     ])
 
     print("=" * 70)
@@ -1246,6 +1802,12 @@ def main() -> None:
         f"DataBC: {len(databc_stations) if run_databc else 'skip'}  "
         f"NVE: {len(nve_stations) if run_nve else 'skip'}  "
         f"Yukon: {len(yukon_stations) if run_yukon else 'skip'}  "
+        f"Hydro-Québec: "
+        f"{len(hydroquebec_stations) if run_hydroquebec else 'skip'}  "
+        f"Alberta: {len(alberta_stations) if run_alberta else 'skip'}  "
+        f"SLF: {len(slf_stations) if run_slf else 'skip'}  "
+        f"SNIH: {len(snih_stations) if run_snih else 'skip'}  "
+        f"CEAZA: {len(ceaza_stations) if run_ceaza else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -1274,6 +1836,22 @@ def main() -> None:
         )
     if run_yukon:
         refresh_yukon(yukon_stations, writer)
+    if run_hydroquebec:
+        refresh_hydroquebec(hydroquebec_stations, writer)
+    if run_alberta:
+        refresh_alberta(alberta_stations, writer)
+    if run_slf:
+        refresh_slf(slf_stations, writer)
+    if run_snih:
+        refresh_snih(snih_stations, writer)
+    if run_ceaza:
+        refresh_ceaza(ceaza_stations, writer)
+    if network == "hydroquebec" and not run_hydroquebec:
+        # The inventory has no Hydro-Québec stations to refresh — e.g.
+        # stage 1 could not list them.  Say so where the run summary shows it.
+        msg = "no Hydro-Québec stations in the inventory to refresh"
+        logging.error(msg)
+        print(f"::error title=Hydro-Québec refresh::{msg}")
 
     # In per-network mode: CSVs written, skip GeoJSON update and archive.
     # The downstream finalize job handles those via --finalize-only.

@@ -4,7 +4,7 @@ A documented inventory and daily archive of snow point observations (SWE and
 snow depth) from networks around the world — automated pillows, manual snow
 courses, aerial markers, and mirrored climate stations.
 
-**The data-access layer is not here.** The five network clients live in
+**The data-access layer is not here.** The network clients live in
 [easysnowdata](https://github.com/egagli/easysnowdata) as
 `easysnowdata.stations.clients`, and this repo imports them to build what it
 publishes. DESIGN.md §3 is still their contract. If you want to *query* a
@@ -301,7 +301,7 @@ DESIGN.md §6.1):**
 | `state` | State / province / country code |
 | `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
 | `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
-| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"` |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"`, `"snih"`, `"ceaza"` |
 | `data_provider` | Human-readable organization/portal behind that access path |
 | `status`, `is_active` | Active status as reported/derived |
 | `begin_date`, `end_date` | Period of record from source metadata |
@@ -845,6 +845,265 @@ series if you want them.
 | Open Yukon | Web | Dataset landing pages and historical bulletin PDFs. |
 | AquaCache (upstream) | Database | The open-source R/Postgres project the API is built on. |
 
+### 6.10 Hydro-Québec (HQ)
+
+> **Licence: CC BY-NC 4.0 — attribution required, no commercial use.**
+> This is the only network in the archive whose data may not be reused
+> commercially. Attribute "Hydro-Québec" and link the
+> [dataset page](https://donnees.hydroquebec.com/explore/dataset/donnees-hydrometeorologiques/).
+> Every Hydro-Québec feature carries `license`, `license_url` and a note
+> saying so, and its `data_provider` names the licence.
+
+**Data source:** Hydro-Québec open data (Opendatasoft), dataset
+`donnees-hydrometeorologiques`
+**Client:** `hydroquebec`
+**Stations:** about 95 GMON SWE sensors and about 137 stations with snow
+depth (counts from the client's live check, 2026-10-14)
+**Coverage:** Hydro-Québec's hydroelectric watersheds — Côte-Nord,
+Nord-du-Québec, Mauricie, Outaouais, Saguenay–Lac-Saint-Jean
+**Period of record:** from this archive's first nightly refresh
+(October 2026) — see below
+**Temporal resolution:** SWE published hourly, changing every 6 h; snow depth
+hourly
+**Operator:** Hydro-Québec
+
+**The feed keeps only a rolling ~10 days, with no archive endpoint.** This
+archive is therefore the record: each night's values are *merged* into the
+station's CSV instead of replacing it (DESIGN.md §6.3), and a night the
+pipeline misses is lost for good. The nightly job runs Hydro-Québec even when
+the inventory rebuild fails, and a refresh that returns nothing raises an
+error annotation on the workflow run. GMON history before October 2026 is in
+CanSWE (Vionnet et al., [Zenodo](https://doi.org/10.5281/zenodo.4734371)),
+under `HQ-…` ids; it is not yet linked here.
+
+**Daily values.** Hydro-Québec publishes no daily product. The archive stores
+the client's aggregation: the **last valid value of the America/Toronto local
+day** for both SWE and depth (`daily_provenance: resampled_hourly`). The
+current local day is left out until it is complete. The probe needs about 30
+days before a new station counts as `daily_or_better`, so the first stations
+reach the map around mid-November 2026.
+
+**Snow variables:**
+
+| Variable (native label) | Native units | Stored as |
+|---|---|---|
+| Équivalent en eau de la neige (GMON passive gamma) | mm | `wteq_cm` (÷ 10) |
+| Épaisseur de neige | cm | `snwd_cm` (as-is) |
+
+**Caveats.** Early-season GMON readings can be spurious over bare ground (the
+client saw one station alternating 0 / 75 mm every 6 h with depth near zero),
+so cross-check SWE against depth before trusting autumn values. Depth hovers
+around zero with negative noise, which the client nulls. Elevation is missing
+for most non-SWE sites (null, never 0).
+
+**Links**
+- Dataset: https://donnees.hydroquebec.com/explore/dataset/donnees-hydrometeorologiques/
+- Licence: https://creativecommons.org/licenses/by-nc/4.0/
+
+### 6.11 Alberta River Basins (ARB)
+
+**Data source:** Alberta River Basins (rivers.alberta.ca) — the endpoints
+the public page's own JavaScript calls; there is no documented API
+**Client:** `alberta`
+**Stations:** 291 snow stations (2026-10-21): 99 archived (automated SWE or
+depth, not mirrors), 77 BC Snow Survey / SNOTEL mirrors (inventory only),
+and the rest manual snow courses (periodic)
+**Coverage:** Alberta Rockies, foothills and plains
+**Period of record:** AEPA pillows from the 1980s (Sunshine Village SWE from
+1984)
+**Temporal resolution:** 15-minute native; daily = AEPA's own `A.DayMean`;
+snow courses periodic
+**Operator:** given by the station-name suffix — `EPA` (Alberta Environment
+and Protected Areas), `MSC`, `Merchant`, `AGI`, `PC`, `FP`, … `operator` is
+filled only where the client expands the suffix unambiguously; the raw
+suffix is kept as `operator_code`.
+
+**Licence.** None is stated. The page's download disclaimer says the data are
+provisional, generated by remote equipment that may not be under Government
+of Alberta control, not reviewed, and may change; use is at your own risk.
+The data are not published on open.alberta.ca, so the Open Government
+Licence – Alberta has not been verified to cover them. Every feature carries
+a note saying so.
+
+**Mirrors are inventoried, not archived twice.** Alberta River Basins
+republishes BC Snow Survey and NRCS SNOTEL stations that this archive
+already holds through `databc` and `awdb`. They are recognised by the name
+suffix (`- BC`, `- Snotel`) or, for the BC pillows the app lists without a
+name, by the province/state they report (BC, MT). A mirror keeps
+`daily_or_better: false`, is never fetched, and links its twin in
+`mirror_of` (`{code, client, distance_m}`; a DataBC twin is also matched by
+its identical code). 18 unnamed BC pillows have no coordinates and are
+dropped from the merged inventory like any invalid-coordinate station.
+
+**AEPA's pillows also appear through AWDB** as Manual SNOTEL partner stations
+(`05BB803_AB_MSNT` and 15 others), but AWDB's copies only start in July
+2024, while AEPA's own records go back to the 1980s. Both access paths are
+archived and cross-linked by `possible_duplicates` (DESIGN.md §5); for
+history, use the `alberta` one.
+
+**Snow variables:**
+
+| Parameter | Native units | Stored as |
+|---|---|---|
+| `SW` (snow pillow) | mm | `wteq_cm` (÷ 10), AEPA's `A.DayMean` |
+| `SD` (ultrasonic) | cm | `snwd_cm`, AEPA's `A.DayMean` |
+| `SW-SS`, `SD-SS` (snow survey) | mm, cm | not archived (periodic) |
+
+Timestamps are MST (UTC−7) all year. Elevation is not published (null).
+
+**Links**
+- Alberta River Basins: https://rivers.alberta.ca/
+- Government of Alberta disclaimer: https://www.alberta.ca/disclaimer.aspx
+
+### 6.12 SLF — IMIS automatic stations and manual study plots (Switzerland)
+
+**Data source:** WSL Institute for Snow and Avalanche Research SLF —
+[measurement-data.slf.ch](https://measurement-data.slf.ch/) file service
+(one CSV per station, whole record, rebuilt daily), plus EnviDat for GCOS
+**Client:** `slf` (three datasets, one client)
+**Stations (2026-10-21):** 179 IMIS stations (141 active) and 135 study
+plots (100 active), all archived; 11 GCOS SWE sites, inventory only
+**Coverage:** Swiss Alps and Jura; IMIS mostly 2,000–3,000 m
+**Period of record:** study plots from the 1930s (Weissfluhjoch from 1936);
+IMIS from 1992
+**Temporal resolution:** daily (IMIS also serves 30-minute data, not
+archived)
+**Operator:** WSL SLF
+
+**Depth only.** Neither network measures SWE, so their CSVs carry `snwd_cm`
+and an empty `wteq_cm`. The only open SWE is GCOS's manual snow pit about
+every two weeks (`SLF-GCOS-…`, periodic: inventoried, not archived). New-snow
+series (`HN_1D`, `HNW_1D`) are listed in `data_variables` but not archived;
+IMIS `HN_1D` is SNOWPACK model output, not a measurement.
+
+| Dataset | Code | `network_code` | Daily value | DOI | Licence |
+|---|---|---|---|---|---|
+| IMIS | `SLF-IMIS-<id>` (e.g. `SLF-IMIS-WFJ2`) | `IMIS` | ultrasonic HS, median over the last 24 h | [10.16904/envidat.406](https://doi.org/10.16904/envidat.406) | CC BY 4.0 |
+| Study plots | `SLF-SP-<id>` (e.g. `SLF-SP-5WJ0`) | `BEOB` | manual morning HS reading | [10.16904/envidat.408](https://doi.org/10.16904/envidat.408) | CC BY 4.0 |
+| GCOS | `SLF-GCOS-<id>` | `GCOS` | — (periodic SWE and HS) | [10.16904/15](https://doi.org/10.16904/15) | ODbL 1.0 + DbCL 1.0 |
+
+**Codes carry a dataset prefix** because SLF's ids (`ADE2`, `5WJ0`) could
+collide with other networks' codes; SLF's own id is kept as
+`slf_station_id` and the dataset as `slf_dataset`. An IMIS station and a
+study plot can share a site (Weissfluhjoch `WFJ2` / `5WJ0`); they are
+separate access paths and are cross-linked by `possible_duplicates`.
+
+**Attribution.** CC BY 4.0: credit "WSL Institute for Snow and Avalanche
+Research SLF" with a link to www.slf.ch and cite the dataset DOI. SLF's
+terms also ask users not to overload its infrastructure; the nightly
+refresh downloads one file per station.
+
+**Links**
+- SLF Data Service terms: https://www.slf.ch/en/services-and-products/slf-data-service/
+- IMIS files: https://measurement-data.slf.ch/imis/
+- Study-plot files: https://measurement-data.slf.ch/study-plot/
+- GCOS SWE data: https://www.envidat.ch/dataset/gcos-swe-data
+
+### 6.13 SNIH — Argentine snow pillows (RHN / RMET)
+
+**Data source:** Sistema Nacional de Información Hídrica (SNIH), Base de
+Datos Hidrológica Integrada — the ASP.NET page methods behind the public map
+(no documented API)
+**Client:** `snih`
+**Stations (2026-10-21):** 51 with a snow parameter; 35 snow pillows
+archived (29 reporting raw telemetry in the last 30 days); the rest are
+manual snow courses or river/weather stations with no snow values
+(inventory only)
+**Coverage:** the Argentine Andes, Jujuy to Santa Cruz (24–52° S) — the
+first Southern Hemisphere SWE in the archive
+**Period of record:** validated daily SWE from 1989 (Toscas, Laguna Atuel);
+raw telemetry to the present
+**Operator:** not stated per station; `network_name` is the network SNIH
+names — Red Hidrológica Nacional (`RHN`) or Red Meteorológica RMET (`RMET`)
+
+**Licence.** SNIH's terms of use (https://snih.hidricosargentina.gob.ar/Terminos.aspx):
+the data are public and free, and any use is allowed, including commercial
+use and redistribution, provided users cite SIPH and/or the contributing
+network, state the date of the last update, and keep the original meaning
+and the source metadata.
+
+**Two products, never mixed.** Validated daily pillow SWE ends in 2023–2024
+at every station, and the ten RMET pillows (2024–2026) have none.
+Everything after that is raw, unvalidated telemetry every 4–6 hours. Each
+station's CSV holds the validated record up to `snih_validated_through`, and
+raw-derived daily values only after it. `daily_provenance` is
+`resampled_sub_daily` when raw days are present, `native` when the CSV is
+validated only.
+
+**Raw telemetry is filtered.** It is noisy: 10 mm steps, long runs of 0, and
+spikes (Laguna Diamante reached 14,370 mm). Before resampling, the pipeline
+drops any reading that jumps more than 5 cm away from *both* neighbours in
+the same direction; each day becomes the median of the rest; and a day that
+leaves both neighbouring days by more than 15 cm is dropped. A level shift
+that persists is kept. Runs of 0 are kept: they cannot be told apart from
+bare ground.
+
+**Codes** are `SNIH-<Codigo>` (e.g. `SNIH-19145`, Toscas), because SNIH's
+bare integer codes could collide with other networks'. Elevation is missing
+(`-999` or `0`) at 22 stations and is null there, never 0.
+
+| Parameter | Native units | Stored as |
+|---|---|---|
+| 73 Altura E.A.N. en Snow Pillow | mm | `wteq_cm` (÷ 10) |
+| 70 / 72 / 74 (snow course depth, density, SWE) | cm, g/cm³, mm | not archived (periodic) |
+
+**Links**
+- SNIH portal: https://snih.hidricosargentina.gob.ar/
+- Terms of use: https://snih.hidricosargentina.gob.ar/Terminos.aspx
+
+### 6.14 CEAZA-Met (Chile)
+
+> **Datos provistos por el laboratorio de meteorología CEAZA** —
+> [www.ceazamet.cl](https://www.ceazamet.cl/). This attribution, with the
+> link, is what CEAZA-Met's terms of use ask for. Every CEAZA feature
+> carries it in `notes` and `data_provider`.
+
+**Data source:** CEAZA-Met web service (`pop_ws.php`: `GetListaEstaciones`,
+`GetListaSensores`, `GetSerieSensor`)
+**Client:** `ceaza`
+**Stations:** the 17 CEAZA-Met stations with a snow sensor (10 reporting in
+October 2026), out of about 95
+**Coverage:** the high Andes of Coquimbo and Atacama, 30–32° S,
+2,284–4,306 m
+**Period of record:** snow from about 2011
+**Temporal resolution:** daily = the service's mean over the UTC−4 day
+**Operator:** the station owner the service names (CEAZA, INIA, DGA, IEB,
+ULS); other owner codes are kept as `owner_code` only
+
+**Registration first.** CEAZA-Met's terms ask every user to request a user
+name by e-mail before downloading. Until the `CEAZA_USER` repository secret
+holds that user name, the nightly job skips CEAZA entirely — station list
+and data — with one log line. Once set, it is passed to the service as
+`user=`.
+
+**One sensor per variable per date.** Some stations have two sensors of one
+type that disagree (El Tapado SWE by a median 15 mm; Llano de Las Liebres
+snow weight by 32 kg/m²) or a replacement (El Tapado depth: `TPFSNOWD` to
+2023, `TPFANSHM31` from 2018). The archive uses the sensor with the newest
+last reading for its whole period; an older sensor fills only the dates
+before that period began. `ceaza_sensor_plan` on each feature lists the
+sensor and dates used for each variable.
+
+**Snow variables.** Depth `ani_cm`; SWE from `ae_mm` (mm ÷ 10), `ae_cm`, or
+snow weight `pnkg` (kg/m², which is mm of water, ÷ 10). The values are raw
+logger output, not quality controlled. The client nulls values outside
+0–15 m; negatives are nulled, not set to zero.
+
+**Request volume.** A station's first refresh fetches its full record; after
+that, each night fetches the last 90 days and merges them in. CEAZA does not
+revise its raw data, so corrections older than 90 days are not picked up.
+Estimated from the client's documented sensor list (about 24 sensor periods
+in the plan, 10 stations reporting):
+
+| | Requests | Volume |
+|---|---|---|
+| Nightly, steady state | about 16: station and sensor lists twice (inventory, then refresh), plus about 12 series | about 0.5 MB |
+| First run (backfill, once) | about 50 | about 13 MB |
+
+**Links**
+- CEAZA-Met: https://www.ceazamet.cl/
+- Web service documentation and terms of use: https://www.ceazamet.cl/ws/pop_ws_doc.php
+
 ---
 
 ## 7. Data Access Methods and Design Philosophy
@@ -1268,6 +1527,18 @@ NVE data is published under the Norwegian Licence for Open Government Data
 (NLOD).
 Yukon snow and water data is published under the Open Government Licence —
 Yukon.
+**Hydro-Québec data is published under CC BY-NC 4.0: attribution required,
+no commercial use.** Its stations' CSVs in this archive carry the same
+restriction.
+Alberta River Basins data carry no stated licence, only a disclaimer that
+they are provisional and unreviewed (§6.11).
+SLF IMIS and study-plot data are CC BY 4.0 (credit WSL SLF, cite the DOI);
+the GCOS SWE data are ODbL 1.0 + DbCL 1.0 (§6.12).
+SNIH data are free to use, including commercially, citing SIPH and/or the
+network and the date of the last update (§6.13).
+CEAZA-Met states no licence; its terms ask users to register and to credit
+"Datos provistos por el laboratorio de meteorología CEAZA" with a link to
+www.ceazamet.cl (§6.14).
 
 ### Citing this archive
 

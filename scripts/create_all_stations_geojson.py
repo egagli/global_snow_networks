@@ -40,12 +40,24 @@ from typing import Any
 
 import requests
 
+from easysnowdata.stations.clients.alberta import AlbertaClient
+from easysnowdata.stations.clients.alberta.alberta_client import (
+    OPERATORS as ALBERTA_OPERATORS,
+    VARIABLES as ALBERTA_VARIABLES,
+)
 from easysnowdata.stations.clients.awdb import AWDBClient
 from easysnowdata.stations.clients.awdb.awdb_client import (
     VARIABLES as AWDB_VARIABLES,
     _AWDB_DURATION_TO_INTERVAL,
 )
 from easysnowdata.stations.clients.cdec import CDECClient
+from easysnowdata.stations.clients.ceaza import CEAZAClient
+from easysnowdata.stations.clients.ceaza.ceaza_client import (
+    ATTRIBUTION as CEAZA_ATTRIBUTION,
+    HOME_URL as CEAZA_HOME_URL,
+    OWNERS as CEAZA_OWNERS,
+    VARIABLES as CEAZA_VARIABLES,
+)
 from easysnowdata.stations.clients.cdec.cdec_client import (
     SENSORS as CDEC_SENSORS,
 )
@@ -53,15 +65,34 @@ from easysnowdata.stations.clients.databc import DataBCClient
 from easysnowdata.stations.clients.databc.databc_client import (
     VARIABLES as DATABC_VARIABLES,
 )
+from easysnowdata.stations.clients.hydroquebec import HydroQuebecClient
+from easysnowdata.stations.clients.hydroquebec.hydroquebec_client import (
+    DATASET_PAGE as HYDROQUEBEC_DATASET_PAGE,
+    LICENSE as HYDROQUEBEC_LICENSE,
+    LICENSE_URL as HYDROQUEBEC_LICENSE_URL,
+    VARIABLES as HYDROQUEBEC_VARIABLES,
+    WINDOW_DAYS as HYDROQUEBEC_WINDOW_DAYS,
+)
 from easysnowdata.stations.clients.nve import NVEClient
 from easysnowdata.stations.clients.nve.nve_client import (
     VARIABLES as NVE_VARIABLES,
     _PARAM_TO_VAR as _NVE_PARAM_TO_VAR,
 )
+from easysnowdata.stations.clients.slf import SLFClient
+from easysnowdata.stations.clients.snih import SNIHClient
+from easysnowdata.stations.clients.snih.snih_client import (
+    TERMS_URL as SNIH_TERMS_URL,
+)
+from easysnowdata.stations.clients.slf.slf_client import (
+    DATASETS as SLF_DATASET_SPECS,
+    VARIABLES as SLF_VARIABLES,
+)
 from easysnowdata.stations.clients.yukon import YukonClient
 from easysnowdata.stations.clients.yukon.yukon_client import (
     VARIABLES as YUKON_VARIABLES,
 )
+
+from scripts.get_all_stations_data import ceaza_sensor_plan, ceaza_user
 
 logging.basicConfig(
     level=logging.INFO,
@@ -83,6 +114,11 @@ CDEC_GEOJSON_OUT = INVENTORY_DIR / "cdec_stations.geojson"
 DATABC_GEOJSON_OUT = INVENTORY_DIR / "databc_stations.geojson"
 NVE_GEOJSON_OUT = INVENTORY_DIR / "nve_stations.geojson"
 YUKON_GEOJSON_OUT = INVENTORY_DIR / "yukon_stations.geojson"
+HYDROQUEBEC_GEOJSON_OUT = INVENTORY_DIR / "hydroquebec_stations.geojson"
+ALBERTA_GEOJSON_OUT = INVENTORY_DIR / "alberta_stations.geojson"
+SLF_GEOJSON_OUT = INVENTORY_DIR / "slf_stations.geojson"
+SNIH_GEOJSON_OUT = INVENTORY_DIR / "snih_stations.geojson"
+CEAZA_GEOJSON_OUT = INVENTORY_DIR / "ceaza_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -164,7 +200,20 @@ DATA_PROVIDERS: dict[str, str] = {
     "databc": "BC Data Catalogue / BC ENV",
     "nve": "NVE HydAPI",
     "yukon": "Yukon Water Data (AquaCache)",
+    "hydroquebec": "Hydro-Québec open data (CC BY-NC 4.0)",
+    "alberta": "Alberta River Basins (AEPA)",
+    "slf": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+    "snih": "SNIH / SIPH Argentina (Base de Datos Hidrológica Integrada)",
+    "ceaza": "CEAZA-Met (Datos provistos por el laboratorio de meteorología CEAZA)",
 }
+
+# Carried on every Alberta feature: the app states no licence, only a
+# download disclaimer.
+ALBERTA_NOTE = (
+    "Alberta River Basins (rivers.alberta.ca) states no licence; its download "
+    "disclaimer says the data are provisional, unreviewed and may change. "
+    "Read through the endpoints the public page uses (no documented API)."
+)
 
 # Canonical operator spellings.  Values of None mean "treat as unknown"
 # (DESIGN.md §5: never guess an operator).
@@ -520,6 +569,17 @@ def _haversine_m(lat1, lon1, lat2, lon2) -> float:
     return 2 * r * math.asin(math.sqrt(a))
 
 
+def _access_path(props: dict) -> tuple:
+    """What makes two features separate routes to a station (DESIGN.md §5).
+
+    Usually the client.  SLF serves several datasets through one client,
+    each with its own station ids — an IMIS station and a manual study plot
+    can stand on the same site (Weissfluhjoch WFJ2 / 5WJ0) — so for SLF the
+    dataset is part of the access path.
+    """
+    return props.get("client"), props.get("slf_dataset")
+
+
 def annotate_possible_duplicates(
     features: list[dict],
     near_m: float = 1000.0,
@@ -533,6 +593,8 @@ def annotate_possible_duplicates(
     are candidates when they are within ``near_m`` metres, or within
     ``name_match_m`` metres with the same case-folded name.  Each side
     gets a ``possible_duplicates`` list of ``{code, client, distance_m}``.
+    "Different clients" means different access paths (:func:`_access_path`),
+    so co-located SLF datasets are linked too.
     """
     # Grid-bucket at ~0.1° so only nearby pairs are compared
     cell = 0.1
@@ -557,7 +619,7 @@ def annotate_possible_duplicates(
                 if j <= i:
                     continue
                 pj = features[j]["properties"]
-                if pi.get("client") == pj.get("client"):
+                if _access_path(pi) == _access_path(pj):
                     continue
                 pair = (i, j)
                 if pair in seen_pairs:
@@ -1561,6 +1623,686 @@ def run_yukon_workflow() -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── Hydro-Québec workflow ─────────────────────────────────────────────────────
+
+# Note carried on every Hydro-Québec feature: the licence is the one in this
+# archive that restricts reuse, and the feed holds no history.
+HYDROQUEBEC_NOTE = (
+    f"Hydro-Québec open data, {HYDROQUEBEC_LICENSE} "
+    f"({HYDROQUEBEC_LICENSE_URL}): attribution required, no commercial use. "
+    f"The feed keeps only a rolling ~{HYDROQUEBEC_WINDOW_DAYS}-day window, so "
+    "this archive's CSV is the accumulated record from the first nightly "
+    "refresh on; GMON history before that is in CanSWE (HQ- stations)."
+)
+
+
+def _hydroquebec_data_variables(station: dict) -> list[dict]:
+    """Build data_variables for a Hydro-Québec station.
+
+    Every series is published hourly (SWE changes only every 6 h, the
+    hours in between repeat the last GMON reading), so each entry is
+    ``"hourly"``.  ``begin_date``/``end_date``/``n_obs`` describe the
+    rolling window the feed held when the inventory was built, not a
+    period of record.
+    """
+    dvars: list[dict] = []
+    for label, info in (station.get("variables") or {}).items():
+        vinfo = HYDROQUEBEC_VARIABLES.get(label)
+        if vinfo is None:
+            continue
+        dvars.append({
+            "name": label,
+            "type": vinfo["type"],
+            "interval": "hourly",
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": (
+                f"{vinfo['notes']} Dates and n_obs cover the rolling "
+                "window only."
+            ),
+            "begin_date": (info.get("first") or "")[:10] or None,
+            "end_date": (info.get("last") or "")[:10] or None,
+            "n_obs": info.get("n_obs"),
+        })
+    return dvars
+
+
+def hydroquebec_station_to_feature(station: dict) -> dict:
+    """Convert a Hydro-Québec station dict to a GeoJSON feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+
+    props: dict[str, Any] = {
+        "code": sid,
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": "QC",
+        "operator": "Hydro-Québec",
+        "client": "hydroquebec",
+        "data_provider": DATA_PROVIDERS["hydroquebec"],
+        "network_code": "HQ",
+        "notes": HYDROQUEBEC_NOTE,
+        # Commissioning date; the feed itself starts ~10 days ago.
+        "begin_date": station.get("commissioned") or None,
+        "end_date": station.get("decommissioned") or None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "hq_code": station.get("hq_code") or None,
+        "region": station.get("region") or None,
+        "measurement_method": station.get("measurement_method") or None,
+        "license": HYDROQUEBEC_LICENSE,
+        "license_url": HYDROQUEBEC_LICENSE_URL,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_hydroquebec_data_variables(station)))
+    # No native daily product: the pipeline stores the client's
+    # local-day aggregation of the hourly series (DESIGN.md §4).
+    if props["daily_or_better"]:
+        props["daily_provenance"] = "resampled_hourly"
+
+    return make_feature(lon, lat, props)
+
+
+def run_hydroquebec_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch Hydro-Québec snow stations and return (all_features, daily_features).
+
+    ``all_features``   — every station listing SWE or snow depth in the
+                         current window (the GMON network and the
+                         depth-only weather stations).
+    ``daily_features`` — all of them: every snow series is hourly, which is
+                         daily-or-better once aggregated.
+    """
+    client = HydroQuebecClient()
+
+    print("=" * 60)
+    print("[Hydro-Québec] Fetching snow stations (rolling ~10-day feed)")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total Hydro-Québec snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("Hydro-Québec station fetch failed: %s", exc)
+        return [], []
+    if not stations:
+        # The feed keeps ~10 days; a silent empty listing is how the
+        # archive would start losing data.
+        logger.error("[Hydro-Québec] station list is EMPTY")
+
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    swe_count = sum(1 for s in stations if s.get("has_swe"))
+    snwd_count = sum(1 for s in stations if s.get("has_snwd"))
+    print(
+        f"  Active: {active}  |  With SWE: {swe_count}  "
+        f"|  With snow depth: {snwd_count}"
+    )
+
+    all_features = [hydroquebec_station_to_feature(s) for s in stations]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+
+    return all_features, daily_features
+
+
+# ── Alberta workflow ──────────────────────────────────────────────────────────
+
+# Alberta River Basins republishes stations that are archived through their
+# own operator's client.  Archiving the mirror too would put a second CSV of
+# the same series in the archive, so mirrors are inventoried, linked to their
+# twin (``mirror_of``) and never fetched.  A mirror is told apart by its
+# name suffix, or — for the BC pillows the app lists without a name — by
+# the province/state it reports.
+ALBERTA_MIRROR_SUFFIX: dict[str, str] = {"BC": "databc", "Snotel": "awdb"}
+ALBERTA_MIRROR_STATE: dict[str, str] = {"BC": "databc", "MT": "awdb"}
+
+
+def alberta_mirror_client(station: dict) -> str | None:
+    """The client that archives *station*'s series itself, or None."""
+    suffix = station.get("operator_code")
+    if suffix in ALBERTA_MIRROR_SUFFIX:
+        return ALBERTA_MIRROR_SUFFIX[suffix]
+    return ALBERTA_MIRROR_STATE.get(str(station.get("state") or ""))
+
+
+def _alberta_data_variables(station: dict) -> list[dict]:
+    """Build data_variables for an Alberta River Basins station.
+
+    The catalog gives one period for the station, not one per series, so
+    the per-variable dates are null.  ``SW``/``SD`` are ``"daily"``
+    because the source publishes its own daily aggregate (``A.DayMean``);
+    snow surveys are ``"periodic"``; air temperature is native 15-minute.
+    """
+    dvars: list[dict] = []
+    for param in station.get("parameters") or []:
+        vinfo = ALBERTA_VARIABLES.get(param)
+        if vinfo is None:
+            continue
+        intervals = vinfo["intervals"]
+        interval = (
+            "daily" if "daily" in intervals and vinfo["type"] != "temp"
+            else intervals[0]
+        )
+        dvars.append({
+            "name": param,
+            "type": vinfo["type"],
+            "interval": interval,
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": vinfo["notes"],
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
+        })
+    return dvars
+
+
+def alberta_station_to_feature(station: dict) -> dict:
+    """Convert an Alberta River Basins station dict to a GeoJSON feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+    suffix = station.get("operator_code")
+    mirror = alberta_mirror_client(station)
+
+    notes = ALBERTA_NOTE
+    if mirror:
+        notes = (
+            f"{notes} Mirror of a station archived through the {mirror} "
+            "client (see mirror_of); inventoried here, not archived twice."
+        )
+
+    props: dict[str, Any] = {
+        "code": sid,
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": station.get("state") or None,
+        # Only the suffixes the client expands unambiguously (DESIGN.md §5).
+        "operator": ALBERTA_OPERATORS.get(suffix or ""),
+        "operator_code": suffix,
+        "client": "alberta",
+        "data_provider": DATA_PROVIDERS["alberta"],
+        "network_code": "ARB",
+        "notes": notes,
+        "begin_date": station.get("begin_date") or None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "source_status": station.get("source_status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "measurement_method": station.get("measurement_method") or None,
+        "mirror_client": mirror,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_alberta_data_variables(station)))
+    if mirror:
+        props.update({
+            "has_daily_swe": False,
+            "has_daily_snwd": False,
+            "daily_or_better": False,
+            "daily_provenance": "none",
+        })
+
+    return make_feature(lon, lat, props)
+
+
+def link_alberta_mirrors(features: list[dict]) -> int:
+    """Point each Alberta mirror at its twin(s) (``mirror_of``).
+
+    Runs after :func:`annotate_possible_duplicates` and before
+    :func:`prune_non_daily_duplicates`, which would drop the mirror's
+    links because the mirror is not daily-or-better.  A DataBC twin is
+    also matched by its identical station code.  Returns the number of
+    mirrors linked.
+    """
+    by_key = {
+        (f["properties"].get("client"), f["properties"].get("code"))
+        for f in features
+    }
+    linked = 0
+    for f in features:
+        p = f["properties"]
+        mirror = p.get("mirror_client")
+        if p.get("client") != "alberta" or not mirror:
+            continue
+        twins = [
+            dict(d) for d in p.get("possible_duplicates") or []
+            if d.get("client") == mirror
+        ]
+        if mirror == "databc" and (mirror, p.get("code")) in by_key and not any(
+            d["code"] == p.get("code") for d in twins
+        ):
+            twins.append(
+                {"code": p.get("code"), "client": mirror, "distance_m": None}
+            )
+        if twins:
+            p["mirror_of"] = twins
+            linked += 1
+    return linked
+
+
+def run_alberta_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch Alberta River Basins snow stations; return (all_features, daily_features).
+
+    ``all_features``   — every snow station: AEPA pillows and depth sensors,
+                         the other operators' depth stations, manual snow
+                         courses, and the BC / SNOTEL mirrors.
+    ``daily_features`` — automated SWE or depth stations that are not
+                         mirrors.
+    """
+    client = AlbertaClient()
+
+    print("=" * 60)
+    print("[Alberta] Fetching Alberta River Basins snow stations")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total Alberta snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("Alberta station fetch failed: %s", exc)
+        return [], []
+
+    mirrors = Counter(alberta_mirror_client(s) for s in stations)
+    print(
+        f"  Pillow SWE: {sum(1 for s in stations if s.get('has_pillow_swe'))}"
+        f"  |  Snow courses: {sum(1 for s in stations if s.get('has_survey'))}"
+        f"  |  Mirrors of DataBC: {mirrors.get('databc', 0)}, "
+        f"of AWDB: {mirrors.get('awdb', 0)}"
+    )
+
+    all_features = [alberta_station_to_feature(s) for s in stations]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+
+    return all_features, daily_features
+
+
+# ── SLF workflow ──────────────────────────────────────────────────────────────
+
+# SLF datasets in the inventory, and the code prefix that keeps each
+# dataset's station ids globally unique (an IMIS id like "ADE2" is a
+# plausible code in another network).  IMIS and the study plots are daily
+# depth networks; GCOS is the biweekly manual SWE series at 11 study plots,
+# inventoried as periodic only.
+SLF_DATASETS: dict[str, str] = {
+    "imis": "SLF-IMIS-",
+    "study_plot": "SLF-SP-",
+    "gcos": "SLF-GCOS-",
+}
+SLF_ATTRIBUTION = (
+    "WSL Institute for Snow and Avalanche Research SLF (www.slf.ch), "
+    "CC BY 4.0"
+)
+
+
+def slf_code(dataset: str, station_id: str) -> str:
+    """The archive code for an SLF station: dataset prefix + SLF's id."""
+    return f"{SLF_DATASETS[dataset]}{station_id}"
+
+
+def _slf_data_variables(dataset: str) -> list[dict]:
+    """data_variables for an SLF station, from the dataset's variable table.
+
+    SLF publishes one table per dataset, not per station, and no period of
+    record per series, so the per-variable dates are null.  Each variable
+    is listed at its native cadence (the first interval the client lists).
+    """
+    dvars: list[dict] = []
+    for name, spec in SLF_DATASET_SPECS[dataset]["variables"].items():
+        vinfo = SLF_VARIABLES[name]
+        dvars.append({
+            "name": name,
+            "type": vinfo["type"],
+            "interval": spec["intervals"][0],
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": vinfo["notes"],
+            "begin_date": None,
+            "end_date": None,
+            "n_obs": None,
+        })
+    return dvars
+
+
+def slf_station_to_feature(station: dict) -> dict:
+    """Convert an SLF station dict (any dataset) to a GeoJSON feature."""
+    dataset = station["dataset"]
+    spec = SLF_DATASET_SPECS[dataset]
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+
+    props: dict[str, Any] = {
+        "code": slf_code(dataset, sid),
+        "name": station.get("name", ""),
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": "CH",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": DATA_PROVIDERS["slf"],
+        # Verbatim from SLF: IMIS, BEOB (study plots), GCOS.
+        "network_code": station.get("network") or dataset.upper(),
+        "notes": (
+            f"{spec['title']}, DOI {spec['doi']}, licence {spec['license']}. "
+            f"Credit {SLF_ATTRIBUTION.split(',')[0]} with a link to "
+            "www.slf.ch."
+        ),
+        "begin_date": None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "slf_dataset": dataset,
+        "slf_station_id": sid,
+        "station_type": station.get("station_type") or None,
+        "measurement_method": station.get("measurement_method") or None,
+        "doi": spec["doi"],
+        "license": spec["license"],
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_slf_data_variables(dataset)))
+
+    return make_feature(lon, lat, props)
+
+
+def run_slf_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch SLF stations from every dataset in :data:`SLF_DATASETS`.
+
+    Returns (all_features, daily_features).  A dataset whose listing fails
+    is logged and left out; the others still return.  ``daily_features``
+    are the IMIS stations and study plots (daily snow depth); GCOS is
+    periodic.
+    """
+    all_features: list[dict] = []
+    print("=" * 60)
+    print("[SLF] Fetching IMIS stations, study plots and GCOS SWE sites")
+    for dataset in SLF_DATASETS:
+        try:
+            stations = SLFClient(dataset=dataset).get_all_stations()
+        except Exception as exc:
+            logger.error("SLF %s station fetch failed: %s", dataset, exc)
+            continue
+        active = sum(1 for s in stations if s.get("status") == "Active")
+        print(f"  {dataset}: {len(stations):,} stations ({active} active)")
+        all_features.extend(slf_station_to_feature(s) for s in stations)
+
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+    return all_features, daily_features
+
+
+# ── SNIH workflow ─────────────────────────────────────────────────────────────
+
+# SNIH codes are bare integers ("19145"), which other networks can use too;
+# the prefix keeps the archive code (and its CSV name) unique.
+SNIH_PREFIX = "SNIH-"
+SNIH_NOTE = (
+    "SNIH (Secretaría de Infraestructura y Política Hídrica, Argentina) "
+    "terms of use: free use including commercial use and redistribution, "
+    "citing SIPH and/or the network and the date of the last update "
+    f"({SNIH_TERMS_URL}). Validated daily pillow SWE ends in 2023–2024; "
+    "later daily values are resampled from raw, unvalidated telemetry "
+    "(see snih_validated_through)."
+)
+
+
+def snih_code(station_id: str) -> str:
+    return f"{SNIH_PREFIX}{station_id}"
+
+
+def _snih_data_variables(meta: dict) -> list[dict]:
+    """data_variables from ``SNIHClient.get_metadata`` (real periods).
+
+    The client lists each variable once per interval it serves — pillow
+    SWE as ``"daily"`` (validated) and ``"sub_daily"`` (raw telemetry) —
+    with begin/end/n_obs read from the historical series.
+    """
+    return [
+        {
+            "name": e["name"],
+            "type": e["type"],
+            "interval": e["interval"],
+            "units": e["units"],
+            "description": e["description"],
+            "notes": e["notes"],
+            "begin_date": e.get("begin_date"),
+            "end_date": e.get("end_date"),
+            "n_obs": e.get("n_obs"),
+        }
+        for e in meta.get("data_variables") or []
+    ]
+
+
+def snih_validated_through(meta: dict) -> str | None:
+    """Last date of the station's validated daily pillow SWE, or None."""
+    for e in meta.get("data_variables") or []:
+        if e["name"] == "SWE_PILLOW" and e["interval"] == "daily":
+            return e.get("end_date")
+    return None
+
+
+def snih_station_to_feature(meta: dict) -> dict:
+    """Convert a ``SNIHClient.get_metadata`` dict to a GeoJSON feature."""
+    sid = str(meta.get("station_id") or "").strip()
+    lat = meta.get("latitude")
+    lon = meta.get("longitude")
+    validated_through = snih_validated_through(meta)
+
+    props: dict[str, Any] = {
+        "code": snih_code(sid),
+        "name": meta.get("name") or sid,
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": meta.get("elevation_m"),   # -999 / 0 → None in-client
+        "state": "AR",
+        # The network SNIH names (Red Hidrológica Nacional / Red
+        # Meteorológica RMET); the agency running each station is not
+        # stated and is not guessed (DESIGN.md §5).
+        "operator": None,
+        "client": "snih",
+        "data_provider": DATA_PROVIDERS["snih"],
+        "network_code": "RMET" if "RMET" in str(meta.get("network")) else "RHN",
+        "network_name": meta.get("network") or None,
+        "notes": SNIH_NOTE,
+        "begin_date": None,
+        "end_date": None,
+        "status": meta.get("status") or None,
+        "is_active": meta.get("status") == "Active",
+        "station_url": meta.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "snih_station_id": sid,
+        "province": meta.get("province") or None,
+        "country": "AR",
+        "measurement_method": meta.get("measurement_method") or None,
+        "last_raw_obs": meta.get("last_raw_obs") or None,
+        "snih_validated_through": validated_through,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_snih_data_variables(meta)))
+    # Raw telemetry beyond the validated record is resampled to daily by
+    # the pipeline (DESIGN.md §4); a pillow that reports it is not
+    # "native" even when it also has a validated history.
+    if props["daily_or_better"] and meta.get("status") == "Active":
+        props["daily_provenance"] = "resampled_sub_daily"
+    return make_feature(lon, lat, props)
+
+
+def run_snih_workflow() -> tuple[list[dict], list[dict]]:
+    """
+    Fetch SNIH snow stations and return (all_features, daily_features).
+
+    Uses ``get_metadata`` per station rather than the bare listing: it
+    reads each series' real period, including where the validated daily
+    pillow SWE ends — the boundary the refresh switches to raw telemetry
+    at.  About 100 s for the 50 snow stations.
+    """
+    client = SNIHClient()
+
+    print("=" * 60)
+    print("[SNIH] Fetching Argentine snow stations (pillows and courses)")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total SNIH snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("SNIH station fetch failed: %s", exc)
+        return [], []
+
+    metas = []
+    for s in stations:
+        try:
+            metas.append(client.get_metadata(s["station_id"]))
+        except Exception as exc:
+            # Keep the station from the listing, without series periods.
+            logger.warning("SNIH metadata for %s failed: %s", s["station_id"], exc)
+            metas.append({**s, "data_variables": []})
+
+    pillows = sum(1 for m in metas if 73 in (m.get("snow_codes") or []))
+    active = sum(1 for m in metas if m.get("status") == "Active")
+    print(f"  Snow pillows: {pillows}  |  Reporting (30 days): {active}")
+
+    all_features = [snih_station_to_feature(m) for m in metas]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+    return all_features, daily_features
+
+
+# ── CEAZA workflow ────────────────────────────────────────────────────────────
+
+CEAZA_PREFIX = "CEAZA-"
+CEAZA_NOTE = (
+    f"{CEAZA_ATTRIBUTION} ({CEAZA_HOME_URL}). No licence is stated; the "
+    "terms of use ask users to register a user name and to credit the "
+    "source with a link. Raw logger output, not quality controlled."
+)
+
+
+def ceaza_code(station_id: str) -> str:
+    return f"{CEAZA_PREFIX}{station_id}"
+
+
+def _ceaza_data_variables(sensors: list[dict]) -> list[dict]:
+    """One data_variables entry per served sensor (a station can have two
+    of one variable; each record names its sensor)."""
+    dvars: list[dict] = []
+    for sen in sensors:
+        vinfo = CEAZA_VARIABLES.get(sen.get("variable") or "")
+        if vinfo is None:
+            continue
+        dvars.append({
+            "name": f"{sen['variable']}:{sen['sensor']}",
+            "type": vinfo["type"],
+            "interval": "daily",
+            "units": vinfo["output_units"],
+            "description": vinfo["description"],
+            "notes": (
+                f"{vinfo['notes']} Sensor {sen['sensor']} at "
+                f"{sen.get('height_m')} m; daily = the service's mean over "
+                "the UTC−4 day."
+            ),
+            "begin_date": sen.get("begin_date"),
+            "end_date": sen.get("end_date"),
+            "n_obs": None,
+        })
+    return dvars
+
+
+def ceaza_station_to_feature(station: dict, sensors: list[dict]) -> dict:
+    """Convert a CEAZA-Met station dict (+ its sensor list) to a feature."""
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+    owner = station.get("owner")
+
+    props: dict[str, Any] = {
+        "code": ceaza_code(sid),
+        "name": station.get("name") or sid,
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        "state": "CL",
+        # Only owners the client names unambiguously (DESIGN.md §5).
+        "operator": CEAZA_OWNERS.get(owner or ""),
+        "owner_code": owner,
+        "client": "ceaza",
+        "data_provider": DATA_PROVIDERS["ceaza"],
+        "network_code": "CEAZA",
+        "notes": CEAZA_NOTE,
+        "begin_date": station.get("begin_date") or None,
+        "end_date": None,
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": station.get("station_url") or None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "ceaza_station_id": sid,
+        "measurement_method": station.get("measurement_method") or None,
+        # Which sensor the archive uses for which dates (one per variable
+        # per date; see get_all_stations_data.ceaza_sensor_plan).
+        "ceaza_sensor_plan": ceaza_sensor_plan(sensors) or None,
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(_ceaza_data_variables(sensors)))
+    return make_feature(lon, lat, props)
+
+
+def run_ceaza_workflow(user: str) -> tuple[list[dict], list[dict]]:
+    """
+    Fetch CEAZA-Met snow stations; return (all_features, daily_features).
+
+    Two requests: the station list and the network-wide sensor list.  Only
+    called with a registered user name (``CEAZA_USER``).
+    """
+    client = CEAZAClient(user=user)
+
+    print("=" * 60)
+    print("[CEAZA] Fetching CEAZA-Met snow stations")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total CEAZA snow stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("CEAZA station fetch failed: %s", exc)
+        return [], []
+
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    print(f"  Active (90 days): {active}")
+    all_features = [
+        ceaza_station_to_feature(s, client.get_sensors(s["station_id"]))
+        for s in stations
+    ]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(f"  Daily stations: {len(daily_features):,}")
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -1606,6 +2348,31 @@ def main() -> None:
         "--skip-yukon",
         action="store_true",
         help="Skip Yukon (AquaCache) client",
+    )
+    ap.add_argument(
+        "--skip-hydroquebec",
+        action="store_true",
+        help="Skip Hydro-Québec client",
+    )
+    ap.add_argument(
+        "--skip-alberta",
+        action="store_true",
+        help="Skip Alberta River Basins client",
+    )
+    ap.add_argument(
+        "--skip-slf",
+        action="store_true",
+        help="Skip SLF (IMIS, study plots, GCOS) client",
+    )
+    ap.add_argument(
+        "--skip-snih",
+        action="store_true",
+        help="Skip SNIH (Argentina) client",
+    )
+    ap.add_argument(
+        "--skip-ceaza",
+        action="store_true",
+        help="Skip CEAZA-Met (Chile) client",
     )
     args = ap.parse_args()
 
@@ -1805,6 +2572,230 @@ def main() -> None:
             f"[Yukon] {len(yukon_daily):,} daily stations added to merged GeoJSON"
         )
 
+    # ── Hydro-Québec ──────────────────────────────────────────────────────────
+    if not args.skip_hydroquebec:
+        hq_all: list[dict] = []
+        hq_daily: list[dict] = []
+        try:
+            hq_all, hq_daily = run_hydroquebec_workflow()
+        except Exception as exc:
+            logger.warning("[Hydro-Québec] Workflow failed: %s", exc)
+        hq_all, hq_daily, fresh = keep_previous_if_empty(
+            "Hydro-Québec", HYDROQUEBEC_GEOJSON_OUT, hq_all, hq_daily
+        )
+        if fresh:
+            write_geojson(
+                HYDROQUEBEC_GEOJSON_OUT,
+                hq_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "Hydro-Québec open data (Opendatasoft), dataset "
+                        "donnees-hydrometeorologiques"
+                    ),
+                    "client": "hydroquebec",
+                    "license": HYDROQUEBEC_LICENSE,
+                    "license_url": HYDROQUEBEC_LICENSE_URL,
+                    "description": (
+                        "Hydro-Québec stations listing SWE (GMON passive "
+                        "gamma, 6-hourly) or snow depth (hourly). The feed "
+                        "holds only a rolling ~10-day window; the archive "
+                        "accumulates it nightly. CC BY-NC 4.0: attribution "
+                        "required, no commercial use."
+                    ),
+                    "references": [
+                        HYDROQUEBEC_DATASET_PAGE,
+                        HYDROQUEBEC_LICENSE_URL,
+                        "https://doi.org/10.5281/zenodo.4734371",
+                    ],
+                    "total": len(hq_all),
+                },
+            )
+        all_features_merged.extend(hq_all)
+        daily_count += len(hq_daily)
+        print(
+            f"[Hydro-Québec] {len(hq_daily):,} daily stations added to "
+            f"merged GeoJSON"
+        )
+
+    # ── Alberta ───────────────────────────────────────────────────────────────
+    if not args.skip_alberta:
+        ab_all: list[dict] = []
+        ab_daily: list[dict] = []
+        try:
+            ab_all, ab_daily = run_alberta_workflow()
+        except Exception as exc:
+            logger.warning("[Alberta] Workflow failed: %s", exc)
+        ab_all, ab_daily, fresh = keep_previous_if_empty(
+            "Alberta", ALBERTA_GEOJSON_OUT, ab_all, ab_daily
+        )
+        if fresh:
+            write_geojson(
+                ALBERTA_GEOJSON_OUT,
+                ab_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "Alberta River Basins (rivers.alberta.ca) — the "
+                        "public page's ArcGIS catalog and WISKI download"
+                    ),
+                    "client": "alberta",
+                    "license": None,
+                    "description": (
+                        "All Alberta River Basins stations with automated or "
+                        "manual SWE / snow depth: AEPA pillows, other "
+                        "operators' depth sensors, snow courses (periodic), "
+                        "and BC Snow Survey / SNOTEL mirrors (inventory only, "
+                        "linked by mirror_of; archived through their own "
+                        "clients). No licence is stated; data are "
+                        "provisional per the download disclaimer."
+                    ),
+                    "references": [
+                        "https://rivers.alberta.ca/",
+                        "https://www.alberta.ca/disclaimer.aspx",
+                    ],
+                    "total": len(ab_all),
+                },
+            )
+        all_features_merged.extend(ab_all)
+        daily_count += len(ab_daily)
+        print(f"[Alberta] {len(ab_daily):,} daily stations added to merged GeoJSON")
+
+    # ── SLF ───────────────────────────────────────────────────────────────────
+    if not args.skip_slf:
+        slf_all: list[dict] = []
+        slf_daily: list[dict] = []
+        try:
+            slf_all, slf_daily = run_slf_workflow()
+        except Exception as exc:
+            logger.warning("[SLF] Workflow failed: %s", exc)
+        slf_all, slf_daily, fresh = keep_previous_if_empty(
+            "SLF", SLF_GEOJSON_OUT, slf_all, slf_daily
+        )
+        if fresh:
+            write_geojson(
+                SLF_GEOJSON_OUT,
+                slf_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "WSL SLF — measurement-data.slf.ch (IMIS, study "
+                        "plots) and EnviDat (GCOS SWE)"
+                    ),
+                    "client": "slf",
+                    "license": "CC BY 4.0 (IMIS, study plots); ODbL 1.0 + DbCL 1.0 (GCOS)",
+                    "attribution": SLF_ATTRIBUTION,
+                    "description": (
+                        "SLF IMIS automatic stations and manual study plots "
+                        "(daily snow depth), and the 11 GCOS sites (biweekly "
+                        "manual SWE, periodic). Codes are SLF-IMIS-<id>, "
+                        "SLF-SP-<id> and SLF-GCOS-<id>; slf_station_id holds "
+                        "SLF's own id."
+                    ),
+                    "references": [
+                        "https://measurement-data.slf.ch/",
+                        "https://doi.org/10.16904/envidat.406",
+                        "https://doi.org/10.16904/envidat.408",
+                        "https://doi.org/10.16904/15",
+                        "https://www.slf.ch/en/services-and-products/slf-data-service/",
+                    ],
+                    "total": len(slf_all),
+                },
+            )
+        all_features_merged.extend(slf_all)
+        daily_count += len(slf_daily)
+        print(f"[SLF] {len(slf_daily):,} daily stations added to merged GeoJSON")
+
+    # ── SNIH ──────────────────────────────────────────────────────────────────
+    if not args.skip_snih:
+        snih_all: list[dict] = []
+        snih_daily: list[dict] = []
+        try:
+            snih_all, snih_daily = run_snih_workflow()
+        except Exception as exc:
+            logger.warning("[SNIH] Workflow failed: %s", exc)
+        snih_all, snih_daily, fresh = keep_previous_if_empty(
+            "SNIH", SNIH_GEOJSON_OUT, snih_all, snih_daily
+        )
+        if fresh:
+            write_geojson(
+                SNIH_GEOJSON_OUT,
+                snih_all,
+                {
+                    "generated": today,
+                    "source": (
+                        "SNIH — Base de Datos Hidrológica Integrada "
+                        "(snih.hidricosargentina.gob.ar page methods)"
+                    ),
+                    "client": "snih",
+                    "license": "SNIH terms of use (free use incl. commercial; cite SIPH / the network and the last-update date)",
+                    "description": (
+                        "The 50 SNIH stations with a snow parameter: 34 snow "
+                        "pillows (validated daily SWE to 2023–2024, raw "
+                        "telemetry to the present) and manual snow courses "
+                        "(periodic). Codes are SNIH-<Codigo>."
+                    ),
+                    "references": [
+                        "https://snih.hidricosargentina.gob.ar/",
+                        SNIH_TERMS_URL,
+                    ],
+                    "total": len(snih_all),
+                },
+            )
+        all_features_merged.extend(snih_all)
+        daily_count += len(snih_daily)
+        print(f"[SNIH] {len(snih_daily):,} daily stations added to merged GeoJSON")
+
+    # ── CEAZA ─────────────────────────────────────────────────────────────────
+    # CEAZA-Met's terms ask for a registered user name before any use, so
+    # the station list is not read either until CEAZA_USER is set.  A
+    # previously built inventory is still carried (keep_previous_if_empty).
+    if not args.skip_ceaza:
+        ceaza_all: list[dict] = []
+        ceaza_daily: list[dict] = []
+        user = ceaza_user()
+        if not user:
+            print(
+                "[CEAZA] skipped: CEAZA_USER is not set (CEAZA-Met asks "
+                "users to register a user name first)"
+            )
+        else:
+            try:
+                ceaza_all, ceaza_daily = run_ceaza_workflow(user)
+            except Exception as exc:
+                logger.warning("[CEAZA] Workflow failed: %s", exc)
+        if user or CEAZA_GEOJSON_OUT.exists():
+            ceaza_all, ceaza_daily, fresh = keep_previous_if_empty(
+                "CEAZA", CEAZA_GEOJSON_OUT, ceaza_all, ceaza_daily
+            )
+            if fresh:
+                write_geojson(
+                    CEAZA_GEOJSON_OUT,
+                    ceaza_all,
+                    {
+                        "generated": today,
+                        "source": "CEAZA-Met web service — https://www.ceazamet.cl/ws/pop_ws.php",
+                        "client": "ceaza",
+                        "license": None,
+                        "attribution": CEAZA_ATTRIBUTION,
+                        "description": (
+                            "CEAZA-Met stations with a snow sensor (depth, "
+                            "SWE or snow weight), Coquimbo and Atacama "
+                            "Andes, Chile. Raw logger data, not quality "
+                            "controlled; ceaza_sensor_plan says which sensor "
+                            "the archive uses for which dates."
+                        ),
+                        "references": [
+                            CEAZA_HOME_URL,
+                            "https://www.ceazamet.cl/ws/pop_ws_doc.php",
+                        ],
+                        "total": len(ceaza_all),
+                    },
+                )
+            all_features_merged.extend(ceaza_all)
+            daily_count += len(ceaza_daily)
+            print(f"[CEAZA] {len(ceaza_daily):,} daily stations added to merged GeoJSON")
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -1823,6 +2814,9 @@ def main() -> None:
 
     linked = annotate_possible_duplicates(all_features_merged)
     print(f"Cross-linked possible duplicates on {linked:,} features")
+    mirrored = link_alberta_mirrors(all_features_merged)
+    if mirrored:
+        print(f"Linked {mirrored:,} Alberta mirrors to their twins")
     borrowed = borrow_operators_from_twins(all_features_merged)
     if borrowed:
         print(f"Borrowed operators from native twins for {borrowed:,} stations")
@@ -1861,7 +2855,10 @@ def main() -> None:
                 "Combined inventory of ALL known snow point-observation "
                 "stations (SWE and/or snow depth) from AWDB (US + partner "
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
-                "(Norway), and Yukon AquaCache — including periodic snow "
+                "(Norway), Yukon AquaCache, Hydro-Québec (Québec; CC "
+                "BY-NC 4.0, non-commercial), Alberta River Basins, SLF "
+                "(Switzerland), SNIH (Argentina) and CEAZA-Met (Chile) "
+                "— including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "
                 "daily-or-better record; the CSV archive and live map "

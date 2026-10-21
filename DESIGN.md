@@ -188,7 +188,15 @@ loop handles transient HTTP errors and honours `Retry-After` on 429.
 - **Inactive stations with a regular daily record stay in** — pre-downloaded,
   archived, and on the map. Active status affects display metadata only,
   never inclusion.
-- Resampled stations carry provenance (`daily_provenance`).
+- Resampled stations carry provenance (`daily_provenance`: `native`,
+  `resampled_hourly`, `resampled_sub_hourly`, `resampled_sub_daily` or
+  `none`).
+- **Validated and raw are never mixed within a period.** Where a source
+  serves a validated daily record and, after it ends, only raw telemetry
+  (SNIH), the archive uses the validated record up to its last date
+  (`snih_validated_through`) and raw-derived daily values only after it.
+  Raw values pass a pipeline-side spike filter first (documented in
+  `scripts/get_all_stations_data.py`); clients stay pass-through.
 
 ## 5. Station identity: network, operator, data provider
 
@@ -205,6 +213,10 @@ Three distinct concepts, three distinct fields:
   that access path (e.g. "USDA NRCS AWDB", "CDEC").
 
 The same physical station may appear once per access path — intentionally.
+An access path is normally the client; where one client serves several
+datasets with their own station ids (SLF's IMIS stations and manual study
+plots), the dataset is part of it, so co-located SLF stations are
+cross-linked too.
 De-duplication is the consumer's job, but duplicates are annotated: a
 `possible_duplicates` list (`{code, client, distance_m}`) cross-links
 candidates found by spatial + name matching, and the map surfaces them.
@@ -273,6 +285,17 @@ probe verdict untouched, a `refused_shrink` row logged — when it loses
 more than max(30, 5 %) of the old file's populated rows (either column
 non-null) or moves the earliest populated date more than 30 days later.
 `--allow-shrink <code>|all` overrides it once the loss is confirmed real.
+
+**Rolling-window sources are merged, not replaced.** A source that serves
+only a recent window (Hydro-Québec: ~10 days, no archive) has no full
+record to re-download, and replacing its CSV would delete everything older
+than the window. Its response is laid over the archived CSV instead: dates
+only in the archive are kept, a value in the response wins for dates in
+both (and still reaches the revision log, §6.6), and a blank in the
+response keeps the archived value. The shrink guard then sees no loss. For
+such a source the archive is the only copy of its history, so the nightly
+job must not skip it: stage 2 and finalize run from the last committed
+inventory when stage 1 fails.
 
 ### 6.4 Retention (correction over exclusion)
 
