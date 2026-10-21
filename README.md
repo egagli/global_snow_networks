@@ -98,7 +98,7 @@ pixi install
 pixi shell
 ```
 
-That resolves [easysnowdata](https://github.com/egagli/easysnowdata) `>=0.3.2`
+That resolves [easysnowdata](https://github.com/egagli/easysnowdata) `>=0.3.3`
 from conda-forge along with everything else — it is where the network clients
 and the water-year helpers live, so the pipeline does not run without it.
 

@@ -21,8 +21,9 @@ xarray = ">=2026.7"
 zarr = ">=3.3"
 # The five network clients and the water-year helpers live in easysnowdata,
 # not in this repo (docs/EASYSNOWDATA_MIGRATION.md). 0.3.2 is the first
-# release that reads the archive as it is published now (docs/STORAGE.md §3).
-easysnowdata = ">=0.3.2"
+# release that reads the archive as it is published now (docs/STORAGE.md §3);
+# 0.3.3 adds the clients for the networks being wired in next (#39-#45).
+easysnowdata = ">=0.3.3"
 
 [feature.dev.dependencies]
 jupyter = "*"
