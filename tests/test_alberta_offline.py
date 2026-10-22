@@ -91,6 +91,14 @@ def test_aepa_pillow_is_an_archived_daily_station():
     assert is_fetch_candidate(p)
 
 
+def test_alberta_codes_are_namespaced():
+    # Alberta's numbers are other agencies' codes ("2C09Q" is DataBC's);
+    # the archive code must not collide with them.
+    p = alberta_station_to_feature(BC_MIRROR)["properties"]
+    assert p["code"] == "ARB-" + p["alberta_station_id"]
+    assert p["code"] != BC_MIRROR["station_id"]
+
+
 def test_other_operators_depth_station_is_archived_with_unexpanded_operator():
     p = alberta_station_to_feature(MSC_DEPTH)["properties"]
     assert p["operator"] is None and p["operator_code"] == "MSC"
@@ -171,8 +179,8 @@ def test_refresh_alberta_writes_full_record(tmp_path, monkeypatch):
         features=feats, data_dir=tmp_path, refreshed_at_utc="t",
         stats=RefreshStats(), revisions=RevisionLog(detected_utc="t"),
     )
-    refresh_alberta([(0, "05BB803")], w)
-    csv = read_station_csv(tmp_path / "05BB803.csv")
+    refresh_alberta([(0, "ARB-05BB803", "05BB803")], w)
+    csv = read_station_csv(tmp_path / "ARB-05BB803.csv")
     assert len(csv) == 60 and csv["date"].iloc[0] == "1984-03-12"
     p = feats[0]["properties"]
     assert p["daily_verified"] and p["daily_or_better"]

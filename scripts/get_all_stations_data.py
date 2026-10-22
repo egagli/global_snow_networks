@@ -1171,12 +1171,14 @@ def refresh_hydroquebec(
 # ── Alberta refresh ───────────────────────────────────────────────────────────
 
 def refresh_alberta(
-    stations: list[tuple[int, str]],
+    stations: list[tuple[int, str, str]],
     writer: StationWriter,
 ) -> None:
     """Refresh Alberta River Basins station CSVs (full record, replaced).
 
-    ``stations`` is a list of (feature_index, station_number) tuples —
+    ``stations`` is a list of (feature_index, code, station_number)
+    tuples — the code is the namespaced ``ARB-…`` archive code, the
+    number what the source calls the station —
     only AEPA's and the other non-mirror operators' automated stations;
     BC Snow Survey and SNOTEL mirrors never reach here.  Daily values are
     the source's own ``A.DayMean`` aggregate over the MST day (the client
@@ -1194,7 +1196,7 @@ def refresh_alberta(
     print(f"  [Alberta] Fetching daily SWE + snow depth for {n} stations...")
     updated = 0
     n_records = 0
-    for feat_idx, sid in stations:
+    for feat_idx, code, sid in stations:
         # One call per station: a station is two downloads at most.
         try:
             records = client.get_data(
@@ -1211,7 +1213,7 @@ def refresh_alberta(
         if records:
             stats.fetched += 1
         df = _station_records_to_df(records)
-        if writer.store(feat_idx, sid, "alberta", df):
+        if writer.store(feat_idx, code, "alberta", df):
             updated += 1
     print(f"  [Alberta] ok ({n_records} records)")
     print(f"  [Alberta] updated {updated} station CSVs")
@@ -1718,7 +1720,7 @@ def main() -> None:
     nve_stations: list[tuple[int, str]] = []
     yukon_stations: list[tuple[int, str]] = []
     hydroquebec_stations: list[tuple[int, str]] = []
-    alberta_stations: list[tuple[int, str]] = []
+    alberta_stations: list[tuple[int, str, str]] = []
     slf_stations: list[tuple[int, str]] = []
     snih_stations: list[tuple[int, str]] = []
     ceaza_stations: list[tuple[int, str]] = []
@@ -1753,7 +1755,8 @@ def main() -> None:
         elif client_name == "hydroquebec":
             hydroquebec_stations.append((idx, code))
         elif client_name == "alberta":
-            alberta_stations.append((idx, code))
+            sid = props.get("alberta_station_id") or code.removeprefix("ARB-")
+            alberta_stations.append((idx, code, str(sid)))
         elif client_name == "slf":
             slf_stations.append((idx, code))
         elif client_name == "snih":
