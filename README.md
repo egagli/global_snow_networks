@@ -175,8 +175,8 @@ What it does:
    are skipped.
 3. Writes/replaces station CSVs atomically on successful fetch — unless
    the new record is much shorter than the archived one (the **shrink
-   guard**: loses more than max(30, 5 %) of the populated rows, or starts
-   more than 30 days later). Such a replacement is refused, the old CSV
+   guard**: either column — SWE or snow depth — loses more than
+   max(30, 5 %) of its values, or starts more than 30 days later). Such a replacement is refused, the old CSV
    kept and the refusal logged; `--allow-shrink CODE[,CODE…]` (or `all`)
    accepts it once the loss is confirmed real (DESIGN.md §6.3).
 4. Logs every archived value the replacement changed to

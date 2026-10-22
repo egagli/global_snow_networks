@@ -524,6 +524,39 @@ def test_shrink_guard_ignores_blank_rows():
     assert shrink_reason(old, new) is not None
 
 
+def _two_column_series(n, start="2000-01-01"):
+    dates = pd.date_range(start, periods=n, freq="D").strftime("%Y-%m-%d")
+    return pd.DataFrame({"date": dates, "wteq_cm": [10.0] * n, "snwd_cm": [50.0] * n})
+
+
+def test_shrink_guard_one_column_blanked_other_intact():
+    # The 2026-10-22 DataBC failure: the depth archive returned 503, so the
+    # new payload kept every SWE value but only this season's depth.
+    old = _two_column_series(5_000)
+    new = old.copy()
+    new.loc[: 5_000 - 200 - 1, "snwd_cm"] = None
+    reason = shrink_reason(old, new)
+    assert reason is not None and reason.startswith("snwd_cm")
+
+
+def test_shrink_guard_one_column_start_shift():
+    old = _two_column_series(1_000)   # 50 values may go; the start may not move
+    new = old.copy()
+    new.loc[:39, "wteq_cm"] = None    # SWE now starts 40 days later
+    reason = shrink_reason(old, new)
+    assert reason is not None and reason.startswith("wteq_cm") and "40 days later" in reason
+
+
+def test_shrink_guard_per_column_threshold_is_that_columns_count():
+    # 5 % of the depth column, not of all populated rows
+    old = _two_column_series(10_000)
+    new = old.copy()
+    new.loc[10_000 - 500:, "snwd_cm"] = None        # loses exactly 5 % of depth
+    assert shrink_reason(old, new) is None
+    new.loc[10_000 - 501:, "snwd_cm"] = None        # one more
+    assert shrink_reason(old, new) is not None
+
+
 def _writer(tmp_path, feats, allow=frozenset()):
     return StationWriter(
         features=feats, data_dir=tmp_path, refreshed_at_utc="2026-10-21T09:00:00+00:00",
