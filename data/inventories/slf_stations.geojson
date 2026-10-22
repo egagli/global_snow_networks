@@ -1,0 +1,791 @@
+{
+  "type": "FeatureCollection",
+  "metadata": {
+    "generated": "2026-10-22",
+    "source": "WSL SLF \u2014 measurement-data.slf.ch (IMIS, study plots) and EnviDat (GCOS SWE)",
+    "client": "slf",
+    "license": "CC BY 4.0 (IMIS, study plots); ODbL 1.0 + DbCL 1.0 (GCOS)",
+    "attribution": "WSL Institute for Snow and Avalanche Research SLF (www.slf.ch), CC BY 4.0",
+    "description": "SLF IMIS automatic stations and manual study plots (daily snow depth), and the 11 GCOS sites (biweekly manual SWE, periodic). Codes are SLF-IMIS-<id>, SLF-SP-<id> and SLF-GCOS-<id>; slf_station_id holds SLF's own id.",
+    "references": [
+      "https://measurement-data.slf.ch/",
+      "https://doi.org/10.16904/envidat.406",
+      "https://doi.org/10.16904/envidat.408",
+      "https://doi.org/10.16904/15",
+      "https://www.slf.ch/en/services-and-products/slf-data-service/"
+    ],
+    "total": 11
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.890192955,
+          46.55818213
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-1MR",
+        "name": "M\u00fcrren",
+        "latitude": 46.55818213,
+        "longitude": 7.890192955,
+        "elevation_m": 1650.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "1MR",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.591917728,
+          46.63294615
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-2AN",
+        "name": "Andermatt",
+        "latitude": 46.63294615,
+        "longitude": 8.591917728,
+        "elevation_m": 1440.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "2AN",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.395290837,
+          46.79121008
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-2TR",
+        "name": "Tr\u00fcbsee",
+        "latitude": 46.79121008,
+        "longitude": 8.395290837,
+        "elevation_m": 1780.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "2TR",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          8.308282838,
+          46.50461379
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-4UL",
+        "name": "Ulrichen",
+        "latitude": 46.50461379,
+        "longitude": 8.308282838,
+        "elevation_m": 1350.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "4UL",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          7.751164932,
+          46.02340309
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-4ZE",
+        "name": "Zermatt",
+        "latitude": 46.02340309,
+        "longitude": 7.751164932,
+        "elevation_m": 1600.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "4ZE",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.848163035,
+          46.81254897
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-5DF",
+        "name": "Davos Fl\u00fcelastr.",
+        "latitude": 46.81254897,
+        "longitude": 9.848163035,
+        "elevation_m": 1560.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "5DF",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.895973081,
+          46.86057949
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-5KK",
+        "name": "Klosters KW",
+        "latitude": 46.86057949,
+        "longitude": 9.895973081,
+        "elevation_m": 1200.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "5KK",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.8092511,
+          46.82938238
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-5WJ",
+        "name": "Weissfluhjoch",
+        "latitude": 46.82938238,
+        "longitude": 9.8092511,
+        "elevation_m": 2540.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "5WJ",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.184634236,
+          46.46326154
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-6SB",
+        "name": "San Bernardino",
+        "latitude": 46.46326154,
+        "longitude": 9.184634236,
+        "elevation_m": 1640.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "6SB",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.41934353,
+          46.59981095
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-7ST",
+        "name": "Sta.Maria",
+        "latitude": 46.59981095,
+        "longitude": 10.41934353,
+        "elevation_m": 1415.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "7ST",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          9.962675638,
+          46.60433181
+        ]
+      },
+      "properties": {
+        "code": "SLF-GCOS-7ZU",
+        "name": "Zuoz",
+        "latitude": 46.60433181,
+        "longitude": 9.962675638,
+        "elevation_m": 1710.0,
+        "state": "CH",
+        "network_code": "GCOS",
+        "operator": "WSL SLF",
+        "client": "slf",
+        "data_provider": "WSL SLF (measurement-data.slf.ch, EnviDat)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.envidat.ch/dataset/gcos-swe-data",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "GCOS SWE data from 11 stations in Switzerland, DOI 10.16904/15, licence ODbL-1.0 (database) + DbCL-1.0 (contents). Credit WSL Institute for Snow and Avalanche Research SLF (www.slf.ch) with a link to www.slf.ch.",
+        "data_variables": [
+          {
+            "name": "SWE",
+            "type": "swe",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Water equivalent of the snowpack, from a manual snow pit.",
+            "notes": "Manual, about every two weeks ('periodic'). gcos: column 'SWE(mm)'; new_snow: OBS-SWE-PROFILE. Returned in cm (\u00d7 0.1).",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          },
+          {
+            "name": "HS",
+            "type": "snwd",
+            "interval": "periodic",
+            "units": "cm",
+            "description": "Total depth of snow on the ground.",
+            "notes": "gcos: at the snow pit (biweekly); new_snow: fixed stake (daily); study_plot: manual morning reading (daily); imis: ultrasonic sensor \u2014 daily = median over the last 24 h, sub_hourly = 30-min instantaneous. Negative values are nulled.",
+            "begin_date": null,
+            "end_date": null,
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": false,
+        "daily_or_better": false,
+        "daily_verified": false,
+        "daily_provenance": "none",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-22",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "slf_dataset": "gcos",
+        "slf_station_id": "7ZU",
+        "measurement_method": "manual snow pit (SWE) and snow depth, ~biweekly",
+        "doi": "10.16904/15",
+        "license": "ODbL-1.0 (database) + DbCL-1.0 (contents)"
+      }
+    }
+  ]
+}
