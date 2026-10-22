@@ -1189511,7 +1189511,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1189602,8 +1189602,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1189635,7 +1189635,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1189693,8 +1189693,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1189726,7 +1189726,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1189790,8 +1189790,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1189823,7 +1189823,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1189914,8 +1189914,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1189947,7 +1189947,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1190005,8 +1190005,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190038,7 +1190038,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1190173,8 +1190173,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190206,7 +1190206,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1190341,8 +1190341,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190374,7 +1190374,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "soil_moisture_pct",
@@ -1190443,8 +1190443,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190476,7 +1190476,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1190567,8 +1190567,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190600,7 +1190600,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "snwd_cm",
@@ -1190702,8 +1190702,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190735,7 +1190735,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1190848,8 +1190848,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190881,7 +1190881,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "swe_mm",
@@ -1190939,8 +1190939,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1190972,7 +1190972,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1191085,8 +1191085,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1191118,7 +1191118,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1191231,8 +1191231,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1191264,7 +1191264,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1191388,8 +1191388,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1191421,7 +1191421,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "air_temp_degc",
@@ -1191556,8 +1191556,8 @@
         "network_name": "ECCC Meteorology Network",
         "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
@@ -1191589,7 +1191589,7 @@
         "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
         "station_image_url": null,
         "station_camera_url": null,
-        "notes": "Not in the yukon station list since 2026-10-22; retained with its archived record (DESIGN.md \u00a76.4).",
+        "notes": null,
         "data_variables": [
           {
             "name": "swe_mm",
@@ -1191658,8 +1191658,8 @@
         "network_name": "Yukon Snow Survey Network",
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "csv_refreshed_at_utc": "2026-10-22T08:18:43+00:00",
-        "upstream_status": "missing",
-        "missing_upstream_since": "2026-10-22"
+        "upstream_status": "listed",
+        "missing_upstream_since": null
       }
     },
     {
