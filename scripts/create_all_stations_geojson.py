@@ -889,6 +889,25 @@ def _missing_note(client: str, since: str) -> str:
     )
 
 
+# Clients whose station list is assembled from several separately fetched
+# sources, keyed by the property that says which source a feature came
+# from.  When *every* previous feature of one source is absent at once, that
+# source failed this run (SLF's IMIS and study-plot lists both returned 503
+# on 2026-10-22; Yukon's continuous-series listing failed the same night and
+# its client returned the snow courses alone).  Such a group is carried
+# forward unmarked, like a whole-client outage, not marked missing.
+SOURCE_GROUP_KEYS: dict[str, str] = {
+    "slf": "slf_dataset",
+    "yukon": "station_type",
+}
+
+
+def _source_group(props: dict) -> tuple:
+    client = props.get("client")
+    key = SOURCE_GROUP_KEYS.get(client)
+    return (client, props.get(key) if key else None)
+
+
 def retain_vanished_stations(
     previous_path: Path, features: list[dict], today: str
 ) -> int:
@@ -908,7 +927,9 @@ def retain_vanished_stations(
     wins and carries no missing markers.  A client with **no** features
     in this rebuild (skipped, or an outage with nothing to fall back on)
     has its previous features carried forward unmarked — that is an
-    outage, not a retirement.
+    outage, not a retirement.  The same holds for one source of a
+    multi-source client (:data:`SOURCE_GROUP_KEYS`) that is entirely
+    absent: an SLF dataset, a Yukon station type.
 
     Stamps ``upstream_status = "listed"`` on every fresh feature and
     appends the retained ones to *features* in place.  Returns the number
@@ -928,6 +949,7 @@ def retain_vanished_stations(
         for f in features
     }
     clients_present = {client for client, _ in fresh}
+    groups_present = {_source_group(f["properties"]) for f in features}
     prev_by_client = Counter(
         f.get("properties", {}).get("client") for f in previous
     )
@@ -944,6 +966,12 @@ def retain_vanished_stations(
         if client not in clients_present:
             # Whole client absent this run: keep its last state as it was.
             outage[client] += 1
+            features.append(f)
+            continue
+        group = _source_group(p)
+        if group[1] is not None and group not in groups_present:
+            # One whole source of the client absent: also an outage.
+            outage[f"{client} ({group[1]})"] += 1
             features.append(f)
             continue
         if p.get("upstream_status") != "missing":
@@ -1764,6 +1792,20 @@ ALBERTA_MIRROR_SUFFIX: dict[str, str] = {"BC": "databc", "Snotel": "awdb"}
 ALBERTA_MIRROR_STATE: dict[str, str] = {"BC": "databc", "MT": "awdb"}
 
 
+# Alberta's station numbers are the source agencies' own (BC Snow Survey
+# "1A01P", WSC-style "05BB803"), so a bare number collides with a code in
+# another network: on 2026-10-22 34 Alberta mirrors shared DataBC's codes,
+# which broke the Zarr build and let finalize stamp both features from one
+# CSV.  Every Alberta code is namespaced, like SLF's; the bare number is
+# kept in ``alberta_station_id``.
+ALBERTA_CODE_PREFIX = "ARB-"
+
+
+def alberta_code(station_id: str) -> str:
+    """The archive code for an Alberta River Basins station."""
+    return f"{ALBERTA_CODE_PREFIX}{station_id}"
+
+
 def alberta_mirror_client(station: dict) -> str | None:
     """The client that archives *station*'s series itself, or None."""
     suffix = station.get("operator_code")
@@ -1820,7 +1862,8 @@ def alberta_station_to_feature(station: dict) -> dict:
         )
 
     props: dict[str, Any] = {
-        "code": sid,
+        "code": alberta_code(sid),
+        "alberta_station_id": sid,
         "name": station.get("name", ""),
         "latitude": lat,
         "longitude": lon,
@@ -1863,8 +1906,8 @@ def link_alberta_mirrors(features: list[dict]) -> int:
     Runs after :func:`annotate_possible_duplicates` and before
     :func:`prune_non_daily_duplicates`, which would drop the mirror's
     links because the mirror is not daily-or-better.  A DataBC twin is
-    also matched by its identical station code.  Returns the number of
-    mirrors linked.
+    also matched by its station number (``alberta_station_id`` equals the
+    DataBC code).  Returns the number of mirrors linked.
     """
     by_key = {
         (f["properties"].get("client"), f["properties"].get("code"))
@@ -1880,11 +1923,12 @@ def link_alberta_mirrors(features: list[dict]) -> int:
             dict(d) for d in p.get("possible_duplicates") or []
             if d.get("client") == mirror
         ]
-        if mirror == "databc" and (mirror, p.get("code")) in by_key and not any(
-            d["code"] == p.get("code") for d in twins
+        native = p.get("alberta_station_id")
+        if mirror == "databc" and (mirror, native) in by_key and not any(
+            d["code"] == native for d in twins
         ):
             twins.append(
-                {"code": p.get("code"), "client": mirror, "distance_m": None}
+                {"code": native, "client": mirror, "distance_m": None}
             )
         if twins:
             p["mirror_of"] = twins

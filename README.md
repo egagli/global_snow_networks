@@ -175,8 +175,8 @@ What it does:
    are skipped.
 3. Writes/replaces station CSVs atomically on successful fetch — unless
    the new record is much shorter than the archived one (the **shrink
-   guard**: loses more than max(30, 5 %) of the populated rows, or starts
-   more than 30 days later). Such a replacement is refused, the old CSV
+   guard**: either column — SWE or snow depth — loses more than
+   max(30, 5 %) of its values, or starts more than 30 days later). Such a replacement is refused, the old CSV
    kept and the refusal logged; `--allow-shrink CODE[,CODE…]` (or `all`)
    accepts it once the loss is confirmed real (DESIGN.md §6.3).
 4. Logs every archived value the replacement changed to
@@ -932,8 +932,16 @@ suffix (`- BC`, `- Snotel`) or, for the BC pillows the app lists without a
 name, by the province/state they report (BC, MT). A mirror keeps
 `daily_or_better: false`, is never fetched, and links its twin in
 `mirror_of` (`{code, client, distance_m}`; a DataBC twin is also matched by
-its identical code). 18 unnamed BC pillows have no coordinates and are
+its station number). 18 unnamed BC pillows have no coordinates and are
 dropped from the merged inventory like any invalid-coordinate station.
+
+**Codes are namespaced: `ARB-<station number>`** (e.g. `ARB-05BB803`), with
+the bare number in `alberta_station_id`. Alberta's numbers are the source
+agencies' own, so a bare `1A01P` is also DataBC's code. On 2026-10-22, the
+first night with Alberta, 34 mirrors shared DataBC's codes. That broke the
+Pages Zarr build, and the nightly refresh stamped 11 mirrors as daily from
+DataBC's CSVs. Codes must be unique across all clients; the inventory
+contract test checks it.
 
 **AEPA's pillows also appear through AWDB** as Manual SNOTEL partner stations
 (`05BB803_AB_MSNT` and 15 others), but AWDB's copies only start in July

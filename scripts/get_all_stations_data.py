@@ -379,8 +379,8 @@ def build_archive(data_dir: Path, archive_path: Path) -> int:
 
 # ── Shrink guard and revision log (DESIGN.md §6.3, §6.6) ─────────────────────
 
-# A replacement CSV may lose this many populated rows (either column
-# non-null) before it is refused: max(absolute, fraction of the old count).
+# A replacement CSV may lose this many populated values in either column
+# before it is refused: max(absolute, fraction of that column's old count).
 SHRINK_MAX_LOST_ROWS = 30
 SHRINK_MAX_LOST_FRACTION = 0.05
 # ...and its earliest populated date may move this much later.
@@ -435,31 +435,38 @@ def shrink_reason(old: pd.DataFrame, new: pd.DataFrame) -> str | None:
     The nightly refresh re-downloads every station's full record and
     replaces its CSV, which is how upstream revisions reach the archive
     (DESIGN.md §6.6).  Only an *empty* payload used to be refused, so a
-    truncated-but-non-empty response would silently delete history.  A
-    replacement is refused when it loses more than
-    max(SHRINK_MAX_LOST_ROWS, SHRINK_MAX_LOST_FRACTION × old) populated
-    rows, or when its earliest populated date moves more than
-    SHRINK_MAX_START_SHIFT_DAYS later.
+    truncated-but-non-empty response would silently delete history.
+
+    Each value column is checked on its own: a replacement is refused when
+    either column loses more than max(SHRINK_MAX_LOST_ROWS,
+    SHRINK_MAX_LOST_FRACTION × that column's old count) values, or when
+    its earliest value moves more than SHRINK_MAX_START_SHIFT_DAYS later.
+    Counting rows with *either* column populated is not enough: on
+    2026-10-22 BC's snow-depth archive returned HTTP 503 and 81 DataBC
+    CSVs lost their depth history while SWE kept every row populated.
     """
-    old_pop = _populated(_as_numeric(old))
-    new_pop = _populated(_as_numeric(new))
-    n_old, n_new = len(old_pop), len(new_pop)
-    lost = n_old - n_new
-    allowed = max(SHRINK_MAX_LOST_ROWS, SHRINK_MAX_LOST_FRACTION * n_old)
-    if lost > allowed:
-        return (
-            f"populated rows {n_old:,} → {n_new:,} "
-            f"(loses {lost:,}, more than {allowed:,.0f})"
-        )
-    if n_old and n_new:
-        old_start = pd.Timestamp(min(old_pop["date"]))
-        new_start = pd.Timestamp(min(new_pop["date"]))
-        shift = (new_start - old_start).days
-        if shift > SHRINK_MAX_START_SHIFT_DAYS:
+    old = _as_numeric(old)
+    new = _as_numeric(new)
+    for col in _VALUE_COLUMNS:
+        old_dates = old.loc[old[col].notna(), "date"]
+        new_dates = new.loc[new[col].notna(), "date"]
+        n_old, n_new = len(old_dates), len(new_dates)
+        lost = n_old - n_new
+        allowed = max(SHRINK_MAX_LOST_ROWS, SHRINK_MAX_LOST_FRACTION * n_old)
+        if lost > allowed:
             return (
-                f"record start {old_start.date()} → {new_start.date()} "
-                f"({shift} days later)"
+                f"{col} values {n_old:,} → {n_new:,} "
+                f"(loses {lost:,}, more than {allowed:,.0f})"
             )
+        if n_old and n_new:
+            old_start = pd.Timestamp(min(old_dates))
+            new_start = pd.Timestamp(min(new_dates))
+            shift = (new_start - old_start).days
+            if shift > SHRINK_MAX_START_SHIFT_DAYS:
+                return (
+                    f"{col} record start {old_start.date()} → "
+                    f"{new_start.date()} ({shift} days later)"
+                )
     return None
 
 
@@ -1164,12 +1171,14 @@ def refresh_hydroquebec(
 # ── Alberta refresh ───────────────────────────────────────────────────────────
 
 def refresh_alberta(
-    stations: list[tuple[int, str]],
+    stations: list[tuple[int, str, str]],
     writer: StationWriter,
 ) -> None:
     """Refresh Alberta River Basins station CSVs (full record, replaced).
 
-    ``stations`` is a list of (feature_index, station_number) tuples —
+    ``stations`` is a list of (feature_index, code, station_number)
+    tuples — the code is the namespaced ``ARB-…`` archive code, the
+    number what the source calls the station —
     only AEPA's and the other non-mirror operators' automated stations;
     BC Snow Survey and SNOTEL mirrors never reach here.  Daily values are
     the source's own ``A.DayMean`` aggregate over the MST day (the client
@@ -1187,7 +1196,7 @@ def refresh_alberta(
     print(f"  [Alberta] Fetching daily SWE + snow depth for {n} stations...")
     updated = 0
     n_records = 0
-    for feat_idx, sid in stations:
+    for feat_idx, code, sid in stations:
         # One call per station: a station is two downloads at most.
         try:
             records = client.get_data(
@@ -1204,7 +1213,7 @@ def refresh_alberta(
         if records:
             stats.fetched += 1
         df = _station_records_to_df(records)
-        if writer.store(feat_idx, sid, "alberta", df):
+        if writer.store(feat_idx, code, "alberta", df):
             updated += 1
     print(f"  [Alberta] ok ({n_records} records)")
     print(f"  [Alberta] updated {updated} station CSVs")
@@ -1711,7 +1720,7 @@ def main() -> None:
     nve_stations: list[tuple[int, str]] = []
     yukon_stations: list[tuple[int, str]] = []
     hydroquebec_stations: list[tuple[int, str]] = []
-    alberta_stations: list[tuple[int, str]] = []
+    alberta_stations: list[tuple[int, str, str]] = []
     slf_stations: list[tuple[int, str]] = []
     snih_stations: list[tuple[int, str]] = []
     ceaza_stations: list[tuple[int, str]] = []
@@ -1746,7 +1755,8 @@ def main() -> None:
         elif client_name == "hydroquebec":
             hydroquebec_stations.append((idx, code))
         elif client_name == "alberta":
-            alberta_stations.append((idx, code))
+            sid = props.get("alberta_station_id") or code.removeprefix("ARB-")
+            alberta_stations.append((idx, code, str(sid)))
         elif client_name == "slf":
             slf_stations.append((idx, code))
         elif client_name == "snih":

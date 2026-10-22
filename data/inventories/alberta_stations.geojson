@@ -23,7 +23,8 @@
         ]
       },
       "properties": {
-        "code": "4A41",
+        "code": "ARB-4A41",
+        "alberta_station_id": "4A41",
         "name": "Kemess Creek Lower",
         "latitude": 57.0046,
         "longitude": -126.65419,
@@ -91,7 +92,8 @@
         ]
       },
       "properties": {
-        "code": "05AA805",
+        "code": "ARB-05AA805",
+        "alberta_station_id": "05AA805",
         "name": "West Castle Snow Pillow",
         "latitude": 49.27955425,
         "longitude": -114.372909,
@@ -158,7 +160,8 @@
         ]
       },
       "properties": {
-        "code": "13A16",
+        "code": "ARB-13A16",
+        "alberta_station_id": "13A16",
         "name": "Mineral Creek",
         "latitude": 48.76666667,
         "longitude": -113.816667,
@@ -227,7 +230,8 @@
         ]
       },
       "properties": {
-        "code": "4A14",
+        "code": "ARB-4A14",
+        "alberta_station_id": "4A14",
         "name": "Pink Mountain",
         "latitude": 57.03333333,
         "longitude": -122.516667,
@@ -296,7 +300,8 @@
         ]
       },
       "properties": {
-        "code": "2C15",
+        "code": "ARB-2C15",
+        "alberta_station_id": "2C15",
         "name": "Mount Assiniboine",
         "latitude": 50.9,
         "longitude": -115.616667,
@@ -365,7 +370,8 @@
         ]
       },
       "properties": {
-        "code": "2A07",
+        "code": "ARB-2A07",
+        "alberta_station_id": "2A07",
         "name": "Kicking Horse",
         "latitude": 51.43333333,
         "longitude": -116.35,
@@ -434,7 +440,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-005",
+        "code": "ARB-Merchant-005",
+        "alberta_station_id": "Merchant-005",
         "name": "Coronation",
         "latitude": 52.07,
         "longitude": -111.45,
@@ -491,7 +498,8 @@
         ]
       },
       "properties": {
-        "code": "2C05",
+        "code": "ARB-2C05",
+        "alberta_station_id": "2C05",
         "name": "Marble Canyon",
         "latitude": 51.2,
         "longitude": -116.133333,
@@ -559,7 +567,8 @@
         ]
       },
       "properties": {
-        "code": "RAMP-003",
+        "code": "ARB-RAMP-003",
+        "alberta_station_id": "RAMP-003",
         "name": "Steepbank Climate Station",
         "latitude": 57.02733333,
         "longitude": -111.429194,
@@ -638,7 +647,8 @@
         ]
       },
       "properties": {
-        "code": "4A28",
+        "code": "ARB-4A28",
+        "alberta_station_id": "4A28",
         "name": "Bullhead Mountain",
         "latitude": 56.03333333,
         "longitude": -125.083333,
@@ -707,7 +717,8 @@
         ]
       },
       "properties": {
-        "code": "05BL802",
+        "code": "ARB-05BL802",
+        "alberta_station_id": "05BL802",
         "name": "Highwood Summit Bush",
         "latitude": 50.599665,
         "longitude": -114.98954,
@@ -774,7 +785,8 @@
         ]
       },
       "properties": {
-        "code": "4A02P",
+        "code": "ARB-4A02P",
+        "alberta_station_id": "4A02P",
         "name": "Pine Pass",
         "latitude": 55.35,
         "longitude": -122.633333,
@@ -887,7 +899,8 @@
         ]
       },
       "properties": {
-        "code": "07GF809",
+        "code": "ARB-07GF809",
+        "alberta_station_id": "07GF809",
         "name": "Spring Creek #3",
         "latitude": 54.95,
         "longitude": -117.683,
@@ -954,7 +967,8 @@
         ]
       },
       "properties": {
-        "code": "07FD802",
+        "code": "ARB-07FD802",
+        "alberta_station_id": "07FD802",
         "name": "Fairview",
         "latitude": 56.03333333,
         "longitude": -118.4,
@@ -1021,7 +1035,8 @@
         ]
       },
       "properties": {
-        "code": "07CA802",
+        "code": "ARB-07CA802",
+        "alberta_station_id": "07CA802",
         "name": "Perryvale",
         "latitude": 54.47027778,
         "longitude": -113.1675,
@@ -1088,7 +1103,8 @@
         ]
       },
       "properties": {
-        "code": "14A12S",
+        "code": "ARB-14A12S",
+        "alberta_station_id": "14A12S",
         "name": "Stahl Peak",
         "latitude": 48.90883,
         "longitude": -114.86167,
@@ -1179,7 +1195,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-031",
+        "code": "ARB-MSC-031",
+        "alberta_station_id": "MSC-031",
         "name": "Milk River",
         "latitude": 49.13333333,
         "longitude": -112.05,
@@ -1258,7 +1275,8 @@
         ]
       },
       "properties": {
-        "code": "05ED802",
+        "code": "ARB-05ED802",
+        "alberta_station_id": "05ED802",
         "name": "St. Paul",
         "latitude": 53.97666667,
         "longitude": -111.006389,
@@ -1326,7 +1344,8 @@
         ]
       },
       "properties": {
-        "code": "05AE808",
+        "code": "ARB-05AE808",
+        "alberta_station_id": "05AE808",
         "name": "Josephine Lower",
         "latitude": 48.77730311,
         "longitude": -113.675933,
@@ -1394,7 +1413,8 @@
         ]
       },
       "properties": {
-        "code": "05CC802",
+        "code": "ARB-05CC802",
+        "alberta_station_id": "05CC802",
         "name": "Dickson",
         "latitude": 52.08333333,
         "longitude": -114.166667,
@@ -1461,7 +1481,8 @@
         ]
       },
       "properties": {
-        "code": "4A37P",
+        "code": "ARB-4A37P",
+        "alberta_station_id": "4A37P",
         "name": "4A37P",
         "latitude": null,
         "longitude": null,
@@ -1551,7 +1572,8 @@
         ]
       },
       "properties": {
-        "code": "4C01P",
+        "code": "ARB-4C01P",
+        "alberta_station_id": "4C01P",
         "name": "4C01P",
         "latitude": null,
         "longitude": null,
@@ -1641,7 +1663,8 @@
         ]
       },
       "properties": {
-        "code": "05EE801",
+        "code": "ARB-05EE801",
+        "alberta_station_id": "05EE801",
         "name": "Two Hills",
         "latitude": 53.71472222,
         "longitude": -111.696389,
@@ -1708,7 +1731,8 @@
         ]
       },
       "properties": {
-        "code": "05AG806",
+        "code": "ARB-05AG806",
+        "alberta_station_id": "05AG806",
         "name": "Lethbridge",
         "latitude": 49.7,
         "longitude": -112.783333,
@@ -1787,7 +1811,8 @@
         ]
       },
       "properties": {
-        "code": "07FD807",
+        "code": "ARB-07FD807",
+        "alberta_station_id": "07FD807",
         "name": "Fairview",
         "latitude": 56.08155556,
         "longitude": -118.439583,
@@ -1866,7 +1891,8 @@
         ]
       },
       "properties": {
-        "code": "14A11",
+        "code": "ARB-14A11",
+        "alberta_station_id": "14A11",
         "name": "Grave Creek",
         "latitude": 48.91666667,
         "longitude": -114.766667,
@@ -1934,7 +1960,8 @@
         ]
       },
       "properties": {
-        "code": "2A23",
+        "code": "ARB-2A23",
+        "alberta_station_id": "2A23",
         "name": "Bush River",
         "latitude": 51.71666667,
         "longitude": -117.433333,
@@ -2003,7 +2030,8 @@
         ]
       },
       "properties": {
-        "code": "07BB808",
+        "code": "ARB-07BB808",
+        "alberta_station_id": "07BB808",
         "name": "Barrhead West",
         "latitude": 54.18111111,
         "longitude": -114.786389,
@@ -2070,7 +2098,8 @@
         ]
       },
       "properties": {
-        "code": "FRPL",
+        "code": "ARB-FRPL",
+        "alberta_station_id": "FRPL",
         "name": "Fortress Mountain Powerline",
         "latitude": 50.83221,
         "longitude": -115.2431,
@@ -2138,7 +2167,8 @@
         ]
       },
       "properties": {
-        "code": "13A19",
+        "code": "ARB-13A19",
+        "alberta_station_id": "13A19",
         "name": "Flattop Mountain",
         "latitude": 48.8,
         "longitude": -113.85,
@@ -2195,7 +2225,8 @@
         ]
       },
       "properties": {
-        "code": "05CD803",
+        "code": "ARB-05CD803",
+        "alberta_station_id": "05CD803",
         "name": "Clive",
         "latitude": 52.57966667,
         "longitude": -113.410444,
@@ -2262,7 +2293,8 @@
         ]
       },
       "properties": {
-        "code": "05FA803",
+        "code": "ARB-05FA803",
+        "alberta_station_id": "05FA803",
         "name": "Bigstone",
         "latitude": 53.03916667,
         "longitude": -113.856944,
@@ -2329,7 +2361,8 @@
         ]
       },
       "properties": {
-        "code": "AV-007",
+        "code": "ARB-AV-007",
+        "alberta_station_id": "AV-007",
         "name": "Simpson Lower",
         "latitude": 50.98507,
         "longitude": -115.984215,
@@ -2386,7 +2419,8 @@
         ]
       },
       "properties": {
-        "code": "13A26",
+        "code": "ARB-13A26",
+        "alberta_station_id": "13A26",
         "name": "Pike Creek",
         "latitude": 48.3,
         "longitude": -113.333333,
@@ -2454,7 +2488,8 @@
         ]
       },
       "properties": {
-        "code": "07KF801",
+        "code": "ARB-07KF801",
+        "alberta_station_id": "07KF801",
         "name": "Highrock Tower",
         "latitude": 58.8,
         "longitude": -111.55,
@@ -2521,7 +2556,8 @@
         ]
       },
       "properties": {
-        "code": "05AA801",
+        "code": "ARB-05AA801",
+        "alberta_station_id": "05AA801",
         "name": "Westcastle II",
         "latitude": 49.27805556,
         "longitude": -114.365556,
@@ -2611,7 +2647,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-001",
+        "code": "ARB-MSC-001",
+        "alberta_station_id": "MSC-001",
         "name": "Banff",
         "latitude": 51.2,
         "longitude": -115.55,
@@ -2690,7 +2727,8 @@
         ]
       },
       "properties": {
-        "code": "RAMP-004",
+        "code": "ARB-RAMP-004",
+        "alberta_station_id": "RAMP-004",
         "name": "Pierre C4 Climate Station",
         "latitude": 57.549392,
         "longitude": -111.65321,
@@ -2769,7 +2807,8 @@
         ]
       },
       "properties": {
-        "code": "07GD801",
+        "code": "ARB-07GD801",
+        "alberta_station_id": "07GD801",
         "name": "Hythe",
         "latitude": 55.31666667,
         "longitude": -119.566667,
@@ -2836,7 +2875,8 @@
         ]
       },
       "properties": {
-        "code": "07AA802",
+        "code": "ARB-07AA802",
+        "alberta_station_id": "07AA802",
         "name": "Sunwapta Falls",
         "latitude": 52.54333333,
         "longitude": -117.648056,
@@ -2904,7 +2944,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-024",
+        "code": "ARB-Merchant-024",
+        "alberta_station_id": "Merchant-024",
         "name": "Peace River",
         "latitude": 56.23333333,
         "longitude": -117.433333,
@@ -2961,7 +3002,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-015",
+        "code": "ARB-Merchant-015",
+        "alberta_station_id": "Merchant-015",
         "name": "Garden River",
         "latitude": 58.71,
         "longitude": -113.87,
@@ -3018,7 +3060,8 @@
         ]
       },
       "properties": {
-        "code": "07AA803",
+        "code": "ARB-07AA803",
+        "alberta_station_id": "07AA803",
         "name": "Marmot-Jasper",
         "latitude": 52.80666667,
         "longitude": -118.089444,
@@ -3085,7 +3128,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-004",
+        "code": "ARB-Merchant-004",
+        "alberta_station_id": "Merchant-004",
         "name": "Cold Lake",
         "latitude": 54.41666667,
         "longitude": -110.283333,
@@ -3142,7 +3186,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-017",
+        "code": "ARB-Merchant-017",
+        "alberta_station_id": "Merchant-017",
         "name": "High Level Airport Synoptic",
         "latitude": 58.61666667,
         "longitude": -117.166667,
@@ -3199,7 +3244,8 @@
         ]
       },
       "properties": {
-        "code": "05AH804",
+        "code": "ARB-05AH804",
+        "alberta_station_id": "05AH804",
         "name": "Ross Creek Lower",
         "latitude": 49.67225,
         "longitude": -110.261806,
@@ -3266,7 +3312,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-041",
+        "code": "ARB-MSC-041",
+        "alberta_station_id": "MSC-041",
         "name": "Sundre",
         "latitude": 51.78,
         "longitude": -114.68,
@@ -3345,7 +3392,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-011",
+        "code": "ARB-MSC-011",
+        "alberta_station_id": "MSC-011",
         "name": "Claresholm",
         "latitude": 50.0,
         "longitude": -113.633333,
@@ -3424,7 +3472,8 @@
         ]
       },
       "properties": {
-        "code": "4A23",
+        "code": "ARB-4A23",
+        "alberta_station_id": "4A23",
         "name": "Beatton River",
         "latitude": 57.21666667,
         "longitude": -121.466667,
@@ -3492,7 +3541,8 @@
         ]
       },
       "properties": {
-        "code": "05DC801",
+        "code": "ARB-05DC801",
+        "alberta_station_id": "05DC801",
         "name": "Nordegg",
         "latitude": 52.44361111,
         "longitude": -116.104444,
@@ -3559,7 +3609,8 @@
         ]
       },
       "properties": {
-        "code": "13A02",
+        "code": "ARB-13A02",
+        "alberta_station_id": "13A02",
         "name": "Desert Mountain",
         "latitude": 48.41666667,
         "longitude": -113.95,
@@ -3628,7 +3679,8 @@
         ]
       },
       "properties": {
-        "code": "13A19S",
+        "code": "ARB-13A19S",
+        "alberta_station_id": "13A19S",
         "name": "Flattop Mountain",
         "latitude": 48.80183,
         "longitude": -113.85667,
@@ -3719,7 +3771,8 @@
         ]
       },
       "properties": {
-        "code": "05EE805",
+        "code": "ARB-05EE805",
+        "alberta_station_id": "05EE805",
         "name": "Mundare",
         "latitude": 53.56063889,
         "longitude": -112.296111,
@@ -3798,7 +3851,8 @@
         ]
       },
       "properties": {
-        "code": "05AH806",
+        "code": "ARB-05AH806",
+        "alberta_station_id": "05AH806",
         "name": "Mitchell Creek Lower",
         "latitude": 49.65752778,
         "longitude": -110.292667,
@@ -3865,7 +3919,8 @@
         ]
       },
       "properties": {
-        "code": "4A11",
+        "code": "ARB-4A11",
+        "alberta_station_id": "4A11",
         "name": "Trygve Lake",
         "latitude": 56.99454,
         "longitude": -127.45539,
@@ -3933,7 +3988,8 @@
         ]
       },
       "properties": {
-        "code": "05EB802",
+        "code": "ARB-05EB802",
+        "alberta_station_id": "05EB802",
         "name": "Elk Island Park",
         "latitude": 53.57916667,
         "longitude": -112.837778,
@@ -4000,7 +4056,8 @@
         ]
       },
       "properties": {
-        "code": "RAMP-002",
+        "code": "ARB-RAMP-002",
+        "alberta_station_id": "RAMP-002",
         "name": "Horizon Climate Station",
         "latitude": 57.38388889,
         "longitude": -111.9419,
@@ -4079,7 +4136,8 @@
         ]
       },
       "properties": {
-        "code": "07GE802",
+        "code": "ARB-07GE802",
+        "alberta_station_id": "07GE802",
         "name": "Bezanson",
         "latitude": 55.23333333,
         "longitude": -118.516667,
@@ -4146,7 +4204,8 @@
         ]
       },
       "properties": {
-        "code": "4A10P",
+        "code": "ARB-4A10P",
+        "alberta_station_id": "4A10P",
         "name": "4A10P",
         "latitude": null,
         "longitude": null,
@@ -4236,7 +4295,8 @@
         ]
       },
       "properties": {
-        "code": "05AE810",
+        "code": "ARB-05AE810",
+        "alberta_station_id": "05AE810",
         "name": "Lee Creek \"P\"",
         "latitude": 49.03333333,
         "longitude": -113.566667,
@@ -4303,7 +4363,8 @@
         ]
       },
       "properties": {
-        "code": "07GE803",
+        "code": "ARB-07GE803",
+        "alberta_station_id": "07GE803",
         "name": "Sexsmith",
         "latitude": 55.41666667,
         "longitude": -118.866667,
@@ -4370,7 +4431,8 @@
         ]
       },
       "properties": {
-        "code": "05BA802",
+        "code": "ARB-05BA802",
+        "alberta_station_id": "05BA802",
         "name": "Pipestone Upper",
         "latitude": 51.437962,
         "longitude": -116.181274,
@@ -4437,7 +4499,8 @@
         ]
       },
       "properties": {
-        "code": "4B02P",
+        "code": "ARB-4B02P",
+        "alberta_station_id": "4B02P",
         "name": "4B02P",
         "latitude": null,
         "longitude": null,
@@ -4527,7 +4590,8 @@
         ]
       },
       "properties": {
-        "code": "05DA806",
+        "code": "ARB-05DA806",
+        "alberta_station_id": "05DA806",
         "name": "Watchman Creek",
         "latitude": 52.055,
         "longitude": -117.235278,
@@ -4594,7 +4658,8 @@
         ]
       },
       "properties": {
-        "code": "4A30P",
+        "code": "ARB-4A30P",
+        "alberta_station_id": "4A30P",
         "name": "4A30P",
         "latitude": null,
         "longitude": null,
@@ -4684,7 +4749,8 @@
         ]
       },
       "properties": {
-        "code": "05EC801",
+        "code": "ARB-05EC801",
+        "alberta_station_id": "05EC801",
         "name": "Bellis",
         "latitude": 54.11166667,
         "longitude": -112.075556,
@@ -4751,7 +4817,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-014",
+        "code": "ARB-MSC-014",
+        "alberta_station_id": "MSC-014",
         "name": "Coronation",
         "latitude": 52.06666666,
         "longitude": -111.45,
@@ -4830,7 +4897,8 @@
         ]
       },
       "properties": {
-        "code": "RAMP-001",
+        "code": "ARB-RAMP-001",
+        "alberta_station_id": "RAMP-001",
         "name": "Aurora Climate Station",
         "latitude": 57.23777778,
         "longitude": -111.4075,
@@ -4909,7 +4977,8 @@
         ]
       },
       "properties": {
-        "code": "AV-009",
+        "code": "ARB-AV-009",
+        "alberta_station_id": "AV-009",
         "name": "Bosworth Lower",
         "latitude": 51.45725,
         "longitude": -116.357833,
@@ -4966,7 +5035,8 @@
         ]
       },
       "properties": {
-        "code": "07DD802",
+        "code": "ARB-07DD802",
+        "alberta_station_id": "07DD802",
         "name": "Jackfish Village",
         "latitude": 58.41666667,
         "longitude": -110.933333,
@@ -5033,7 +5103,8 @@
         ]
       },
       "properties": {
-        "code": "07OA801",
+        "code": "ARB-07OA801",
+        "alberta_station_id": "07OA801",
         "name": "Assumption",
         "latitude": 58.6,
         "longitude": -118.466667,
@@ -5100,7 +5171,8 @@
         ]
       },
       "properties": {
-        "code": "05DA804",
+        "code": "ARB-05DA804",
+        "alberta_station_id": "05DA804",
         "name": "Nigel Creek",
         "latitude": 52.19222222,
         "longitude": -117.082222,
@@ -5167,7 +5239,8 @@
         ]
       },
       "properties": {
-        "code": "05CE801",
+        "code": "ARB-05CE801",
+        "alberta_station_id": "05CE801",
         "name": "Innisfail East",
         "latitude": 51.99677778,
         "longitude": -113.575333,
@@ -5234,7 +5307,8 @@
         ]
       },
       "properties": {
-        "code": "05BL808",
+        "code": "ARB-05BL808",
+        "alberta_station_id": "05BL808",
         "name": "Mt. Odlum Lower",
         "latitude": 50.48591767,
         "longitude": -114.8667,
@@ -5301,7 +5375,8 @@
         ]
       },
       "properties": {
-        "code": "05DD805",
+        "code": "ARB-05DD805",
+        "alberta_station_id": "05DD805",
         "name": "Job Creek",
         "latitude": 52.37194444,
         "longitude": -116.778889,
@@ -5391,7 +5466,8 @@
         ]
       },
       "properties": {
-        "code": "05BL801",
+        "code": "ARB-05BL801",
+        "alberta_station_id": "05BL801",
         "name": "Highwood Summit Open",
         "latitude": 50.58333,
         "longitude": -114.9833,
@@ -5458,7 +5534,8 @@
         ]
       },
       "properties": {
-        "code": "05AE815",
+        "code": "ARB-05AE815",
+        "alberta_station_id": "05AE815",
         "name": "Lee Creek \"H\"",
         "latitude": 48.96666667,
         "longitude": -113.533333,
@@ -5526,7 +5603,8 @@
         ]
       },
       "properties": {
-        "code": "05CA807",
+        "code": "ARB-05CA807",
+        "alberta_station_id": "05CA807",
         "name": "Gable Mountain",
         "latitude": 51.63714667,
         "longitude": -115.74985,
@@ -5593,7 +5671,8 @@
         ]
       },
       "properties": {
-        "code": "05BC801",
+        "code": "ARB-05BC801",
+        "alberta_station_id": "05BC801",
         "name": "Tent Ridge",
         "latitude": 50.84497726,
         "longitude": -115.367119,
@@ -5660,7 +5739,8 @@
         ]
       },
       "properties": {
-        "code": "05AE804",
+        "code": "ARB-05AE804",
+        "alberta_station_id": "05AE804",
         "name": "Iceberg Lake Trail",
         "latitude": 48.8274642,
         "longitude": -113.72127,
@@ -5728,7 +5808,8 @@
         ]
       },
       "properties": {
-        "code": "05AE814",
+        "code": "ARB-05AE814",
+        "alberta_station_id": "05AE814",
         "name": "Lee Creek Q",
         "latitude": 49.06372222,
         "longitude": -113.556667,
@@ -5795,7 +5876,8 @@
         ]
       },
       "properties": {
-        "code": "05EC802",
+        "code": "ARB-05EC802",
+        "alberta_station_id": "05EC802",
         "name": "Waskatenau",
         "latitude": 54.19861111,
         "longitude": -112.825,
@@ -5862,7 +5944,8 @@
         ]
       },
       "properties": {
-        "code": "07BB803",
+        "code": "ARB-07BB803",
+        "alberta_station_id": "07BB803",
         "name": "Meadowview",
         "latitude": 54.00333333,
         "longitude": -114.674722,
@@ -5929,7 +6012,8 @@
         ]
       },
       "properties": {
-        "code": "05CC803",
+        "code": "ARB-05CC803",
+        "alberta_station_id": "05CC803",
         "name": "Hoadley",
         "latitude": 52.82166667,
         "longitude": -114.411667,
@@ -5996,7 +6080,8 @@
         ]
       },
       "properties": {
-        "code": "AV-014",
+        "code": "ARB-AV-014",
+        "alberta_station_id": "AV-014",
         "name": "Mud Lake",
         "latitude": 50.794167,
         "longitude": -115.30714,
@@ -6053,7 +6138,8 @@
         ]
       },
       "properties": {
-        "code": "07GG801",
+        "code": "ARB-07GG801",
+        "alberta_station_id": "07GG801",
         "name": "Little Smoky",
         "latitude": 54.73333333,
         "longitude": -117.15,
@@ -6120,7 +6206,8 @@
         ]
       },
       "properties": {
-        "code": "07BC803",
+        "code": "ARB-07BC803",
+        "alberta_station_id": "07BC803",
         "name": "Flatbush",
         "latitude": 54.73388889,
         "longitude": -114.088611,
@@ -6187,7 +6274,8 @@
         ]
       },
       "properties": {
-        "code": "4A39P",
+        "code": "ARB-4A39P",
+        "alberta_station_id": "4A39P",
         "name": "4A39P",
         "latitude": null,
         "longitude": null,
@@ -6277,7 +6365,8 @@
         ]
       },
       "properties": {
-        "code": "06AA802",
+        "code": "ARB-06AA802",
+        "alberta_station_id": "06AA802",
         "name": "Rich Lake",
         "latitude": 54.50122222,
         "longitude": -111.691472,
@@ -6356,7 +6445,8 @@
         ]
       },
       "properties": {
-        "code": "07DD801",
+        "code": "ARB-07DD801",
+        "alberta_station_id": "07DD801",
         "name": "Embarras Port",
         "latitude": 58.38333333,
         "longitude": -111.533333,
@@ -6423,7 +6513,8 @@
         ]
       },
       "properties": {
-        "code": "05BD801",
+        "code": "ARB-05BD801",
+        "alberta_station_id": "05BD801",
         "name": "Cuthead Lake",
         "latitude": 51.45,
         "longitude": -115.75,
@@ -6513,7 +6604,8 @@
         ]
       },
       "properties": {
-        "code": "05BL806",
+        "code": "ARB-05BL806",
+        "alberta_station_id": "05BL806",
         "name": "Mist Creek",
         "latitude": 50.51807833,
         "longitude": -114.847162,
@@ -6580,7 +6672,8 @@
         ]
       },
       "properties": {
-        "code": "AV-010",
+        "code": "ARB-AV-010",
+        "alberta_station_id": "AV-010",
         "name": "Stanley Lower",
         "latitude": 51.184673,
         "longitude": -116.0892,
@@ -6637,7 +6730,8 @@
         ]
       },
       "properties": {
-        "code": "07BK801",
+        "code": "ARB-07BK801",
+        "alberta_station_id": "07BK801",
         "name": "Saulteaux River",
         "latitude": 55.13138889,
         "longitude": -114.189722,
@@ -6704,7 +6798,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-026",
+        "code": "ARB-MSC-026",
+        "alberta_station_id": "MSC-026",
         "name": "Jasper Warden",
         "latitude": 52.93,
         "longitude": -118.03,
@@ -6783,7 +6878,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-056",
+        "code": "ARB-MSC-056",
+        "alberta_station_id": "MSC-056",
         "name": "Athabasca 2",
         "latitude": 54.821,
         "longitude": -113.5436,
@@ -6862,7 +6958,8 @@
         ]
       },
       "properties": {
-        "code": "05BH804",
+        "code": "ARB-05BH804",
+        "alberta_station_id": "05BH804",
         "name": "Neir",
         "latitude": 51.36930556,
         "longitude": -114.099194,
@@ -6941,7 +7038,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-011",
+        "code": "ARB-Merchant-011",
+        "alberta_station_id": "Merchant-011",
         "name": "Fort McMurray",
         "latitude": 56.65,
         "longitude": -111.216667,
@@ -6998,7 +7096,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-026",
+        "code": "ARB-Merchant-026",
+        "alberta_station_id": "Merchant-026",
         "name": "Red Deer",
         "latitude": 52.18333333,
         "longitude": -113.9,
@@ -7055,7 +7154,8 @@
         ]
       },
       "properties": {
-        "code": "AV-013",
+        "code": "ARB-AV-013",
+        "alberta_station_id": "AV-013",
         "name": "Highwood Pass",
         "latitude": 50.598618,
         "longitude": -114.98721,
@@ -7112,7 +7212,8 @@
         ]
       },
       "properties": {
-        "code": "07AG802",
+        "code": "ARB-07AG802",
+        "alberta_station_id": "07AG802",
         "name": "Edson #2",
         "latitude": 53.58388889,
         "longitude": -116.210556,
@@ -7179,7 +7280,8 @@
         ]
       },
       "properties": {
-        "code": "05AH803",
+        "code": "ARB-05AH803",
+        "alberta_station_id": "05AH803",
         "name": "Gros Ventre Upper",
         "latitude": 49.63333333,
         "longitude": -110.316667,
@@ -7246,7 +7348,8 @@
         ]
       },
       "properties": {
-        "code": "05AD802",
+        "code": "ARB-05AD802",
+        "alberta_station_id": "05AD802",
         "name": "Middle Drywood",
         "latitude": 49.25,
         "longitude": -114.05,
@@ -7313,7 +7416,8 @@
         ]
       },
       "properties": {
-        "code": "05DD802",
+        "code": "ARB-05DD802",
+        "alberta_station_id": "05DD802",
         "name": "Brown Creek",
         "latitude": 52.76972222,
         "longitude": -116.365278,
@@ -7380,7 +7484,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-029",
+        "code": "ARB-Merchant-029",
+        "alberta_station_id": "Merchant-029",
         "name": "Slave Lake",
         "latitude": 55.3,
         "longitude": -114.783333,
@@ -7437,7 +7542,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-021",
+        "code": "ARB-Merchant-021",
+        "alberta_station_id": "Merchant-021",
         "name": "Lloydminister",
         "latitude": 53.31666667,
         "longitude": -110.066667,
@@ -7494,7 +7600,8 @@
         ]
       },
       "properties": {
-        "code": "07KF802",
+        "code": "ARB-07KF802",
+        "alberta_station_id": "07KF802",
         "name": "Sweetgrass",
         "latitude": 58.85,
         "longitude": -112.0,
@@ -7561,7 +7668,8 @@
         ]
       },
       "properties": {
-        "code": "4A27P",
+        "code": "ARB-4A27P",
+        "alberta_station_id": "4A27P",
         "name": "4A27P",
         "latitude": null,
         "longitude": null,
@@ -7651,7 +7759,8 @@
         ]
       },
       "properties": {
-        "code": "05AD803-OLD",
+        "code": "ARB-05AD803-OLD",
+        "alberta_station_id": "05AD803-OLD",
         "name": "Akamina Pass",
         "latitude": 49.02727778,
         "longitude": -114.052944,
@@ -7740,7 +7849,8 @@
         ]
       },
       "properties": {
-        "code": "05AE819",
+        "code": "ARB-05AE819",
+        "alberta_station_id": "05AE819",
         "name": "Chief Customs (Waterton)",
         "latitude": 49.00027778,
         "longitude": -113.658333,
@@ -7819,7 +7929,8 @@
         ]
       },
       "properties": {
-        "code": "4A20P",
+        "code": "ARB-4A20P",
+        "alberta_station_id": "4A20P",
         "name": "Monkmam Creek",
         "latitude": 54.73333333,
         "longitude": -121.233333,
@@ -7932,7 +8043,8 @@
         ]
       },
       "properties": {
-        "code": "2C16",
+        "code": "ARB-2C16",
+        "alberta_station_id": "2C16",
         "name": "Mount Joffre",
         "latitude": 50.53333333,
         "longitude": -115.116667,
@@ -8001,7 +8113,8 @@
         ]
       },
       "properties": {
-        "code": "05BF821",
+        "code": "ARB-05BF821",
+        "alberta_station_id": "05BF821",
         "name": "Mud Lake",
         "latitude": 50.79870482,
         "longitude": -115.316095,
@@ -8068,7 +8181,8 @@
         ]
       },
       "properties": {
-        "code": "05AH802",
+        "code": "ARB-05AH802",
+        "alberta_station_id": "05AH802",
         "name": "Gros Ventre Middle",
         "latitude": 49.64863889,
         "longitude": -110.351472,
@@ -8135,7 +8249,8 @@
         ]
       },
       "properties": {
-        "code": "05AA813",
+        "code": "ARB-05AA813",
+        "alberta_station_id": "05AA813",
         "name": "Porcupine Lookout",
         "latitude": 49.88666667,
         "longitude": -114.002222,
@@ -8214,7 +8329,8 @@
         ]
       },
       "properties": {
-        "code": "05ED801",
+        "code": "ARB-05ED801",
+        "alberta_station_id": "05ED801",
         "name": "Clandonald",
         "latitude": 53.57,
         "longitude": -110.863889,
@@ -8281,7 +8397,8 @@
         ]
       },
       "properties": {
-        "code": "4A21",
+        "code": "ARB-4A21",
+        "alberta_station_id": "4A21",
         "name": "Mount Stearns",
         "latitude": 57.06953,
         "longitude": -123.3993,
@@ -8349,7 +8466,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-022",
+        "code": "ARB-Merchant-022",
+        "alberta_station_id": "Merchant-022",
         "name": "Medicine Hat",
         "latitude": 50.02,
         "longitude": -110.72,
@@ -8406,7 +8524,8 @@
         ]
       },
       "properties": {
-        "code": "4A31P",
+        "code": "ARB-4A31P",
+        "alberta_station_id": "4A31P",
         "name": "4A31P",
         "latitude": null,
         "longitude": null,
@@ -8496,7 +8615,8 @@
         ]
       },
       "properties": {
-        "code": "2C09Q",
+        "code": "ARB-2C09Q",
+        "alberta_station_id": "2C09Q",
         "name": "Morrissey Ridge",
         "latitude": 49.45,
         "longitude": -114.966667,
@@ -8587,7 +8707,8 @@
         ]
       },
       "properties": {
-        "code": "05CE806",
+        "code": "ARB-05CE806",
+        "alberta_station_id": "05CE806",
         "name": "Olds College",
         "latitude": 51.75861111,
         "longitude": -114.084611,
@@ -8666,7 +8787,8 @@
         ]
       },
       "properties": {
-        "code": "05BA810",
+        "code": "ARB-05BA810",
+        "alberta_station_id": "05BA810",
         "name": "Ptarmigan Hut",
         "latitude": 51.47409167,
         "longitude": -116.102743,
@@ -8733,7 +8855,8 @@
         ]
       },
       "properties": {
-        "code": "07BB811",
+        "code": "ARB-07BB811",
+        "alberta_station_id": "07BB811",
         "name": "Paddle Headwaters",
         "latitude": 53.86888889,
         "longitude": -115.543056,
@@ -8845,7 +8968,8 @@
         ]
       },
       "properties": {
-        "code": "4A36P",
+        "code": "ARB-4A36P",
+        "alberta_station_id": "4A36P",
         "name": "4A36P",
         "latitude": null,
         "longitude": null,
@@ -8935,7 +9059,8 @@
         ]
       },
       "properties": {
-        "code": "13A15S",
+        "code": "ARB-13A15S",
+        "alberta_station_id": "13A15S",
         "name": "Badger Pass",
         "latitude": 48.13333333,
         "longitude": -113.016667,
@@ -9004,7 +9129,8 @@
         ]
       },
       "properties": {
-        "code": "05EE802",
+        "code": "ARB-05EE802",
+        "alberta_station_id": "05EE802",
         "name": "Bruce",
         "latitude": 53.28333333,
         "longitude": -112.053056,
@@ -9071,7 +9197,8 @@
         ]
       },
       "properties": {
-        "code": "05DE802",
+        "code": "ARB-05DE802",
+        "alberta_station_id": "05DE802",
         "name": "Breton Plots",
         "latitude": 53.08941667,
         "longitude": -114.442806,
@@ -9150,7 +9277,8 @@
         ]
       },
       "properties": {
-        "code": "07CA803",
+        "code": "ARB-07CA803",
+        "alberta_station_id": "07CA803",
         "name": "Atmore",
         "latitude": 54.78022222,
         "longitude": -112.824806,
@@ -9229,7 +9357,8 @@
         ]
       },
       "properties": {
-        "code": "05CC801",
+        "code": "ARB-05CC801",
+        "alberta_station_id": "05CC801",
         "name": "Bentley",
         "latitude": 52.48638889,
         "longitude": -114.071944,
@@ -9296,7 +9425,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-019",
+        "code": "ARB-MSC-019",
+        "alberta_station_id": "MSC-019",
         "name": "Elk Island Park",
         "latitude": 53.68333433,
         "longitude": -112.866668,
@@ -9375,7 +9505,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-008",
+        "code": "ARB-MSC-008",
+        "alberta_station_id": "MSC-008",
         "name": "Calgary Int'l A",
         "latitude": 51.11666667,
         "longitude": -114.016667,
@@ -9454,7 +9585,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-019",
+        "code": "ARB-Merchant-019",
+        "alberta_station_id": "Merchant-019",
         "name": "Lac La Biche",
         "latitude": 54.76666666,
         "longitude": -112.016667,
@@ -9511,7 +9643,8 @@
         ]
       },
       "properties": {
-        "code": "11AB801",
+        "code": "ARB-11AB801",
+        "alberta_station_id": "11AB801",
         "name": "Thelma Creek",
         "latitude": 49.56667,
         "longitude": -110.2667,
@@ -9578,7 +9711,8 @@
         ]
       },
       "properties": {
-        "code": "05DB802",
+        "code": "ARB-05DB802",
+        "alberta_station_id": "05DB802",
         "name": "Limestone Ridge",
         "latitude": 51.89422826,
         "longitude": -115.384567,
@@ -9690,7 +9824,8 @@
         ]
       },
       "properties": {
-        "code": "14A03",
+        "code": "ARB-14A03",
+        "alberta_station_id": "14A03",
         "name": "Hell Roaring Divide",
         "latitude": 48.5,
         "longitude": -114.35,
@@ -9759,7 +9894,8 @@
         ]
       },
       "properties": {
-        "code": "13A26S",
+        "code": "ARB-13A26S",
+        "alberta_station_id": "13A26S",
         "name": "Pike Creek",
         "latitude": 48.30317,
         "longitude": -113.32667,
@@ -9850,7 +9986,8 @@
         ]
       },
       "properties": {
-        "code": "07HF802",
+        "code": "ARB-07HF802",
+        "alberta_station_id": "07HF802",
         "name": "Keg River Snow Course",
         "latitude": 57.58333333,
         "longitude": -117.483333,
@@ -9917,7 +10054,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-003",
+        "code": "ARB-Merchant-003",
+        "alberta_station_id": "Merchant-003",
         "name": "Calgary International Airport",
         "latitude": 51.11,
         "longitude": -114.02,
@@ -9974,7 +10112,8 @@
         ]
       },
       "properties": {
-        "code": "05BL812",
+        "code": "ARB-05BL812",
+        "alberta_station_id": "05BL812",
         "name": "Mount Odlum",
         "latitude": 50.48564833,
         "longitude": -114.914163,
@@ -10086,7 +10225,8 @@
         ]
       },
       "properties": {
-        "code": "05DD804",
+        "code": "ARB-05DD804",
+        "alberta_station_id": "05DD804",
         "name": "Southesk",
         "latitude": 52.67083333,
         "longitude": -117.225556,
@@ -10198,7 +10338,8 @@
         ]
       },
       "properties": {
-        "code": "05BA801",
+        "code": "ARB-05BA801",
+        "alberta_station_id": "05BA801",
         "name": "Bow River",
         "latitude": 51.423086,
         "longitude": -116.183692,
@@ -10265,7 +10406,8 @@
         ]
       },
       "properties": {
-        "code": "4A34P",
+        "code": "ARB-4A34P",
+        "alberta_station_id": "4A34P",
         "name": "4A34P",
         "latitude": null,
         "longitude": null,
@@ -10355,7 +10497,8 @@
         ]
       },
       "properties": {
-        "code": "05DD801",
+        "code": "ARB-05DD801",
+        "alberta_station_id": "05DD801",
         "name": "Brazeau Reservoir",
         "latitude": 52.93194444,
         "longitude": -115.590278,
@@ -10422,7 +10565,8 @@
         ]
       },
       "properties": {
-        "code": "05FA802",
+        "code": "ARB-05FA802",
+        "alberta_station_id": "05FA802",
         "name": "Pipestone Creek",
         "latitude": 53.06667,
         "longitude": -113.8167,
@@ -10489,7 +10633,8 @@
         ]
       },
       "properties": {
-        "code": "2C07",
+        "code": "ARB-2C07",
+        "alberta_station_id": "2C07",
         "name": "Fernie East",
         "latitude": 49.5,
         "longitude": -115.033333,
@@ -10558,7 +10703,8 @@
         ]
       },
       "properties": {
-        "code": "05BA814",
+        "code": "ARB-05BA814",
+        "alberta_station_id": "05BA814",
         "name": "Katherine Lake",
         "latitude": 51.687365,
         "longitude": -116.394315,
@@ -10625,7 +10771,8 @@
         ]
       },
       "properties": {
-        "code": "AV-012",
+        "code": "ARB-AV-012",
+        "alberta_station_id": "AV-012",
         "name": "Burstall Pass",
         "latitude": 50.758183,
         "longitude": -115.36667,
@@ -10682,7 +10829,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-022",
+        "code": "ARB-MSC-022",
+        "alberta_station_id": "MSC-022",
         "name": "Garden River",
         "latitude": 58.68333333,
         "longitude": -113.883333,
@@ -10761,7 +10909,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-046",
+        "code": "ARB-MSC-046",
+        "alberta_station_id": "MSC-046",
         "name": "Violet Grove CS",
         "latitude": 53.14388889,
         "longitude": -115.123611,
@@ -10840,7 +10989,8 @@
         ]
       },
       "properties": {
-        "code": "CANM-02",
+        "code": "ARB-CANM-02",
+        "alberta_station_id": "CANM-02",
         "name": "Cougar Creek",
         "latitude": 51.1566111,
         "longitude": -115.309722,
@@ -10919,7 +11069,8 @@
         ]
       },
       "properties": {
-        "code": "05BA808",
+        "code": "ARB-05BA808",
+        "alberta_station_id": "05BA808",
         "name": "Chateau Lawn",
         "latitude": 51.424427,
         "longitude": -116.213312,
@@ -10986,7 +11137,8 @@
         ]
       },
       "properties": {
-        "code": "05DF804",
+        "code": "ARB-05DF804",
+        "alberta_station_id": "05DF804",
         "name": "Edmonton South Campus UA",
         "latitude": 53.49013,
         "longitude": -113.53778,
@@ -11065,7 +11217,8 @@
         ]
       },
       "properties": {
-        "code": "07GJ801",
+        "code": "ARB-07GJ801",
+        "alberta_station_id": "07GJ801",
         "name": "Girouxville",
         "latitude": 55.76666667,
         "longitude": -117.333333,
@@ -11132,7 +11285,8 @@
         ]
       },
       "properties": {
-        "code": "05AH810",
+        "code": "ARB-05AH810",
+        "alberta_station_id": "05AH810",
         "name": "Medicine Lodge Lookout",
         "latitude": 49.65555556,
         "longitude": -110.327778,
@@ -11211,7 +11365,8 @@
         ]
       },
       "properties": {
-        "code": "4A07",
+        "code": "ARB-4A07",
+        "alberta_station_id": "4A07",
         "name": "Lady Laurier Lake",
         "latitude": 56.70114,
         "longitude": -123.75469,
@@ -11279,7 +11434,8 @@
         ]
       },
       "properties": {
-        "code": "14A11S",
+        "code": "ARB-14A11S",
+        "alberta_station_id": "14A11S",
         "name": "Grave Creek",
         "latitude": 48.91666667,
         "longitude": -114.766667,
@@ -11370,7 +11526,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-002",
+        "code": "ARB-Merchant-002",
+        "alberta_station_id": "Merchant-002",
         "name": "Brooks",
         "latitude": 50.55,
         "longitude": -111.85,
@@ -11427,7 +11584,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-032",
+        "code": "ARB-MSC-032",
+        "alberta_station_id": "MSC-032",
         "name": "Nordegg",
         "latitude": 52.47083333,
         "longitude": -116.076944,
@@ -11506,7 +11664,8 @@
         ]
       },
       "properties": {
-        "code": "07MD801",
+        "code": "ARB-07MD801",
+        "alberta_station_id": "07MD801",
         "name": "Fort Chipewyan",
         "latitude": 58.75,
         "longitude": -111.116667,
@@ -11573,7 +11732,8 @@
         ]
       },
       "properties": {
-        "code": "05DA807",
+        "code": "ARB-05DA807",
+        "alberta_station_id": "05DA807",
         "name": "Whiterabbit Creek",
         "latitude": 51.9816683,
         "longitude": -116.168977,
@@ -11685,7 +11845,8 @@
         ]
       },
       "properties": {
-        "code": "07CA801",
+        "code": "ARB-07CA801",
+        "alberta_station_id": "07CA801",
         "name": "Grassland",
         "latitude": 54.82083333,
         "longitude": -112.759722,
@@ -11752,7 +11913,8 @@
         ]
       },
       "properties": {
-        "code": "05BL811",
+        "code": "ARB-05BL811",
+        "alberta_station_id": "05BL811",
         "name": "Lost Creek South",
         "latitude": 50.17041352,
         "longitude": -114.714372,
@@ -11864,7 +12026,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-027",
+        "code": "ARB-MSC-027",
+        "alberta_station_id": "MSC-027",
         "name": "Lac La Biche",
         "latitude": 54.76666667,
         "longitude": -112.016667,
@@ -11943,7 +12106,8 @@
         ]
       },
       "properties": {
-        "code": "4A40P",
+        "code": "ARB-4A40P",
+        "alberta_station_id": "4A40P",
         "name": "4A40P",
         "latitude": null,
         "longitude": null,
@@ -12000,7 +12164,8 @@
         ]
       },
       "properties": {
-        "code": "2C17",
+        "code": "ARB-2C17",
+        "alberta_station_id": "2C17",
         "name": "Thunder Creek",
         "latitude": 50.05,
         "longitude": -115.233333,
@@ -12069,7 +12234,8 @@
         ]
       },
       "properties": {
-        "code": "07BB805",
+        "code": "ARB-07BB805",
+        "alberta_station_id": "07BB805",
         "name": "Paddle 1",
         "latitude": 53.86666667,
         "longitude": -115.316667,
@@ -12136,7 +12302,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-021",
+        "code": "ARB-MSC-021",
+        "alberta_station_id": "MSC-021",
         "name": "Fort Vermilion",
         "latitude": 58.38333333,
         "longitude": -116.033333,
@@ -12215,7 +12382,8 @@
         ]
       },
       "properties": {
-        "code": "2A21P",
+        "code": "ARB-2A21P",
+        "alberta_station_id": "2A21P",
         "name": "Molson Creek",
         "latitude": 52.23333333,
         "longitude": -118.233333,
@@ -12306,7 +12474,8 @@
         ]
       },
       "properties": {
-        "code": "05FB801",
+        "code": "ARB-05FB801",
+        "alberta_station_id": "05FB801",
         "name": "Lougheed",
         "latitude": 52.67055556,
         "longitude": -111.555833,
@@ -12373,7 +12542,8 @@
         ]
       },
       "properties": {
-        "code": "05BA811",
+        "code": "ARB-05BA811",
+        "alberta_station_id": "05BA811",
         "name": "Bow Summit (Old)",
         "latitude": 51.7,
         "longitude": -116.466667,
@@ -12440,7 +12610,8 @@
         ]
       },
       "properties": {
-        "code": "AV-003",
+        "code": "ARB-AV-003",
+        "alberta_station_id": "AV-003",
         "name": "Coleman",
         "latitude": 52.09683,
         "longitude": -116.92611,
@@ -12497,7 +12668,8 @@
         ]
       },
       "properties": {
-        "code": "07HC804",
+        "code": "ARB-07HC804",
+        "alberta_station_id": "07HC804",
         "name": "Manning",
         "latitude": 56.97388889,
         "longitude": -117.450889,
@@ -12576,7 +12748,8 @@
         ]
       },
       "properties": {
-        "code": "05BA813",
+        "code": "ARB-05BA813",
+        "alberta_station_id": "05BA813",
         "name": "Bow Summit",
         "latitude": 51.71001333,
         "longitude": -116.478075,
@@ -12677,7 +12850,8 @@
         ]
       },
       "properties": {
-        "code": "05AA817",
+        "code": "ARB-05AA817",
+        "alberta_station_id": "05AA817",
         "name": "South Racehorse Creek",
         "latitude": 49.79013906,
         "longitude": -114.611994,
@@ -12789,7 +12963,8 @@
         ]
       },
       "properties": {
-        "code": "05EA802",
+        "code": "ARB-05EA802",
+        "alberta_station_id": "05EA802",
         "name": "Morinville",
         "latitude": 53.86305556,
         "longitude": -113.494167,
@@ -12856,7 +13031,8 @@
         ]
       },
       "properties": {
-        "code": "05BA815",
+        "code": "ARB-05BA815",
+        "alberta_station_id": "05BA815",
         "name": "Pika Run",
         "latitude": 51.46294444,
         "longitude": -116.117833,
@@ -12935,7 +13111,8 @@
         ]
       },
       "properties": {
-        "code": "05AH807",
+        "code": "ARB-05AH807",
+        "alberta_station_id": "05AH807",
         "name": "Mitchell Creek Upper",
         "latitude": 49.63430556,
         "longitude": -110.288083,
@@ -13002,7 +13179,8 @@
         ]
       },
       "properties": {
-        "code": "05FD801",
+        "code": "ARB-05FD801",
+        "alberta_station_id": "05FD801",
         "name": "Coronation #2",
         "latitude": 52.21019444,
         "longitude": -111.241583,
@@ -13069,7 +13247,8 @@
         ]
       },
       "properties": {
-        "code": "4A16",
+        "code": "ARB-4A16",
+        "alberta_station_id": "4A16",
         "name": "Morfee Mountain",
         "latitude": 55.41728,
         "longitude": -123.04177,
@@ -13137,7 +13316,8 @@
         ]
       },
       "properties": {
-        "code": "07FC801",
+        "code": "ARB-07FC801",
+        "alberta_station_id": "07FC801",
         "name": "Doig Lookout",
         "latitude": 56.96377778,
         "longitude": -119.527917,
@@ -13216,7 +13396,8 @@
         ]
       },
       "properties": {
-        "code": "05AA806",
+        "code": "ARB-05AA806",
+        "alberta_station_id": "05AA806",
         "name": "Racehorse Creek",
         "latitude": 49.82138889,
         "longitude": -114.621944,
@@ -13283,7 +13464,8 @@
         ]
       },
       "properties": {
-        "code": "05FC801",
+        "code": "ARB-05FC801",
+        "alberta_station_id": "05FC801",
         "name": "Gadsby",
         "latitude": 52.31805556,
         "longitude": -112.366667,
@@ -13350,7 +13532,8 @@
         ]
       },
       "properties": {
-        "code": "05AD803",
+        "code": "ARB-05AD803",
+        "alberta_station_id": "05AD803",
         "name": "Akamina Pass 2",
         "latitude": 49.02727778,
         "longitude": -114.052944,
@@ -13462,7 +13645,8 @@
         ]
       },
       "properties": {
-        "code": "05BL804",
+        "code": "ARB-05BL804",
+        "alberta_station_id": "05BL804",
         "name": "Wilkinson Summit Bush",
         "latitude": 50.19419524,
         "longitude": -114.555318,
@@ -13529,7 +13713,8 @@
         ]
       },
       "properties": {
-        "code": "05DF801",
+        "code": "ARB-05DF801",
+        "alberta_station_id": "05DF801",
         "name": "Leduc",
         "latitude": 53.29444444,
         "longitude": -113.658611,
@@ -13596,7 +13781,8 @@
         ]
       },
       "properties": {
-        "code": "07BH801",
+        "code": "ARB-07BH801",
+        "alberta_station_id": "07BH801",
         "name": "House Mountain Lookout",
         "latitude": 55.0473,
         "longitude": -115.6016,
@@ -13708,7 +13894,8 @@
         ]
       },
       "properties": {
-        "code": "05BA812",
+        "code": "ARB-05BA812",
+        "alberta_station_id": "05BA812",
         "name": "Larch Valley",
         "latitude": 51.32500667,
         "longitude": -116.206172,
@@ -13775,7 +13962,8 @@
         ]
       },
       "properties": {
-        "code": "07BB809",
+        "code": "ARB-07BB809",
+        "alberta_station_id": "07BB809",
         "name": "Mayerthorpe",
         "latitude": 53.85833333,
         "longitude": -115.355556,
@@ -13865,7 +14053,8 @@
         ]
       },
       "properties": {
-        "code": "05FE801",
+        "code": "ARB-05FE801",
+        "alberta_station_id": "05FE801",
         "name": "Mannville",
         "latitude": 53.16083333,
         "longitude": -111.138611,
@@ -13932,7 +14121,8 @@
         ]
       },
       "properties": {
-        "code": "07BF801",
+        "code": "ARB-07BF801",
+        "alberta_station_id": "07BF801",
         "name": "High Prairie",
         "latitude": 55.4,
         "longitude": -116.45,
@@ -13999,7 +14189,8 @@
         ]
       },
       "properties": {
-        "code": "07CE801",
+        "code": "ARB-07CE801",
+        "alberta_station_id": "07CE801",
         "name": "Gordon Lake Lookout",
         "latitude": 56.61944444,
         "longitude": -110.494444,
@@ -14111,7 +14302,8 @@
         ]
       },
       "properties": {
-        "code": "2C14P",
+        "code": "ARB-2C14P",
+        "alberta_station_id": "2C14P",
         "name": "Floe Lake",
         "latitude": 51.05,
         "longitude": -116.133333,
@@ -14202,7 +14394,8 @@
         ]
       },
       "properties": {
-        "code": "2A01A",
+        "code": "ARB-2A01A",
+        "alberta_station_id": "2A01A",
         "name": "Canoe River",
         "latitude": 52.78333333,
         "longitude": -119.283333,
@@ -14271,7 +14464,8 @@
         ]
       },
       "properties": {
-        "code": "13A05",
+        "code": "ARB-13A05",
+        "alberta_station_id": "13A05",
         "name": "Marias Pass",
         "latitude": 48.31666667,
         "longitude": -113.35,
@@ -14340,7 +14534,8 @@
         ]
       },
       "properties": {
-        "code": "07BJ805",
+        "code": "ARB-07BJ805",
+        "alberta_station_id": "07BJ805",
         "name": "Kinuso",
         "latitude": 55.2275,
         "longitude": -115.383611,
@@ -14407,7 +14602,8 @@
         ]
       },
       "properties": {
-        "code": "05BJ805",
+        "code": "ARB-05BJ805",
+        "alberta_station_id": "05BJ805",
         "name": "Little Elbow Summit",
         "latitude": 50.70548667,
         "longitude": -114.990015,
@@ -14508,7 +14704,8 @@
         ]
       },
       "properties": {
-        "code": "05EA803",
+        "code": "ARB-05EA803",
+        "alberta_station_id": "05EA803",
         "name": "Onoway",
         "latitude": 53.71722222,
         "longitude": -114.172778,
@@ -14575,7 +14772,8 @@
         ]
       },
       "properties": {
-        "code": "05AA809",
+        "code": "ARB-05AA809",
+        "alberta_station_id": "05AA809",
         "name": "Gardiner Creek",
         "latitude": 49.35994106,
         "longitude": -114.518235,
@@ -14687,7 +14885,8 @@
         ]
       },
       "properties": {
-        "code": "1A01P",
+        "code": "ARB-1A01P",
+        "alberta_station_id": "1A01P",
         "name": "Yellowhead",
         "latitude": 52.91,
         "longitude": -118.55,
@@ -14800,7 +14999,8 @@
         ]
       },
       "properties": {
-        "code": "4A18P",
+        "code": "ARB-4A18P",
+        "alberta_station_id": "4A18P",
         "name": "Mount Sheba",
         "latitude": 54.53333333,
         "longitude": -121.8,
@@ -14913,7 +15113,8 @@
         ]
       },
       "properties": {
-        "code": "4A25",
+        "code": "ARB-4A25",
+        "alberta_station_id": "4A25",
         "name": "Fort St. John",
         "latitude": 56.25,
         "longitude": -120.716667,
@@ -14982,7 +15183,8 @@
         ]
       },
       "properties": {
-        "code": "4A33P",
+        "code": "ARB-4A33P",
+        "alberta_station_id": "4A33P",
         "name": "4A33P",
         "latitude": null,
         "longitude": null,
@@ -15072,7 +15274,8 @@
         ]
       },
       "properties": {
-        "code": "05DD803",
+        "code": "ARB-05DD803",
+        "alberta_station_id": "05DD803",
         "name": "Job Lake",
         "latitude": 52.36777778,
         "longitude": -116.86,
@@ -15139,7 +15342,8 @@
         ]
       },
       "properties": {
-        "code": "4A13P",
+        "code": "ARB-4A13P",
+        "alberta_station_id": "4A13P",
         "name": "4A13P",
         "latitude": null,
         "longitude": null,
@@ -15229,7 +15433,8 @@
         ]
       },
       "properties": {
-        "code": "05AE812",
+        "code": "ARB-05AE812",
+        "alberta_station_id": "05AE812",
         "name": "Lee Creek \"E\"",
         "latitude": 49.01666667,
         "longitude": -113.65,
@@ -15296,7 +15501,8 @@
         ]
       },
       "properties": {
-        "code": "05AE813",
+        "code": "ARB-05AE813",
+        "alberta_station_id": "05AE813",
         "name": "Lee Creek \"F\"",
         "latitude": 49.05,
         "longitude": -113.483333,
@@ -15363,7 +15569,8 @@
         ]
       },
       "properties": {
-        "code": "AV-004",
+        "code": "ARB-AV-004",
+        "alberta_station_id": "AV-004",
         "name": "Malgine",
         "latitude": 52.7244,
         "longitude": -117.649567,
@@ -15420,7 +15627,8 @@
         ]
       },
       "properties": {
-        "code": "05AE816",
+        "code": "ARB-05AE816",
+        "alberta_station_id": "05AE816",
         "name": "Lee Creek \"J\"",
         "latitude": 48.98333333,
         "longitude": -113.6,
@@ -15488,7 +15696,8 @@
         ]
       },
       "properties": {
-        "code": "05DC802",
+        "code": "ARB-05DC802",
+        "alberta_station_id": "05DC802",
         "name": "Crimson Lake",
         "latitude": 52.4225,
         "longitude": -115.022778,
@@ -15555,7 +15764,8 @@
         ]
       },
       "properties": {
-        "code": "07GF808",
+        "code": "ARB-07GF808",
+        "alberta_station_id": "07GF808",
         "name": "Spring Creek #2",
         "latitude": 54.917,
         "longitude": -117.817,
@@ -15622,7 +15832,8 @@
         ]
       },
       "properties": {
-        "code": "05CA806",
+        "code": "ARB-05CA806",
+        "alberta_station_id": "05CA806",
         "name": "McConnell Creek",
         "latitude": 51.69537333,
         "longitude": -115.983688,
@@ -15689,7 +15900,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-006",
+        "code": "ARB-Merchant-006",
+        "alberta_station_id": "Merchant-006",
         "name": "Edmonton International",
         "latitude": 53.32,
         "longitude": -113.58,
@@ -15746,7 +15958,8 @@
         ]
       },
       "properties": {
-        "code": "07BB814",
+        "code": "ARB-07BB814",
+        "alberta_station_id": "07BB814",
         "name": "Twin Lakes",
         "latitude": 54.05888889,
         "longitude": -114.794722,
@@ -15858,7 +16071,8 @@
         ]
       },
       "properties": {
-        "code": "05CB801",
+        "code": "ARB-05CB801",
+        "alberta_station_id": "05CB801",
         "name": "Sundre",
         "latitude": 51.78333333,
         "longitude": -114.516667,
@@ -15925,7 +16139,8 @@
         ]
       },
       "properties": {
-        "code": "14A06",
+        "code": "ARB-14A06",
+        "alberta_station_id": "14A06",
         "name": "Kishenehn",
         "latitude": 48.96666667,
         "longitude": -114.416667,
@@ -15994,7 +16209,8 @@
         ]
       },
       "properties": {
-        "code": "07FD803",
+        "code": "ARB-07FD803",
+        "alberta_station_id": "07FD803",
         "name": "Rycroft",
         "latitude": 55.7,
         "longitude": -118.733333,
@@ -16061,7 +16277,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-028",
+        "code": "ARB-Merchant-028",
+        "alberta_station_id": "Merchant-028",
         "name": "Rocky Mtn House",
         "latitude": 52.43333333,
         "longitude": -114.916667,
@@ -16118,7 +16335,8 @@
         ]
       },
       "properties": {
-        "code": "06AC801",
+        "code": "ARB-06AC801",
+        "alberta_station_id": "06AC801",
         "name": "Bonnyville",
         "latitude": 54.50111111,
         "longitude": -110.665,
@@ -16185,7 +16403,8 @@
         ]
       },
       "properties": {
-        "code": "05FD802",
+        "code": "ARB-05FD802",
+        "alberta_station_id": "05FD802",
         "name": "Wainwright",
         "latitude": 52.77222222,
         "longitude": -110.6075,
@@ -16252,7 +16471,8 @@
         ]
       },
       "properties": {
-        "code": "AV-015",
+        "code": "ARB-AV-015",
+        "alberta_station_id": "AV-015",
         "name": "East End of Rundle",
         "latitude": 51.07323,
         "longitude": -115.40978,
@@ -16309,7 +16529,8 @@
         ]
       },
       "properties": {
-        "code": "05AE811",
+        "code": "ARB-05AE811",
+        "alberta_station_id": "05AE811",
         "name": "Lee Creek \"D\"",
         "latitude": 49.01666667,
         "longitude": -113.616667,
@@ -16376,7 +16597,8 @@
         ]
       },
       "properties": {
-        "code": "05AB814",
+        "code": "ARB-05AB814",
+        "alberta_station_id": "05AB814",
         "name": "Sentinel Peak",
         "latitude": 50.2526,
         "longitude": -114.465178,
@@ -16488,7 +16710,8 @@
         ]
       },
       "properties": {
-        "code": "07BA802",
+        "code": "ARB-07BA802",
+        "alberta_station_id": "07BA802",
         "name": "Lodgepole",
         "latitude": 53.49333333,
         "longitude": -115.426111,
@@ -16555,7 +16778,8 @@
         ]
       },
       "properties": {
-        "code": "4A42",
+        "code": "ARB-4A42",
+        "alberta_station_id": "4A42",
         "name": "Kemess Creek Upper",
         "latitude": 57.06171,
         "longitude": -126.76227,
@@ -16623,7 +16847,8 @@
         ]
       },
       "properties": {
-        "code": "07GF807",
+        "code": "ARB-07GF807",
+        "alberta_station_id": "07GF807",
         "name": "Spring Creek #1 (Moose)",
         "latitude": 54.95194444,
         "longitude": -117.750556,
@@ -16690,7 +16915,8 @@
         ]
       },
       "properties": {
-        "code": "05DA805",
+        "code": "ARB-05DA805",
+        "alberta_station_id": "05DA805",
         "name": "Golden Eagle",
         "latitude": 51.83055556,
         "longitude": -116.944444,
@@ -16757,7 +16983,8 @@
         ]
       },
       "properties": {
-        "code": "13A24",
+        "code": "ARB-13A24",
+        "alberta_station_id": "13A24",
         "name": "Emery Creek",
         "latitude": 48.43333333,
         "longitude": -113.933333,
@@ -16825,7 +17052,8 @@
         ]
       },
       "properties": {
-        "code": "2A03A",
+        "code": "ARB-2A03A",
+        "alberta_station_id": "2A03A",
         "name": "Field",
         "latitude": 51.38333333,
         "longitude": -116.516667,
@@ -16894,7 +17122,8 @@
         ]
       },
       "properties": {
-        "code": "07BC804",
+        "code": "ARB-07BC804",
+        "alberta_station_id": "07BC804",
         "name": "Dapp",
         "latitude": 54.32908333,
         "longitude": -113.934556,
@@ -16973,7 +17202,8 @@
         ]
       },
       "properties": {
-        "code": "AV-008",
+        "code": "ARB-AV-008",
+        "alberta_station_id": "AV-008",
         "name": "Bow Summit",
         "latitude": 51.709373,
         "longitude": -116.47904,
@@ -17030,7 +17260,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-052",
+        "code": "ARB-MSC-052",
+        "alberta_station_id": "MSC-052",
         "name": "Rocky Mountain House",
         "latitude": 52.43333333,
         "longitude": -114.916667,
@@ -17109,7 +17340,8 @@
         ]
       },
       "properties": {
-        "code": "05CC804",
+        "code": "ARB-05CC804",
+        "alberta_station_id": "05CC804",
         "name": "Leedale",
         "latitude": 52.55286111,
         "longitude": -114.472444,
@@ -17188,7 +17420,8 @@
         ]
       },
       "properties": {
-        "code": "HELE",
+        "code": "ARB-HELE",
+        "alberta_station_id": "HELE",
         "name": "Helen Creek",
         "latitude": 51.685,
         "longitude": -116.414,
@@ -17256,7 +17489,8 @@
         ]
       },
       "properties": {
-        "code": "07HF801",
+        "code": "ARB-07HF801",
+        "alberta_station_id": "07HF801",
         "name": "Fort Vermilion",
         "latitude": 58.38333433,
         "longitude": -116.033334,
@@ -17323,7 +17557,8 @@
         ]
       },
       "properties": {
-        "code": "05AE807",
+        "code": "ARB-05AE807",
+        "alberta_station_id": "05AE807",
         "name": "Ptarmigan Lake",
         "latitude": 48.82651771,
         "longitude": -113.71686,
@@ -17391,7 +17626,8 @@
         ]
       },
       "properties": {
-        "code": "1A17P",
+        "code": "ARB-1A17P",
+        "alberta_station_id": "1A17P",
         "name": "Revolution Creek",
         "latitude": 53.78333333,
         "longitude": -120.366667,
@@ -17482,7 +17718,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-001",
+        "code": "ARB-Merchant-001",
+        "alberta_station_id": "Merchant-001",
         "name": "Banff",
         "latitude": 51.19,
         "longitude": -115.55,
@@ -17539,7 +17776,8 @@
         ]
       },
       "properties": {
-        "code": "4A04P",
+        "code": "ARB-4A04P",
+        "alberta_station_id": "4A04P",
         "name": "4A04P",
         "latitude": null,
         "longitude": null,
@@ -17629,7 +17867,8 @@
         ]
       },
       "properties": {
-        "code": "05FA801",
+        "code": "ARB-05FA801",
+        "alberta_station_id": "05FA801",
         "name": "Wetaskiwin",
         "latitude": 52.98777778,
         "longitude": -113.630833,
@@ -17696,7 +17935,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-049",
+        "code": "ARB-MSC-049",
+        "alberta_station_id": "MSC-049",
         "name": "Waterton Park Gate",
         "latitude": 49.13333333,
         "longitude": -113.8,
@@ -17775,7 +18015,8 @@
         ]
       },
       "properties": {
-        "code": "07HC801",
+        "code": "ARB-07HC801",
+        "alberta_station_id": "07HC801",
         "name": "North Star",
         "latitude": 56.86666667,
         "longitude": -117.633333,
@@ -17842,7 +18083,8 @@
         ]
       },
       "properties": {
-        "code": "05AH808",
+        "code": "ARB-05AH808",
+        "alberta_station_id": "05AH808",
         "name": "Ross Creek Upper",
         "latitude": 49.66452778,
         "longitude": -110.237583,
@@ -17909,7 +18151,8 @@
         ]
       },
       "properties": {
-        "code": "2A32P",
+        "code": "ARB-2A32P",
+        "alberta_station_id": "2A32P",
         "name": "Wildcat Cr. Mistaya Lodge",
         "latitude": 51.7,
         "longitude": -116.633333,
@@ -17988,7 +18231,8 @@
         ]
       },
       "properties": {
-        "code": "05BA806",
+        "code": "ARB-05BA806",
+        "alberta_station_id": "05BA806",
         "name": "Mirror Lake",
         "latitude": 51.416618,
         "longitude": -116.238277,
@@ -18055,7 +18299,8 @@
         ]
       },
       "properties": {
-        "code": "13A27S",
+        "code": "ARB-13A27S",
+        "alberta_station_id": "13A27S",
         "name": "Many Glacier",
         "latitude": 48.797,
         "longitude": -113.67,
@@ -18146,7 +18391,8 @@
         ]
       },
       "properties": {
-        "code": "4C05",
+        "code": "ARB-4C05",
+        "alberta_station_id": "4C05",
         "name": "Fort Nelson Airport",
         "latitude": 58.85,
         "longitude": -122.566667,
@@ -18215,7 +18461,8 @@
         ]
       },
       "properties": {
-        "code": "4A12P",
+        "code": "ARB-4A12P",
+        "alberta_station_id": "4A12P",
         "name": "4A12P",
         "latitude": null,
         "longitude": null,
@@ -18305,7 +18552,8 @@
         ]
       },
       "properties": {
-        "code": "4A03P",
+        "code": "ARB-4A03P",
+        "alberta_station_id": "4A03P",
         "name": "4A03P",
         "latitude": null,
         "longitude": null,
@@ -18395,7 +18643,8 @@
         ]
       },
       "properties": {
-        "code": "4A35P",
+        "code": "ARB-4A35P",
+        "alberta_station_id": "4A35P",
         "name": "Germansen Landing",
         "latitude": 55.783333,
         "longitude": -124.7,
@@ -18452,7 +18701,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-025",
+        "code": "ARB-Merchant-025",
+        "alberta_station_id": "Merchant-025",
         "name": "Pincher Creek",
         "latitude": 49.51666667,
         "longitude": -114.0,
@@ -18509,7 +18759,8 @@
         ]
       },
       "properties": {
-        "code": "1A18",
+        "code": "ARB-1A18",
+        "alberta_station_id": "1A18",
         "name": "Holmes River",
         "latitude": 53.26666667,
         "longitude": -119.466667,
@@ -18577,7 +18828,8 @@
         ]
       },
       "properties": {
-        "code": "AV-006",
+        "code": "ARB-AV-006",
+        "alberta_station_id": "AV-006",
         "name": "Windy",
         "latitude": 51.5397,
         "longitude": -115.7278,
@@ -18634,7 +18886,8 @@
         ]
       },
       "properties": {
-        "code": "07AC801",
+        "code": "ARB-07AC801",
+        "alberta_station_id": "07AC801",
         "name": "Hinton",
         "latitude": 53.55388889,
         "longitude": -117.9225,
@@ -18701,7 +18954,8 @@
         ]
       },
       "properties": {
-        "code": "07BC802",
+        "code": "ARB-07BC802",
+        "alberta_station_id": "07BC802",
         "name": "Barrhead North",
         "latitude": 54.28361111,
         "longitude": -114.370278,
@@ -18768,7 +19022,8 @@
         ]
       },
       "properties": {
-        "code": "07FD801",
+        "code": "ARB-07FD801",
+        "alberta_station_id": "07FD801",
         "name": "Eureka River",
         "latitude": 56.51666667,
         "longitude": -118.75,
@@ -18835,7 +19090,8 @@
         ]
       },
       "properties": {
-        "code": "05AA803",
+        "code": "ARB-05AA803",
+        "alberta_station_id": "05AA803",
         "name": "Allison Pass",
         "latitude": 49.74526771,
         "longitude": -114.61221,
@@ -18902,7 +19158,8 @@
         ]
       },
       "properties": {
-        "code": "05ED803",
+        "code": "ARB-05ED803",
+        "alberta_station_id": "05ED803",
         "name": "Lindbergh",
         "latitude": 53.943,
         "longitude": -110.578944,
@@ -18981,7 +19238,8 @@
         ]
       },
       "properties": {
-        "code": "07GF810",
+        "code": "ARB-07GF810",
+        "alberta_station_id": "07GF810",
         "name": "Spring Creek #4",
         "latitude": 54.917,
         "longitude": -117.683,
@@ -19048,7 +19306,8 @@
         ]
       },
       "properties": {
-        "code": "AV-011",
+        "code": "ARB-AV-011",
+        "alberta_station_id": "AV-011",
         "name": "Aster Lake",
         "latitude": 50.578617,
         "longitude": -115.19352,
@@ -19105,7 +19364,8 @@
         ]
       },
       "properties": {
-        "code": "07GG802",
+        "code": "ARB-07GG802",
+        "alberta_station_id": "07GG802",
         "name": "Little Smoky-Waskahigan",
         "latitude": 54.74990278,
         "longitude": -117.198778,
@@ -19172,7 +19432,8 @@
         ]
       },
       "properties": {
-        "code": "05AE806",
+        "code": "ARB-05AE806",
+        "alberta_station_id": "05AE806",
         "name": "Mt. Allen",
         "latitude": 48.75982839,
         "longitude": -113.693836,
@@ -19240,7 +19501,8 @@
         ]
       },
       "properties": {
-        "code": "13A24S",
+        "code": "ARB-13A24S",
+        "alberta_station_id": "13A24S",
         "name": "Emery Creek",
         "latitude": 48.43,
         "longitude": -113.93,
@@ -19331,7 +19593,8 @@
         ]
       },
       "properties": {
-        "code": "14A12",
+        "code": "ARB-14A12",
+        "alberta_station_id": "14A12",
         "name": "Stahl Peak",
         "latitude": 48.91666667,
         "longitude": -114.866667,
@@ -19399,7 +19662,8 @@
         ]
       },
       "properties": {
-        "code": "05AD805",
+        "code": "ARB-05AD805",
+        "alberta_station_id": "05AD805",
         "name": "Waterton Lakes Red Rock",
         "latitude": 49.13194444,
         "longitude": -114.026389,
@@ -19478,7 +19742,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-024",
+        "code": "ARB-MSC-024",
+        "alberta_station_id": "MSC-024",
         "name": "Hendrickson Creek",
         "latitude": 53.8,
         "longitude": -118.45,
@@ -19557,7 +19822,8 @@
         ]
       },
       "properties": {
-        "code": "05CE802",
+        "code": "ARB-05CE802",
+        "alberta_station_id": "05CE802",
         "name": "Kneehill Valley",
         "latitude": 51.99777778,
         "longitude": -113.735,
@@ -19624,7 +19890,8 @@
         ]
       },
       "properties": {
-        "code": "4A09P",
+        "code": "ARB-4A09P",
+        "alberta_station_id": "4A09P",
         "name": "4A09P",
         "latitude": null,
         "longitude": null,
@@ -19714,7 +19981,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-029",
+        "code": "ARB-MSC-029",
+        "alberta_station_id": "MSC-029",
         "name": "Medicine Hat",
         "latitude": 50.01666667,
         "longitude": -110.716667,
@@ -19793,7 +20061,8 @@
         ]
       },
       "properties": {
-        "code": "05AE805",
+        "code": "ARB-05AE805",
+        "alberta_station_id": "05AE805",
         "name": "Peigan Pass",
         "latitude": 48.76509605,
         "longitude": -113.690126,
@@ -19861,7 +20130,8 @@
         ]
       },
       "properties": {
-        "code": "05BL805",
+        "code": "ARB-05BL805",
+        "alberta_station_id": "05BL805",
         "name": "Wilkinson Summit Open",
         "latitude": 50.1938095,
         "longitude": -114.555447,
@@ -19928,7 +20198,8 @@
         ]
       },
       "properties": {
-        "code": "05BB803",
+        "code": "ARB-05BB803",
+        "alberta_station_id": "05BB803",
         "name": "Sunshine Village",
         "latitude": 51.077453,
         "longitude": -115.781592,
@@ -20040,7 +20311,8 @@
         ]
       },
       "properties": {
-        "code": "2C06",
+        "code": "ARB-2C06",
+        "alberta_station_id": "2C06",
         "name": "Upper Elk River",
         "latitude": 49.98333333,
         "longitude": -114.916667,
@@ -20108,7 +20380,8 @@
         ]
       },
       "properties": {
-        "code": "AV-002",
+        "code": "ARB-AV-002",
+        "alberta_station_id": "AV-002",
         "name": "Big Bend",
         "latitude": 52.17794,
         "longitude": -117.07361,
@@ -20165,7 +20438,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-035",
+        "code": "ARB-MSC-035",
+        "alberta_station_id": "MSC-035",
         "name": "Prairie River Cabin",
         "latitude": 58.45,
         "longitude": -111.666667,
@@ -20222,7 +20496,8 @@
         ]
       },
       "properties": {
-        "code": "4A24",
+        "code": "ARB-4A24",
+        "alberta_station_id": "4A24",
         "name": "Wonowon",
         "latitude": 56.73333333,
         "longitude": -121.8,
@@ -20290,7 +20565,8 @@
         ]
       },
       "properties": {
-        "code": "05CA805",
+        "code": "ARB-05CA805",
+        "alberta_station_id": "05CA805",
         "name": "Skoki Lodge",
         "latitude": 51.542155,
         "longitude": -116.06097,
@@ -20391,7 +20667,8 @@
         ]
       },
       "properties": {
-        "code": "07AD801",
+        "code": "ARB-07AD801",
+        "alberta_station_id": "07AD801",
         "name": "Obed",
         "latitude": 53.56472222,
         "longitude": -117.205556,
@@ -20458,7 +20735,8 @@
         ]
       },
       "properties": {
-        "code": "07BC801",
+        "code": "ARB-07BC801",
+        "alberta_station_id": "07BC801",
         "name": "Westlock",
         "latitude": 54.00694444,
         "longitude": -113.989722,
@@ -20525,7 +20803,8 @@
         ]
       },
       "properties": {
-        "code": "1A15P",
+        "code": "ARB-1A15P",
+        "alberta_station_id": "1A15P",
         "name": "Knudsen Lake",
         "latitude": 54.3,
         "longitude": -120.766667,
@@ -20616,7 +20895,8 @@
         ]
       },
       "properties": {
-        "code": "13A27",
+        "code": "ARB-13A27",
+        "alberta_station_id": "13A27",
         "name": "Many Glacier",
         "latitude": 48.8,
         "longitude": -113.666667,
@@ -20684,7 +20964,8 @@
         ]
       },
       "properties": {
-        "code": "MSC-047",
+        "code": "ARB-MSC-047",
+        "alberta_station_id": "MSC-047",
         "name": "Wainwright",
         "latitude": 52.83333333,
         "longitude": -111.1,
@@ -20763,7 +21044,8 @@
         ]
       },
       "properties": {
-        "code": "RAMP-005",
+        "code": "ARB-RAMP-005",
+        "alberta_station_id": "RAMP-005",
         "name": "Surmont C5 Climate Station",
         "latitude": 56.223558,
         "longitude": -110.959092,
@@ -20842,7 +21124,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-016",
+        "code": "ARB-Merchant-016",
+        "alberta_station_id": "Merchant-016",
         "name": "Grand Prairie",
         "latitude": 55.18333333,
         "longitude": -118.883333,
@@ -20899,7 +21182,8 @@
         ]
       },
       "properties": {
-        "code": "07AG803",
+        "code": "ARB-07AG803",
+        "alberta_station_id": "07AG803",
         "name": "Whitecourt",
         "latitude": 54.07027778,
         "longitude": -115.554444,
@@ -20966,7 +21250,8 @@
         ]
       },
       "properties": {
-        "code": "05AE820",
+        "code": "ARB-05AE820",
+        "alberta_station_id": "05AE820",
         "name": "Milk River Ridge",
         "latitude": 49.2252,
         "longitude": -112.8472,
@@ -21045,7 +21330,8 @@
         ]
       },
       "properties": {
-        "code": "Merchant-018",
+        "code": "ARB-Merchant-018",
+        "alberta_station_id": "Merchant-018",
         "name": "Jasper Warden",
         "latitude": 52.9333,
         "longitude": -118.3,
@@ -21102,7 +21388,8 @@
         ]
       },
       "properties": {
-        "code": "4A38P",
+        "code": "ARB-4A38P",
+        "alberta_station_id": "4A38P",
         "name": "4A38P",
         "latitude": null,
         "longitude": null,
@@ -21192,7 +21479,8 @@
         ]
       },
       "properties": {
-        "code": "05BF824",
+        "code": "ARB-05BF824",
+        "alberta_station_id": "05BF824",
         "name": "Three Isle Lake",
         "latitude": 50.63259023,
         "longitude": -115.28129,
@@ -21304,7 +21592,8 @@
         ]
       },
       "properties": {
-        "code": "07GH801",
+        "code": "ARB-07GH801",
+        "alberta_station_id": "07GH801",
         "name": "Sturgeon Heights",
         "latitude": 55.08333333,
         "longitude": -117.683333,
@@ -21371,7 +21660,8 @@
         ]
       },
       "properties": {
-        "code": "05CA803",
+        "code": "ARB-05CA803",
+        "alberta_station_id": "05CA803",
         "name": "James River",
         "latitude": 51.9,
         "longitude": -115.0,
@@ -21438,7 +21728,8 @@
         ]
       },
       "properties": {
-        "code": "07JF801",
+        "code": "ARB-07JF801",
+        "alberta_station_id": "07JF801",
         "name": "High Level",
         "latitude": 58.51666667,
         "longitude": -117.183333,

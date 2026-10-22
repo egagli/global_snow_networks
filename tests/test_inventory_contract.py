@@ -7,6 +7,7 @@ inventory of ALL stations (periodic sites included) on the universal
 schema — that must hold on every commit.
 """
 
+from collections import Counter
 import json
 from pathlib import Path
 
@@ -99,6 +100,23 @@ def test_no_duplicate_client_code_pairs(features):
         key = (p.get("client"), p.get("code"))
         assert key not in seen, f"duplicate feature {key}"
         seen.add(key)
+
+
+def test_codes_are_unique_across_clients(features):
+    """``code`` names the station's CSV (``data/stations/<code>.csv``) and the
+    Zarr ``station`` label, so it must be unique across *all* clients, not
+    only within one.  On 2026-10-22 34 Alberta mirrors reused DataBC's
+    codes: the Zarr build failed on duplicate labels and finalize stamped
+    both features from one CSV."""
+    counts = Counter(f["properties"].get("code") for f in features)
+    dups = sorted(c for c, n in counts.items() if n > 1)
+    assert not dups, f"{len(dups)} codes shared by several features, e.g. {dups[:10]}"
+
+
+def test_each_csv_maps_to_exactly_one_feature(features):
+    counts = Counter(f["properties"].get("code") for f in features)
+    bad = sorted(p.stem for p in DATA_DIR.glob("*.csv") if counts[p.stem] != 1)
+    assert not bad, f"{len(bad)} CSVs without exactly one feature, e.g. {bad[:10]}"
 
 
 def test_coordinates_valid(features):

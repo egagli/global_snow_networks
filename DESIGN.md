@@ -282,8 +282,11 @@ CSV, which is how upstream revisions reach the archive (§6.6). Because a
 truncated-but-non-empty upstream response would otherwise delete history,
 a replacement is **refused** — the old CSV kept, the feature's dates and
 probe verdict untouched, a `refused_shrink` row logged — when it loses
-more than max(30, 5 %) of the old file's populated rows (either column
-non-null) or moves the earliest populated date more than 30 days later.
+more than max(30, 5 %) of the old file's values **in either column**, or
+moves either column's earliest value more than 30 days later. Each column is
+checked on its own: on 2026-10-22 an upstream outage blanked 81 DataBC
+depth histories while SWE kept every row populated, which a count of rows
+with either column non-null did not see.
 `--allow-shrink <code>|all` overrides it once the loss is confirmed real.
 
 **Rolling-window sources are merged, not replaced.** A source that serves
@@ -312,8 +315,14 @@ map and in the Zarr store), `upstream_status: "missing"`,
 If a station reappears upstream, the fresh feature wins and the markers
 go. A client absent from a rebuild altogether (skipped, or an outage with
 no previous per-client file to fall back on) is an outage, not a
-retirement: its previous features are carried forward unmarked. The
-contract test fails on any CSV without an inventory feature.
+retirement: its previous features are carried forward unmarked. The same
+holds for one whole source of a client built from several (an SLF dataset,
+a Yukon station type): if every station of that source is absent at once,
+the source failed and its stations are carried forward unmarked. On
+2026-10-22 SLF's IMIS and study-plot lists returned 503 and Yukon's
+continuous-series listing failed, and 17 Yukon stations were wrongly marked
+missing. The contract test fails on any CSV without an inventory feature,
+and on a `code` shared by two features.
 
 ### 6.5 Chunked archive (`archive/*.zarr` in the Pages artefact)
 

@@ -483,6 +483,37 @@ def test_absent_client_is_an_outage_not_a_retirement(tmp_path):
     assert is_fetch_candidate(y)
 
 
+def test_absent_source_of_a_multi_source_client_is_an_outage(tmp_path):
+    """2026-10-22: SLF's IMIS and study-plot lists returned 503 (GCOS
+    built), and Yukon's continuous-series listing failed (courses built).
+    Those stations were outages, not retirements."""
+    prev = _write_prev(tmp_path, [
+        _feat("slf", "SLF-IMIS-WFJ2", slf_dataset="imis", upstream_status="listed"),
+        _feat("slf", "SLF-SP-5WJ0", slf_dataset="study_plot", upstream_status="listed"),
+        _feat("slf", "SLF-GCOS-WFJ", slf_dataset="gcos"),
+        _feat("yukon", "09AA-M1", station_type="AWS", upstream_status="listed"),
+        _feat("yukon", "09AA-SC01", station_type="SC"),
+    ])
+    feats = [
+        _feat("slf", "SLF-GCOS-WFJ", slf_dataset="gcos"),
+        _feat("yukon", "09AA-SC01", station_type="SC"),
+    ]
+    assert retain_vanished_stations(prev, feats, "2026-10-22") == 0
+    by_code = {f["properties"]["code"]: f["properties"] for f in feats}
+    for code in ("SLF-IMIS-WFJ2", "SLF-SP-5WJ0", "09AA-M1"):
+        assert by_code[code]["upstream_status"] == "listed", code
+        assert by_code[code].get("missing_upstream_since") is None
+
+
+def test_one_station_gone_from_a_present_source_is_still_missing(tmp_path):
+    prev = _write_prev(tmp_path, [
+        _feat("slf", "SLF-IMIS-A", slf_dataset="imis"),
+        _feat("slf", "SLF-IMIS-B", slf_dataset="imis"),
+    ])
+    feats = [_feat("slf", "SLF-IMIS-B", slf_dataset="imis")]
+    assert retain_vanished_stations(prev, feats, "2026-10-22") == 1
+
+
 def test_retain_without_previous_inventory_is_noop(tmp_path):
     feats = [_feat("awdb", "B")]
     assert retain_vanished_stations(tmp_path / "nope.json", feats, "x") == 0
@@ -521,6 +552,39 @@ def test_shrink_guard_ignores_blank_rows():
     old = _series(100)
     new = old.copy()
     new.loc[:49, "wteq_cm"] = None   # same rows, half of them blank now
+    assert shrink_reason(old, new) is not None
+
+
+def _two_column_series(n, start="2000-01-01"):
+    dates = pd.date_range(start, periods=n, freq="D").strftime("%Y-%m-%d")
+    return pd.DataFrame({"date": dates, "wteq_cm": [10.0] * n, "snwd_cm": [50.0] * n})
+
+
+def test_shrink_guard_one_column_blanked_other_intact():
+    # The 2026-10-22 DataBC failure: the depth archive returned 503, so the
+    # new payload kept every SWE value but only this season's depth.
+    old = _two_column_series(5_000)
+    new = old.copy()
+    new.loc[: 5_000 - 200 - 1, "snwd_cm"] = None
+    reason = shrink_reason(old, new)
+    assert reason is not None and reason.startswith("snwd_cm")
+
+
+def test_shrink_guard_one_column_start_shift():
+    old = _two_column_series(1_000)   # 50 values may go; the start may not move
+    new = old.copy()
+    new.loc[:39, "wteq_cm"] = None    # SWE now starts 40 days later
+    reason = shrink_reason(old, new)
+    assert reason is not None and reason.startswith("wteq_cm") and "40 days later" in reason
+
+
+def test_shrink_guard_per_column_threshold_is_that_columns_count():
+    # 5 % of the depth column, not of all populated rows
+    old = _two_column_series(10_000)
+    new = old.copy()
+    new.loc[10_000 - 500:, "snwd_cm"] = None        # loses exactly 5 % of depth
+    assert shrink_reason(old, new) is None
+    new.loc[10_000 - 501:, "snwd_cm"] = None        # one more
     assert shrink_reason(old, new) is not None
 
 
