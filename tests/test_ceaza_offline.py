@@ -7,7 +7,7 @@ periods are the ones the client documents for El Tapado and Llano de Las
 Liebres; no request to CEAZA-Met was made for these tests.
 """
 
-from datetime import date
+from datetime import date, timedelta
 
 import pandas as pd
 
@@ -20,6 +20,8 @@ from scripts.get_all_stations_data import (
     RefreshStats,
     RevisionLog,
     StationWriter,
+    ceaza_despike,
+    ceaza_request_windows,
     ceaza_sensor_plan,
     read_station_csv,
     refresh_ceaza,
@@ -133,11 +135,18 @@ def test_first_refresh_is_full_then_a_90_day_merge(tmp_path, monkeypatch):
     refresh_ceaza([(0, "CEAZA-TPF")], _writer(tmp_path, feats),
                   today=date(2026, 10, 21))
     assert _FakeClient.users == ["someone@example.org"]
-    assert {c["sensor"]: c["from"] for c in _FakeClient.calls} == {
+    first = {}
+    for c in _FakeClient.calls:
+        first[c["sensor"]] = min(first.get(c["sensor"], c["from"]), c["from"])
+    assert first == {
         "TPFANSHM31": "2018-03-01", "TPFSNOWD": "2011-05-01",
         "TPFSWE_K": "2014-04-01",
     }
     assert max(c["to"] for c in _FakeClient.calls) == "2026-10-20"
+    # CEAZA-Met allows at most one year per request.
+    for c in _FakeClient.calls:
+        span = date.fromisoformat(c["to"]) - date.fromisoformat(c["from"])
+        assert span < timedelta(days=365)
 
     # Second night: an archived station asks only for the last 90 days,
     # and the older history in the CSV is kept (merge).
@@ -152,3 +161,68 @@ def test_first_refresh_is_full_then_a_90_day_merge(tmp_path, monkeypatch):
     assert _FakeClient.calls[0]["from"] == "2026-07-22"
     csv = read_station_csv(tmp_path / "CEAZA-TPF.csv")
     assert csv["date"].iloc[0] == "2011-05-01" and csv["date"].iloc[-1] == "2026-10-20"
+
+
+def test_request_windows_cover_the_range_a_year_at_a_time():
+    wins = ceaza_request_windows("2011-05-01", "2026-10-20")
+    assert wins[0][0] == "2011-05-01" and wins[-1][1] == "2026-10-20"
+    for (b, e), (nb, _) in zip(wins, wins[1:]):
+        assert date.fromisoformat(nb) == date.fromisoformat(e) + timedelta(days=1)
+    assert all(
+        (date.fromisoformat(e) - date.fromisoformat(b)).days < 365 for b, e in wins
+    )
+    assert ceaza_request_windows("2026-10-20", "2026-10-20") == [
+        ("2026-10-20", "2026-10-20")
+    ]
+
+
+def _frame(depths, swe=None, start="2026-07-01"):
+    days = pd.date_range(start, periods=len(depths)).strftime("%Y-%m-%d")
+    return pd.DataFrame({"date": days,
+                         "wteq_cm": swe if swe is not None else [None] * len(depths),
+                         "snwd_cm": depths})
+
+
+def test_despike_drops_isolated_days_and_keeps_level_shifts():
+    # El Jote-like 13 m spike, and a 60 cm storm that stays.
+    out = ceaza_despike(_frame([40, 41, 1300, 42, 43, 103, 101, 100]))
+    assert out["snwd_cm"].isna().tolist() == [
+        False, False, True, False, False, False, False, False
+    ]
+    # Downward dropout (sensor reads ground) is a spike too.
+    out = ceaza_despike(_frame([80, 81, 2, 82, 83]))
+    assert pd.isna(out["snwd_cm"].iloc[2])
+    # SWE uses its own, tighter bound.
+    out = ceaza_despike(_frame([10] * 5, swe=[20, 21, 45, 22, 23]))
+    assert pd.isna(out["wteq_cm"].iloc[2]) and out["snwd_cm"].notna().all()
+
+
+def test_despike_does_not_judge_across_a_date_gap():
+    df = _frame([40, 41, 1300, 42])
+    df.loc[3, "date"] = "2026-07-10"          # neighbour is 7 days later
+    assert ceaza_despike(df)["snwd_cm"].iloc[2] == 1300
+
+
+def test_merge_night_despikes_a_spike_left_on_the_previous_edge(tmp_path, monkeypatch):
+    """Night 1 ended on a spike (no right neighbour yet); night 2 drops it."""
+    monkeypatch.setenv("CEAZA_USER", "someone@example.org")
+
+    class Client(_FakeClient):
+        def get_data(self, station_ids, variables, sensors, interval,
+                     begin_date, end_date):
+            if variables[0] != "ani_cm":
+                return []
+            return [{"station_id": "TPF", "date": "2026-10-20", "type": "snwd",
+                     "value": 50.0, "sensor": sensors[0]}]
+
+    monkeypatch.setattr(gasd, "CEAZAClient", Client)
+    Client.users, Client.calls = [], []
+    write_csv_atomically(tmp_path / "CEAZA-TPF.csv", _frame(
+        [48, 49, 900], start="2026-10-17"))
+    feats = [ceaza_station_to_feature(EL_TAPADO, TAPADO_SENSORS)]
+    refresh_ceaza([(0, "CEAZA-TPF")], _writer(tmp_path, feats),
+                  today=date(2026, 10, 21))
+    csv = read_station_csv(tmp_path / "CEAZA-TPF.csv").set_index("date")
+    assert pd.isna(csv.loc["2026-10-19", "snwd_cm"])
+    assert csv.loc["2026-10-17", "snwd_cm"] == 48
+    assert csv.loc["2026-10-20", "snwd_cm"] == 50

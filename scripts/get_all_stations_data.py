@@ -1414,14 +1414,63 @@ CEAZA_TYPE_CODES: dict[str, tuple[str, ...]] = {
     "snwd": ("ani_cm",),
 }
 # Nightly window once a station is archived: the data are raw logger
-# output that CEAZA does not revise, so the full record is fetched only
-# the first time (no CSV yet) and later nights merge the last 90 days in.
+# output that CEAZA only occasionally fixes by hand, so the full record is
+# fetched only the first time (no CSV yet) and later nights merge the last
+# 90 days in; an older hand fix is not picked up.
 # That keeps the nightly volume to what the registration e-mail states.
 CEAZA_LOOKBACK_DAYS = 90
+# CEAZA-Met allows registered users at most one year per request (e-mail
+# from its coordinator, 2026-10-23).  easysnowdata 0.3.3 splits daily
+# requests into 10-year windows, so the pipeline asks for one year at a time.
+CEAZA_MAX_REQUEST_DAYS = 365
+# Spike filter for CEAZA's raw daily values (pipeline layer, as for SNIH):
+# a day that leaves BOTH neighbouring days by more than the bound, the same
+# way, is dropped; a level shift that persists is kept.  The service's own
+# coordinator advises reviewing the raw series, snow depth above all
+# (ultrasonic sensors; El Jote reached 13 m, under the client's 15 m cut).
+# Snowfall can add more than 50 cm in a day, but the next day does not lose
+# it all again; 15 cm of SWE matches SNIH's daily bound.
+CEAZA_DAILY_SPIKE_CM = {"snwd_cm": 50.0, "wteq_cm": 15.0}
 
 
 def ceaza_user() -> str | None:
     return os.environ.get(CEAZA_USER_ENV) or None
+
+
+def ceaza_request_windows(lo: str, hi: str) -> list[tuple[str, str]]:
+    """Split ``[lo, hi]`` into windows of at most :data:`CEAZA_MAX_REQUEST_DAYS`."""
+    out: list[tuple[str, str]] = []
+    start, last = date.fromisoformat(lo), date.fromisoformat(hi)
+    while start <= last:
+        stop = min(start + timedelta(days=CEAZA_MAX_REQUEST_DAYS - 1), last)
+        out.append((start.isoformat(), stop.isoformat()))
+        start = stop + timedelta(days=1)
+    return out
+
+
+def ceaza_despike(df: pd.DataFrame) -> pd.DataFrame:
+    """Drop isolated one-day spikes from a CEAZA station frame.
+
+    Neighbours are the adjacent *dates*: a gap in the record breaks the
+    comparison, so a value next to a missing day is never judged.
+    """
+    out = df.sort_values("date").reset_index(drop=True).copy()
+    dates = pd.to_datetime(out["date"])
+    consecutive = dates.diff().dt.days.eq(1)
+    for col, bound in CEAZA_DAILY_SPIKE_CM.items():
+        vals = [None if pd.isna(v) else float(v) for v in out[col]]
+        # Break the series at date gaps so neighbours are adjacent days.
+        runs: list[list[int]] = []
+        for i in range(len(vals)):
+            if i == 0 or not consecutive.iloc[i]:
+                runs.append([])
+            runs[-1].append(i)
+        for run in runs:
+            kept = _drop_isolated_spikes([vals[i] for i in run], bound)
+            for i, v in zip(run, kept):
+                vals[i] = v
+        out[col] = vals
+    return out
 
 
 def ceaza_sensor_plan(sensors: list[dict]) -> dict[str, list[dict]]:
@@ -1475,8 +1524,9 @@ def refresh_ceaza(
     Skipped, with one line, when ``CEAZA_USER`` is not set.
 
     Requests per run: 2 list requests (stations, sensors) plus one
-    ``GetSerieSensor`` per sensor segment that overlaps the window — per
-    10-year block on a first, full fetch.
+    ``GetSerieSensor`` per sensor segment and year that overlaps the
+    window (:data:`CEAZA_MAX_REQUEST_DAYS`).  Isolated daily spikes are
+    dropped (:func:`ceaza_despike`) from the whole merged series.
     """
     stats = writer.stats
     features = writer.features
@@ -1507,12 +1557,13 @@ def refresh_ceaza(
                     hi = min(seg["to"], end.isoformat())
                     if lo > hi:
                         continue
-                    for r in client.get_data(
-                        station_ids=[sid], variables=[seg["variable"]],
-                        sensors=[seg["sensor"]], interval="daily",
-                        begin_date=lo, end_date=hi,
-                    ):
-                        rows.append({**r, "type": vtype})
+                    for w_lo, w_hi in ceaza_request_windows(lo, hi):
+                        for r in client.get_data(
+                            station_ids=[sid], variables=[seg["variable"]],
+                            sensors=[seg["sensor"]], interval="daily",
+                            begin_date=w_lo, end_date=w_hi,
+                        ):
+                            rows.append({**r, "type": vtype})
         except CEAZAError as exc:
             stats.failed_batches += 1
             print(f"  [CEAZA] {code} FAILED ({exc})")
@@ -1520,7 +1571,16 @@ def refresh_ceaza(
         if rows:
             stats.fetched += 1
         df = _station_records_to_df(rows)
-        if writer.store(feat_idx, code, "ceaza", df, merge=archived):
+        if archived and not df.empty:
+            # Despike the merged series, not just the window: a spike on the
+            # window's edge is only judged once both neighbours exist, and
+            # in merge mode a blank would otherwise keep the archived spike.
+            old = read_station_csv(station_csv_path(writer.data_dir, code))
+            new = _as_numeric(df).set_index("date")
+            df = new.combine_first(old.set_index("date")).reset_index()
+        if not df.empty:
+            df = ceaza_despike(df)
+        if writer.store(feat_idx, code, "ceaza", df):
             updated += 1
     print(f"  [CEAZA] updated {updated} station CSVs")
 

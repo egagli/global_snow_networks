@@ -1094,19 +1094,32 @@ sensor and dates used for each variable.
 
 **Snow variables.** Depth `ani_cm`; SWE from `ae_mm` (mm ÷ 10), `ae_cm`, or
 snow weight `pnkg` (kg/m², which is mm of water, ÷ 10). The values are raw
-logger output, not quality controlled. The client nulls values outside
-0–15 m; negatives are nulled, not set to zero.
+logger output, not quality controlled; CEAZA-Met's coordinator advises
+reviewing them before use, snow depth above all (e-mail, 2026-10-23). The
+client nulls values outside 0–15 m; negatives are nulled, not set to zero.
 
-**Request volume.** A station's first refresh fetches its full record; after
-that, each night fetches the last 90 days and merges them in. CEAZA does not
-revise its raw data, so corrections older than 90 days are not picked up.
-Estimated from the client's documented sensor list (about 24 sensor periods
-in the plan, 10 stations reporting):
+**Spike filter (pipeline layer).** A day that leaves both neighbouring days
+by more than 50 cm of depth or 15 cm of SWE, in the same direction, is
+dropped (`CEAZA_DAILY_SPIKE_CM`); a level shift that persists, such as a
+storm, is kept, and a value next to a missing day is never judged. The
+filter runs over each station's whole merged series every night, so a spike
+on the last day of one night's window is dropped the next night, once its
+right-hand neighbour exists. Dropped values go to the revision log as
+`removed`.
+
+**Request volume.** CEAZA-Met allows registered users **at most one year
+per request** (e-mail from its coordinator, 2026-10-23), so every series
+request is split into one-year windows (`CEAZA_MAX_REQUEST_DAYS`). A
+station's first refresh fetches its full record; after that, each night
+fetches the last 90 days and merges them in. CEAZA occasionally fixes a
+series by hand; a fix older than 90 days is not picked up. Estimated from
+the client's documented sensor list (about 24 sensor periods in the plan,
+10 stations reporting):
 
 | | Requests | Volume |
 |---|---|---|
 | Nightly, steady state | about 16: station and sensor lists twice (inventory, then refresh), plus about 12 series | about 0.5 MB |
-| First run (backfill, once) | about 50 | about 13 MB |
+| First run (backfill, once) | about 150, one per sensor period and year | about 13 MB |
 
 **Links**
 - CEAZA-Met: https://www.ceazamet.cl/
