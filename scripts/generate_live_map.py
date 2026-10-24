@@ -21,7 +21,11 @@ from urllib import request
 
 import numpy as np
 import pandas as pd
-from easysnowdata.processing.wateryear import day_of_water_year, water_year
+from easysnowdata.processing.wateryear import (
+    day_of_water_year,
+    water_year,
+    water_year_start,
+)
 
 REPO_ROOT = Path(__file__).resolve().parent.parent
 
@@ -369,27 +373,45 @@ def _load_station_csv(csv_path: Path) -> pd.DataFrame | None:
     return out
 
 
+def station_hemisphere(lat) -> str:
+    """``"southern"`` for a station south of the equator, else ``"northern"``.
+
+    Water years follow the station's hemisphere (easysnowdata's
+    ``processing.wateryear``): 1 October–30 September named for the year
+    it ends in the north, 1 April–31 March named for the year it starts in
+    the south, so a southern snow season is not split across two years.
+    """
+    try:
+        return "southern" if float(lat) < 0 else "northern"
+    except (TypeError, ValueError):
+        return "northern"
+
+
 def process_station_from_csv(
     code: str,
     csv_path: Path,
     meta: dict,
-    today_dowy: int,
-    current_wy: int,
-    embed_wys: list[int],
+    today: pd.Timestamp,
+    n_past_wys: int = N_PAST_WYS,
 ) -> dict | None:
     df = _load_station_csv(csv_path)
     if df is None:
         return None
 
-    idx = df["time"]
-    months = idx.dt.month
-    years = idx.dt.year
-    wy_arr = np.where(months >= 10, years + 1, years)
-    wy_start_ts = pd.to_datetime({"year": wy_arr - 1, "month": 10, "day": 1})
-    dowy_arr = (idx - pd.DatetimeIndex(wy_start_ts)).dt.days + 1
+    # Every DOWY-indexed quantity below (medians, n-years, chart stats,
+    # embedded seasons, today's percent of normal) is in the station's own
+    # water year.
+    hemisphere = station_hemisphere(meta.get("lat"))
+    today_dowy = int(day_of_water_year(today, hemisphere))
+    current_wy = int(water_year(today, hemisphere))
+    # Embed every one of the station's water years that the page's date
+    # control can reach: it spans the *northern* water year(s) up to today,
+    # which for a southern station crosses 1 April once a year.
+    first_day = water_year_start(today) - pd.DateOffset(years=n_past_wys)
+    embed_wys = list(range(int(water_year(first_day, hemisphere)), current_wy + 1))
 
-    df["_wy"] = wy_arr
-    df["_dowy"] = dowy_arr
+    df["_wy"] = water_year(df["time"], hemisphere).to_numpy()
+    df["_dowy"] = day_of_water_year(df["time"], hemisphere).to_numpy()
     snow = df[(df["_dowy"] >= 1) & (df["_dowy"] <= N_DOWY)].copy()
     if snow.empty:
         return None
@@ -528,6 +550,8 @@ def process_station_from_csv(
     return {
         "lat": round(meta["lat"], 5),
         "lon": round(meta["lon"], 5),
+        # "S": water years run 1 April–31 March, named for the start year
+        "hem": "S" if hemisphere == "southern" else "N",
         "name": station_name,
         "url": _clean_meta_text(meta.get("station_url")),
         "img": _clean_meta_text(meta.get("station_image_url")),
@@ -933,10 +957,41 @@ function pctColor(pct) {
   return "#9900CC";
 }
 
-function dowyToDate(dowy, wy) {
-  const start = new Date(wy - 1, 9, 1);  // Oct 1 of prior year
+// ─── Water years, by hemisphere ───────────────────────────────────────────────
+// Mirrors easysnowdata.processing.wateryear: a northern water year starts
+// 1 October and is named for the year it ends; a southern one starts 1 April
+// and is named for the year it starts.  st.wy / st.dowy hold the *selected
+// calendar date* in northern coordinates (the date control runs from the
+// northern 1 October to today); each station converts that date to its own
+// hemisphere (stationWyDowy) before reading its DOWY-indexed arrays.
+const WY_START_MONTH = {N: 10, S: 4};
+
+function dowyToDate(dowy, wy, hem = "N") {
+  const startYear = hem === "S" ? wy : wy - 1;
+  const start = new Date(startYear, WY_START_MONTH[hem] - 1, 1);
   start.setDate(start.getDate() + dowy - 1);
   return start;
+}
+
+function stationHem(code) {
+  const s = SD[code];
+  return s && s.hem === "S" ? "S" : "N";
+}
+
+// (wy, dowy) of the calendar date given in northern coordinates, in the
+// station's own hemisphere.
+function stationWyDowy(code, dowy, wy) {
+  const hem = stationHem(code);
+  if (hem === "N") return {wy, dowy, hem};
+  return Object.assign(dateToDowyWy(dowyToDate(dowy, wy, "N"), "S"), {hem});
+}
+
+function wyRangeLabel(wy, hem) {
+  const a = dowyToDate(1, wy, hem);
+  const b = dowyToDate(1, wy + 1, hem);
+  b.setDate(b.getDate() - 1);
+  const m = d => `${MONTHS[d.getMonth()].slice(0, 3)} ${d.getFullYear()}`;
+  return `${m(a)}–${m(b)}`;
 }
 
 function formatDate(d) {
@@ -959,7 +1014,7 @@ function updateClockPanel() {
   const utcMonth = MONTHS[nowUtc.getUTCMonth()];
   const utcDay = nowUtc.getUTCDate();
   const utcDate = new Date(Date.UTC(utcYear, nowUtc.getUTCMonth(), utcDay));
-  const utcDowy = dateToDowyWy(utcDate).dowy;
+  const utcDowy = `${dateToDowyWy(utcDate).dowy} N, ${dateToDowyWy(utcDate, "S").dowy} S`;
   const utcTime = nowUtc.toLocaleTimeString("en-US", {
     hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "UTC",
   });
@@ -968,7 +1023,8 @@ function updateClockPanel() {
   const ptYear = nowPt.getFullYear();
   const ptMonth = MONTHS[nowPt.getMonth()];
   const ptDay = nowPt.getDate();
-  const ptDow = dateToDowyWy(new Date(ptYear, nowPt.getMonth(), ptDay)).dowy;
+  const ptDate = new Date(ptYear, nowPt.getMonth(), ptDay);
+  const ptDow = `${dateToDowyWy(ptDate).dowy} N, ${dateToDowyWy(ptDate, "S").dowy} S`;
   const ptTime = nowPt.toLocaleTimeString("en-US", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true});
   const utcDay2 = String(utcDay).padStart(2, "0");
   const ptDay2 = String(ptDay).padStart(2, "0");
@@ -987,19 +1043,27 @@ function updateClockPanel() {
   }
 }
 
-function dateToDowyWy(dateObj) {
+function dateToDowyWy(dateObj, hem = "N") {
+  const startMonth = WY_START_MONTH[hem];
   const m = dateObj.getMonth() + 1;
   const y = dateObj.getFullYear();
-  const wy = m >= 10 ? y + 1 : y;
-  const wyStart = new Date(wy - 1, 9, 1);
-  const dowy = Math.round((dateObj - wyStart) / 864e5) + 1;
+  const startYear = m < startMonth ? y - 1 : y;
+  const wy = hem === "S" ? startYear : startYear + 1;
+  const day = new Date(y, dateObj.getMonth(), dateObj.getDate());
+  const wyStart = new Date(startYear, startMonth - 1, 1);
+  const dowy = Math.round((day - wyStart) / 864e5) + 1;
   return {wy, dowy};
 }
 
 // ─── Get pct-normal for arbitrary station + dowy + wy ─────────────────────────
+// dowy / wy: the selected calendar date in northern coordinates.  Returned
+// curDowy / curWy / hem are in the station's own water year.
 function getStationPct(code, dowy, wy, variable, ref) {
   const s = SD[code];
-  if (!s) return {pct: null, n: 0, cur: null, curDowy: null, med_mm: 0};
+  if (!s) return {pct: null, n: 0, cur: null, curDowy: null, curWy: null, hem: "N", med_mm: 0};
+  const loc = stationWyDowy(code, dowy, wy);
+  dowy = loc.dowy;
+  wy = loc.wy;
 
   const vk = variable.toLowerCase();
   const dowyIdx = dowy - 1;
@@ -1032,7 +1096,7 @@ function getStationPct(code, dowy, wy, variable, ref) {
   if (n >= MAP_META.min_years && cur !== null && med_mm > 0) {
     pct = Math.round((cur * 10 / med_mm) * 1000) / 10;  // one decimal place
   }
-  return {pct, n, cur, curDowy, med_mm};
+  return {pct, n, cur, curDowy, curWy: wy, hem: loc.hem, med_mm};
 }
 
 function formatObsSummary(code, variable) {
@@ -1450,18 +1514,21 @@ function updateTitle() {
   }[st.ref];
   const mainEl = document.getElementById("map-title-main");
   const subEl = document.getElementById("map-title-sub");
-  if (mainEl) mainEl.textContent = `WY${st.wy} ${varLabel} % of ${refLabel}`;
-  if (subEl) {
-    const dateObj = dowyToDate(st.dowy, st.wy);
-    const curTag = st.dowy === MAP_META.today_dowy ? " (Current)" : "";
-    subEl.textContent = `${formatDate(dateObj)}, DOWY ${st.dowy}${curTag}`;
-  }
+  if (mainEl) mainEl.textContent = `${varLabel} % of ${refLabel}`;
+  if (subEl) subEl.textContent = selectedDateLabel(st.dowy);
+}
+
+// The selected date with its DOWY and water year in both hemispheres.
+function selectedDateLabel(dowy) {
+  const dateObj = dowyToDate(dowy, st.wy);
+  const south = dateToDowyWy(dateObj, "S");
+  const curTag = dowy === MAP_META.today_dowy ? " (Current)" : "";
+  return `${formatDate(dateObj)}${curTag}: DOWY ${dowy} of WY${st.wy} (north), `
+       + `DOWY ${south.dowy} of WY${south.wy} (south)`;
 }
 
 function updateDatePreviewLabel(dowy) {
-  const dateObj = dowyToDate(dowy, st.wy);
-  const curTag = dowy === MAP_META.today_dowy ? " (Current)" : "";
-  const dateLabel = `${formatDate(dateObj)}, DOWY ${dowy}${curTag}`;
+  const dateLabel = selectedDateLabel(dowy);
   const dateLabelEl = document.getElementById("map-title-sub");
   if (dateLabelEl) dateLabelEl.textContent = dateLabel;
   updateSnapToCurrentButton();
@@ -1625,7 +1692,7 @@ function onMarkerClick(code) {
     }
     const valCm = (obs.cur).toFixed(1);
     const dataDate = obs.curDowy != null
-      ? formatDate(dowyToDate(obs.curDowy, st.wy))
+      ? formatDate(dowyToDate(obs.curDowy, obs.curWy, obs.hem))
       : "—";
     if (obs.n >= MAP_META.min_years && obs.pct != null && obs.med_mm > 0) {
       const medCm = (obs.med_mm / 10).toFixed(2);
@@ -1728,9 +1795,13 @@ function renderChart(code, variable, stats) {
   const varLabel = variable === "WTEQ" ? "SWE (cm)" : "Snow Depth (cm)";
   const dowyArr = Array.from({length:366}, (_,i) => i+1);
 
-  // Current WY data for dots — use st.wy (the selected WY, not always current)
+  // Dots: the station's water year containing the selected date, in its
+  // own hemisphere (a southern chart runs 1 April to 31 March).
   const vk = variable.toLowerCase();
-  const dotWY = st.wy;
+  const sel = stationWyDowy(code, st.dowy, st.wy);
+  const hem = sel.hem;
+  const selDowy = sel.dowy;
+  const dotWY = sel.wy;
   const dotWYStr = String(dotWY);
   const curDots = {d:[], v:[]};
   if (s.wy && s.wy[dotWYStr] && s.wy[dotWYStr][vk]) {
@@ -1742,29 +1813,35 @@ function renderChart(code, variable, stats) {
     return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
   }
 
+  // A southern water year is named for the year it starts, so spell out
+  // its months rather than leave "WY2026" to be read the northern way.
+  const wyName = hem === "S"
+    ? `WY${dotWY} (${wyRangeLabel(dotWY, "S")})`
+    : `WY${dotWY}`;
+
   const wyByDowy = new Map();
   for (let i = 0; i < curDots.d.length; i++) {
     wyByDowy.set(curDots.d[i], curDots.v[i]);
   }
 
   const crosshairHover = dowyArr.map((dowy, i) => {
-    const dateObj = dowyToDate(dowy, dotWY);
+    const dateObj = dowyToDate(dowy, dotWY, hem);
     const minCm = stats.mins[i] !== null ? `${(stats.mins[i] * scale).toFixed(1)} cm` : "n/a";
     const maxCm = stats.maxs[i] !== null ? `${(stats.maxs[i] * scale).toFixed(1)} cm` : "n/a";
     const medCm = stats.p50[i] !== null ? `${(stats.p50[i] * scale).toFixed(1)} cm` : "n/a";
     const wyVal = wyByDowy.get(dowy);
     const wyCm = wyVal != null ? `${wyVal.toFixed(1)} cm` : "n/a";
     const minDate = stats.minYrs[i]
-      ? isoDate(dowyToDate(dowy, stats.minYrs[i]))
+      ? isoDate(dowyToDate(dowy, stats.minYrs[i], hem))
       : "n/a";
     const maxDate = stats.maxYrs[i]
-      ? isoDate(dowyToDate(dowy, stats.maxYrs[i]))
+      ? isoDate(dowyToDate(dowy, stats.maxYrs[i], hem))
       : "n/a";
     return `<b style="color:#111">${formatDate(dateObj)}</b>`
       + `<br><span style="color:#A10000"><b>Min:</b> ${minCm} <b>@</b> ${minDate}</span>`
       + `<br><span style="color:#0A2F99"><b>Max:</b> ${maxCm} <b>@</b> ${maxDate}</span>`
       + `<br><span style="color:#0B6A0B"><b>Median:</b> ${medCm}</span>`
-      + `<br><span style="color:#111111"><b>WY${dotWY}:</b> ${wyCm}</span>`;
+      + `<br><span style="color:#111111"><b>${wyName}:</b> ${wyCm}</span>`;
   });
 
   const yVals = [];
@@ -1820,13 +1897,13 @@ function renderChart(code, variable, stats) {
     type: "scatter",
   }));
 
-  const currentIdx = curDots.d.indexOf(st.dowy);
+  const currentIdx = curDots.d.indexOf(selDowy);
   const currentStarX = currentIdx >= 0 ? [curDots.d[currentIdx]] : [];
   const currentStarY = currentIdx >= 0 ? [curDots.v[currentIdx]] : [];
   const circleX = [];
   const circleY = [];
   for (let i = 0; i < curDots.d.length; i++) {
-    if (curDots.d[i] !== st.dowy) {
+    if (curDots.d[i] !== selDowy) {
       circleX.push(curDots.d[i]);
       circleY.push(curDots.v[i]);
     }
@@ -1858,7 +1935,7 @@ function renderChart(code, variable, stats) {
     {
       x: circleX, y: circleY,
       mode:"markers", marker:{color:"black",size:7},
-      name:"WY" + dotWY,
+      name: wyName,
       hoverinfo:"skip", type:"scatter"
     },
     {
@@ -1937,7 +2014,12 @@ function renderChart(code, variable, stats) {
       font: {size: 13},
     },
     xaxis: {
-      title: {text: "Day of Water Year (DOWY)", standoff: 28},
+      title: {
+        text: hem === "S"
+          ? "Day of Water Year (DOWY; southern, 1 = 1 April)"
+          : "Day of Water Year (DOWY; 1 = 1 October)",
+        standoff: 28,
+      },
       range:[1,366],
       showspikes:true,
       spikemode:"across",
@@ -1954,20 +2036,20 @@ function renderChart(code, variable, stats) {
     legend: {orientation:"h", y:-0.34, font:{size:11}},
     shapes: [{
       type: "line",
-      x0: st.dowy, x1: st.dowy,
+      x0: selDowy, x1: selDowy,
       y0: 0, y1: 1,
       yref: "paper",
       line: {color: "rgba(0,0,0,0.60)", width: 1, dash: "dot"},
     }, {
       type: "line",
-      x0: st.dowy, x1: st.dowy,
+      x0: selDowy, x1: selDowy,
       y0: 0, y1: 1,
       yref: "paper",
       visible: false,
       line: {color: "rgb(0,0,0)", width: 1.2},
     }],
     annotations: [{
-      x: st.dowy + 0.08,
+      x: selDowy + 0.08,
       y: 0.985,
       yref: "paper",
       text: selectedDowyText,
@@ -2078,7 +2160,7 @@ function renderChart(code, variable, stats) {
     const maxPt = _focusPoint(maxV, i + 1);
     const medPt = _focusPoint(medV, i + 1);
     const wyPt = _focusPoint(wyV, i + 1);
-    const useStar = (i + 1) === st.dowy;
+    const useStar = (i + 1) === selDowy;
     const wyCirclePt = useStar ? {x:[], y:[]} : wyPt;
     const wyStarPt = useStar ? wyPt : {x:[], y:[]};
 
@@ -2937,12 +3019,17 @@ def main() -> None:
 
     now = datetime.now(timezone.utc)
     today_ts = pd.Timestamp(now.date())
-    today_dowy = day_of_water_year(today_ts)
+    # MAP_META carries the northern water year: the page's date control
+    # runs from its 1 October to today, and each station converts the
+    # chosen calendar date to its own hemisphere's water year.
+    today_dowy = int(day_of_water_year(today_ts))
     current_wy = int(water_year(today_ts))
-    embed_wys = list(range(current_wy - N_PAST_WYS, current_wy + 1))
 
-    logger.info(f"Today: {today_ts.date()}, DOWY {today_dowy}, WY{current_wy}")
-    logger.info(f"Embedding WYs: {embed_wys}")
+    logger.info(
+        f"Today: {today_ts.date()}, DOWY {today_dowy}, WY{current_wy} (north); "
+        f"DOWY {int(day_of_water_year(today_ts, 'southern'))}, "
+        f"WY{int(water_year(today_ts, 'southern'))} (south)"
+    )
 
     station_codes = sorted(meta_by_code.keys())
     logger.info(f"Processing {len(station_codes)} stations...")
@@ -2958,9 +3045,7 @@ def main() -> None:
             code=code,
             csv_path=csv_path,
             meta=meta,
-            today_dowy=today_dowy,
-            current_wy=current_wy,
-            embed_wys=embed_wys,
+            today=today_ts,
         )
         if result is not None:
             chart_payload = result.pop("_chart", None)
