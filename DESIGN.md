@@ -381,6 +381,14 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   percent-of-normal — comes from the combined inventory + CSV archive only,
   and no unit conversions happen in the viz layer. The build step makes no
   data API calls.
+- **Water years follow the station's hemisphere** (latitude < 0 is
+  southern): 1 October in the north, named for the year it ends; 1 April
+  in the south, named for the year it starts — easysnowdata's
+  `processing.wateryear`, mirrored in the page's JavaScript. Every
+  DOWY-indexed quantity (medians, n-years, chart percentiles, the embedded
+  season, percent of normal) is computed in the station's own water year;
+  the page's date control holds one calendar date that each station
+  converts.
 - **Context imagery is the one live external call**, and it is decoration, not
   data (§8.1).
 - Default layer: `daily_or_better` stations with charts. Optional toggle

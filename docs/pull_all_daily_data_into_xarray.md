@@ -27,6 +27,11 @@ ds = xr.open_zarr(f"{base}/by_time.zarr", consolidated=True)   # (station, time)
 wy2024 = ds.sel(time=slice("2023-10-01", "2024-09-30")).load()
 ```
 
+That slice is a **northern** water year. Southern stations (SNIH, CEAZA;
+latitude < 0) use 1 April–31 March, named for the year it starts, so their
+WY2024 is `slice("2024-04-01", "2025-03-31")`; easysnowdata's
+`processing.wateryear` functions take `hemisphere="southern"`.
+
 The recipe below builds the same grid by hand from the snapshot bundle of the
 latest release (README §5.3), which is what to use for a result that should
 cite a fixed, DOI'd snapshot. It downloads the whole ~27 MB bundle.

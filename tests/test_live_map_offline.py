@@ -10,6 +10,8 @@ the browser and nowhere else (DESIGN.md §9).  These tests pin that seam.
 import json
 import re
 
+import numpy as np
+import pandas as pd
 import pytest
 
 from scripts.generate_live_map import (
@@ -18,6 +20,8 @@ from scripts.generate_live_map import (
     _camera_snapshot_url,
     _vars_by_interval,
     build_html,
+    process_station_from_csv,
+    station_hemisphere,
 )
 
 
@@ -193,3 +197,91 @@ def test_vars_by_interval_orders_and_keeps_everything():
     # Unknown intervals render last under their raw name instead of vanishing.
     assert "made_up_interval" in labels
     assert "unknown" in labels
+
+
+# ── Water years by hemisphere ────────────────────────────────────────────────
+
+def _season_csv(tmp_path, name, start, end, peak_month):
+    """Daily SWE for 2010–2026: a tent-shaped season peaking in *peak_month*."""
+    days = pd.date_range(start, end)
+    swe = np.where(
+        days.month.isin(_season_months(peak_month)),
+        50.0 - 5.0 * np.abs(days.month - peak_month),
+        0.0,
+    )
+    path = tmp_path / f"{name}.csv"
+    pd.DataFrame({
+        "date": days.strftime("%Y-%m-%d"), "wteq_cm": swe, "snwd_cm": None,
+    }).to_csv(path, index=False)
+    return path
+
+
+def _season_months(peak):
+    return [(peak - 1 + k) % 12 + 1 for k in range(-4, 5)]
+
+
+def _meta(lat):
+    return {"lat": lat, "lon": -70.0, "name": "x", "network_code": "T"}
+
+
+def test_station_hemisphere_from_latitude():
+    assert station_hemisphere(-33.0) == "southern"
+    assert station_hemisphere(46.8) == "northern"
+    assert station_hemisphere(None) == "northern"
+
+
+def test_southern_station_uses_an_april_water_year(tmp_path):
+    """A southern season (May–Dec here) lands in ONE water year, DOWY 1 = 1 April."""
+    path = _season_csv(tmp_path, "S", "2010-04-01", "2026-10-20", peak_month=8)
+    out = process_station_from_csv(
+        "S", path, _meta(-33.0), today=pd.Timestamp("2026-10-21"),
+    )
+    assert out["hem"] == "S"
+    # WY2026 = 2026-04-01 … 2027-03-31; today is DOWY 204 of it.
+    assert list(out["wy"]) == ["2026"]
+    d = out["wy"]["2026"]["wteq"]["d"]
+    assert d[0] == 1                                   # 1 April 2026
+    assert d[-1] == 203                                # 20 October 2026
+    # The whole 2026 season is one continuous run of the water year.
+    assert d == list(range(1, 204))
+    # The season (April–December, peak in August) sits inside one water
+    # year: DOWY 1 is 1 April (30 cm), the peak is mid-August, and the
+    # snow-free months come at the END of the year (February).
+    med = out["pm_por_wteq"]                           # cm ×10
+    assert med[0] == 300
+    aug15 = (pd.Timestamp("2026-08-15") - pd.Timestamp("2026-04-01")).days
+    feb15 = (pd.Timestamp("2027-02-15") - pd.Timestamp("2026-04-01")).days
+    assert med[aug15] == 500 and med[feb15] == 0
+
+
+def test_northern_station_keeps_the_october_water_year(tmp_path):
+    path = _season_csv(tmp_path, "N", "2010-10-01", "2026-10-20", peak_month=3)
+    out = process_station_from_csv(
+        "N", path, _meta(46.8), today=pd.Timestamp("2026-10-21"),
+    )
+    assert out["hem"] == "N"
+    assert list(out["wy"]) == ["2027"]                 # 2026-10-01 … today
+    assert out["wy"]["2027"]["wteq"]["d"][0] == 1
+    mar15 = (pd.Timestamp("2026-03-15") - pd.Timestamp("2025-10-01")).days
+    assert out["pm_por_wteq"][mar15] == 500
+
+
+def test_southern_station_embeds_both_years_the_date_control_reaches(tmp_path):
+    """In May the date control spans the northern WY (from 1 October), which
+    for a southern station crosses 1 April: both water years are embedded."""
+    path = _season_csv(tmp_path, "S", "2010-04-01", "2027-05-01", peak_month=8)
+    out = process_station_from_csv(
+        "S", path, _meta(-33.0), today=pd.Timestamp("2027-05-02"),
+    )
+    assert sorted(out["wy"]) == ["2026", "2027"]
+
+
+def test_frontend_converts_dates_per_hemisphere():
+    """The page keeps one calendar date and converts it per station."""
+    for needle in (
+        "const WY_START_MONTH = {N: 10, S: 4};",
+        "function stationWyDowy(code, dowy, wy)",
+        "const loc = stationWyDowy(code, dowy, wy);",
+        'dowyToDate(obs.curDowy, obs.curWy, obs.hem)',
+    ):
+        assert needle in _HTML_TEMPLATE
