@@ -2594,8 +2594,8 @@ def main() -> None:
                 {
                     "generated": today,
                     "source": (
-                        "Yukon Water Data (AquaCache) API v1 — "
-                        "https://service.yukon.ca/water-data/api/v1"
+                        "Yukon Water Data (AquaCache) API v2 — "
+                        "https://service.yukon.ca/water-data/api/v2"
                     ),
                     "client": "yukon",
                     "description": (

@@ -764,7 +764,7 @@ requests and retries HTTP 429 honouring `Retry-After`.
 
 ### 6.9 Yukon Snow Survey (YSS / YKEC)
 
-**Data source:** Yukon Water Data (AquaCache) API v1
+**Data source:** Yukon Water Data (AquaCache) API v2
 (service.yukon.ca/water-data)
 **Client:** `yukon`
 **Stations in archive:** 17 with a continuous SWE or snow-depth series
@@ -780,7 +780,7 @@ Stewardship; ECCC for the `YKEC` subset
 AquaCache is the open database behind the Government of Yukon
 [Water Data Explorer](https://service.yukon.ca/water-data/shiny/).  The API
 requires no authentication and self-describes at
-[`/openapi.json`](https://service.yukon.ca/water-data/api/v1/openapi.json).
+[`/__docs__/`](https://service.yukon.ca/water-data/api/v2/__docs__/).
 The Explorer front end sits behind a Cloudflare JS challenge, but the API
 itself is unrestricted.
 
@@ -840,7 +840,7 @@ series if you want them.
 
 **Links**
 - Water Data Explorer: https://service.yukon.ca/water-data/shiny/
-- OpenAPI spec: https://service.yukon.ca/water-data/api/v1/openapi.json
+- API v2 docs: https://service.yukon.ca/water-data/api/v2/__docs__/
 - Open Yukon — Snow Survey Network: https://open.yukon.ca/data/yukon-snow-survey-network
 - Snow surveys and water supply forecasts: https://yukon.ca/en/science-and-natural-resources/water/snow-surveys-and-water-supply-forecasts
 
@@ -1595,5 +1595,5 @@ Suggested citations for source data:
 > Norwegian Water Resources and Energy Directorate (NVE). HydAPI —
 > hydrological API. <https://hydapi.nve.no/>
 
-> Government of Yukon, Department of Environment, Water Resources. Yukon Water
-> Data (AquaCache) API. <https://service.yukon.ca/water-data/>
+> Government of Yukon, Department of Environment, Water Science and
+> Stewardship. Yukon Water Data (AquaCache) API. <https://service.yukon.ca/water-data/>
