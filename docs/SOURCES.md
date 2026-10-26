@@ -51,7 +51,7 @@ Per-network documentation, APIs, portals, and design literature
 ## Yukon (AquaCache)
 
 - Water Data Explorer: <https://service.yukon.ca/water-data/shiny/>
-- OpenAPI spec: <https://service.yukon.ca/water-data/api/v1/openapi.json>
+- API v2 docs: <https://service.yukon.ca/water-data/api/v2/__docs__/>
 - Open Yukon — Snow Survey Network:
   <https://open.yukon.ca/data/yukon-snow-survey-network>
 - Snow surveys and water supply forecasts:
