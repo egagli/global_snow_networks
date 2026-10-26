@@ -1544,6 +1544,7 @@ def refresh_ceaza(
     client = CEAZAClient(user=user)
     print(f"  [CEAZA] Fetching daily SWE + snow depth for {len(stations)} stations...")
     updated = 0
+    failed: list[str] = []
     for feat_idx, code in stations:
         sid = str(features[feat_idx]["properties"].get("ceaza_station_id") or "")
         archived = station_csv_path(writer.data_dir, code).exists()
@@ -1566,6 +1567,7 @@ def refresh_ceaza(
                             rows.append({**r, "type": vtype})
         except CEAZAError as exc:
             stats.failed_batches += 1
+            failed.append(f"{code}: {exc}")
             print(f"  [CEAZA] {code} FAILED ({exc})")
             continue
         if rows:
@@ -1583,6 +1585,18 @@ def refresh_ceaza(
         if writer.store(feat_idx, code, "ceaza", df):
             updated += 1
     print(f"  [CEAZA] updated {updated} station CSVs")
+    if failed and len(failed) == len(stations):
+        # Every station failing at once is the service refusing us, not a
+        # flaky sensor: most likely the switch from user names to API keys
+        # CEAZA-Met announced (e-mail, 2026-10-23).  Make it a red mark on
+        # the run rather than a line in the log.
+        msg = (
+            f"every CEAZA station failed ({len(failed)}); check whether "
+            f"CEAZA-Met replaced user names with API keys. First error: "
+            f"{failed[0]}"
+        )
+        logging.error(msg)
+        print(f"::error title=CEAZA refresh::{msg}")
 
 
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
