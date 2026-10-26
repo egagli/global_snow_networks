@@ -226,3 +226,38 @@ def test_merge_night_despikes_a_spike_left_on_the_previous_edge(tmp_path, monkey
     assert pd.isna(csv.loc["2026-10-19", "snwd_cm"])
     assert csv.loc["2026-10-17", "snwd_cm"] == 48
     assert csv.loc["2026-10-20", "snwd_cm"] == 50
+
+
+def test_every_station_failing_raises_an_error_annotation(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("CEAZA_USER", "someone@example.org")
+
+    class Refused(_FakeClient):
+        def get_sensors(self, station_id):
+            raise gasd.CEAZAError("HTTP 403: invalid user")
+
+    monkeypatch.setattr(gasd, "CEAZAClient", Refused)
+    Refused.users, Refused.calls = [], []
+    feats = [ceaza_station_to_feature(EL_TAPADO, TAPADO_SENSORS)]
+    refresh_ceaza([(0, "CEAZA-TPF")], _writer(tmp_path, feats),
+                  today=date(2026, 10, 21))
+    out = capsys.readouterr().out
+    assert "::error title=CEAZA refresh::" in out and "API keys" in out
+
+
+def test_one_failing_station_is_not_an_annotation(tmp_path, monkeypatch, capsys):
+    monkeypatch.setenv("CEAZA_USER", "someone@example.org")
+
+    class OneBad(_FakeClient):
+        def get_sensors(self, station_id):
+            if station_id == "BAD":
+                raise gasd.CEAZAError("HTTP 500")
+            return TAPADO_SENSORS
+
+    monkeypatch.setattr(gasd, "CEAZAClient", OneBad)
+    OneBad.users, OneBad.calls = [], []
+    bad = {**EL_TAPADO, "station_id": "BAD"}
+    feats = [ceaza_station_to_feature(EL_TAPADO, TAPADO_SENSORS),
+             ceaza_station_to_feature(bad, TAPADO_SENSORS)]
+    refresh_ceaza([(0, "CEAZA-TPF"), (1, "CEAZA-BAD")], _writer(tmp_path, feats),
+                  today=date(2026, 10, 21))
+    assert "::error" not in capsys.readouterr().out
