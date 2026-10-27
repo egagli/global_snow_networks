@@ -1,9 +1,12 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-10-26",
-    "source": "Yukon Water Data (AquaCache) API v1 \u2014 https://service.yukon.ca/water-data/api/v1",
+    "generated": "2026-10-27",
+    "source": "Yukon Water Data (AquaCache) API v2 \u2014 https://service.yukon.ca/water-data/api/v2",
     "client": "yukon",
+    "license": "Open Government Licence \u2013 Yukon",
+    "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon",
+    "attribution": "Government of Yukon, Department of Environment, Water Science and Stewardship Branch. Contains information licensed under the Open Government Licence \u2013 Yukon.",
     "description": "All Yukon snow monitoring stations: manual snow courses (YSS, periodic Feb/Mar/Apr/May surveys), automated snow-weather stations with snow-pillow SWE (YSS), and ECCC climate stations with daily snow depth mirrored into AquaCache (YKEC). Only stations with a continuous series appear in all_snow_stations.geojson.",
     "total": 92
   },
@@ -68,7 +71,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -76,7 +79,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -139,7 +144,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -147,7 +152,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1980-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -210,7 +217,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -218,7 +225,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1994-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -281,7 +290,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -289,7 +298,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "2000-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -352,7 +363,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -360,7 +371,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1978-02-01",
-        "last_survey": "1985-05-01"
+        "last_survey": "1985-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -423,7 +436,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -431,7 +444,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1978-02-01",
-        "last_survey": "2010-05-01"
+        "last_survey": "2010-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -494,7 +509,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -502,7 +517,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1980-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -565,7 +582,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -573,7 +590,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-04-01",
-        "last_survey": "2010-05-01"
+        "last_survey": "2010-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -636,7 +655,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -644,7 +663,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -707,7 +728,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -715,7 +736,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1980-02-01",
-        "last_survey": "1985-03-01"
+        "last_survey": "1985-03-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -778,7 +801,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -786,7 +809,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -849,7 +874,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -857,7 +882,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1989-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -920,7 +947,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -928,7 +955,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-02-15",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -991,7 +1020,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -999,7 +1028,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-02-15",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1062,7 +1093,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1070,7 +1101,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1958-05-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1133,7 +1166,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1141,7 +1174,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1964-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1204,7 +1239,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1212,7 +1247,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1981-02-01",
-        "last_survey": "2007-05-01"
+        "last_survey": "2007-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1275,7 +1312,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1283,7 +1320,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1346,7 +1385,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1354,7 +1393,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1981-02-01",
-        "last_survey": "1988-05-15"
+        "last_survey": "1988-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1417,7 +1458,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1425,7 +1466,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1981-02-01",
-        "last_survey": "1985-05-01"
+        "last_survey": "1985-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1488,7 +1531,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1496,7 +1539,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1965-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1559,7 +1604,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1567,7 +1612,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1965-03-01",
-        "last_survey": "2024-05-01"
+        "last_survey": "2024-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1630,7 +1677,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1638,7 +1685,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "2023-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1701,7 +1750,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1709,7 +1758,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1980-02-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1772,7 +1823,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1780,7 +1831,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1983-02-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1843,7 +1896,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1851,7 +1904,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1983-03-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1914,7 +1969,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1922,7 +1977,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -1985,7 +2042,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1993,7 +2050,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2056,7 +2115,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2064,7 +2123,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2127,7 +2188,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2135,7 +2196,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "1976-05-01"
+        "last_survey": "1976-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2198,7 +2261,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2206,7 +2269,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "1989-05-15"
+        "last_survey": "1989-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2269,7 +2334,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2277,7 +2342,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2340,7 +2407,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2348,7 +2415,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2411,7 +2480,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2419,7 +2488,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1995-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2482,7 +2553,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2490,7 +2561,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2553,7 +2626,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2561,7 +2634,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2624,7 +2699,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2632,7 +2707,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2695,7 +2772,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2703,7 +2780,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "2016-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2766,7 +2845,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2774,7 +2853,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2837,7 +2918,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2845,7 +2926,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2908,7 +2991,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2916,7 +2999,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -2979,7 +3064,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2987,7 +3072,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "1982-05-15"
+        "last_survey": "1982-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3050,7 +3137,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3058,7 +3145,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1981-02-01",
-        "last_survey": "1982-05-01"
+        "last_survey": "1982-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3121,7 +3210,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3129,7 +3218,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3192,7 +3283,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3200,7 +3291,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3263,7 +3356,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3271,7 +3364,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3334,7 +3429,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3342,7 +3437,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3405,7 +3502,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3413,7 +3510,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3476,7 +3575,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3484,7 +3583,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3547,7 +3648,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3555,7 +3656,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1978-02-01",
-        "last_survey": "1984-05-15"
+        "last_survey": "1984-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3618,7 +3721,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3626,7 +3729,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1985-02-01",
-        "last_survey": "2010-05-01"
+        "last_survey": "2010-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3689,7 +3794,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3697,7 +3802,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1991-03-01",
-        "last_survey": "1994-05-15"
+        "last_survey": "1994-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3760,7 +3867,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3768,7 +3875,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3831,7 +3940,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3839,7 +3948,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1988-03-01",
-        "last_survey": "2026-04-01"
+        "last_survey": "2026-04-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3902,7 +4013,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3910,7 +4021,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1995-03-01",
-        "last_survey": "1999-05-01"
+        "last_survey": "1999-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -3973,7 +4086,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3981,7 +4094,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4044,7 +4159,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4052,7 +4167,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1983-02-01",
-        "last_survey": "1985-05-01"
+        "last_survey": "1985-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4115,7 +4232,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4123,7 +4240,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4186,7 +4305,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4194,7 +4313,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1978-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4257,7 +4378,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4265,7 +4386,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "2010-05-01"
+        "last_survey": "2010-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4328,7 +4451,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4336,7 +4459,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4399,7 +4524,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4407,7 +4532,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4470,7 +4597,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4478,7 +4605,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "",
-        "last_survey": ""
+        "last_survey": "",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4541,7 +4670,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4549,7 +4678,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1968-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4612,7 +4743,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4620,7 +4751,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4683,7 +4816,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4691,7 +4824,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4754,7 +4889,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4762,7 +4897,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4825,7 +4962,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4833,7 +4970,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "1981-02-01"
+        "last_survey": "1981-02-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4896,7 +5035,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4904,7 +5043,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1983-02-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -4967,7 +5108,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4975,7 +5116,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5038,7 +5181,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5046,7 +5189,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5109,7 +5254,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5117,7 +5262,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5180,7 +5327,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5188,7 +5335,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1967-03-01",
-        "last_survey": "2026-04-01"
+        "last_survey": "2026-04-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5251,7 +5400,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5259,7 +5408,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "1984-05-01"
+        "last_survey": "1984-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5322,7 +5473,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5330,7 +5481,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5393,7 +5546,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5401,7 +5554,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1983-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5464,7 +5619,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5472,7 +5627,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1983-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5535,7 +5692,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5543,7 +5700,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5606,7 +5765,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5614,7 +5773,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "2025-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5677,7 +5838,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5685,7 +5846,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1965-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5748,7 +5911,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5756,7 +5919,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1977-02-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5819,7 +5984,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5827,7 +5992,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5890,7 +6057,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5898,7 +6065,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1987-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -5961,7 +6130,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5969,7 +6138,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-04-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6032,7 +6203,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6040,7 +6211,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6103,7 +6276,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6111,7 +6284,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "2022-05-01"
+        "last_survey": "2022-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6174,7 +6349,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6182,7 +6357,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "2018-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6245,7 +6422,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6253,7 +6430,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1975-04-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6316,7 +6495,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6324,7 +6503,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-02-01",
-        "last_survey": "1985-05-15"
+        "last_survey": "1985-05-15",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6387,7 +6568,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6395,7 +6576,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6458,7 +6641,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6466,7 +6649,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1976-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     },
     {
@@ -6529,7 +6714,7 @@
         "daily_verified": false,
         "daily_provenance": "none",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-26",
+        "metadata_fetched_at": "2026-10-27",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6537,7 +6722,9 @@
         "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "sub_basin": "",
         "first_survey": "1986-03-01",
-        "last_survey": "2026-05-01"
+        "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
     }
   ]
