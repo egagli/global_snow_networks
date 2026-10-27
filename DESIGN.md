@@ -273,7 +273,9 @@ docs, portals, design reports).
 ### 6.3 Station CSVs (`data/stations/<code>.csv`)
 
 Header `date,wteq_cm,snwd_cm`; missing values are **empty**, never the
-string `nan`. Daily-or-better stations only. Flags, other variables, and
+string `nan`. Daily-or-better stations only. A response with no value in
+either column writes no CSV: a file of dates and blanks would read as an
+archived station. Flags, other variables, and
 sub-daily data are not stored — use the clients. Writes are atomic
 (temp file + rename); the same applies to GeoJSON and archive writes.
 

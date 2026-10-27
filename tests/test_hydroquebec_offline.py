@@ -102,10 +102,41 @@ def test_gmon_station_feature_schema_and_flags():
 
 
 def test_depth_only_station_and_missing_elevation():
-    p = hydroquebec_station_to_feature(DEPTH_ONLY_STATION)["properties"]
+    station = {
+        **DEPTH_ONLY_STATION,
+        "variables": {SD: {"n_obs": 120, "first": "2026-10-04T08:00:00+00:00",
+                           "last": "2026-10-14T11:00:00+00:00"}},
+    }
+    p = hydroquebec_station_to_feature(station)["properties"]
     assert not p["has_daily_swe"] and p["has_daily_snwd"]
     assert p["elevation_m"] is None          # null, never 0
     assert "hq_code" not in p                 # null extras are dropped
+
+
+def test_listed_snow_series_with_no_values_is_not_a_candidate():
+    # Bernard (ULaval), Barrage Robert-Bourassa and La Grande-4 Est list
+    # snow depth but sent no valid value in any window (October 2026).
+    f = hydroquebec_station_to_feature(DEPTH_ONLY_STATION)
+    p = f["properties"]
+    assert not p["has_daily_swe"] and not p["has_daily_snwd"]
+    assert not p["daily_or_better"]
+    assert p["daily_provenance"] == "none"
+    assert [dv["type"] for dv in p["data_variables"]] == ["snwd"]  # still listed
+    assert not is_fetch_candidate(p)
+
+
+def test_one_reporting_series_is_enough():
+    station = {
+        **GMON_STATION,
+        "variables": {
+            **GMON_STATION["variables"],
+            SWE: {"n_obs": 0, "first": None, "last": None},
+        },
+    }
+    p = hydroquebec_station_to_feature(station)["properties"]
+    assert not p["has_daily_swe"] and p["has_daily_snwd"]
+    assert p["daily_or_better"]
+    assert p["daily_provenance"] == "resampled_hourly"
 
 
 # ── Merge mode (rolling-window source) ───────────────────────────────────────
@@ -233,3 +264,12 @@ def test_refresh_with_no_records_raises_an_actions_error(
     refresh_hydroquebec([(0, "1-10613")], w, today=date(2026, 10, 21))
     assert "::error title=Hydro-Québec refresh::" in capsys.readouterr().out
     assert len(read_station_csv(tmp_path / "1-10613.csv")) == 70   # untouched
+
+
+def test_placeholder_rows_with_no_values_write_no_csv(tmp_path):
+    feats = [hydroquebec_station_to_feature(GMON_STATION)]
+    w = _writer(tmp_path, feats)
+    blank = _days("2026-10-11", 10, swe=None)
+    assert not w.store(0, "1-2938", "hydroquebec", blank, merge=True)
+    assert not (tmp_path / "1-2938.csv").exists()
+    assert w.stats.skipped_empty == 1 and w.stats.updated_csvs == 0

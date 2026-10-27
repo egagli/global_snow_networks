@@ -904,6 +904,15 @@ current local day is left out until it is complete. The probe needs about 30
 days before a new station counts as `daily_or_better`, so the first stations
 reach the map around mid-November 2026.
 
+**Listed is not reporting.** The feed lists a variable for a station whether or
+not it has sent a value. A station is a daily candidate only once its SWE or
+depth series has a valid value in the current window. In October 2026 three
+stations (Bernard (ULaval), Barrage Robert-Bourassa, La Grande-4 Est) listed
+snow depth with no value ever, and appeared on the map with no data behind
+them. A station whose values are all nulled (depth sensors reporting only
+negative noise over bare ground) gets no CSV until a valid value arrives: the
+refresh never writes a CSV with no values in it.
+
 **Snow variables:**
 
 | Variable (native label) | Native units | Stored as |

@@ -104,3 +104,37 @@ Per-network documentation, APIs, portals, and design literature
   <https://www.ceazamet.cl/ws/pop_ws_doc.php>
 - Registration: e-mail ceazamet@ceaza.cl (name, e-mail, organisation,
   sector, intended use, download frequency, daily volume)
+
+## Leads not yet archived
+
+Links collected in issue #29, checked on 2026-10-27. None of them is a
+source the pipeline reads today.
+
+- NOAA HOMR (Historical Observing Metadata Repository), NCEI's station-history
+  database (identifiers, names, locations and equipment over a station's
+  life). Useful for checking GHCN-D station metadata (issue #45):
+  <https://www.ncei.noaa.gov/access/homr/>
+- GHCN-D on the AWS Registry of Open Data: yearly CSV files, updated daily,
+  CC0-1.0 (NOAA asks for attribution). NOAA says it is changing the bucket's
+  prefix layout, so check the NODD README before relying on paths. An
+  alternative to NCEI's server for the GHCN-D bulk refresh (issue #45):
+  <https://registry.opendata.aws/noaa-ghcn/>
+- PEMS `norswe_processing.ipynb` (D. Casson): clips NorSWE (Zenodo
+  14503592, v3 1979–2021 netCDF) to basin outlines (Bow, Chena, Tuolumne)
+  and de-duplicates time steps. A worked example of using NorSWE, not a
+  source: <https://github.com/DaveCasson/PEMS/blob/5ea919d6a52b27c94f4a818e1d4060d20e30069d/notebooks/data_processing/norswe_processing.ipynb#L168>
+- RIHMI-WDC route snow surveys («Маршрутные снегомерные съемки»): 517
+  Russian stations from 1966, field / forest / gully routes, surveyed every
+  10 days in the cold season (every 5 during intense melt); 19
+  characteristics per record, including mean depth, density and water
+  equivalent. Periodic, so out of scope for the daily archive (DESIGN.md
+  §4); easysnowdata's `RIHMIClient` reads AISORI-M exports. Page and
+  station catalogue (PDF, not opened):
+  <http://meteo.ru/data/snow-surveys/>,
+  <http://meteo.ru/wp-content/uploads/2024/02/%D0%9A%D0%B0%D1%82%D0%B0%D0%BB%D0%BE%D0%B3_%D0%9C%D0%B0%D1%80%D1%88%D1%80%D1%83%D1%82%D0%BD%D1%8B%D0%B5_%D1%81%D0%BD%D0%B5%D0%B3%D0%BE%D1%81%D1%8A%D0%B5%D0%BC%D0%BA%D0%B8.pdf>
+- NRCS station counts and lists for the manual snow-course network
+  (`network=snow`), including discontinued sites. Useful for checking the
+  AWDB inventory against NRCS's own count:
+  <https://wcc.sc.egov.usda.gov/nwcc/yearcount?network=snow&counttype=listwithdiscontinued&state=>
+- CH-Earth `snowcourse` repository (not opened from this session; GitHub
+  refused the request): <https://github.com/CH-Earth/snowcourse>
