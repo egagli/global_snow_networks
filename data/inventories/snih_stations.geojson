@@ -243,7 +243,7 @@
         "province": "Salta",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -296,7 +296,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           }
         ],
@@ -314,7 +314,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-26T16:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2024-11-22"
       }
     },
@@ -460,7 +460,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           },
           {
@@ -489,7 +489,7 @@
         "province": "San Juan",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-26T18:00:00-03:00",
+        "last_raw_obs": "2026-10-27T06:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -632,7 +632,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -686,7 +686,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           }
         ],
@@ -704,7 +704,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-26T20:00:00-03:00",
+        "last_raw_obs": "2026-10-27T00:00:00-03:00",
         "snih_validated_through": "2024-11-05"
       }
     },
@@ -776,7 +776,7 @@
         "province": "Santa Cruz",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2024-10-31"
       }
     },
@@ -892,7 +892,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -1007,7 +1007,7 @@
         "province": "Neuqu\u00e9n",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-26T04:00:00-03:00"
+        "last_raw_obs": "2026-10-26T16:00:00-03:00"
       }
     },
     {
@@ -1060,7 +1060,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           }
         ],
@@ -1078,7 +1078,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-26T20:00:00-03:00",
+        "last_raw_obs": "2026-10-27T00:00:00-03:00",
         "snih_validated_through": "2023-08-23"
       }
     },
@@ -1194,7 +1194,7 @@
         "province": "La Rioja",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00"
+        "last_raw_obs": "2026-10-27T12:00:00-03:00"
       }
     },
     {
@@ -1280,7 +1280,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           },
           {
@@ -1309,7 +1309,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-26T18:00:00-03:00",
+        "last_raw_obs": "2026-10-27T06:00:00-03:00",
         "snih_validated_through": "2023-11-30"
       }
     },
@@ -1758,7 +1758,7 @@
         "province": "Chubut",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -1811,7 +1811,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           }
         ],
@@ -1829,7 +1829,7 @@
         "province": "Santa Cruz",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-26T20:00:00-03:00",
+        "last_raw_obs": "2026-10-27T00:00:00-03:00",
         "snih_validated_through": "2024-10-04"
       }
     },
@@ -1945,7 +1945,7 @@
         "province": "Chubut",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00",
+        "last_raw_obs": "2026-10-27T12:00:00-03:00",
         "snih_validated_through": "2024-11-22"
       }
     },
@@ -2017,7 +2017,7 @@
         "province": "Chubut",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2024-11-05"
       }
     },
@@ -2436,7 +2436,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2023-09-21"
       }
     },
@@ -2552,7 +2552,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2023-11-30"
       }
     },
@@ -2786,7 +2786,7 @@
         "province": "Santa Cruz",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -3046,7 +3046,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -3334,7 +3334,7 @@
         "province": "Jujuy",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -3491,7 +3491,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-27",
             "n_obs": null
           },
           {
@@ -3520,7 +3520,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-26T18:00:00-03:00",
+        "last_raw_obs": "2026-10-27T06:00:00-03:00",
         "snih_validated_through": "2023-12-22"
       }
     },
@@ -3592,7 +3592,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -3723,7 +3723,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -3839,7 +3839,7 @@
         "province": "San Juan",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00"
+        "last_raw_obs": "2026-10-27T08:00:00-03:00"
       }
     },
     {
@@ -4127,7 +4127,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T00:00:00-03:00",
+        "last_raw_obs": "2026-10-27T08:00:00-03:00",
         "snih_validated_through": "2023-09-11"
       }
     },
@@ -4243,7 +4243,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T04:00:00-03:00",
+        "last_raw_obs": "2026-10-27T12:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },

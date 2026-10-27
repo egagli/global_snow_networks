@@ -8,9 +8,134 @@
     "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon",
     "attribution": "Government of Yukon, Department of Environment, Water Science and Stewardship Branch. Contains information licensed under the Open Government Licence \u2013 Yukon.",
     "description": "All Yukon snow monitoring stations: manual snow courses (YSS, periodic Feb/Mar/Apr/May surveys), automated snow-weather stations with snow-pillow SWE (YSS), and ECCC climate stations with daily snow depth mirrored into AquaCache (YKEC). Only stations with a continuous series appear in all_snow_stations.geojson.",
-    "total": 92
+    "total": 109
   },
   "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -137.05,
+          61.03
+        ]
+      },
+      "properties": {
+        "code": "08AA-MET-00003",
+        "name": "Otter Falls",
+        "latitude": 61.03,
+        "longitude": -137.05,
+        "elevation_m": 829.0,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1670, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1980-02-02",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1671, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1980-02-02",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1672, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1980-02-02",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1673, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "1980-09-29",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1674, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1980-02-02",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "precip_rain_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Rainfall accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1675, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1980-02-02",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "precip_snow_cm",
+            "type": "snowfall",
+            "interval": "daily",
+            "units": "cm",
+            "description": "New snowfall accumulated over the recording interval.",
+            "notes": "ECCC daily series. The /timeseries units field is empty for this parameter; cm comes from /parameters (id 1221). Typed `snowfall`, not `precip`: it is a depth of snow, not a depth of water, and the two are not interconvertible (DESIGN.md \u00a73.2). AquaCache timeseries 1676, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1980-02-02",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
     {
       "type": "Feature",
       "geometry": {
@@ -883,6 +1008,315 @@
         "sub_basin": "",
         "first_survey": "1989-03-01",
         "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -134.17603,
+          60.28165
+        ]
+      },
+      "properties": {
+        "code": "09AA-M1",
+        "name": "Tagish Meteorological",
+        "latitude": 60.28165,
+        "longitude": -134.17603,
+        "elevation_m": 1091.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1220, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2009-11-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "sub_daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1241, aggregation 'sum', recording rate '03:00:00'.",
+            "begin_date": "2009-11-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 20, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1988-10-18",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 21, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2013-09-12",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -134.965576,
+          59.763958
+        ]
+      },
+      "properties": {
+        "code": "09AA-M2",
+        "name": "Log Cabin Meteorological",
+        "latitude": 59.763958,
+        "longitude": -134.965576,
+        "elevation_m": 892.0,
+        "state": "BC",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1218, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2023-06-14",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1750, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2023-06-14",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 649, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1980-02-25",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 650, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1980-02-25",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -134.71945,
+          60.13385
+        ]
+      },
+      "properties": {
+        "code": "09AA-M3",
+        "name": "Montana Mountain Meteorological",
+        "latitude": 60.13385,
+        "longitude": -134.71945,
+        "elevation_m": 1026.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1086, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2023-08-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1140, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2023-08-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1141, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2023-08-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 1222, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2025-07-16",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1223, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2023-08-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1842, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2025-10-07",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "rel_humidity_pct",
+            "type": "rh",
+            "interval": "hourly",
+            "units": "%",
+            "description": "Relative humidity.",
+            "notes": "Native units: %. AquaCache timeseries 1843, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2023-08-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "license": "Open Government Licence \u2013 Yukon",
         "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
@@ -2498,6 +2932,98 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -131.26337,
+          62.61939
+        ]
+      },
+      "properties": {
+        "code": "09BA-M7",
+        "name": "Twin Creeks North Meteorological",
+        "latitude": 62.61939,
+        "longitude": -131.26337,
+        "elevation_m": 886.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1221, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2017-09-22",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "sub_daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1759, aggregation 'sum', recording rate '03:00:00'.",
+            "begin_date": "2017-09-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 51, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1988-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 52, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2017-10-09",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -132.466666666667,
           61.9333333333333
         ]
@@ -3301,6 +3827,175 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -137.37,
+          62.82
+        ]
+      },
+      "properties": {
+        "code": "09BC-MET-00005",
+        "name": "Pelly Ranch (Fort Selkirk)",
+        "latitude": 62.82,
+        "longitude": -137.37,
+        "elevation_m": 454.2,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1648, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1898-11-01",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1649, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1898-11-01",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1650, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1898-11-01",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1651, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "1980-09-01",
+            "end_date": "2026-09-21",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1652, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1951-12-01",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "precip_rain_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Rainfall accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1653, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1951-12-01",
+            "end_date": "2017-08-31",
+            "n_obs": null
+          },
+          {
+            "name": "precip_snow_cm",
+            "type": "snowfall",
+            "interval": "daily",
+            "units": "cm",
+            "description": "New snowfall accumulated over the recording interval.",
+            "notes": "ECCC daily series. The /timeseries units field is empty for this parameter; cm comes from /parameters (id 1221). Typed `snowfall`, not `precip`: it is a depth of snow, not a depth of water, and the two are not interconvertible (DESIGN.md \u00a73.2). AquaCache timeseries 1654, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1951-12-01",
+            "end_date": "2017-08-31",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1655, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2020-08-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1656, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2020-08-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1657, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2020-08-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1658, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2020-08-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -133.380555555556,
           62.3371111111111
         ]
@@ -3365,6 +4060,175 @@
         "sub_basin": "",
         "first_survey": "1975-03-01",
         "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -139.04,
+          61.37
+        ]
+      },
+      "properties": {
+        "code": "09CA-MET-00002",
+        "name": "Burwash Landing Airport",
+        "latitude": 61.37,
+        "longitude": -139.04,
+        "elevation_m": 805.3,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Inactive",
+        "is_active": false,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1720, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1721, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1722, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1723, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2011-12-14",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1724, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_rain_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Rainfall accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1725, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2011-12-14",
+            "n_obs": null
+          },
+          {
+            "name": "precip_snow_cm",
+            "type": "snowfall",
+            "interval": "daily",
+            "units": "cm",
+            "description": "New snowfall accumulated over the recording interval.",
+            "notes": "ECCC daily series. The /timeseries units field is empty for this parameter; cm comes from /parameters (id 1221). Typed `snowfall`, not `precip`: it is a depth of snow, not a depth of water, and the two are not interconvertible (DESIGN.md \u00a73.2). AquaCache timeseries 1726, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2011-12-14",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1727, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1728, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2014-05-29",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1729, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1730, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1966-10-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "license": "Open Government Licence \u2013 Yukon",
         "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
@@ -4396,6 +5260,109 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -132.297827,
+          63.980283
+        ]
+      },
+      "properties": {
+        "code": "09DB-M1",
+        "name": "Withers Lake Meteorological",
+        "latitude": 63.980283,
+        "longitude": -132.297827,
+        "elevation_m": 980.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "soil_moisture_pct",
+            "type": "other",
+            "interval": "sub_daily",
+            "units": "%",
+            "description": "Volumetric soil moisture content.",
+            "notes": "Native units: %. AquaCache timeseries 1766, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2019-07-17",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "rel_humidity_pct",
+            "type": "rh",
+            "interval": "sub_daily",
+            "units": "%",
+            "description": "Relative humidity.",
+            "notes": "Native units: %. AquaCache timeseries 1767, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2025-08-28",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "sub_daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1776, aggregation 'sum', recording rate '03:00:00'.",
+            "begin_date": "2012-09-21",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 75, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1988-10-08",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 76, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2009-11-10",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -132.297777777778,
           63.9802777777778
         ]
@@ -5053,6 +6020,131 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -138.932418823242,
+          63.8743120903535
+        ]
+      },
+      "properties": {
+        "code": "09EA-M1",
+        "name": "King Solomon Dome Meteorological",
+        "latitude": 63.8743120903535,
+        "longitude": -138.932418823242,
+        "elevation_m": 1070.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1219, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2022-10-25",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1751, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2022-09-22",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_rain_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Rainfall accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1763, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2024-08-01",
+            "end_date": "2026-10-01",
+            "n_obs": null
+          },
+          {
+            "name": "rel_humidity_pct",
+            "type": "rh",
+            "interval": "hourly",
+            "units": "%",
+            "description": "Relative humidity.",
+            "notes": "Native units: %. AquaCache timeseries 1764, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2025-10-02",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "soil_moisture_pct",
+            "type": "other",
+            "interval": "sub_daily",
+            "units": "%",
+            "description": "Volumetric soil moisture content.",
+            "notes": "Native units: %. AquaCache timeseries 1765, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2025-05-22",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 85, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2022-09-21",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 86, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2022-10-25",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -138.931732177734,
           63.8743120903535
         ]
@@ -5418,6 +6510,142 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -139.24715,
+          66.52587
+        ]
+      },
+      "properties": {
+        "code": "09FA-M1",
+        "name": "Fishing Branch River",
+        "latitude": 66.52587,
+        "longitude": -139.24715,
+        "elevation_m": 0.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "sub_daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1231, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "sub_daily",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 1234, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "sub_daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1235, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1736, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1737, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "baro_press_kpa",
+            "type": "baro",
+            "interval": "sub_daily",
+            "units": "hPa",
+            "description": "Barometric pressure. Converted in-client from kPa to hPa.",
+            "notes": "Native units: kPa; emitted as hPa (\u00d7 10), which is DESIGN.md \u00a73.5's canonical unit for `baro` and what the DataBC client already reports for the same quantity. AquaCache timeseries 1845, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-08-20",
+            "n_obs": null
+          },
+          {
+            "name": "rel_humidity_pct",
+            "type": "rh",
+            "interval": "hourly",
+            "units": "%",
+            "description": "Relative humidity.",
+            "notes": "Native units: %. AquaCache timeseries 1848, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2025-09-08",
+            "end_date": "2026-08-20",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1926, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2026-06-15",
+            "end_date": "2026-10-06",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -137.363862991333,
           65.9563096027177
         ]
@@ -5482,6 +6710,153 @@
         "sub_basin": "",
         "first_survey": "1987-03-01",
         "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -136.22,
+          66.98
+        ]
+      },
+      "properties": {
+        "code": "09FB-MET-00003",
+        "name": "Rock River",
+        "latitude": 66.98,
+        "longitude": -136.22,
+        "elevation_m": 731.0,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Inactive",
+        "is_active": false,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1659, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1995-02-28",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1660, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1995-02-28",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1661, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1995-02-28",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1662, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "2000-08-02",
+            "end_date": "2014-10-17",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1663, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1996-06-17",
+            "end_date": "2026-09-28",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1666, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1994-02-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1667, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2013-12-11",
+            "end_date": "2026-10-11",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1668, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1994-02-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1669, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1994-02-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
         "license": "Open Government Licence \u2013 Yukon",
         "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
@@ -6148,6 +7523,98 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
+          -128.30507,
+          61.5802
+        ]
+      },
+      "properties": {
+        "code": "10AD-M2",
+        "name": "Hyland North Meteorological",
+        "latitude": 61.5802,
+        "longitude": -128.30507,
+        "elevation_m": 874.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 122, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1992-10-15",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 123, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2017-10-06",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1745, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2017-10-06",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "sub_daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1758, aggregation 'sum', recording rate '03:00:00'.",
+            "begin_date": "2017-10-06",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           -128.305069444444,
           61.5802
         ]
@@ -6723,6 +8190,730 @@
         "sub_basin": "",
         "first_survey": "1986-03-01",
         "last_survey": "2026-05-01",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -140.8475,
+          68.8
+        ]
+      },
+      "properties": {
+        "code": "10MD-MET-00001",
+        "name": "Margaret Lake",
+        "latitude": 68.8,
+        "longitude": -140.8475,
+        "elevation_m": 568.0,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1677, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1997-06-19",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1678, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1997-06-19",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1679, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1997-06-19",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1680, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "1997-06-28",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1681, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1997-06-19",
+            "end_date": "2026-09-21",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1684, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2000-01-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1685, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2018-02-03",
+            "end_date": "2026-09-29",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1686, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2000-01-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1687, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "2000-06-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -140.15,
+          69.16
+        ]
+      },
+      "properties": {
+        "code": "10MD-MET-00002",
+        "name": "Ivvavik National Park",
+        "latitude": 69.16,
+        "longitude": -140.15,
+        "elevation_m": 243.0,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1698, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1995-07-23",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1699, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1995-07-22",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1700, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1995-07-23",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1701, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "1995-08-30",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1702, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1995-07-29",
+            "end_date": "2026-10-26",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1705, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1999-11-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1706, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2015-08-28",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1707, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1999-11-23",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1708, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1999-11-23",
+            "end_date": "2026-09-25",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -140.2,
+          69.61
+        ]
+      },
+      "properties": {
+        "code": "10MD-MET-00003",
+        "name": "Komakuk Beach",
+        "latitude": 69.61,
+        "longitude": -140.2,
+        "elevation_m": 13.2,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Inactive",
+        "is_active": false,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1688, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1958-07-01",
+            "end_date": "2026-09-29",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1689, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1958-07-01",
+            "end_date": "2026-09-29",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1690, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1958-07-01",
+            "end_date": "2026-09-29",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1691, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "1963-12-27",
+            "end_date": "1993-06-30",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1692, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1958-08-01",
+            "end_date": "1993-06-29",
+            "n_obs": null
+          },
+          {
+            "name": "precip_rain_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Rainfall accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1693, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1958-08-01",
+            "end_date": "1993-06-29",
+            "n_obs": null
+          },
+          {
+            "name": "precip_snow_cm",
+            "type": "snowfall",
+            "interval": "daily",
+            "units": "cm",
+            "description": "New snowfall accumulated over the recording interval.",
+            "notes": "ECCC daily series. The /timeseries units field is empty for this parameter; cm comes from /parameters (id 1221). Typed `snowfall`, not `precip`: it is a depth of snow, not a depth of water, and the two are not interconvertible (DESIGN.md \u00a73.2). AquaCache timeseries 1694, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1958-08-01",
+            "end_date": "1993-06-29",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1695, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1973-08-01",
+            "end_date": "2026-08-29",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1696, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1973-08-01",
+            "end_date": "2026-08-29",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1697, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1973-08-01",
+            "end_date": "2026-08-29",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -138.91,
+          69.57
+        ]
+      },
+      "properties": {
+        "code": "10MD-MET-00004",
+        "name": "Herschel Island",
+        "latitude": 69.57,
+        "longitude": -138.91,
+        "elevation_m": 1.2,
+        "state": "YT",
+        "network_code": "YKEC",
+        "operator": "Environment and Climate Change Canada",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1709, aggregation '(min+max)/2', recording rate '1 day'.",
+            "begin_date": "1898-11-01",
+            "end_date": "2025-11-04",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_min_degc",
+            "type": "temp_min",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily minimum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1710, aggregation 'minimum', recording rate '1 day'.",
+            "begin_date": "1898-11-01",
+            "end_date": "2025-11-04",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_max_degc",
+            "type": "temp_max",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Daily maximum air temperature.",
+            "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1711, aggregation 'maximum', recording rate '1 day'.",
+            "begin_date": "1898-11-01",
+            "end_date": "2025-11-04",
+            "n_obs": null
+          },
+          {
+            "name": "snwd_cm",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
+            "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1712, aggregation 'instantaneous', recording rate '1 day'.",
+            "begin_date": "2006-05-07",
+            "end_date": "2024-02-03",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1713, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1899-09-01",
+            "end_date": "2025-11-04",
+            "n_obs": null
+          },
+          {
+            "name": "precip_rain_mm",
+            "type": "precip",
+            "interval": "daily",
+            "units": "mm",
+            "description": "Rainfall accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1714, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1899-09-01",
+            "end_date": "2012-02-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_snow_cm",
+            "type": "snowfall",
+            "interval": "daily",
+            "units": "cm",
+            "description": "New snowfall accumulated over the recording interval.",
+            "notes": "ECCC daily series. The /timeseries units field is empty for this parameter; cm comes from /parameters (id 1221). Typed `snowfall`, not `precip`: it is a depth of snow, not a depth of water, and the two are not interconvertible (DESIGN.md \u00a73.2). AquaCache timeseries 1715, aggregation 'sum', recording rate '1 day'.",
+            "begin_date": "1899-09-01",
+            "end_date": "1975-11-01",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1716, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1994-02-17",
+            "end_date": "2025-11-10",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "hourly",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1717, aggregation 'sum', recording rate '01:00:00'.",
+            "begin_date": "2013-12-11",
+            "end_date": "2025-11-10",
+            "n_obs": null
+          },
+          {
+            "name": "wind_spd_kmh",
+            "type": "wind_spd",
+            "interval": "hourly",
+            "units": "km/h",
+            "description": "Wind speed.",
+            "notes": "Native units: km/h. AquaCache timeseries 1718, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1994-02-17",
+            "end_date": "2025-11-10",
+            "n_obs": null
+          },
+          {
+            "name": "wind_dir_deg",
+            "type": "wind_dir",
+            "interval": "hourly",
+            "units": "degrees",
+            "description": "Wind direction, degrees clockwise from north (0-360).",
+            "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1719, aggregation 'mean', recording rate '01:00:00'.",
+            "begin_date": "1994-07-26",
+            "end_date": "2025-11-10",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "ECCC",
+        "network_name": "ECCC Meteorology Network",
+        "dataset_url": "https://open.yukon.ca/data/water-monitoring-sites",
+        "license": "Open Government Licence \u2013 Yukon",
+        "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -135.197151,
+          60.52163
+        ]
+      },
+      "properties": {
+        "code": "29AB-M3",
+        "name": "Wolf Creek Buckbrush Taiga Meteorological",
+        "latitude": 60.52163,
+        "longitude": -135.197151,
+        "elevation_m": 1250.0,
+        "state": "YT",
+        "network_code": "YSS",
+        "operator": "Yukon Government Department of Environment, Water Science and Stewardship",
+        "client": "yukon",
+        "data_provider": "Yukon Water Data (AquaCache)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": null,
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://service.yukon.ca/water-data/shiny/?page=home&lang=en",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": null,
+        "data_variables": [
+          {
+            "name": "swe_mm",
+            "type": "swe",
+            "interval": "hourly",
+            "units": "cm",
+            "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
+            "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 145, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1995-10-20",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "precip_total_mm",
+            "type": "precip",
+            "interval": "sub_daily",
+            "units": "mm",
+            "description": "Total precipitation accumulated over the recording interval.",
+            "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1772, aggregation 'sum', recording rate '03:00:00'.",
+            "begin_date": "1998-09-01",
+            "end_date": "2026-10-27",
+            "n_obs": null
+          },
+          {
+            "name": "air_temp_degc",
+            "type": "temp",
+            "interval": "hourly",
+            "units": "\u00b0C",
+            "description": "Air temperature.",
+            "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1773, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "1998-09-01",
+            "end_date": "2026-10-12",
+            "n_obs": null
+          },
+          {
+            "name": "soil_moisture_pct",
+            "type": "other",
+            "interval": "sub_daily",
+            "units": "%",
+            "description": "Volumetric soil moisture content.",
+            "notes": "Native units: %. AquaCache timeseries 1774, aggregation 'instantaneous', recording rate '03:00:00'.",
+            "begin_date": "2002-06-26",
+            "end_date": "2026-10-20",
+            "n_obs": null
+          },
+          {
+            "name": "rel_humidity_pct",
+            "type": "rh",
+            "interval": "hourly",
+            "units": "%",
+            "description": "Relative humidity.",
+            "notes": "Native units: %. AquaCache timeseries 1775, aggregation 'instantaneous', recording rate '01:00:00'.",
+            "begin_date": "2025-10-01",
+            "end_date": "2026-10-13",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": false,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-27",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "station_type": "AWS",
+        "network_name": "Yukon Snow Survey Network",
+        "dataset_url": "https://open.yukon.ca/data/yukon-snow-survey-network",
         "license": "Open Government Licence \u2013 Yukon",
         "license_url": "https://yukon.ca/en/your-government/open-government/open-government-licence-yukon"
       }
