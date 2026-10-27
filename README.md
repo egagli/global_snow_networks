@@ -784,6 +784,15 @@ requires no authentication and self-describes at
 The Explorer front end sits behind a Cloudflare JS challenge, but the API
 itself is unrestricted.
 
+**Where the service is built.**  Both the API (`inst/plumber/v1.R`,
+`inst/plumber/v2/plumber.R`) and the Explorer live in
+[YukonWRB/YGwater](https://github.com/YukonWRB/YGwater); the database schema
+lives in [YukonWRB/AquaCache](https://github.com/YukonWRB/AquaCache), whose
+`inst/patches/` record every schema change.  The deployed API can run ahead of
+`main`: on 2026-10-26 the live `/timeseries` matched YGwater's `dev.WRB` branch,
+after AquaCache patch 65 (2026-10-15) renamed `publicly_visible` to
+`default_show`.  When a response changes shape, check those two places first.
+
 **Two network codes** distinguish who operates the site:
 
 | `network_code` | Station types | Count | Description |
@@ -842,16 +851,20 @@ series if you want them.
 - Water Data Explorer: https://service.yukon.ca/water-data/shiny/
 - API v2 docs: https://service.yukon.ca/water-data/api/v2/__docs__/
 - Open Yukon — Snow Survey Network: https://open.yukon.ca/data/yukon-snow-survey-network
+- API and Explorer source: https://github.com/YukonWRB/YGwater
+- Database source: https://github.com/YukonWRB/AquaCache
+- Licence: https://yukon.ca/en/your-government/open-government/open-government-licence-yukon
 - Snow surveys and water supply forecasts: https://yukon.ca/en/science-and-natural-resources/water/snow-surveys-and-water-supply-forecasts
 
 #### Data Sources and Access Methods
 
 | Tool / Source | Type | Description |
 |---|---|---|
-| AquaCache API v1 | Primary API | Open CSV/JSON REST API, no key. Catalogue via `/locations` and `/timeseries`, values via `/timeseries/measurementsDaily`. **Used by this project.** |
+| AquaCache API v2 | Primary API | Open CSV/JSON REST API, no key. Catalogue via `/locations` and `/timeseries`, values via `/timeseries/measurementsDaily`. **Used by this project.** |
 | Water Data Explorer | Web | Interactive Shiny app for browsing and downloading (browser only — Cloudflare JS challenge). |
 | Open Yukon | Web | Dataset landing pages and historical bulletin PDFs. |
 | AquaCache (upstream) | Database | The open-source R/Postgres project the API is built on. |
+| YGwater (upstream) | Code | The R package holding the API (plumber) and the Explorer (Shiny). |
 
 ### 6.10 Hydro-Québec (HQ)
 
@@ -1554,8 +1567,12 @@ Columbia.
 CDEC data is published by CA DWR.
 NVE data is published under the Norwegian Licence for Open Government Data
 (NLOD).
-Yukon snow and water data is published under the Open Government Licence —
-Yukon.
+Yukon snow and water data is published under the
+[Open Government Licence — Yukon](https://yukon.ca/en/your-government/open-government/open-government-licence-yukon).
+Credit it as: "Government of Yukon, Department of Environment, Water Science
+and Stewardship Branch. Contains information licensed under the Open
+Government Licence – Yukon."  Every Yukon feature carries `license` and
+`license_url`.
 **Hydro-Québec data is published under CC BY-NC 4.0: attribution required,
 no commercial use.** Its stations' CSVs in this archive carry the same
 restriction.
