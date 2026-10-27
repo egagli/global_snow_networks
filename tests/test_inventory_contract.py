@@ -82,6 +82,20 @@ def test_universal_schema_on_every_feature(features):
         )
 
 
+def test_day_convention_when_present_is_a_known_value(features):
+    # Required on every feature once the nightly rebuild has stamped it;
+    # until then, check the ones that carry it.
+    from scripts.create_all_stations_geojson import DAY_CONVENTIONS
+
+    known = set(DAY_CONVENTIONS.values()) | {
+        v.replace("UTC-08:00", "UTC-09:00") for v in DAY_CONVENTIONS.values()
+    } | {"unknown"}
+    for f in features:
+        value = f["properties"].get("day_convention")
+        if value is not None:
+            assert value in known, (f["properties"].get("code"), value)
+
+
 def test_every_feature_has_code_and_known_client(features):
     for f in features:
         p = f["properties"]

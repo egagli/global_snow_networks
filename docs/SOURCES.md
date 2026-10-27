@@ -22,6 +22,8 @@ Per-network documentation, APIs, portals, and design literature
 - SNOTEL program: <https://www.nrcs.usda.gov/programs-initiatives/snotel-snow-telemetry>
 - Interactive map: <https://nwcc-apps.sc.egov.usda.gov/imap/>
 - Report generator: <https://wcc.sc.egov.usda.gov/reportGenerator/>
+- TSTool's AWDB datastore reference (PST hourly data, daily SWE = midnight
+  value, `periodRef`): <https://opencdss.state.co.us/tstool/latest/doc-user/datastore-ref/NRCS-AWDB/NRCS-AWDB/>
 - Air-temperature bias correction status (fetched live at build time):
   <https://www.wcc.nrcs.usda.gov/ftpref/support/air_temp_bias/nrcs_air_temp_unbias.html>
 

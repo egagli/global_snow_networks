@@ -198,6 +198,42 @@ loop handles transient HTTP errors and honours `Retry-After` on 429.
   Raw values pass a pipeline-side spike filter first (documented in
   `scripts/get_all_stations_data.py`); clients stay pass-through.
 
+### 4.1 What a dated value is (`day_convention`)
+
+Networks do not agree on what a date means. A SNOTEL value dated D is the
+00:00 PST reading that opens D; a CDEC value dated D is the 05:00 Pacific
+reading of D; a DataBC value is the 16:00 UTC (08:00 PST) reading of D;
+several networks store a mean over a local day instead of a reading. Two
+values with the same date can be up to a day apart, which matters for
+melt-onset and event timing more than for SWE totals.
+
+Every feature carries `day_convention`, set from its client and network
+(`DAY_CONVENTIONS` in `scripts/create_all_stations_geojson.py`). Grammar:
+`instant HH:MM <zone>` (one reading at that clock time on the dated day),
+`<mean|median|first|last> of day <zone>`, `manual morning reading`, or
+`unknown` where no source states it. `<zone>` is an IANA name (DST applies)
+or a fixed UTC offset.
+
+| Client / network | `day_convention` | Source |
+|---|---|---|
+| AWDB SNTL, SNTLT, SCAN | `instant 00:00 UTC-08:00` (Alaska: `UTC-09:00`) | TSTool AWDB reference; client uses `periodRef=START` |
+| AWDB COOP, MSNT | `unknown` | manual or mirrored records, time not stated |
+| CDEC | `instant 05:00 America/Los_Angeles` | checked first-hand at Dana Meadows (daily = hourly 05:00), 2024-03 |
+| DataBC ASWS | `instant 16:00 UTC` | client (`_DAILY_UTC_HOUR`) |
+| NVE | `mean of day (boundary not documented)` | HydAPI resolution 1440 |
+| Yukon | `mean of day UTC-07:00` | AquaCache `day_timezone` |
+| Hydro-Québec | `last of day America/Toronto` | client aggregation of the hourly feed |
+| Alberta | `mean of day UTC-07:00` | WISKI `A.DayMean` over the MST day |
+| SLF IMIS | `median of 24 h, stamped 00:00 UTC` | SLF; its README says 06 UTC |
+| SLF study plots | `manual morning reading` | SLF |
+| SNIH | `first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)` | client; pipeline spike filter |
+| CEAZA | `mean of day UTC-04:00` | CEAZA web service |
+
+The nightly job commits at about 08:30–09:00 UTC, just after SNOTEL's
+midnight reading (08:00 UTC) and before CDEC's (≈12:00–13:00 UTC) and
+DataBC's (16:00 UTC), so each night's newest day is often missing for some
+networks and arrives the next night. Nothing is lost; only latency differs.
+
 ## 5. Station identity: network, operator, data provider
 
 Three distinct concepts, three distinct fields:
@@ -239,7 +275,7 @@ feature; `null` when unavailable, never omitted):
 `latest_record_date`, `station_url`, `station_image_url`,
 `station_camera_url`, `notes`, `data_variables`, `has_daily_swe`,
 `has_daily_snwd`, `daily_or_better`, `daily_verified`,
-`daily_provenance`, `possible_duplicates`, `metadata_fetched_at`,
+`daily_provenance`, `day_convention`, `possible_duplicates`, `metadata_fetched_at`,
 `upstream_status`, `missing_upstream_since`.
 
 `upstream_status` is `listed` when the station is in its source's current
