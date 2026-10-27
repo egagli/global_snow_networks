@@ -229,10 +229,12 @@ or a fixed UTC offset.
 | SNIH | `first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)` | client; pipeline spike filter |
 | CEAZA | `mean of day UTC-04:00` | CEAZA web service |
 
-The nightly job commits at about 08:30–09:00 UTC, just after SNOTEL's
-midnight reading (08:00 UTC) and before CDEC's (≈12:00–13:00 UTC) and
-DataBC's (16:00 UTC), so each night's newest day is often missing for some
-networks and arrives the next night. Nothing is lost; only latency differs.
+The daily job starts at 17:00 UTC, after SNOTEL's midnight reading
+(08:00 UTC), CDEC's (≈12:00–13:00 UTC) and DataBC's (16:00 UTC), so every
+North American network's newest day is complete on the morning it is
+measured. Until 2026-10 it ran at 07:30 UTC and caught CDEC and DataBC a day
+late; nothing was lost, only latency differed. The monthly snapshot runs at
+20:30 UTC on the 1st, after that day's refresh.
 
 ## 5. Station identity: network, operator, data provider
 
@@ -434,7 +436,13 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
 - **Water years follow the station's hemisphere** (latitude < 0 is
   southern): 1 October in the north, named for the year it ends; 1 April
   in the south, named for the year it starts — easysnowdata's
-  `processing.wateryear`, mirrored in the page's JavaScript. Every
+  `processing.wateryear`, mirrored in the page's JavaScript. So water
+  year *N* is the season that peaks in calendar year *N* in both
+  hemispheres. Decided 2026-10-27: 1 April for **every** southern station,
+  not each country's agency year. Argentina's national runoff forecasts
+  use October–September and Chile's DGA bulletins total by calendar year;
+  both split the snow season. 1 April matches the Andes SWE reanalysis
+  (Cortés & Margulis 2017; Dryad doi:10.5061/dryad.ngf1vhj0s). Every
   DOWY-indexed quantity (medians, n-years, chart percentiles, the embedded
   season, percent of normal) is computed in the station's own water year;
   the page's date control holds one calendar date that each station

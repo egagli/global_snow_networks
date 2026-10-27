@@ -28,7 +28,7 @@ name: Release Snapshot
 
 on:
   schedule:
-    - cron: "30 9 1 * *"
+    - cron: "30 20 1 * *"   # after the 17:00 UTC daily refresh
   push:
     tags:
       - "v*"
