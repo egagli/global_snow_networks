@@ -678,6 +678,12 @@ class StationWriter:
             self.stats.skipped_empty += 1
             return False
         df = _as_numeric(df)
+        # Dates with neither value (a source returning placeholder rows)
+        # carry nothing; a file of only those would be an empty CSV that
+        # reads as an archived station.
+        if _populated(df).empty:
+            self.stats.skipped_empty += 1
+            return False
         csv_path = station_csv_path(self.data_dir, code)
         old = read_station_csv(csv_path)
         if old is not None and merge:
@@ -1183,9 +1189,11 @@ def refresh_alberta(
     BC Snow Survey and SNOTEL mirrors never reach here.  Daily values are
     the source's own ``A.DayMean`` aggregate over the MST day (the client
     computes a mean of the native samples only where that aggregate is
-    missing).  The client downloads one series per station × parameter
-    and logs and skips a failed download, so a station can come back
-    partial; the shrink guard keeps its archived record in that case.
+    missing).  The client downloads one series per station × parameter.
+    From the easysnowdata release after 0.3.4 a failed download raises
+    (egagli/easysnowdata#81), so the station is counted as failed and its
+    CSV kept; older versions logged and skipped it, returning the station
+    partial, and the shrink guard kept the archived record.
     """
     stats = writer.stats
     if not stations:
@@ -1205,7 +1213,7 @@ def refresh_alberta(
                 interval="daily",
                 end_date=date.today().isoformat(),
             )
-        except AlbertaError as exc:   # the catalog query failed
+        except AlbertaError as exc:   # the catalog query or a download failed
             stats.failed_batches += 1
             print(f"  [Alberta] {sid} FAILED ({exc})")
             continue

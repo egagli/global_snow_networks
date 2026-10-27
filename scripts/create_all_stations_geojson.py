@@ -1737,7 +1737,25 @@ def hydroquebec_station_to_feature(station: dict) -> dict:
         "license_url": HYDROQUEBEC_LICENSE_URL,
         "metadata_fetched_at": date.today().isoformat(),
     }
-    props.update(_daily_candidate_props(_hydroquebec_data_variables(station)))
+    dvars = _hydroquebec_data_variables(station)
+    props.update(_daily_candidate_props(dvars))
+    # The feed lists a variable for a station whether or not it has ever
+    # sent a value for it: in October 2026 three stations listed snow depth
+    # with no valid reading in any window, so the refresh never had
+    # anything to write and the map showed them as daily stations with no
+    # data.  Only a snow series with values in the current window makes a
+    # candidate.  A station that goes quiet after its probe passed keeps
+    # its verdict through the rebuild (carry_forward_record_dates), so a
+    # sensor outage does not take it off the map.
+    reporting = [dv for dv in dvars if dv.get("n_obs")]
+    has_swe = _has_daily_type(reporting, "swe")
+    has_snwd = _has_daily_type(reporting, "snwd")
+    props.update({
+        "has_daily_swe": has_swe,
+        "has_daily_snwd": has_snwd,
+        "daily_or_better": has_swe or has_snwd,
+        "daily_provenance": "native" if (has_swe or has_snwd) else "none",
+    })
     # No native daily product: the pipeline stores the client's
     # local-day aggregation of the hourly series (DESIGN.md §4).
     if props["daily_or_better"]:
@@ -1753,8 +1771,10 @@ def run_hydroquebec_workflow() -> tuple[list[dict], list[dict]]:
     ``all_features``   — every station listing SWE or snow depth in the
                          current window (the GMON network and the
                          depth-only weather stations).
-    ``daily_features`` — all of them: every snow series is hourly, which is
-                         daily-or-better once aggregated.
+    ``daily_features`` — those with SWE or depth values in the current
+                         window: every snow series is hourly, which is
+                         daily-or-better once aggregated, but a listed
+                         series with no values is not a candidate.
     """
     client = HydroQuebecClient()
 
