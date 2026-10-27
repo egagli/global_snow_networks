@@ -187,6 +187,7 @@ UNIVERSAL_FIELDS: tuple[str, ...] = (
     "daily_or_better",
     "daily_verified",
     "daily_provenance",
+    "day_convention",
     "possible_duplicates",
     "metadata_fetched_at",
     "upstream_status",
@@ -482,6 +483,61 @@ def _awdb_is_active(end_date: str | None) -> bool:
 
 # ── GeoJSON helpers ───────────────────────────────────────────────────────────
 
+# ── Day convention (DESIGN.md §4.1) ──────────────────────────────────────────
+#
+# What one dated value in a station's CSV is: a reading at a clock time, or
+# a statistic over a day in a stated zone. Networks differ by up to a day:
+# a SNOTEL value dated D is the 00:00 PST reading that opens D, a CDEC
+# value dated D the 05:00 Pacific reading of D, a DataBC value the 16:00
+# UTC (08:00 PST) reading of D. Grammar:
+#   "instant HH:MM <zone>"   one reading at that clock time on the dated day
+#   "<stat> of day <zone>"   mean / median / first / last over that day
+#   "manual morning reading", or "unknown" where no source states it.
+# <zone> is an IANA name (DST applies) or a fixed UTC offset.
+DAY_CONVENTIONS: dict[str, str] = {
+    # TSTool's AWDB reference: SNOTEL daily SWE is the midnight value in
+    # PST; the client asks AWDB for periodRef=START, so it is dated with
+    # the day that midnight opens.
+    "awdb:SNTL": "instant 00:00 UTC-08:00",
+    "awdb:SNTLT": "instant 00:00 UTC-08:00",
+    "awdb:SCAN": "instant 00:00 UTC-08:00",
+    # Checked first-hand: CDEC's daily (D) SWE at Dana Meadows equals the
+    # hourly 05:00 reading (OBS DATE 0500), 2024-03-10 and 03-11.
+    "cdec": "instant 05:00 America/Los_Angeles",
+    "databc": "instant 16:00 UTC",
+    # HydAPI resolution 1440 is a daily mean; its day boundary is not
+    # documented.
+    "nve": "mean of day (boundary not documented)",
+    "yukon": "mean of day UTC-07:00",
+    "hydroquebec": "last of day America/Toronto",
+    "alberta": "mean of day UTC-07:00",
+    "slf:IMIS": "median of 24 h, stamped 00:00 UTC",
+    "slf:BEOB": "manual morning reading",
+    "ceaza": "mean of day UTC-04:00",
+    # Validated days keep the day's first value; the raw telemetry after
+    # snih_validated_through is a filtered median of the day.
+    "snih": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
+}
+
+
+def day_convention(props: dict[str, Any]) -> str:
+    """The ``day_convention`` of a feature, from its client and network.
+
+    Alaska SNOTEL/SCAN sites report in Yukon Standard Time (UTC-9) rather
+    than PST. Anything not in :data:`DAY_CONVENTIONS` is ``"unknown"``.
+    """
+    client = str(props.get("client") or "")
+    network = str(props.get("network_code") or "")
+    found = DAY_CONVENTIONS.get(f"{client}:{network}") or DAY_CONVENTIONS.get(
+        client
+    )
+    if found is None:
+        return "unknown"
+    if client == "awdb" and props.get("state") == "AK":
+        return found.replace("UTC-08:00", "UTC-09:00")
+    return found
+
+
 def make_feature(
     lon: float | None,
     lat: float | None,
@@ -499,6 +555,9 @@ def make_feature(
     for k, v in props.items():
         if k not in UNIVERSAL_FIELDS and v is not None:
             properties[k] = v
+    properties["day_convention"] = props.get("day_convention") or day_convention(
+        properties
+    )
     return {
         "type": "Feature",
         "geometry": {"type": "Point", "coordinates": [lon, lat]},
@@ -2895,6 +2954,13 @@ def main() -> None:
 
     linked = annotate_possible_duplicates(all_features_merged)
     print(f"Cross-linked possible duplicates on {linked:,} features")
+
+    # Retained stations and fallback inventories come from files written
+    # before the field existed.
+    for feat in all_features_merged:
+        props = feat.setdefault("properties", {})
+        if not props.get("day_convention"):
+            props["day_convention"] = day_convention(props)
     mirrored = link_alberta_mirrors(all_features_merged)
     if mirrored:
         print(f"Linked {mirrored:,} Alberta mirrors to their twins")
