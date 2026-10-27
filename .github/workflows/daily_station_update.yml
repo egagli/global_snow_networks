@@ -2,7 +2,10 @@ name: Daily Station Update
 
 on:
   schedule:
-    - cron: "30 7 * * *"
+    # 17:00 UTC: after CDEC's 05:00 Pacific and DataBC's 16:00 UTC daily
+    # readings, so every North American day is complete on the morning it
+    # is measured (DESIGN.md §4.1).
+    - cron: "0 17 * * *"
   workflow_dispatch:
 
 jobs:
