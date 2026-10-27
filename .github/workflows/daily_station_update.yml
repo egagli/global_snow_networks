@@ -159,6 +159,32 @@ jobs:
           git commit -m "chore: daily station data refresh"
           git push origin HEAD:main
 
+  # ── Stage 3b: flag networks whose daily data stopped arriving ─────────────
+  # Every stage above stays green when a source silently returns fewer
+  # stations or no data (Yukon, 2026-10-15 to 10-27), so read the archive
+  # that was just committed and open/close one `network-health` issue per
+  # stale network. Standard library only, so no pixi environment is needed;
+  # it always exits 0 and never blocks the deploy.
+  network-health:
+    needs: finalize
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Check network freshness
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          python3 -m scripts.check_network_freshness \
+            --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
   # ── Stage 4: run CI and deploy map (after data is committed) ───────────────
   run-tests:
     needs: finalize

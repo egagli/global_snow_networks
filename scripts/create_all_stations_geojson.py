@@ -207,6 +207,13 @@ DATA_PROVIDERS: dict[str, str] = {
     "ceaza": "CEAZA-Met (Datos provistos por el laboratorio de meteorología CEAZA)",
 }
 
+# Open Government Licence – Yukon, as linked from the Open Yukon dataset pages.
+YUKON_LICENSE = "Open Government Licence – Yukon"
+YUKON_LICENSE_URL = (
+    "https://yukon.ca/en/your-government/open-government/"
+    "open-government-licence-yukon"
+)
+
 # Carried on every Alberta feature: the app states no licence, only a
 # download disclaimer.
 ALBERTA_NOTE = (
@@ -1603,6 +1610,8 @@ def yukon_station_to_feature(station: dict) -> dict:
         "sub_basin": station.get("sub_basin"),
         "first_survey": station.get("first_survey"),
         "last_survey": station.get("last_survey"),
+        "license": YUKON_LICENSE,
+        "license_url": YUKON_LICENSE_URL,
         "metadata_fetched_at": date.today().isoformat(),
     }
     props.update(_daily_candidate_props(_yukon_data_variables(station)))
@@ -2598,6 +2607,14 @@ def main() -> None:
                         "https://service.yukon.ca/water-data/api/v2"
                     ),
                     "client": "yukon",
+                    "license": YUKON_LICENSE,
+                    "license_url": YUKON_LICENSE_URL,
+                    "attribution": (
+                        "Government of Yukon, Department of Environment, "
+                        "Water Science and Stewardship Branch. Contains "
+                        "information licensed under the Open Government "
+                        "Licence – Yukon."
+                    ),
                     "description": (
                         "All Yukon snow monitoring stations: manual snow "
                         "courses (YSS, periodic Feb/Mar/Apr/May surveys), "

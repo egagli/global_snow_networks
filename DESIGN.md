@@ -324,6 +324,18 @@ continuous-series listing failed, and 17 Yukon stations were wrongly marked
 missing. The contract test fails on any CSV without an inventory feature,
 and on a `code` shared by two features.
 
+Carrying an outage forward keeps the map whole but also hides it: from
+2026-10-15 to 2026-10-27 the Yukon API returned no continuous series, every
+workflow stage stayed green, and the 17 Yukon daily stations got no new rows
+for 12 days before anyone noticed. So the daily workflow ends with a
+freshness check (`scripts/check_network_freshness.py`, the `network-health`
+job) that reads the committed archive. A network is flagged when the newest
+row of any of its daily stations is more than 7 days old, or when fewer than
+half as many of its daily stations reported in the last 7 days as in the 7
+before (with at least 4 then). Each flagged network gets one `network-health`
+issue, updated by later runs and closed on recovery; the job never fails the
+run. Replayed over the archive, it flags Yukon on 2026-10-22.
+
 ### 6.5 Chunked archive (`archive/*.zarr` in the Pages artefact)
 
 The observations of §6.3 in a second published form, for partial reads:

@@ -56,7 +56,12 @@ Per-network documentation, APIs, portals, and design literature
   <https://open.yukon.ca/data/yukon-snow-survey-network>
 - Snow surveys and water supply forecasts:
   <https://yukon.ca/en/science-and-natural-resources/water/snow-surveys-and-water-supply-forecasts>
-- AquaCache upstream project: <https://github.com/YukonWRB/AquaCache>
+- AquaCache upstream project (database schema; `inst/patches/` record
+  schema changes): <https://github.com/YukonWRB/AquaCache>
+- YGwater (API in `inst/plumber/`, Explorer in `inst/apps/`; the live API
+  tracked the `dev.WRB` branch on 2026-10-26): <https://github.com/YukonWRB/YGwater>
+- Licence (Open Government Licence – Yukon):
+  <https://yukon.ca/en/your-government/open-government/open-government-licence-yukon>
 
 ## Hydro-Québec
 
