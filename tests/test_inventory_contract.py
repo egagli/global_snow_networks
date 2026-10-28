@@ -36,7 +36,8 @@ UNIVERSAL_FIELDS = {
     "latest_record_date", "station_url", "station_image_url",
     "station_camera_url", "notes", "data_variables", "has_daily_swe",
     "has_daily_snwd", "daily_or_better", "daily_verified",
-    "daily_provenance", "possible_duplicates", "metadata_fetched_at",
+    "daily_provenance", "day_convention", "possible_duplicates",
+    "metadata_fetched_at",
     "upstream_status", "missing_upstream_since",
 }
 
@@ -82,9 +83,7 @@ def test_universal_schema_on_every_feature(features):
         )
 
 
-def test_day_convention_when_present_is_a_known_value(features):
-    # Required on every feature once the nightly rebuild has stamped it;
-    # until then, check the ones that carry it.
+def test_day_convention_is_a_known_value(features):
     from scripts.create_all_stations_geojson import DAY_CONVENTIONS
 
     known = set(DAY_CONVENTIONS.values()) | {
@@ -92,8 +91,7 @@ def test_day_convention_when_present_is_a_known_value(features):
     } | {"unknown"}
     for f in features:
         value = f["properties"].get("day_convention")
-        if value is not None:
-            assert value in known, (f["properties"].get("code"), value)
+        assert value in known, (f["properties"].get("code"), value)
 
 
 def test_every_feature_has_code_and_known_client(features):
