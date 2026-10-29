@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-10-28",
+    "generated": "2026-10-29",
     "source": "SNIH \u2014 Base de Datos Hidrol\u00f3gica Integrada (snih.hidricosargentina.gob.ar page methods)",
     "client": "snih",
     "license": "SNIH terms of use (free use incl. commercial; cite SIPH / the network and the last-update date)",
@@ -63,7 +63,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -123,7 +123,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -216,7 +216,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -238,7 +238,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -246,7 +246,7 @@
         "province": "Salta",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -299,7 +299,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -310,7 +310,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -318,7 +318,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T08:00:00-03:00",
+        "last_raw_obs": "2026-10-29T08:00:00-03:00",
         "snih_validated_through": "2024-11-22"
       }
     },
@@ -372,7 +372,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -465,7 +465,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -487,7 +487,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -495,7 +495,7 @@
         "province": "San Juan",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T06:00:00-03:00",
+        "last_raw_obs": "2026-10-29T06:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -549,7 +549,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -560,7 +560,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -568,7 +568,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T00:00:00-03:00",
         "snih_validated_through": "2024-01-16"
       }
     },
@@ -622,7 +622,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -633,7 +633,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -641,7 +641,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -695,7 +695,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -706,7 +706,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -714,7 +714,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2024-11-05"
       }
     },
@@ -768,7 +768,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -779,7 +779,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -787,7 +787,7 @@
         "province": "Santa Cruz",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2024-10-31"
       }
     },
@@ -874,7 +874,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -896,7 +896,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -904,7 +904,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -990,7 +990,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -1012,7 +1012,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -1020,7 +1020,7 @@
         "province": "Neuqu\u00e9n",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-27T16:00:00-03:00"
+        "last_raw_obs": "2026-10-28T16:00:00-03:00"
       }
     },
     {
@@ -1073,7 +1073,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -1084,7 +1084,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1092,7 +1092,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-08-23"
       }
     },
@@ -1179,7 +1179,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1201,7 +1201,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -1209,7 +1209,7 @@
         "province": "La Rioja",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -1295,7 +1295,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1317,7 +1317,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1325,7 +1325,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T06:00:00-03:00",
+        "last_raw_obs": "2026-10-29T06:00:00-03:00",
         "snih_validated_through": "2023-11-30"
       }
     },
@@ -1379,7 +1379,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1439,7 +1439,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1521,7 +1521,7 @@
         "daily_provenance": "native",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1582,7 +1582,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1642,7 +1642,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1702,7 +1702,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1762,7 +1762,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -1773,7 +1773,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -1781,7 +1781,7 @@
         "province": "Chubut",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -1834,7 +1834,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -1845,7 +1845,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1853,7 +1853,7 @@
         "province": "Santa Cruz",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T00:00:00-03:00",
         "snih_validated_through": "2024-10-04"
       }
     },
@@ -1940,7 +1940,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1962,7 +1962,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -1970,7 +1970,7 @@
         "province": "Chubut",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2024-11-22"
       }
     },
@@ -2024,7 +2024,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -2035,7 +2035,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2043,7 +2043,7 @@
         "province": "Chubut",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2024-11-05"
       }
     },
@@ -2152,7 +2152,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2247,7 +2247,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -2269,7 +2269,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2277,7 +2277,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T03:00:00-03:00",
+        "last_raw_obs": "2026-10-29T03:00:00-03:00",
         "snih_validated_through": "2023-12-17"
       }
     },
@@ -2342,7 +2342,7 @@
         "daily_provenance": "native",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2436,7 +2436,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -2458,7 +2458,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2466,7 +2466,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T08:00:00-03:00",
+        "last_raw_obs": "2026-10-29T08:00:00-03:00",
         "snih_validated_through": "2023-09-21"
       }
     },
@@ -2553,7 +2553,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -2575,7 +2575,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2583,7 +2583,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-11-30"
       }
     },
@@ -2637,7 +2637,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2697,7 +2697,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2790,7 +2790,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -2812,7 +2812,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -2820,7 +2820,7 @@
         "province": "Santa Cruz",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -2884,7 +2884,7 @@
         "daily_provenance": "native",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -2945,7 +2945,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3005,7 +3005,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3065,7 +3065,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -3076,7 +3076,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -3084,7 +3084,7 @@
         "province": "R\u00edo Negro",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -3137,7 +3137,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3252,7 +3252,7 @@
         "daily_provenance": "native",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -3345,7 +3345,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3367,7 +3367,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -3375,7 +3375,7 @@
         "province": "Jujuy",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -3439,7 +3439,7 @@
         "daily_provenance": "native",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3533,7 +3533,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3555,7 +3555,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3563,7 +3563,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T06:00:00-03:00",
+        "last_raw_obs": "2026-10-29T06:00:00-03:00",
         "snih_validated_through": "2023-12-22"
       }
     },
@@ -3617,7 +3617,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -3628,7 +3628,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3636,7 +3636,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T04:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -3690,7 +3690,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3750,7 +3750,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -3761,7 +3761,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -3769,7 +3769,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -3856,7 +3856,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3878,7 +3878,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -3886,7 +3886,7 @@
         "province": "San Juan",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00"
+        "last_raw_obs": "2026-10-29T12:00:00-03:00"
       }
     },
     {
@@ -3939,7 +3939,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -4054,7 +4054,7 @@
         "daily_provenance": "native",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Meteorol\u00f3gica RMET",
@@ -4147,7 +4147,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4169,7 +4169,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -4177,7 +4177,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T08:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-09-11"
       }
     },
@@ -4264,7 +4264,7 @@
             "description": "Snow water equivalent from a snow pillow (parameter 73). 'daily': the validated historical record; 'sub_daily': raw telemetry every 4 or 6 hours.",
             "notes": "Published in mm; returned in cm (x 0.1). Validated daily values end in 2023-2024; later values are raw telemetry only, which is noisy (10 mm steps, runs of 0, spikes).",
             "begin_date": null,
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4286,7 +4286,7 @@
         "daily_provenance": "resampled_sub_daily",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",
@@ -4294,7 +4294,7 @@
         "province": "Mendoza",
         "country": "AR",
         "measurement_method": "Snow pillow (telemetered SWE); Snow course (manual coring)",
-        "last_raw_obs": "2026-10-28T12:00:00-03:00",
+        "last_raw_obs": "2026-10-29T12:00:00-03:00",
         "snih_validated_through": "2023-11-17"
       }
     },
@@ -4348,7 +4348,7 @@
         "daily_provenance": "none",
         "day_convention": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "network_name": "Red Hidrol\u00f3gica Nacional",

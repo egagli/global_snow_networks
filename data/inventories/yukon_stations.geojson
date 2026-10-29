@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-10-28",
+    "generated": "2026-10-29",
     "source": "Yukon Water Data (AquaCache) API v2 \u2014 https://service.yukon.ca/water-data/api/v2",
     "client": "yukon",
     "license": "Open Government Licence \u2013 Yukon",
@@ -50,7 +50,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1670, aggregation '(min+max)/2', recording rate '1 day'.",
             "begin_date": "1980-02-02",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -61,7 +61,7 @@
             "description": "Daily minimum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1671, aggregation 'minimum', recording rate '1 day'.",
             "begin_date": "1980-02-02",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -72,7 +72,7 @@
             "description": "Daily maximum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1672, aggregation 'maximum', recording rate '1 day'.",
             "begin_date": "1980-02-02",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -83,7 +83,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1673, aggregation 'instantaneous', recording rate '1 day'.",
             "begin_date": "1980-09-29",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -94,7 +94,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1674, aggregation 'sum', recording rate '1 day'.",
             "begin_date": "1980-02-02",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -105,7 +105,7 @@
             "description": "Rainfall accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Native units: mm. AquaCache timeseries 1675, aggregation 'sum', recording rate '1 day'.",
             "begin_date": "1980-02-02",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           },
           {
@@ -116,7 +116,7 @@
             "description": "New snowfall accumulated over the recording interval.",
             "notes": "ECCC daily series. The /timeseries units field is empty for this parameter; cm comes from /parameters (id 1221). Typed `snowfall`, not `precip`: it is a depth of snow, not a depth of water, and the two are not interconvertible (DESIGN.md \u00a73.2). AquaCache timeseries 1676, aggregation 'sum', recording rate '1 day'.",
             "begin_date": "1980-02-02",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-28",
             "n_obs": null
           }
         ],
@@ -127,7 +127,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -198,7 +198,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -272,7 +272,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -346,7 +346,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -420,7 +420,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -494,7 +494,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -568,7 +568,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -642,7 +642,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -716,7 +716,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -790,7 +790,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -864,7 +864,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -938,7 +938,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1012,7 +1012,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1064,7 +1064,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1220, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2009-11-10",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1075,7 +1075,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1241, aggregation 'sum', recording rate '03:00:00'.",
             "begin_date": "2009-11-10",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1086,7 +1086,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 20, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1988-10-18",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1097,7 +1097,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 21, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2013-09-12",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -1108,7 +1108,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -1157,7 +1157,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1218, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2023-06-14",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1168,7 +1168,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1750, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2023-06-14",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1179,7 +1179,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 649, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1980-02-25",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1190,7 +1190,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 650, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1980-02-25",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -1201,7 +1201,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -1250,7 +1250,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1086, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2023-08-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1261,7 +1261,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1140, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2023-08-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1272,7 +1272,7 @@
             "description": "Wind speed.",
             "notes": "Native units: km/h. AquaCache timeseries 1141, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2023-08-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1283,7 +1283,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 1222, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2025-07-16",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1294,7 +1294,7 @@
             "description": "Wind direction, degrees clockwise from north (0-360).",
             "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1223, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2023-08-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1305,7 +1305,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1842, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2025-10-07",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -1316,7 +1316,7 @@
             "description": "Relative humidity.",
             "notes": "Native units: %. AquaCache timeseries 1843, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2023-08-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -1327,7 +1327,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -1398,7 +1398,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1472,7 +1472,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1546,7 +1546,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1620,7 +1620,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1694,7 +1694,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1768,7 +1768,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1842,7 +1842,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1916,7 +1916,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -1990,7 +1990,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2064,7 +2064,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2138,7 +2138,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2212,7 +2212,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2286,7 +2286,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2360,7 +2360,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2434,7 +2434,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2508,7 +2508,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2582,7 +2582,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2656,7 +2656,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2730,7 +2730,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2804,7 +2804,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2878,7 +2878,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -2952,7 +2952,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3004,7 +3004,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1221, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2017-09-22",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3015,7 +3015,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1759, aggregation 'sum', recording rate '03:00:00'.",
             "begin_date": "2017-09-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3026,7 +3026,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 51, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1988-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3037,7 +3037,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 52, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2017-10-09",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -3048,7 +3048,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -3119,7 +3119,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3193,7 +3193,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3267,7 +3267,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3341,7 +3341,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3415,7 +3415,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3489,7 +3489,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3563,7 +3563,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3637,7 +3637,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3711,7 +3711,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3785,7 +3785,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3859,7 +3859,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -3911,7 +3911,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1648, aggregation '(min+max)/2', recording rate '1 day'.",
             "begin_date": "1898-11-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3922,7 +3922,7 @@
             "description": "Daily minimum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1649, aggregation 'minimum', recording rate '1 day'.",
             "begin_date": "1898-11-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3933,7 +3933,7 @@
             "description": "Daily maximum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1650, aggregation 'maximum', recording rate '1 day'.",
             "begin_date": "1898-11-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3955,7 +3955,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1652, aggregation 'sum', recording rate '1 day'.",
             "begin_date": "1951-12-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3988,7 +3988,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1655, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2020-08-10",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -3999,7 +3999,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1656, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2020-08-10",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4010,7 +4010,7 @@
             "description": "Wind speed.",
             "notes": "Native units: km/h. AquaCache timeseries 1657, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2020-08-10",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4021,7 +4021,7 @@
             "description": "Wind direction, degrees clockwise from north (0-360).",
             "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1658, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2020-08-10",
-            "end_date": "2026-10-27",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -4032,7 +4032,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -4103,7 +4103,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4155,7 +4155,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1720, aggregation '(min+max)/2', recording rate '1 day'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4166,7 +4166,7 @@
             "description": "Daily minimum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1721, aggregation 'minimum', recording rate '1 day'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4177,7 +4177,7 @@
             "description": "Daily maximum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1722, aggregation 'maximum', recording rate '1 day'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4199,7 +4199,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1724, aggregation 'sum', recording rate '1 day'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4232,7 +4232,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1727, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4243,7 +4243,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1728, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2014-05-29",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4254,7 +4254,7 @@
             "description": "Wind speed.",
             "notes": "Native units: km/h. AquaCache timeseries 1729, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -4265,7 +4265,7 @@
             "description": "Wind direction, degrees clockwise from north (0-360).",
             "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1730, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "1966-10-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -4276,7 +4276,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -4347,7 +4347,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4421,7 +4421,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4495,7 +4495,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4569,7 +4569,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4643,7 +4643,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4717,7 +4717,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4791,7 +4791,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4865,7 +4865,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -4939,7 +4939,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5013,7 +5013,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5087,7 +5087,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5161,7 +5161,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5235,7 +5235,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5309,7 +5309,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5361,7 +5361,7 @@
             "description": "Volumetric soil moisture content.",
             "notes": "Native units: %. AquaCache timeseries 1766, aggregation 'instantaneous', recording rate '03:00:00'.",
             "begin_date": "2019-07-17",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -5372,7 +5372,7 @@
             "description": "Relative humidity.",
             "notes": "Native units: %. AquaCache timeseries 1767, aggregation 'instantaneous', recording rate '03:00:00'.",
             "begin_date": "2025-08-28",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -5383,7 +5383,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1776, aggregation 'sum', recording rate '03:00:00'.",
             "begin_date": "2012-09-21",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -5394,7 +5394,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 75, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1988-10-08",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -5405,7 +5405,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 76, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2009-11-10",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -5416,7 +5416,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -5487,7 +5487,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5561,7 +5561,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5635,7 +5635,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5709,7 +5709,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5783,7 +5783,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5857,7 +5857,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -5931,7 +5931,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6005,7 +6005,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6079,7 +6079,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6131,7 +6131,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1219, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2022-10-25",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6142,7 +6142,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1751, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2022-09-22",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6164,7 +6164,7 @@
             "description": "Relative humidity.",
             "notes": "Native units: %. AquaCache timeseries 1764, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2025-10-02",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6175,7 +6175,7 @@
             "description": "Volumetric soil moisture content.",
             "notes": "Native units: %. AquaCache timeseries 1765, aggregation 'instantaneous', recording rate '03:00:00'.",
             "begin_date": "2025-05-22",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6186,7 +6186,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 85, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2022-09-21",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6197,7 +6197,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 86, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2022-10-25",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -6208,7 +6208,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -6279,7 +6279,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6353,7 +6353,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6427,7 +6427,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6501,7 +6501,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6575,7 +6575,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6627,7 +6627,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1231, aggregation 'instantaneous', recording rate '03:00:00'.",
             "begin_date": "2025-09-08",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6638,7 +6638,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 1234, aggregation 'instantaneous', recording rate '03:00:00'.",
             "begin_date": "2025-09-08",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6649,7 +6649,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1235, aggregation 'instantaneous', recording rate '03:00:00'.",
             "begin_date": "2025-09-08",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6660,7 +6660,7 @@
             "description": "Wind direction, degrees clockwise from north (0-360).",
             "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1736, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2025-09-08",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6671,7 +6671,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1737, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2025-09-08",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6715,7 +6715,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -6786,7 +6786,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -6838,7 +6838,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1659, aggregation '(min+max)/2', recording rate '1 day'.",
             "begin_date": "1995-02-28",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6849,7 +6849,7 @@
             "description": "Daily minimum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1660, aggregation 'minimum', recording rate '1 day'.",
             "begin_date": "1995-02-28",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6860,7 +6860,7 @@
             "description": "Daily maximum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1661, aggregation 'maximum', recording rate '1 day'.",
             "begin_date": "1995-02-28",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6893,7 +6893,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1666, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1994-02-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6915,7 +6915,7 @@
             "description": "Wind speed.",
             "notes": "Native units: km/h. AquaCache timeseries 1668, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "1994-02-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -6926,7 +6926,7 @@
             "description": "Wind direction, degrees clockwise from north (0-360).",
             "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1669, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "1994-02-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -6937,7 +6937,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -7008,7 +7008,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7082,7 +7082,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7156,7 +7156,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7230,7 +7230,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7304,7 +7304,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7378,7 +7378,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7452,7 +7452,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7526,7 +7526,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7600,7 +7600,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7652,7 +7652,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 122, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1992-10-15",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -7663,7 +7663,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 123, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2017-10-06",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -7674,7 +7674,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1745, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2017-10-06",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -7685,7 +7685,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1758, aggregation 'sum', recording rate '03:00:00'.",
             "begin_date": "2017-10-06",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -7696,7 +7696,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",
@@ -7767,7 +7767,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7841,7 +7841,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7915,7 +7915,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -7989,7 +7989,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -8063,7 +8063,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -8137,7 +8137,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -8211,7 +8211,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -8285,7 +8285,7 @@
         "daily_provenance": "none",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "SC",
@@ -8337,7 +8337,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1677, aggregation '(min+max)/2', recording rate '1 day'.",
             "begin_date": "1997-06-19",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8348,7 +8348,7 @@
             "description": "Daily minimum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1678, aggregation 'minimum', recording rate '1 day'.",
             "begin_date": "1997-06-19",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8359,7 +8359,7 @@
             "description": "Daily maximum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1679, aggregation 'maximum', recording rate '1 day'.",
             "begin_date": "1997-06-19",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8370,7 +8370,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1680, aggregation 'instantaneous', recording rate '1 day'.",
             "begin_date": "1997-06-28",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8392,7 +8392,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1684, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "2000-01-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8414,7 +8414,7 @@
             "description": "Wind speed.",
             "notes": "Native units: km/h. AquaCache timeseries 1686, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2000-01-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8425,7 +8425,7 @@
             "description": "Wind direction, degrees clockwise from north (0-360).",
             "notes": "Direction the wind blows *from*. Native units: degrees. AquaCache timeseries 1687, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "2000-06-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -8436,7 +8436,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -8485,7 +8485,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1698, aggregation '(min+max)/2', recording rate '1 day'.",
             "begin_date": "1995-07-23",
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8496,7 +8496,7 @@
             "description": "Daily minimum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1699, aggregation 'minimum', recording rate '1 day'.",
             "begin_date": "1995-07-22",
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8507,7 +8507,7 @@
             "description": "Daily maximum air temperature.",
             "notes": "ECCC daily series only. Native units: \u00b0C. AquaCache timeseries 1700, aggregation 'maximum', recording rate '1 day'.",
             "begin_date": "1995-07-23",
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8518,7 +8518,7 @@
             "description": "Snow depth from an automated sensor (Yukon and ECCC stations) or from a 10-point manual snow course survey. Native API unit is cm.",
             "notes": "Native units: cm. NB: /snow-survey/data leaves the units field empty for this parameter; cm is confirmed by the /snow-survey/stats field name 'max_DEPTH_cm'. AquaCache timeseries 1701, aggregation 'instantaneous', recording rate '1 day'.",
             "begin_date": "1995-08-30",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8529,7 +8529,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1702, aggregation 'sum', recording rate '1 day'.",
             "begin_date": "1995-07-29",
-            "end_date": "2026-10-26",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8540,7 +8540,7 @@
             "description": "Air temperature.",
             "notes": "Instantaneous series, or the ECCC daily '(min+max)/2' mean. Native units: \u00b0C. AquaCache timeseries 1705, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1999-11-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8551,7 +8551,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1706, aggregation 'sum', recording rate '01:00:00'.",
             "begin_date": "2015-08-28",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8562,7 +8562,7 @@
             "description": "Wind speed.",
             "notes": "Native units: km/h. AquaCache timeseries 1707, aggregation 'mean', recording rate '01:00:00'.",
             "begin_date": "1999-11-23",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8584,7 +8584,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -8743,7 +8743,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -8913,7 +8913,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "ECCC",
@@ -8962,7 +8962,7 @@
             "description": "Snow water equivalent. At automated snow-weather stations this comes from a snow pillow recorded hourly to 3-hourly; at snow courses it is the average of a 10-point manual survey. Native API unit is mm; returned here in cm (\u00f7 10).",
             "notes": "Native units: mm. Snow course values carry a flag of 'Actual' (measured depth and SWE) or 'Estimated SWE' (measured depth with SWE estimated from historical average density). AquaCache timeseries 145, aggregation 'instantaneous', recording rate '01:00:00'.",
             "begin_date": "1995-10-20",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -8973,7 +8973,7 @@
             "description": "Total precipitation accumulated over the recording interval.",
             "notes": "Aggregation type 'sum'. Returned in native mm without conversion, as in the DataBC client. AquaCache timeseries 1772, aggregation 'sum', recording rate '03:00:00'.",
             "begin_date": "1998-09-01",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -9017,7 +9017,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-07:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "station_type": "AWS",

@@ -1,7 +1,7 @@
 {
   "type": "FeatureCollection",
   "metadata": {
-    "generated": "2026-10-28",
+    "generated": "2026-10-29",
     "source": "CEAZA-Met web service \u2014 https://www.ceazamet.cl/ws/pop_ws.php",
     "client": "ceaza",
     "license": null,
@@ -53,7 +53,7 @@
             "description": "Air temperature; value is the interval mean.",
             "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor HDCTA at 2.0 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2016-10-29",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -64,7 +64,7 @@
             "description": "Snow depth from an automatic snow-depth sensor.",
             "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor HDCAN at 2.85 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2016-10-29",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -75,7 +75,7 @@
             "description": "Snow weight per unit area (Guandacol HDCPN, Llano de Las Liebres LLLSW1Wins1h and LLLSW2Wins1h), i.e. SWE: 1 kg/m\u00b2 = 1 mm of water.",
             "notes": "Published in kg/m\u00b2; returned as SWE in cm (\u00d7 0.1). The two Llano de Las Liebres sensors disagree: on days when either reads over 10 kg/m\u00b2 the median difference is 32 kg/m\u00b2 and the largest 182 kg/m\u00b2 (2024-08-02). Sensor HDCPN at 0.0 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2016-10-29",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -86,7 +86,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -98,7 +98,7 @@
               "sensor": "HDCPN",
               "variable": "pnkg",
               "from": "2016-10-29",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
             }
           ],
           "snwd": [
@@ -106,85 +106,7 @@
               "sensor": "HDCAN",
               "variable": "ani_cm",
               "from": "2016-10-29",
-              "to": "2026-10-28"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.329083,
-          -30.96609
-        ]
-      },
-      "properties": {
-        "code": "CEAZA-LCP",
-        "name": "La Coipa",
-        "latitude": -30.96609,
-        "longitude": -70.329083,
-        "elevation_m": 3381.0,
-        "state": "CL",
-        "network_code": "CEAZA",
-        "operator": null,
-        "client": "ceaza",
-        "data_provider": "CEAZA-Met (Datos provistos por el laboratorio de meteorolog\u00eda CEAZA)",
-        "status": "Active",
-        "is_active": true,
-        "begin_date": "2025-04-02",
-        "end_date": null,
-        "earliest_record_date": null,
-        "latest_record_date": null,
-        "station_url": "https://www.ceazamet.cl/index.php?pag=mod_estacion&e_cod=LCP&p_cod=ceazamet",
-        "station_image_url": null,
-        "station_camera_url": null,
-        "notes": "Datos provistos por el laboratorio de meteorolog\u00eda CEAZA (https://www.ceazamet.cl/). No licence is stated; the terms of use ask users to register a user name and to credit the source with a link. Raw logger output, not quality controlled.",
-        "data_variables": [
-          {
-            "name": "ta_c:LCPTA",
-            "type": "temp",
-            "interval": "daily",
-            "units": "\u00b0C",
-            "description": "Air temperature; value is the interval mean.",
-            "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor LCPTA at 3.0 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2025-04-02",
-            "end_date": "2026-10-28",
-            "n_obs": null
-          },
-          {
-            "name": "ani_cm:LCPAN",
-            "type": "snwd",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow depth from an automatic snow-depth sensor.",
-            "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor LCPAN at 4.5 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2025-03-13",
-            "end_date": "2026-10-28",
-            "n_obs": null
-          }
-        ],
-        "has_daily_swe": false,
-        "has_daily_snwd": true,
-        "daily_or_better": true,
-        "daily_verified": false,
-        "daily_provenance": "native",
-        "day_convention": "mean of day UTC-04:00",
-        "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
-        "upstream_status": null,
-        "missing_upstream_since": null,
-        "ceaza_station_id": "LCP",
-        "measurement_method": "automatic snow depth",
-        "ceaza_sensor_plan": {
-          "snwd": [
-            {
-              "sensor": "LCPAN",
-              "variable": "ani_cm",
-              "from": "2025-03-13",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
             }
           ]
         }
@@ -229,7 +151,7 @@
             "description": "Air temperature; value is the interval mean.",
             "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor CDCTA at 1.5 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2019-03-14",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -240,7 +162,7 @@
             "description": "Snow depth from an automatic snow-depth sensor.",
             "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor CDCAN at 3.6 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2019-03-14",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -251,7 +173,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -263,214 +185,7 @@
               "sensor": "CDCAN",
               "variable": "ani_cm",
               "from": "2019-03-14",
-              "to": "2026-10-28"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -69.934485,
-          -30.254131
-        ]
-      },
-      "properties": {
-        "code": "CEAZA-LLL",
-        "name": "Llano de Las Liebres",
-        "latitude": -30.254131,
-        "longitude": -69.934485,
-        "elevation_m": 3565.0,
-        "state": "CL",
-        "network_code": "CEAZA",
-        "operator": "Centro de Estudios Avanzados en Zonas \u00c1ridas (CEAZA)",
-        "client": "ceaza",
-        "data_provider": "CEAZA-Met (Datos provistos por el laboratorio de meteorolog\u00eda CEAZA)",
-        "status": "Active",
-        "is_active": true,
-        "begin_date": "2017-05-16",
-        "end_date": null,
-        "earliest_record_date": null,
-        "latest_record_date": null,
-        "station_url": "https://www.ceazamet.cl/index.php?pag=mod_estacion&e_cod=LLL&p_cod=ceazamet",
-        "station_image_url": null,
-        "station_camera_url": null,
-        "notes": "Datos provistos por el laboratorio de meteorolog\u00eda CEAZA (https://www.ceazamet.cl/). No licence is stated; the terms of use ask users to register a user name and to credit the source with a link. Raw logger output, not quality controlled.",
-        "data_variables": [
-          {
-            "name": "ta_c:LLLTA",
-            "type": "temp",
-            "interval": "daily",
-            "units": "\u00b0C",
-            "description": "Air temperature; value is the interval mean.",
-            "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor LLLTA at 2.0 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2017-05-16",
-            "end_date": "2026-10-28",
-            "n_obs": null
-          },
-          {
-            "name": "ani_cm:LLLAN",
-            "type": "snwd",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow depth from an automatic snow-depth sensor.",
-            "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor LLLAN at 3.0 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2017-05-16",
-            "end_date": "2026-10-28",
-            "n_obs": null
-          },
-          {
-            "name": "pnkg:LLLSW1Wins1h",
-            "type": "swe",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow weight per unit area (Guandacol HDCPN, Llano de Las Liebres LLLSW1Wins1h and LLLSW2Wins1h), i.e. SWE: 1 kg/m\u00b2 = 1 mm of water.",
-            "notes": "Published in kg/m\u00b2; returned as SWE in cm (\u00d7 0.1). The two Llano de Las Liebres sensors disagree: on days when either reads over 10 kg/m\u00b2 the median difference is 32 kg/m\u00b2 and the largest 182 kg/m\u00b2 (2024-08-02). Sensor LLLSW1Wins1h at -0.3 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2023-08-09",
-            "end_date": "2025-11-06",
-            "n_obs": null
-          },
-          {
-            "name": "pnkg:LLLSW2Wins1h",
-            "type": "swe",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow weight per unit area (Guandacol HDCPN, Llano de Las Liebres LLLSW1Wins1h and LLLSW2Wins1h), i.e. SWE: 1 kg/m\u00b2 = 1 mm of water.",
-            "notes": "Published in kg/m\u00b2; returned as SWE in cm (\u00d7 0.1). The two Llano de Las Liebres sensors disagree: on days when either reads over 10 kg/m\u00b2 the median difference is 32 kg/m\u00b2 and the largest 182 kg/m\u00b2 (2024-08-02). Sensor LLLSW2Wins1h at -0.1 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2023-08-09",
-            "end_date": "2025-11-06",
-            "n_obs": null
-          }
-        ],
-        "has_daily_swe": true,
-        "has_daily_snwd": true,
-        "daily_or_better": true,
-        "daily_verified": false,
-        "daily_provenance": "native",
-        "day_convention": "mean of day UTC-04:00",
-        "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
-        "upstream_status": null,
-        "missing_upstream_since": null,
-        "owner_code": "ceaza",
-        "ceaza_station_id": "LLL",
-        "measurement_method": "automatic snow depth; snow-weight sensor (SWE)",
-        "ceaza_sensor_plan": {
-          "swe": [
-            {
-              "sensor": "LLLSW1Wins1h",
-              "variable": "pnkg",
-              "from": "2023-08-09",
-              "to": "2025-11-06"
-            }
-          ],
-          "snwd": [
-            {
-              "sensor": "LLLAN",
-              "variable": "ani_cm",
-              "from": "2017-05-16",
-              "to": "2026-10-28"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -70.037224,
-          -30.203112
-        ]
-      },
-      "properties": {
-        "code": "CEAZA-LAGEL",
-        "name": "La Laguna [Elqui]",
-        "latitude": -30.203112,
-        "longitude": -70.037224,
-        "elevation_m": 3209.0,
-        "state": "CL",
-        "network_code": "CEAZA",
-        "operator": "Centro de Estudios Avanzados en Zonas \u00c1ridas (CEAZA)",
-        "client": "ceaza",
-        "data_provider": "CEAZA-Met (Datos provistos por el laboratorio de meteorolog\u00eda CEAZA)",
-        "status": "Active",
-        "is_active": true,
-        "begin_date": "2013-06-05",
-        "end_date": null,
-        "earliest_record_date": null,
-        "latest_record_date": null,
-        "station_url": "https://www.ceazamet.cl/index.php?pag=mod_estacion&e_cod=LAGEL&p_cod=ceazamet",
-        "station_image_url": null,
-        "station_camera_url": null,
-        "notes": "Datos provistos por el laboratorio de meteorolog\u00eda CEAZA (https://www.ceazamet.cl/). No licence is stated; the terms of use ask users to register a user name and to credit the source with a link. Raw logger output, not quality controlled.",
-        "data_variables": [
-          {
-            "name": "ta_c:LAGELTA",
-            "type": "temp",
-            "interval": "daily",
-            "units": "\u00b0C",
-            "description": "Air temperature; value is the interval mean.",
-            "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor LAGELTA at 1.5 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2013-06-05",
-            "end_date": "2026-10-28",
-            "n_obs": null
-          },
-          {
-            "name": "ae_cm:LAGELSP",
-            "type": "swe",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow water equivalent, published in cm (Hualtatas HUALPN 2014\u20132019, La Laguna LAGELSP 2013\u20132017).",
-            "notes": "Same quantity as ae_mm but served in cm; the unit is confirmed by the co-located depth sensors (median density about 260 kg/m\u00b3 at Hualtatas). Sensor LAGELSP at 0.0 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2013-06-05",
-            "end_date": "2017-01-01",
-            "n_obs": null
-          },
-          {
-            "name": "ani_cm:LAGELAN",
-            "type": "snwd",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow depth from an automatic snow-depth sensor.",
-            "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor LAGELAN at 0.0 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2014-06-22",
-            "end_date": "2026-10-28",
-            "n_obs": null
-          }
-        ],
-        "has_daily_swe": true,
-        "has_daily_snwd": true,
-        "daily_or_better": true,
-        "daily_verified": false,
-        "daily_provenance": "native",
-        "day_convention": "mean of day UTC-04:00",
-        "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
-        "upstream_status": null,
-        "missing_upstream_since": null,
-        "owner_code": "ceaza",
-        "ceaza_station_id": "LAGEL",
-        "measurement_method": "automatic snow depth; automatic SWE sensor",
-        "ceaza_sensor_plan": {
-          "swe": [
-            {
-              "sensor": "LAGELSP",
-              "variable": "ae_cm",
-              "from": "2013-06-05",
-              "to": "2017-01-01"
-            }
-          ],
-          "snwd": [
-            {
-              "sensor": "LAGELAN",
-              "variable": "ani_cm",
-              "from": "2014-06-22",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
             }
           ]
         }
@@ -515,7 +230,7 @@
             "description": "Air temperature; value is the interval mean.",
             "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor CORRTA at 1.5 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2022-02-16",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -526,7 +241,7 @@
             "description": "Snow depth from an automatic snow-depth sensor.",
             "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor CORRAN at 2.45 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2022-02-16",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -537,7 +252,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -549,7 +264,292 @@
               "sensor": "CORRAN",
               "variable": "ani_cm",
               "from": "2022-02-16",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.329083,
+          -30.96609
+        ]
+      },
+      "properties": {
+        "code": "CEAZA-LCP",
+        "name": "La Coipa",
+        "latitude": -30.96609,
+        "longitude": -70.329083,
+        "elevation_m": 3381.0,
+        "state": "CL",
+        "network_code": "CEAZA",
+        "operator": null,
+        "client": "ceaza",
+        "data_provider": "CEAZA-Met (Datos provistos por el laboratorio de meteorolog\u00eda CEAZA)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": "2025-04-02",
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.ceazamet.cl/index.php?pag=mod_estacion&e_cod=LCP&p_cod=ceazamet",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "Datos provistos por el laboratorio de meteorolog\u00eda CEAZA (https://www.ceazamet.cl/). No licence is stated; the terms of use ask users to register a user name and to credit the source with a link. Raw logger output, not quality controlled.",
+        "data_variables": [
+          {
+            "name": "ta_c:LCPTA",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature; value is the interval mean.",
+            "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor LCPTA at 3.0 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2025-04-02",
+            "end_date": "2026-10-29",
+            "n_obs": null
+          },
+          {
+            "name": "ani_cm:LCPAN",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automatic snow-depth sensor.",
+            "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor LCPAN at 4.5 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2025-03-13",
+            "end_date": "2026-10-29",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": false,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "day_convention": "mean of day UTC-04:00",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-29",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "ceaza_station_id": "LCP",
+        "measurement_method": "automatic snow depth",
+        "ceaza_sensor_plan": {
+          "snwd": [
+            {
+              "sensor": "LCPAN",
+              "variable": "ani_cm",
+              "from": "2025-03-13",
+              "to": "2026-10-29"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -70.037224,
+          -30.203112
+        ]
+      },
+      "properties": {
+        "code": "CEAZA-LAGEL",
+        "name": "La Laguna [Elqui]",
+        "latitude": -30.203112,
+        "longitude": -70.037224,
+        "elevation_m": 3209.0,
+        "state": "CL",
+        "network_code": "CEAZA",
+        "operator": "Centro de Estudios Avanzados en Zonas \u00c1ridas (CEAZA)",
+        "client": "ceaza",
+        "data_provider": "CEAZA-Met (Datos provistos por el laboratorio de meteorolog\u00eda CEAZA)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": "2013-06-05",
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.ceazamet.cl/index.php?pag=mod_estacion&e_cod=LAGEL&p_cod=ceazamet",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "Datos provistos por el laboratorio de meteorolog\u00eda CEAZA (https://www.ceazamet.cl/). No licence is stated; the terms of use ask users to register a user name and to credit the source with a link. Raw logger output, not quality controlled.",
+        "data_variables": [
+          {
+            "name": "ta_c:LAGELTA",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature; value is the interval mean.",
+            "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor LAGELTA at 1.5 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2013-06-05",
+            "end_date": "2026-10-29",
+            "n_obs": null
+          },
+          {
+            "name": "ae_cm:LAGELSP",
+            "type": "swe",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow water equivalent, published in cm (Hualtatas HUALPN 2014\u20132019, La Laguna LAGELSP 2013\u20132017).",
+            "notes": "Same quantity as ae_mm but served in cm; the unit is confirmed by the co-located depth sensors (median density about 260 kg/m\u00b3 at Hualtatas). Sensor LAGELSP at 0.0 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2013-06-05",
+            "end_date": "2017-01-01",
+            "n_obs": null
+          },
+          {
+            "name": "ani_cm:LAGELAN",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automatic snow-depth sensor.",
+            "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor LAGELAN at 0.0 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2014-06-22",
+            "end_date": "2026-10-29",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "day_convention": "mean of day UTC-04:00",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-29",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "owner_code": "ceaza",
+        "ceaza_station_id": "LAGEL",
+        "measurement_method": "automatic snow depth; automatic SWE sensor",
+        "ceaza_sensor_plan": {
+          "swe": [
+            {
+              "sensor": "LAGELSP",
+              "variable": "ae_cm",
+              "from": "2013-06-05",
+              "to": "2017-01-01"
+            }
+          ],
+          "snwd": [
+            {
+              "sensor": "LAGELAN",
+              "variable": "ani_cm",
+              "from": "2014-06-22",
+              "to": "2026-10-29"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -69.934485,
+          -30.254131
+        ]
+      },
+      "properties": {
+        "code": "CEAZA-LLL",
+        "name": "Llano de Las Liebres",
+        "latitude": -30.254131,
+        "longitude": -69.934485,
+        "elevation_m": 3565.0,
+        "state": "CL",
+        "network_code": "CEAZA",
+        "operator": "Centro de Estudios Avanzados en Zonas \u00c1ridas (CEAZA)",
+        "client": "ceaza",
+        "data_provider": "CEAZA-Met (Datos provistos por el laboratorio de meteorolog\u00eda CEAZA)",
+        "status": "Active",
+        "is_active": true,
+        "begin_date": "2017-05-16",
+        "end_date": null,
+        "earliest_record_date": null,
+        "latest_record_date": null,
+        "station_url": "https://www.ceazamet.cl/index.php?pag=mod_estacion&e_cod=LLL&p_cod=ceazamet",
+        "station_image_url": null,
+        "station_camera_url": null,
+        "notes": "Datos provistos por el laboratorio de meteorolog\u00eda CEAZA (https://www.ceazamet.cl/). No licence is stated; the terms of use ask users to register a user name and to credit the source with a link. Raw logger output, not quality controlled.",
+        "data_variables": [
+          {
+            "name": "ta_c:LLLTA",
+            "type": "temp",
+            "interval": "daily",
+            "units": "\u00b0C",
+            "description": "Air temperature; value is the interval mean.",
+            "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor LLLTA at 2.0 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2017-05-16",
+            "end_date": "2026-10-29",
+            "n_obs": null
+          },
+          {
+            "name": "ani_cm:LLLAN",
+            "type": "snwd",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow depth from an automatic snow-depth sensor.",
+            "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor LLLAN at 3.0 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2017-05-16",
+            "end_date": "2026-10-29",
+            "n_obs": null
+          },
+          {
+            "name": "pnkg:LLLSW1Wins1h",
+            "type": "swe",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow weight per unit area (Guandacol HDCPN, Llano de Las Liebres LLLSW1Wins1h and LLLSW2Wins1h), i.e. SWE: 1 kg/m\u00b2 = 1 mm of water.",
+            "notes": "Published in kg/m\u00b2; returned as SWE in cm (\u00d7 0.1). The two Llano de Las Liebres sensors disagree: on days when either reads over 10 kg/m\u00b2 the median difference is 32 kg/m\u00b2 and the largest 182 kg/m\u00b2 (2024-08-02). Sensor LLLSW1Wins1h at -0.3 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2023-08-09",
+            "end_date": "2025-11-06",
+            "n_obs": null
+          },
+          {
+            "name": "pnkg:LLLSW2Wins1h",
+            "type": "swe",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow weight per unit area (Guandacol HDCPN, Llano de Las Liebres LLLSW1Wins1h and LLLSW2Wins1h), i.e. SWE: 1 kg/m\u00b2 = 1 mm of water.",
+            "notes": "Published in kg/m\u00b2; returned as SWE in cm (\u00d7 0.1). The two Llano de Las Liebres sensors disagree: on days when either reads over 10 kg/m\u00b2 the median difference is 32 kg/m\u00b2 and the largest 182 kg/m\u00b2 (2024-08-02). Sensor LLLSW2Wins1h at -0.1 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2023-08-09",
+            "end_date": "2025-11-06",
+            "n_obs": null
+          }
+        ],
+        "has_daily_swe": true,
+        "has_daily_snwd": true,
+        "daily_or_better": true,
+        "daily_verified": false,
+        "daily_provenance": "native",
+        "day_convention": "mean of day UTC-04:00",
+        "possible_duplicates": null,
+        "metadata_fetched_at": "2026-10-29",
+        "upstream_status": null,
+        "missing_upstream_since": null,
+        "owner_code": "ceaza",
+        "ceaza_station_id": "LLL",
+        "measurement_method": "automatic snow depth; snow-weight sensor (SWE)",
+        "ceaza_sensor_plan": {
+          "swe": [
+            {
+              "sensor": "LLLSW1Wins1h",
+              "variable": "pnkg",
+              "from": "2023-08-09",
+              "to": "2025-11-06"
+            }
+          ],
+          "snwd": [
+            {
+              "sensor": "LLLAN",
+              "variable": "ani_cm",
+              "from": "2017-05-16",
+              "to": "2026-10-29"
             }
           ]
         }
@@ -594,7 +594,7 @@
             "description": "Air temperature; value is the interval mean.",
             "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor EJTTA at 2.0 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2019-04-02",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -605,7 +605,7 @@
             "description": "Snow depth from an automatic snow-depth sensor.",
             "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor EJTAN at 4.27 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2019-04-02",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -616,7 +616,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -628,7 +628,7 @@
               "sensor": "EJTAN",
               "variable": "ani_cm",
               "from": "2019-04-02",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
             }
           ]
         }
@@ -673,7 +673,7 @@
             "description": "Air temperature; value is the interval mean.",
             "notes": "value_min / value_max are the interval extremes. Values outside \u221260 to 50 \u00b0C are nulled. Sensor TASCTA at 1.5 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2012-11-27",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -684,7 +684,7 @@
             "description": "Precipitation total over the interval (the service sums).",
             "notes": "Only Tascadero (TASCPP) among the snow stations. The gauge type is not given by the service. A partial day (data_pct < 100) undercounts. Not the cumulative ppa_mm gauge level, which is not served. Sensor TASCPP at 1.5 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2012-11-27",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -695,7 +695,7 @@
             "description": "Snow water equivalent from an automatic sensor (El Tapado TPFSWE_K and TPFSWE_TL, Tascadero TASCPN).",
             "notes": "Published in mm; returned in cm (\u00d7 0.1). The sensor type is not given by the service. Summer values drift below zero and are nulled. El Tapado's two sensors disagree: median difference 15 mm, largest 210 mm, on days when either reads over 50 mm. Sensor TASCPN at 0.0 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2012-11-27",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           },
           {
@@ -706,7 +706,7 @@
             "description": "Snow depth from an automatic snow-depth sensor.",
             "notes": "Raw logger values. Bare ground often reads slightly negative (zero offset); those values are nulled by the 0\u201315 m bound, not set to zero. El Tapado has two sensors (TPFSNOWD to 2023, TPFANSHM31 from 2018). Sensor TASCAN at 2.65 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2020-02-19",
-            "end_date": "2026-10-28",
+            "end_date": "2026-10-29",
             "n_obs": null
           }
         ],
@@ -717,7 +717,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -729,7 +729,7 @@
               "sensor": "TASCPN",
               "variable": "ae_mm",
               "from": "2012-11-27",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
             }
           ],
           "snwd": [
@@ -737,7 +737,7 @@
               "sensor": "TASCAN",
               "variable": "ani_cm",
               "from": "2020-02-19",
-              "to": "2026-10-28"
+              "to": "2026-10-29"
             }
           ]
         }
@@ -804,7 +804,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -883,7 +883,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "ceaza_station_id": "TPF2",
@@ -961,7 +961,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -1022,23 +1022,23 @@
             "n_obs": null
           },
           {
-            "name": "ae_mm:TPFSWE_K",
-            "type": "swe",
-            "interval": "daily",
-            "units": "cm",
-            "description": "Snow water equivalent from an automatic sensor (El Tapado TPFSWE_K and TPFSWE_TL, Tascadero TASCPN).",
-            "notes": "Published in mm; returned in cm (\u00d7 0.1). The sensor type is not given by the service. Summer values drift below zero and are nulled. El Tapado's two sensors disagree: median difference 15 mm, largest 210 mm, on days when either reads over 50 mm. Sensor TPFSWE_K at 3.1 m; daily = the service's mean over the UTC\u22124 day.",
-            "begin_date": "2016-04-12",
-            "end_date": "2025-11-26",
-            "n_obs": null
-          },
-          {
             "name": "ae_mm:TPFSWE_TL",
             "type": "swe",
             "interval": "daily",
             "units": "cm",
             "description": "Snow water equivalent from an automatic sensor (El Tapado TPFSWE_K and TPFSWE_TL, Tascadero TASCPN).",
             "notes": "Published in mm; returned in cm (\u00d7 0.1). The sensor type is not given by the service. Summer values drift below zero and are nulled. El Tapado's two sensors disagree: median difference 15 mm, largest 210 mm, on days when either reads over 50 mm. Sensor TPFSWE_TL at 3.1 m; daily = the service's mean over the UTC\u22124 day.",
+            "begin_date": "2016-04-12",
+            "end_date": "2025-11-26",
+            "n_obs": null
+          },
+          {
+            "name": "ae_mm:TPFSWE_K",
+            "type": "swe",
+            "interval": "daily",
+            "units": "cm",
+            "description": "Snow water equivalent from an automatic sensor (El Tapado TPFSWE_K and TPFSWE_TL, Tascadero TASCPN).",
+            "notes": "Published in mm; returned in cm (\u00d7 0.1). The sensor type is not given by the service. Summer values drift below zero and are nulled. El Tapado's two sensors disagree: median difference 15 mm, largest 210 mm, on days when either reads over 50 mm. Sensor TPFSWE_K at 3.1 m; daily = the service's mean over the UTC\u22124 day.",
             "begin_date": "2016-04-12",
             "end_date": "2025-11-26",
             "n_obs": null
@@ -1073,7 +1073,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -1082,7 +1082,7 @@
         "ceaza_sensor_plan": {
           "swe": [
             {
-              "sensor": "TPFSWE_K",
+              "sensor": "TPFSWE_TL",
               "variable": "ae_mm",
               "from": "2016-04-12",
               "to": "2025-11-26"
@@ -1166,7 +1166,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -1245,7 +1245,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -1335,7 +1335,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -1422,7 +1422,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
@@ -1501,7 +1501,7 @@
         "daily_provenance": "native",
         "day_convention": "mean of day UTC-04:00",
         "possible_duplicates": null,
-        "metadata_fetched_at": "2026-10-28",
+        "metadata_fetched_at": "2026-10-29",
         "upstream_status": null,
         "missing_upstream_since": null,
         "owner_code": "ceaza",
