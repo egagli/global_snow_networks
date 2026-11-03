@@ -449,6 +449,12 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   converts.
 - **Context imagery is the one live external call**, and it is decoration, not
   data (§8.1).
+- **Usage analytics** (GA4, the property shared with egagli.github.io) is
+  loaded in the page `<head>`; it carries no data and nothing on the page
+  depends on it. The page view is skipped when the map is iframed (the
+  egagli.github.io/maps wrapper already counts it). Events go through the
+  template's `track()` helper with low-cardinality params only (network
+  code, variable, control name) — no station codes, coordinates or text.
 - Default layer: `daily_or_better` stations with charts. Optional toggle
   layer: all other point observations (distinct markers, metadata-only
   popups).

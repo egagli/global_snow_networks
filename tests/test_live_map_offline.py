@@ -285,3 +285,23 @@ def test_frontend_converts_dates_per_hemisphere():
         'dowyToDate(obs.curDowy, obs.curWy, obs.hem)',
     ):
         assert needle in _HTML_TEMPLATE
+
+
+# ── Usage analytics (DESIGN.md §8) ───────────────────────────────────────────
+
+def test_ga4_tag_is_in_head_and_embed_aware(offline_assets):
+    """The GA4 tag sits in <head>, and skips its page view when the map is
+    iframed by egagli.github.io/maps/*.html (that wrapper already counted
+    the visit)."""
+    html = build_html(MAP_META_STUB, STATION_STUB, [])
+    head = html.split("</head>", 1)[0]
+    assert "googletagmanager.com/gtag/js?id=G-M59931E34K" in head
+    assert "window.self !== window.top" in head
+    assert "send_page_view: !gaEmbedded" in head
+
+
+def test_analytics_events_are_guarded():
+    """Every event goes through track(), which no-ops without gtag."""
+    assert 'if (window.gtag) window.gtag("event"' in _HTML_TEMPLATE
+    direct = re.findall(r"gtag\('event'|gtag\(\"event\"", _HTML_TEMPLATE)
+    assert len(direct) == 1, "call track() rather than gtag('event', ...) directly"
