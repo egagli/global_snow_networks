@@ -591,6 +591,18 @@ _HTML_TEMPLATE = """\
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- Google tag (gtag.js) — GA4 property shared with egagli.github.io.
+     Inside egagli.github.io/maps/*.html the wrapper page already counted this
+     visit, so skip the page view there and mark events as embedded. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-M59931E34K"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  var gaEmbedded = window.self !== window.top;
+  gtag('set', { embedded: gaEmbedded });
+  gtag('config', 'G-M59931E34K', { send_page_view: !gaEmbedded });
+</script>
 <title>Live SWE Map</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -1415,6 +1427,7 @@ function initPeriodicMarkers() {
       radius: 5.5, fill: false, color: "#555", weight: 1.6, dashArray: "2.5,1.8",
     });
     m.bindPopup(periodicPopupHtml(s), {maxWidth: 300});
+    m.on("popupopen", () => track("station_open", {network: s.net, kind: "periodic"}));
     m.bindTooltip(
       `<b>${s.name}</b><br>Code: ${s.code}<br>`
       + `${NET_LABELS[s.net] || s.net} — periodic`
@@ -1475,7 +1488,10 @@ function initMarkers() {
       `<b>${s.name}</b><br>Code: ${code}<br>Network: ${NET_LABELS[s.net]||s.net}<br>${varSummary}${s.cam ? "<br>🛰 live satellite camera" : ""}`,
       {direction: "top", offset: [0, -6]}
     );
-    m.on("click", () => onMarkerClick(code));
+    m.on("click", () => {
+      if (st.selectedCode !== code) track("station_open", {network: s.net, kind: "daily"});
+      onMarkerClick(code);
+    });
     leafletMarkers[code] = m;
   }
 }
@@ -1621,6 +1637,7 @@ function initDateSlider() {
     snapBtn.onclick = () => {
       if (st.dowy === MAP_META.today_dowy) return;
       st.dowy = MAP_META.today_dowy;
+      track("map_time_change", {control: "current_day"});
       slider.value = String(st.dowy);
       updateDatePreviewLabel(st.dowy);
       updateTitle();
@@ -1631,6 +1648,12 @@ function initDateSlider() {
 
   updateSliderTrackColor();
   updateSnapToCurrentButton();
+}
+
+// ─── Usage analytics (GA4 tag in <head>) ─────────────────────────────────────
+// Low-cardinality params only; never throws if the tag is blocked or absent.
+function track(name, params) {
+  try { if (window.gtag) window.gtag("event", name, params || {}); } catch (e) {}
 }
 
 // ─── Station popup ───────────────────────────────────────────────────────────
@@ -2732,10 +2755,12 @@ document.getElementById("sel-basemap").addEventListener("change", e => {
   Object.values(BASEMAPS).forEach(l => map.removeLayer(l));
   BASEMAPS[e.target.value].addTo(map);
   st.basemap = e.target.value;
+  track("map_basemap_change", {basemap: e.target.value});
 });
 
 document.getElementById("sel-var").addEventListener("change", e => {
   st.variable = e.target.value;
+  track("map_layer_change", {layer: e.target.value});
   updateTitle();
   updateSliderTrackColor();
   recolorAll();
@@ -2745,6 +2770,7 @@ document.getElementById("sel-var").addEventListener("change", e => {
 
 document.getElementById("sel-ref").addEventListener("change", e => {
   st.ref = e.target.value;
+  track("map_reference_change", {reference: e.target.value});
   updateTitle();
   updateSliderTrackColor();
   recolorAll();
@@ -2753,6 +2779,7 @@ document.getElementById("sel-ref").addEventListener("change", e => {
 
 document.getElementById("sel-date").addEventListener("change", e => {
   st.dowy = parseInt(e.target.value);
+  track("map_time_change", {control: "slider"});
   updateTitle();
   updateSnapToCurrentButton();
   recolorAll();
@@ -2781,6 +2808,7 @@ document.getElementById("close-btn").addEventListener("click", () => {
 
 document.getElementById("chart-btn-wteq").addEventListener("click", () => {
   st.chartVar = "WTEQ";
+  track("chart_variable_change", {variable: "WTEQ"});
   document.getElementById("chart-btn-wteq").className = "chart-btn active";
   document.getElementById("chart-btn-snwd").className = "chart-btn";
   if (st.selectedCode) loadChart(st.selectedCode, "WTEQ");
@@ -2788,6 +2816,7 @@ document.getElementById("chart-btn-wteq").addEventListener("click", () => {
 
 document.getElementById("chart-btn-snwd").addEventListener("click", () => {
   st.chartVar = "SNWD";
+  track("chart_variable_change", {variable: "SNWD"});
   document.getElementById("chart-btn-wteq").className = "chart-btn";
   document.getElementById("chart-btn-snwd").className = "chart-btn active";
   if (st.selectedCode) loadChart(st.selectedCode, "SNWD");
@@ -2838,6 +2867,7 @@ function initNetworkFilter() {
         st.visibleNetworks.add(net);
         row.classList.remove("net-off");
       }
+      track("network_filter", {network: net, visible: !on});
       recolorAll();
     });
     container.appendChild(row);
