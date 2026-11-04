@@ -22,12 +22,11 @@ from scripts.create_all_stations_geojson import (
     run_fmi_workflow,
 )
 from scripts.get_all_stations_data import (
-    FMI_BATCH,
     FMI_LOOKBACK_DAYS,
     RefreshStats,
     RevisionLog,
     StationWriter,
-    fmi_batches,
+    fmi_windows,
     read_station_csv,
     refresh_fmi,
     write_csv_atomically,
@@ -109,35 +108,23 @@ def _writer(tmp_path, feats):
     )
 
 
-def test_batches_split_new_and_archived_and_respect_the_id_limit(tmp_path):
-    feats = [
-        fmi_station_to_feature({**KITEE, "station_id": str(100000 + i),
-                                "begin_date": f"{1900 + i % 100:04d}-01-01"},
-                               served=True)
-        for i in range(FMI_BATCH + 3)
-    ]
-    stations = [(i, f["properties"]["code"]) for i, f in enumerate(feats)]
-    write_csv_atomically(tmp_path / "FMI-100000.csv", gasd.pd.DataFrame(
-        {"date": ["2024-01-01"], "wteq_cm": [None], "snwd_cm": [5.0]}))
-    new, archived = fmi_batches(stations, feats, tmp_path)
-    assert [len(b) for b in new] == [FMI_BATCH, 2]
-    assert archived == [[(0, "FMI-100000", "100000")]]
-    # new stations are ordered by begin date, so a batch's span stays tight
-    begins = [feats[i]["properties"]["begin_date"] for b in new for i, _, _ in b]
-    assert begins == sorted(begins)
+def test_windows_cover_the_span_in_366_day_pieces():
+    w = fmi_windows(date(2020, 1, 1), date(2021, 6, 30))
+    assert w == [(date(2020, 1, 1), date(2020, 12, 31)), (date(2021, 1, 1), date(2021, 6, 30))]
 
 
 class _FakeClient:
     calls: list[dict] = []
 
-    def get_data(self, station_ids, variables, interval, begin_date=None, end_date=None):
-        type(self).calls.append({"ids": list(station_ids), "variables": variables,
+    def get_data(self, bbox, variables, interval, begin_date, end_date):
+        type(self).calls.append({"bbox": bbox, "variables": variables,
                                  "begin": begin_date, "end": end_date})
-        day = begin_date or "1958-12-01"
+        rec = {"variable": "snow", "type": "snwd", "units": "cm", "interval": "daily"}
         return [
-            {"station_id": sid, "date": day, "variable": "snow", "type": "snwd",
-             "value": 10.0, "units": "cm", "interval": "daily"}
-            for sid in station_ids
+            {**rec, "station_id": "100694", "date": begin_date, "value": 10.0},
+            {**rec, "station_id": "100694", "date": end_date, "value": None},
+            # a station the inventory does not ask for is dropped
+            {**rec, "station_id": "999999", "date": begin_date, "value": 5.0},
         ]
 
 
@@ -145,23 +132,24 @@ def test_first_refresh_is_full_then_a_lookback_merge(tmp_path, monkeypatch):
     monkeypatch.setattr(gasd, "FMIClient", _FakeClient)
     _FakeClient.calls = []
     feats = [fmi_station_to_feature(KITEE, served=True)]
-    refresh_fmi([(0, "FMI-100694")], _writer(tmp_path, feats), today=date(2026, 11, 4))
-    # No CSV yet: no dates, so the client asks for the station's own period
-    assert _FakeClient.calls == [
-        {"ids": ["100694"], "variables": ["snwd"], "begin": None, "end": None}
-    ]
+    refresh_fmi([(0, "FMI-100694")], _writer(tmp_path, feats), today=date(1927, 3, 1))
+    # No CSV yet: whole-Finland requests from the station's own begin date
+    assert [c["begin"] for c in _FakeClient.calls] == ["1925-05-01", "1926-05-02"]
+    assert _FakeClient.calls[-1]["end"] == "1927-03-01"
+    assert _FakeClient.calls[0]["bbox"] == gasd.FMI_FINLAND_BBOX
+    assert _FakeClient.calls[0]["variables"] == ["snwd"]
     csv = read_station_csv(tmp_path / "FMI-100694.csv")
-    assert csv["snwd_cm"].tolist() == [10.0] and csv["wteq_cm"].isna().all()
+    assert csv["date"].tolist() == ["1925-05-01", "1926-05-02"]
+    assert csv["snwd_cm"].tolist() == [10.0, 10.0] and csv["wteq_cm"].isna().all()
+    assert not (tmp_path / "FMI-999999.csv").exists()
 
     _FakeClient.calls = []
-    refresh_fmi([(0, "FMI-100694")], _writer(tmp_path, feats), today=date(2026, 11, 4))
-    assert _FakeClient.calls[0]["end"] == "2026-11-04"
-    assert _FakeClient.calls[0]["begin"] == date.fromordinal(
-        date(2026, 11, 4).toordinal() - FMI_LOOKBACK_DAYS
-    ).isoformat()
-    # merged, not replaced: the archived 1958 value is kept
+    refresh_fmi([(0, "FMI-100694")], _writer(tmp_path, feats), today=date(1927, 6, 1))
+    lo = date.fromordinal(date(1927, 6, 1).toordinal() - FMI_LOOKBACK_DAYS + 1)
+    assert [c["begin"] for c in _FakeClient.calls] == [lo.isoformat()]
+    # merged, not replaced: the archived values are kept
     csv = read_station_csv(tmp_path / "FMI-100694.csv").set_index("date")
-    assert set(csv.index) == {"1958-12-01", _FakeClient.calls[0]["begin"]}
+    assert {"1925-05-01", "1926-05-02", lo.isoformat()} <= set(csv.index)
 
 
 def test_aboa_is_in_antarctica():

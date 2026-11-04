@@ -83,6 +83,9 @@ from easysnowdata.stations.clients.ceaza import CEAZAClient, CEAZAError
 from easysnowdata.stations.clients.cdec import CDECClient, CDECError
 from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
 from easysnowdata.stations.clients.fmi import FMIClient, FMIError
+from easysnowdata.stations.clients.fmi.fmi_client import (
+    FINLAND_BBOX as FMI_FINLAND_BBOX,
+)
 from easysnowdata.stations.clients.hydroquebec import (
     HydroQuebecClient,
     HydroQuebecError,
@@ -1612,45 +1615,71 @@ def refresh_ceaza(
 
 # ── FMI refresh ───────────────────────────────────────────────────────────────
 
-# Nightly window once a station is archived.  FMI allows 600 requests per
-# 5 minutes and 366 days per daily request, and a full record is up to
-# ~125 yearly requests per batch of 99 stations, so the full record is
-# fetched only the first time (no CSV yet) and later nights merge the last
-# 366 days in: one request per batch.  An older revision upstream is not
-# picked up.
+# Nightly window once a station is archived.  The full record is fetched
+# only the first time (no CSV yet); later nights merge the last 366 days in,
+# one request.  An older revision upstream is not picked up.
 FMI_LOOKBACK_DAYS = 366
-# fmisids per request (the service rejects a 100th).
-FMI_BATCH = 99
+# Requests are whole-Finland bbox queries, one per 366 days: the service's
+# fmisid parameter rejects hundreds of stations whose data the bbox query
+# returns (fmisid=101088, Äetsä Pehula, answers "Unknown 'fmisid' value!";
+# a bbox around it returns its 1965 record).  ~20-60 MB per request.
+FMI_WINDOW_DAYS = 366
+# Earliest year asked for on a first run (Helsinki Kaisaniemi's daily snow
+# depth starts by 1895; no station has any in 1880).
+FMI_EARLIEST = date(1880, 1, 1)
 
 
-def fmi_batches(
-    stations: list[tuple[int, str]], features: list[dict], data_dir: Path
-) -> tuple[list[list[tuple[int, str, str]]], list[list[tuple[int, str, str]]]]:
-    """Split FMI stations into (new, archived) batches of :data:`FMI_BATCH`.
+def fmi_windows(begin: date, end: date) -> list[tuple[date, date]]:
+    """``[begin, end]`` in pieces of :data:`FMI_WINDOW_DAYS` days."""
+    out: list[tuple[date, date]] = []
+    cur = begin
+    while cur <= end:
+        stop = min(cur + timedelta(days=FMI_WINDOW_DAYS - 1), end)
+        out.append((cur, stop))
+        cur = stop + timedelta(days=1)
+    return out
 
-    New stations (no CSV yet) are sorted by begin and end date, so that a
-    batch's joint period — what the client asks for when no dates are
-    given — stays close to each member's own.
+
+def fmi_fetch_depths(
+    client: Any, keep: set[str], begin: date, end: date
+) -> dict[str, pd.DataFrame]:
+    """Daily depth for the fmisids in *keep*, ``{fmisid: {date, wteq_cm, snwd_cm}}``.
+
+    Values are gathered in compact arrays (a first run is ~900 stations ×
+    ~130 years) and turned into frames at the end.
     """
-    new: list[tuple[str, str, int, str, str]] = []
-    archived: list[tuple[int, str, str]] = []
-    for feat_idx, code in stations:
-        p = features[feat_idx]["properties"]
-        sid = str(p.get("fmi_station_id") or code.removeprefix("FMI-"))
-        if station_csv_path(data_dir, code).exists():
-            archived.append((feat_idx, code, sid))
-        else:
-            new.append((
-                str(p.get("begin_date") or ""), str(p.get("end_date") or "9999"),
-                feat_idx, code, sid,
-            ))
-    new.sort()
-    new_rows = [(i, c, s) for _, _, i, c, s in new]
+    from array import array
 
-    def chunks(rows: list) -> list[list]:
-        return [rows[k:k + FMI_BATCH] for k in range(0, len(rows), FMI_BATCH)]
-
-    return chunks(new_rows), chunks(archived)
+    sid_idx = {s: i for i, s in enumerate(sorted(keep))}
+    sids, days, vals = array("i"), array("i"), array("f")
+    for lo, hi in fmi_windows(begin, end):
+        for r in client.get_data(
+            bbox=FMI_FINLAND_BBOX, variables=["snwd"], interval="daily",
+            begin_date=lo.isoformat(), end_date=hi.isoformat(),
+        ):
+            i = sid_idx.get(str(r["station_id"]))
+            if i is None or r.get("value") is None:
+                continue
+            sids.append(i)
+            days.append(date.fromisoformat(r["date"]).toordinal())
+            vals.append(r["value"])
+    if not sids:
+        return {}
+    frame = pd.DataFrame({
+        "sid": np.frombuffer(sids, dtype=np.int32),
+        "day": np.frombuffer(days, dtype=np.int32),
+        "snwd_cm": np.frombuffer(vals, dtype=np.float32).astype(float).round(3),
+    })
+    names = sorted(keep)
+    out: dict[str, pd.DataFrame] = {}
+    for i, grp in frame.groupby("sid"):
+        grp = grp.drop_duplicates("day", keep="last").sort_values("day")
+        out[names[i]] = pd.DataFrame({
+            "date": [date.fromordinal(int(d)).isoformat() for d in grp["day"]],
+            "wteq_cm": None,
+            "snwd_cm": grp["snwd_cm"].to_numpy(),
+        })
+    return out
 
 
 def refresh_fmi(
@@ -1661,50 +1690,54 @@ def refresh_fmi(
     """Refresh FMI snow-depth CSVs.
 
     ``stations`` is a list of (feature_index, code) tuples; each feature's
-    ``fmi_station_id`` is the fmisid.  A station without a CSV gets its
-    full record (the client asks for the batch's joint activity period); an
-    archived one gets the last :data:`FMI_LOOKBACK_DAYS` days, merged in
-    (``merge=True``).  Depth only: FMI publishes no SWE.
+    ``fmi_station_id`` is the fmisid.  Stations without a CSV get their
+    full record (whole-Finland requests from the earliest new station's
+    begin, or :data:`FMI_EARLIEST`); archived ones get the last
+    :data:`FMI_LOOKBACK_DAYS` days, merged in (``merge=True``).  Depth
+    only: FMI publishes no SWE.
     """
     stats = writer.stats
     if not stations:
         return
-    end = (today or date.today())
+    end = today or date.today()
     client = FMIClient()
-    new_batches, old_batches = fmi_batches(stations, writer.features, writer.data_dir)
+    new: dict[str, tuple[int, str]] = {}
+    old: dict[str, tuple[int, str]] = {}
+    begins: list[date] = []
+    for feat_idx, code in stations:
+        p = writer.features[feat_idx]["properties"]
+        sid = str(p.get("fmi_station_id") or code.removeprefix("FMI-"))
+        if station_csv_path(writer.data_dir, code).exists():
+            old[sid] = (feat_idx, code)
+            continue
+        new[sid] = (feat_idx, code)
+        b = p.get("begin_date") or (
+            f"{p['fmi_begin_year']}-01-01" if p.get("fmi_begin_year") else None
+        )
+        begins.append(max(FMI_EARLIEST, date.fromisoformat(b)) if b else FMI_EARLIEST)
     print(
-        f"  [FMI] Fetching daily snow depth: {sum(map(len, new_batches))} new "
-        f"stations (full record), {sum(map(len, old_batches))} archived "
-        f"(last {FMI_LOOKBACK_DAYS} days)..."
+        f"  [FMI] Fetching daily snow depth: {len(new)} new stations (full record), "
+        f"{len(old)} archived (last {FMI_LOOKBACK_DAYS} days)..."
     )
     updated = 0
-    for batches, archived in ((new_batches, False), (old_batches, True)):
-        for n, batch in enumerate(batches, 1):
-            kwargs: dict[str, Any] = {}
-            if archived:
-                kwargs = {
-                    "begin_date": (end - timedelta(days=FMI_LOOKBACK_DAYS)).isoformat(),
-                    "end_date": end.isoformat(),
-                }
-            try:
-                records = client.get_data(
-                    station_ids=[sid for _, _, sid in batch],
-                    variables=["snwd"],
-                    interval="daily",
-                    **kwargs,
-                )
-            except FMIError as exc:
-                stats.failed_batches += 1
-                print(f"  [FMI] batch {n} ({len(batch)} stations) FAILED ({exc})")
-                continue
-            by_sid: dict[str, list[dict]] = {}
-            for r in records:
-                by_sid.setdefault(str(r["station_id"]), []).append(r)
-            stats.fetched += len(by_sid)
-            for feat_idx, code, sid in batch:
-                df = _station_records_to_df(by_sid.get(sid, []))
-                if writer.store(feat_idx, code, "fmi", df, merge=archived):
-                    updated += 1
+    for group, begin, merge in (
+        (new, min(begins) if begins else end, False),
+        # FMI_LOOKBACK_DAYS dates ending today: one request
+        (old, end - timedelta(days=FMI_LOOKBACK_DAYS - 1), True),
+    ):
+        if not group:
+            continue
+        try:
+            frames = fmi_fetch_depths(client, set(group), begin, end)
+        except FMIError as exc:
+            stats.failed_batches += 1
+            print(f"  [FMI] FAILED ({exc})")
+            continue
+        stats.fetched += len(frames)
+        for sid, (feat_idx, code) in group.items():
+            df = frames.get(sid, pd.DataFrame(columns=["date", "wteq_cm", "snwd_cm"]))
+            if writer.store(feat_idx, code, "fmi", df, merge=merge):
+                updated += 1
     print(f"  [FMI] updated {updated} station CSVs")
 
 
