@@ -2465,12 +2465,13 @@ def fmi_sample_days(today: date | None = None) -> list[date]:
 
     A whole-Finland request for one day returns only stations with a value
     that day, so a few days a year find every station with a daily record:
-    15 January for 1900-1958 (only a handful of stations have snow depth in
-    the service before 1959), and the 15th of January, March, May and
-    November from 1959.  About 330 requests of ~1 MB.
+    15 January for 1880-1958 (only a handful of stations have snow depth in
+    the service before 1959; Helsinki Kaisaniemi's starts by 1895), and the
+    15th of January, March, May and November from 1959.  About 350
+    requests of ~1 MB.
     """
     today = today or date.today()
-    days = [date(y, 1, 15) for y in range(1900, 1959)]
+    days = [date(y, 1, 15) for y in range(1880, 1959)]
     days += [
         date(y, m, 15)
         for y in range(1959, today.year + 1)
@@ -2489,7 +2490,7 @@ def fmi_previous_served(path: Path = FMI_GEOJSON_OUT) -> dict[str, bool]:
 
     ``served`` means the observation service returned daily snow depth for
     the station on a sampled day.  Finding out over the whole record costs
-    ~330 requests, so earlier verdicts are carried forward and later runs
+    ~350 requests, so earlier verdicts are carried forward and later runs
     only sample the last two days (:func:`run_fmi_workflow`).
     """
     try:
@@ -2598,7 +2599,7 @@ def run_fmi_workflow(
     Two requests for the station list (WFS plus the station table that
     holds elevations), then which stations have daily snow depth at all.
     With no previous inventory that is a sample of the whole record
-    (:func:`fmi_sample_days`, ~330 requests, ~10 minutes); otherwise the
+    (:func:`fmi_sample_days`, ~350 requests, ~3 minutes); otherwise the
     previous verdicts (:func:`fmi_previous_served`) are kept and the last
     two days are sampled, so a station that starts reporting is picked up.
     """

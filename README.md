@@ -1155,7 +1155,7 @@ the client's documented sensor list (about 24 sensor periods in the plan,
 - CEAZA-Met: https://www.ceazamet.cl/
 - Web service documentation and terms of use: https://www.ceazamet.cl/ws/pop_ws_doc.php
 
-### 6.15 FMI — Finnish weather, climate and precipitation stations (FMI_AWS / FMI_CLIM / FMI_WS / FMI_PRCP)
+### 6.15 FMI — Finnish weather, climate and precipitation stations (FMI_AWS / FMI_AIRP / FMI_CLIM / FMI_WS / FMI_PRCP)
 
 > Finnish Meteorological Institute open data, **CC BY 4.0**
 > ([licence](https://en.ilmatieteenlaitos.fi/open-data-licence)). Attribute
@@ -1165,23 +1165,30 @@ the client's documented sensor list (about 24 sensor periods in the plan,
 `fmi::observations::weather::daily::timevaluepair`); elevations from FMI's
 public station table
 **Client:** `fmi`
-**Stations:** every station of FMI's four snow-depth networks, open and
-closed: 2,244 in November 2026 (243 active) — automatic weather stations
-(`FMI_AWS`, 259), climate stations (`FMI_CLIM`, 25), manned weather
-stations (`FMI_WS`, 121) and precipitation stations (`FMI_PRCP`, 1,839).
-`network_code` is the station's main network; `fmi_networks` lists all of
-them. Codes are `FMI-<fmisid>`.
-**With data:** only the stations for which the observation service
-returned daily snow depth on a sampled day are fetched (`fmi_served:
-true`). The others are inventoried with `fmi_served: false` and a note;
-many of them are closed stations the service does not know at all (HTTP 400
-"Unknown 'fmisid' value!").
+**Stations:** 2,458 in November 2026 (255 active): every station of FMI's
+five snow-depth networks, open and closed — automatic weather stations
+(`FMI_AWS`, 259), airport weather stations (`FMI_AIRP`, 24), climate
+stations (`FMI_CLIM`, 24), manned weather stations (`FMI_WS`) and
+precipitation stations (`FMI_PRCP`) — plus 194 weather and precipitation
+stations that only FMI's public station table lists. `network_code` is the
+station's main network; `fmi_networks` lists all of them. Codes are
+`FMI-<fmisid>`.
+**With data:** 907 of them have daily snow depth on at least one sampled
+day (`fmi_served: true`), and only those are fetched. The others are
+inventoried with `fmi_served: false` and a note; many are closed stations
+the service does not know at all (HTTP 400 "Unknown 'fmisid' value!").
+**Positions:** from the WFS station list (ETRS89). For the table-only
+stations the table rounds to 0.1°, so the exact position an observation
+response gives is used instead (`fmi_position_source: observations`, 111
+stations); the 83 never seen in a response keep the rounded one, with a
+note. Table-only stations have years, not dates, for their period
+(`fmi_begin_year`, `fmi_end_year`).
 **Coverage:** Finland, 59.5–70.1° N; also about 20 stations closed by
 1946 in the areas ceded in 1944 (Petsamo, Salmi, Suojärvi; `state` is
 still `FI`, as the source has it) and FMI's Antarctic station Aboa
 (`state: AQ`)
-**Period of record:** daily snow depth from the 1930s at the long-record
-stations
+**Period of record:** daily snow depth from 1895 at Helsinki Kaisaniemi
+and the 1910s at Sodankylä; most stations from 1959
 **Temporal resolution:** daily. At automatic stations a value is the
 06:00 UTC reading of its day (checked first-hand against the hourly
 series); at manual stations it is the observer's reading, at a time the
@@ -1202,9 +1209,9 @@ writes it as `0` cm; the client's `include_flags=True` marks those values
 reject a whole request, and checking 2,244 ids one batch at a time takes
 over half an hour. Instead, the inventory step samples days: a
 whole-Finland request for one day returns only the stations with a value
-that day (~1 MB). The first run samples 15 January of 1900–1958 and the
-15th of January, March, May and November since 1959 (~330 requests,
-`fmi_sample_days`); each station's verdict is then carried forward from the
+that day (~1 MB). The first run samples 15 January of 1880–1958 and the
+15th of January, March, May and November since 1959 (~350 requests,
+about 3 minutes; `fmi_sample_days`); each station's verdict is then carried forward from the
 previous `data/inventories/fmi_stations.geojson`, and later runs sample
 only the last two days, so a station that starts reporting is picked up.
 A station whose whole record falls between sampled days would be missed.
@@ -1221,7 +1228,7 @@ picked up.
 | | Requests | Volume |
 |---|---|---|
 | Nightly, steady state | 2 station-list and 2 sample requests (inventory), then two per 99 stations (an id check and the 366-day window) | a few MB per request |
-| First run (backfill, once) | ~330 sample requests, then up to ~125 yearly requests per batch of 99 stations | several GB downloaded; one CSV per station with daily depth |
+| First run (backfill, once) | ~350 sample requests, then up to ~130 yearly requests per batch of 99 stations | several GB downloaded; ~907 CSVs of 0.25–0.75 MB each (four sample stations: 2.0 MB), so roughly 300–500 MB added to `data/stations/` |
 
 **Links**
 - Open-data WFS manual: https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services

@@ -935,6 +935,7 @@ const NET_LABELS = {
   CEAZA:"CEAZA-Met",
   FMI_AWS:"FMI automatic weather station", FMI_CLIM:"FMI climate station",
   FMI_WS:"FMI weather station", FMI_PRCP:"FMI precipitation station",
+  FMI_AIRP:"FMI airport weather station",
 };
 
 // SVG shape markup for each network code (12×12 viewBox)
@@ -962,6 +963,7 @@ const NET_SHAPES = {
   FMI_CLIM:'<polygon points="6.00,1.00 8.50,1.67 10.33,3.50 11.00,6.00 10.33,8.50 8.50,10.33 6.00,11.00 3.50,10.33 1.67,8.50 1.00,6.00 1.67,3.50 3.50,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   FMI_WS:'<polygon points="11.00,6.00 7.55,10.76 1.95,8.94 1.95,3.06 7.55,1.24" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   FMI_PRCP:'<polygon points="11.00,6.00 9.12,9.91 4.89,10.87 1.50,8.17 1.50,3.83 4.89,1.13 9.12,2.09" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  FMI_AIRP:'<polygon points="11.00,6.00 9.83,9.21 6.87,10.92 3.50,10.33 1.30,7.71 1.30,4.29 3.50,1.67 6.87,1.08 9.83,2.79" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -1313,6 +1315,7 @@ const NET_POLYGONS = {
   HQ: [7, -90], ARB: [9, -90], IMIS: [6, 0], BEOB: [10, -90],
   RHN: [5, 90], RMET: [7, 90], CEAZA: [3, 180],
   FMI_AWS: [11, -90], FMI_CLIM: [12, -90], FMI_WS: [5, 0], FMI_PRCP: [7, 0],
+  FMI_AIRP: [9, 0],
 };
 
 function stationShape(network, measurementType) {

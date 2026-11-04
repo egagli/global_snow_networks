@@ -173,10 +173,10 @@ def test_aboa_is_in_antarctica():
 
 def test_sample_days_cover_the_record_cheaply():
     days = fmi_sample_days(date(2026, 11, 4))
-    assert days[0] == date(1900, 1, 15)
+    assert days[0] == date(1880, 1, 15)
     assert date(1958, 3, 15) not in days and date(1959, 3, 15) in days
     assert days[-1] == date(2026, 5, 15)  # 15 November 2026 is still ahead
-    assert len(days) < 350
+    assert len(days) < 360
 
 
 class _InventoryClient:
