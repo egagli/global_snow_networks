@@ -189,9 +189,10 @@ class _InventoryClient:
     def get_metadata(self, sid):
         return {"101932": SODANKYLA, "100694": KITEE}[sid]
 
-    def reporting_station_ids(self, day):
+    def reporting_stations(self, day):
         type(self).sampled.append(day)
-        return {"101932"}
+        return {"101932": {"name": "Sodankylä Tähtelä", "latitude": 67.36663,
+                           "longitude": 26.62901}}
 
 
 def test_first_inventory_samples_the_record_later_ones_two_days(monkeypatch):
@@ -210,3 +211,22 @@ def test_first_inventory_samples_the_record_later_ones_two_days(monkeypatch):
     )
     assert _InventoryClient.sampled == [date(2026, 11, 2), date(2026, 11, 3)]
     assert all(f["properties"]["fmi_served"] for f in feats)
+
+
+def test_table_only_station_takes_the_observed_position():
+    table_only = {**KITEE, "latitude": 61.9, "longitude": 30.1,
+                  "coordinate_precision_deg": 0.1, "begin_year": 1925,
+                  "end_year": 1958, "begin_date": None, "end_date": None}
+    p = fmi_station_to_feature(table_only, served=True)["properties"]
+    assert p["fmi_position_source"] == "station_table" and "0.1°" in p["notes"]
+    p = fmi_station_to_feature(
+        table_only, served=True,
+        position={"latitude": 61.915285, "longitude": 30.141083},
+    )["properties"]
+    assert p["fmi_position_source"] == "observations"
+    assert (p["latitude"], p["longitude"]) == (61.915285, 30.141083)
+    assert p["fmi_begin_year"] == 1925
+    # a listed station keeps its own position
+    p = fmi_station_to_feature(SODANKYLA, served=True, position={"latitude": 1.0,
+                                                                 "longitude": 1.0})
+    assert p["properties"]["latitude"] == 67.36663

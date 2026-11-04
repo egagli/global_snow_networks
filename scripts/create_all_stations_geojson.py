@@ -2506,7 +2506,27 @@ def fmi_previous_served(path: Path = FMI_GEOJSON_OUT) -> dict[str, bool]:
     return out
 
 
-def fmi_station_to_feature(station: dict, served: bool) -> dict:
+def fmi_previous_positions(path: Path = FMI_GEOJSON_OUT) -> dict[str, dict]:
+    """``{fmisid: {latitude, longitude}}`` taken from observation responses
+    on an earlier run, for stations whose listed position is coarse."""
+    try:
+        with path.open(encoding="utf-8") as fp:
+            features = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out: dict[str, dict] = {}
+    for f in features:
+        p = f.get("properties") or {}
+        if p.get("fmi_position_source") == "observations":
+            out[str(p.get("fmi_station_id"))] = {
+                "latitude": p.get("latitude"), "longitude": p.get("longitude"),
+            }
+    return out
+
+
+def fmi_station_to_feature(
+    station: dict, served: bool, position: dict | None = None
+) -> dict:
     """Convert an FMI station dict to a feature.
 
     ``station`` is :meth:`FMIClient.get_metadata`'s dict (the station plus
@@ -2518,6 +2538,19 @@ def fmi_station_to_feature(station: dict, served: bool) -> dict:
     lon = station.get("longitude")
     data_vars = list(station.get("data_variables") or []) if served else []
     notes = FMI_NOTE if served else f"{FMI_NOTE} {FMI_NOT_SERVED_NOTE}"
+    # Stations only FMI's public station table lists come with positions
+    # rounded to 0.1°; an observation response gives the exact one.
+    position_source = "station_list"
+    if station.get("coordinate_precision_deg"):
+        if position and position.get("latitude") is not None:
+            lat, lon = position["latitude"], position["longitude"]
+            position_source = "observations"
+        else:
+            position_source = "station_table"
+            notes += (
+                " Position from FMI's public station table, rounded to 0.1° "
+                "(up to ~6 km off)."
+            )
     network = station.get("network_code")
     props: dict[str, Any] = {
         "code": fmi_code(sid),
@@ -2546,6 +2579,9 @@ def fmi_station_to_feature(station: dict, served: bool) -> dict:
         "fmi_wmo_id": station.get("wmo_id"),
         "fmi_networks": station.get("networks") or None,
         "fmi_served": served,
+        "fmi_position_source": position_source,
+        "fmi_begin_year": station.get("begin_year"),
+        "fmi_end_year": station.get("end_year"),
         "metadata_fetched_at": date.today().isoformat(),
     }
     props.update(_daily_candidate_props(data_vars))
@@ -2568,6 +2604,7 @@ def run_fmi_workflow(
     """
     client = FMIClient()
     previous = previous if previous is not None else fmi_previous_served()
+    positions = dict(fmi_previous_positions()) if previous else {}
     today = today or date.today()
 
     print("=" * 60)
@@ -2588,7 +2625,10 @@ def run_fmi_workflow(
     found: set[str] = set()
     try:
         for d in days:
-            found |= client.reporting_station_ids(d)
+            for sid, pos in client.reporting_stations(d).items():
+                found.add(sid)
+                if pos.get("latitude") is not None:
+                    positions.setdefault(sid, pos)
     except Exception as exc:
         logger.error("FMI sampling failed: %s", exc)
         return [], []
@@ -2600,7 +2640,11 @@ def run_fmi_workflow(
     print(f"  Active: {active}  |  With daily snow depth: {sum(served.values())}")
 
     all_features = [
-        fmi_station_to_feature(client.get_metadata(s["station_id"]), served[s["station_id"]])
+        fmi_station_to_feature(
+            client.get_metadata(s["station_id"]),
+            served[s["station_id"]],
+            positions.get(s["station_id"]),
+        )
         for s in stations
     ]
     daily_features = [
