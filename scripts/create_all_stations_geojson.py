@@ -34,7 +34,7 @@ import argparse
 import json
 import logging
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -2453,10 +2453,31 @@ FMI_NOTE = (
     "as 0 cm."
 )
 FMI_NOT_SERVED_NOTE = (
-    "Listed by FMI's station metadata but unknown to its observation "
-    "service (HTTP 400 'Unknown fmisid value!'), so no data can be "
-    "retrieved."
+    "Listed by FMI's station metadata, but the observation service "
+    "returned no daily snow depth for it on any sampled day (many such "
+    "closed stations are unknown to the service, HTTP 400 'Unknown fmisid "
+    "value!'), so it is not fetched."
 )
+
+
+def fmi_sample_days(today: date | None = None) -> list[date]:
+    """Days the first inventory samples to find FMI's daily snow stations.
+
+    A whole-Finland request for one day returns only stations with a value
+    that day, so a few days a year find every station with a daily record:
+    15 January for 1900-1958 (only a handful of stations have snow depth in
+    the service before 1959), and the 15th of January, March, May and
+    November from 1959.  About 330 requests of ~1 MB.
+    """
+    today = today or date.today()
+    days = [date(y, 1, 15) for y in range(1900, 1959)]
+    days += [
+        date(y, m, 15)
+        for y in range(1959, today.year + 1)
+        for m in (1, 3, 5, 11)
+        if date(y, m, 15) < today
+    ]
+    return days
 
 
 def fmi_code(station_id: str) -> str:
@@ -2466,10 +2487,10 @@ def fmi_code(station_id: str) -> str:
 def fmi_previous_served(path: Path = FMI_GEOJSON_OUT) -> dict[str, bool]:
     """``{fmisid: served}`` from the last per-client inventory.
 
-    Whether the observation service knows a station does not change from
-    night to night, and finding out costs about one request per station
-    when many are unknown, so earlier verdicts are carried forward and
-    only stations not seen before are screened.
+    ``served`` means the observation service returned daily snow depth for
+    the station on a sampled day.  Finding out over the whole record costs
+    ~330 requests, so earlier verdicts are carried forward and later runs
+    only sample the last two days (:func:`run_fmi_workflow`).
     """
     try:
         with path.open(encoding="utf-8") as fp:
@@ -2533,19 +2554,21 @@ def fmi_station_to_feature(station: dict, served: bool) -> dict:
 
 def run_fmi_workflow(
     previous: dict[str, bool] | None = None,
+    today: date | None = None,
 ) -> tuple[list[dict], list[dict]]:
     """
     Fetch FMI's snow-depth stations; return (all_features, daily_features).
 
     Two requests for the station list (WFS plus the station table that
-    holds elevations), then a screening of stations not in ``previous``
-    (:func:`fmi_previous_served`) against the observation service.  The
-    first run screens all ~2,200 stations, which takes several minutes
-    at FMI's 600-requests-per-5-minutes limit; later runs screen only new
-    ones.
+    holds elevations), then which stations have daily snow depth at all.
+    With no previous inventory that is a sample of the whole record
+    (:func:`fmi_sample_days`, ~330 requests, ~10 minutes); otherwise the
+    previous verdicts (:func:`fmi_previous_served`) are kept and the last
+    two days are sampled, so a station that starts reporting is picked up.
     """
     client = FMIClient()
     previous = previous if previous is not None else fmi_previous_served()
+    today = today or date.today()
 
     print("=" * 60)
     print("[FMI] Fetching FMI snow-depth stations (AWS, climate, weather, precipitation)")
@@ -2556,21 +2579,25 @@ def run_fmi_workflow(
         logger.error("FMI station fetch failed: %s", exc)
         return [], []
 
-    ids = [s["station_id"] for s in stations]
-    todo = [i for i in ids if i not in previous]
-    served = dict(previous)
-    if todo:
-        print(f"  Screening {len(todo):,} stations against the observation service...")
-        try:
-            known, unknown = client.screen_station_ids(todo)
-        except Exception as exc:
-            logger.error("FMI screening failed: %s", exc)
-            return [], []
-        served.update({i: True for i in known})
-        served.update({i: False for i in unknown})
+    days = (
+        [today - timedelta(days=2), today - timedelta(days=1)]
+        if previous
+        else fmi_sample_days(today)
+    )
+    print(f"  Sampling {len(days)} day(s) for stations with daily snow depth...")
+    found: set[str] = set()
+    try:
+        for d in days:
+            found |= client.reporting_station_ids(d)
+    except Exception as exc:
+        logger.error("FMI sampling failed: %s", exc)
+        return [], []
+    served = {
+        s["station_id"]: previous.get(s["station_id"], False) or s["station_id"] in found
+        for s in stations
+    }
     active = sum(1 for s in stations if s.get("status") == "Active")
-    n_served = sum(1 for i in ids if served.get(i))
-    print(f"  Active: {active}  |  Served by the observation service: {n_served}")
+    print(f"  Active: {active}  |  With daily snow depth: {sum(served.values())}")
 
     all_features = [
         fmi_station_to_feature(client.get_metadata(s["station_id"]), served[s["station_id"]])

@@ -11,12 +11,15 @@ import json
 from datetime import date
 
 import scripts.get_all_stations_data as gasd
+import scripts.create_all_stations_geojson as casg
 from scripts.create_all_stations_geojson import (
     DAY_CONVENTIONS,
     UNIVERSAL_FIELDS,
     day_convention,
     fmi_previous_served,
+    fmi_sample_days,
     fmi_station_to_feature,
+    run_fmi_workflow,
 )
 from scripts.get_all_stations_data import (
     FMI_BATCH,
@@ -75,7 +78,7 @@ def test_unserved_station_is_inventoried_but_never_a_candidate():
     p = fmi_station_to_feature(KITEE, served=False)["properties"]
     assert p["data_variables"] == []
     assert p["has_daily_snwd"] is False and p["daily_or_better"] is False
-    assert "unknown to its observation service" in p["notes"]
+    assert "no daily snow depth" in p["notes"]
     assert gasd.is_fetch_candidate(p) is False
 
 
@@ -166,3 +169,44 @@ def test_aboa_is_in_antarctica():
             "latitude": -73.05, "longitude": -13.38333, "region": "AQ"}
     assert fmi_station_to_feature(aboa, served=True)["properties"]["state"] == "AQ"
     assert fmi_station_to_feature(SODANKYLA, served=True)["properties"]["state"] == "FI"
+
+
+def test_sample_days_cover_the_record_cheaply():
+    days = fmi_sample_days(date(2026, 11, 4))
+    assert days[0] == date(1900, 1, 15)
+    assert date(1958, 3, 15) not in days and date(1959, 3, 15) in days
+    assert days[-1] == date(2026, 5, 15)  # 15 November 2026 is still ahead
+    assert len(days) < 350
+
+
+class _InventoryClient:
+    sampled: list = []
+
+    def get_all_stations(self):
+        return [{k: v for k, v in s.items() if k != "data_variables"}
+                for s in (SODANKYLA, KITEE)]
+
+    def get_metadata(self, sid):
+        return {"101932": SODANKYLA, "100694": KITEE}[sid]
+
+    def reporting_station_ids(self, day):
+        type(self).sampled.append(day)
+        return {"101932"}
+
+
+def test_first_inventory_samples_the_record_later_ones_two_days(monkeypatch):
+    monkeypatch.setattr(casg, "FMIClient", _InventoryClient)
+    _InventoryClient.sampled = []
+    feats, daily = run_fmi_workflow(previous={}, today=date(2026, 11, 4))
+    assert len(_InventoryClient.sampled) == len(fmi_sample_days(date(2026, 11, 4)))
+    served = {f["properties"]["code"]: f["properties"]["fmi_served"] for f in feats}
+    assert served == {"FMI-101932": True, "FMI-100694": False}
+    assert [f["properties"]["code"] for f in daily] == ["FMI-101932"]
+
+    # Later: previous verdicts kept (Kitee was found before), two days sampled
+    _InventoryClient.sampled = []
+    feats, _ = run_fmi_workflow(
+        previous={"101932": True, "100694": True}, today=date(2026, 11, 4)
+    )
+    assert _InventoryClient.sampled == [date(2026, 11, 2), date(2026, 11, 3)]
+    assert all(f["properties"]["fmi_served"] for f in feats)
