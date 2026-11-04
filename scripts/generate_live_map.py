@@ -918,7 +918,7 @@ const STATE_NAMES = {
   // partner snow courses "YK" — kept verbatim per DESIGN.md §5.
   AB:"Alberta", BC:"British Columbia", NT:"Northwest Territories",
   NU:"Nunavut", YT:"Yukon", YK:"Yukon", QC:"Québec",
-  CH:"Switzerland", AR:"Argentina", CL:"Chile",
+  CH:"Switzerland", AR:"Argentina", CL:"Chile", FI:"Finland", AQ:"Antarctica",
 };
 
 const NET_LABELS = {
@@ -933,6 +933,8 @@ const NET_LABELS = {
   IMIS:"SLF IMIS", BEOB:"SLF study plot", GCOS:"SLF GCOS SWE",
   RHN:"SNIH Red Hidrológica Nacional", RMET:"SNIH Red Meteorológica",
   CEAZA:"CEAZA-Met",
+  FMI_AWS:"FMI automatic weather station", FMI_CLIM:"FMI climate station",
+  FMI_WS:"FMI weather station", FMI_PRCP:"FMI precipitation station",
 };
 
 // SVG shape markup for each network code (12×12 viewBox)
@@ -956,6 +958,10 @@ const NET_SHAPES = {
   RMET:'<polygon points="6.00,11.00 2.09,9.12 1.13,4.89 3.83,1.50 8.17,1.50 10.87,4.89 9.91,9.12" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   CEAZA:'<polygon points="1.00,6.00 8.50,1.67 8.50,10.33" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   HQ:'<polygon points="6.00,1.00 9.91,2.88 10.87,7.11 8.17,10.50 3.83,10.50 1.13,7.11 2.09,2.88" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  FMI_AWS:'<polygon points="6.00,1.00 8.70,1.79 10.55,3.92 10.95,6.71 9.78,9.27 7.41,10.80 4.59,10.80 2.22,9.27 1.05,6.71 1.45,3.92 3.30,1.79" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  FMI_CLIM:'<polygon points="6.00,1.00 8.50,1.67 10.33,3.50 11.00,6.00 10.33,8.50 8.50,10.33 6.00,11.00 3.50,10.33 1.67,8.50 1.00,6.00 1.67,3.50 3.50,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  FMI_WS:'<polygon points="11.00,6.00 7.55,10.76 1.95,8.94 1.95,3.06 7.55,1.24" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  FMI_PRCP:'<polygon points="11.00,6.00 9.12,9.91 4.89,10.87 1.50,8.17 1.50,3.83 4.89,1.13 9.12,2.09" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -1306,6 +1312,7 @@ const NET_POLYGONS = {
   MSNT: [5, -90], SCAN: [6, -90], NVE: [4, 0], YSS: [8, -90], YKEC: [3, 0],
   HQ: [7, -90], ARB: [9, -90], IMIS: [6, 0], BEOB: [10, -90],
   RHN: [5, 90], RMET: [7, 90], CEAZA: [3, 180],
+  FMI_AWS: [11, -90], FMI_CLIM: [12, -90], FMI_WS: [5, 0], FMI_PRCP: [7, 0],
 };
 
 function stationShape(network, measurementType) {

@@ -309,7 +309,7 @@ DESIGN.md §6.1):**
 | `state` | State / province / country code |
 | `network_code` | Network label, verbatim from the source (SNTL, MSNT, CCSS, BCSS, NVE, YSS, …) |
 | `operator` | Agency maintaining the physical site — only when certain, else `null` (DESIGN.md §5) |
-| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"`, `"snih"`, `"ceaza"` |
+| `client` | Access-path module: `"awdb"`, `"cdec"`, `"databc"`, `"nve"`, `"yukon"`, `"hydroquebec"`, `"alberta"`, `"slf"`, `"snih"`, `"ceaza"`, `"fmi"` |
 | `data_provider` | Human-readable organization/portal behind that access path |
 | `status`, `is_active` | Active status as reported/derived |
 | `begin_date`, `end_date` | Period of record from source metadata |
@@ -1154,6 +1154,75 @@ the client's documented sensor list (about 24 sensor periods in the plan,
 **Links**
 - CEAZA-Met: https://www.ceazamet.cl/
 - Web service documentation and terms of use: https://www.ceazamet.cl/ws/pop_ws_doc.php
+
+### 6.15 FMI — Finnish weather, climate and precipitation stations (FMI_AWS / FMI_CLIM / FMI_WS / FMI_PRCP)
+
+> Finnish Meteorological Institute open data, **CC BY 4.0**
+> ([licence](https://en.ilmatieteenlaitos.fi/open-data-licence)). Attribute
+> "Finnish Meteorological Institute".
+
+**Data source:** FMI open-data WFS (`fmi::ef::stations`,
+`fmi::observations::weather::daily::timevaluepair`); elevations from FMI's
+public station table
+**Client:** `fmi`
+**Stations:** every station of FMI's four snow-depth networks, open and
+closed: 2,244 in November 2026 (243 active) — automatic weather stations
+(`FMI_AWS`, 259), climate stations (`FMI_CLIM`, 25), manned weather
+stations (`FMI_WS`, 121) and precipitation stations (`FMI_PRCP`, 1,839).
+`network_code` is the station's main network; `fmi_networks` lists all of
+them. Codes are `FMI-<fmisid>`.
+**Served:** not all of them are known to the observation service; the
+rest are listed in FMI's station metadata but answer HTTP 400 "Unknown
+'fmisid' value!", so they are inventoried (`fmi_served: false`, a note)
+and never fetched. Mostly stations closed before about 2011.
+**Coverage:** Finland, 59.5–70.1° N; also about 20 stations closed by
+1946 in the areas ceded in 1944 (Petsamo, Salmi, Suojärvi; `state` is
+still `FI`, as the source has it) and FMI's Antarctic station Aboa
+(`state: AQ`)
+**Period of record:** daily snow depth from the 1930s at the long-record
+stations
+**Temporal resolution:** daily. At automatic stations a value is the
+06:00 UTC reading of its day (checked first-hand against the hourly
+series); at manual stations it is the observer's reading, at a time the
+service does not state (`day_convention: unknown`).
+**Operator:** Finnish Meteorological Institute (the four networks read are
+FMI's own; third-party networks are not read)
+
+**Snow depth only.** FMI publishes no SWE through this service; Finnish
+snow-course SWE is Syke's, and Sodankylä's research SWE record is on FMI's
+separate LITDB portal. `wteq_cm` is always empty.
+
+**Snow-free ground.** FMI codes snow-free ground as `-1`. The archive
+writes it as `0` cm; the client's `include_flags=True` marks those values
+`snow_free`. FMI does not document the code; it is read off the data
+(every daily value in Finland on 2024-07-01..10 was `-1`).
+
+**Screening.** One unknown station makes the service reject a whole
+request, so the inventory step screens every station once, halving
+failing batches of 99 on a one-day request. A station's verdict
+(`fmi_served`) is carried forward from the previous
+`data/inventories/fmi_stations.geojson`; later runs screen only stations
+not seen before. The first run screens all of them, which
+takes tens of minutes at FMI's request limit.
+
+**Request volume.** FMI allows 20,000 requests a day and 600 per 5
+minutes; the client spaces requests 0.5 s apart. A daily request holds at
+most 99 stations and 372 days (the client asks for 366). A station's first
+refresh fetches its whole record — new stations are batched in order of
+begin date so a batch's span stays close to each member's own — and after
+that each night fetches the last 366 days, one request per batch, and
+merges them in (`FMI_LOOKBACK_DAYS`). A revision older than a year is not
+picked up.
+
+| | Requests | Volume |
+|---|---|---|
+| Nightly, steady state | 2 station-list requests, plus about one per 99 served stations for screening and one per 99 for data | a few MB per data request |
+| First run (backfill, once) | the screening above, plus up to ~125 yearly requests per batch of 99 stations | several GB downloaded; one CSV per served station with daily depth |
+
+**Links**
+- Open-data WFS manual: https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services
+- Licence: https://en.ilmatieteenlaitos.fi/open-data-licence
+- Station table: https://en.ilmatieteenlaitos.fi/observation-stations
 
 ---
 

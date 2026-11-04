@@ -107,6 +107,18 @@ Per-network documentation, APIs, portals, and design literature
 - Registration: e-mail ceazamet@ceaza.cl (name, e-mail, organisation,
   sector, intended use, download frequency, daily volume)
 
+## FMI (Finland)
+
+- Open-data WFS manual (stored queries, request limits):
+  <https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services>
+- Licence (CC BY 4.0): <https://en.ilmatieteenlaitos.fi/open-data-licence>
+- Station table (the source of station elevations):
+  <https://en.ilmatieteenlaitos.fi/observation-stations>
+- Parameter metadata, e.g. daily snow depth:
+  <https://opendata.fmi.fi/meta?observableProperty=observation&param=snow&language=eng>
+- Corrections to the original request (parameter names, time limits,
+  station list): egagli/easysnowdata#37, comment of 2026-10-31
+
 ## Leads not yet archived
 
 Links collected in issue #29, checked on 2026-10-27. None of them is a

@@ -228,6 +228,8 @@ or a fixed UTC offset.
 | SLF study plots | `manual morning reading` | SLF |
 | SNIH | `first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)` | client; pipeline spike filter |
 | CEAZA | `mean of day UTC-04:00` | CEAZA web service |
+| FMI automatic weather stations (`FMI_AWS`) | `instant 06:00 UTC` | checked first-hand: daily `snow` = hourly `snow_aws` at 06 UTC, Sodankylä and Helsinki, 15 days in 2024 |
+| FMI manual stations (`FMI_CLIM`, `FMI_WS`, `FMI_PRCP`) | `unknown` | reading time not stated by the service |
 
 The daily job starts at 17:00 UTC, after SNOTEL's midnight reading
 (08:00 UTC), CDEC's (≈12:00–13:00 UTC) and DataBC's (16:00 UTC), so every
