@@ -1217,18 +1217,19 @@ only the last two days, so a station that starts reporting is picked up.
 A station whose whole record falls between sampled days would be missed.
 
 **Request volume.** FMI allows 20,000 requests a day and 600 per 5
-minutes; the client spaces requests 0.5 s apart. A daily request holds at
-most 99 stations and 372 days (the client asks for 366). A station's first
-refresh fetches its whole record — new stations are batched in order of
-begin date so a batch's span stays close to each member's own — and after
-that each night fetches the last 366 days, one request per batch, and
-merges them in (`FMI_LOOKBACK_DAYS`). A revision older than a year is not
-picked up.
+minutes; the client spaces requests 0.5 s apart. Data is fetched with
+whole-Finland bbox requests, one per 366 days, because the service's
+`fmisid` parameter rejects hundreds of stations whose data the bbox query
+returns: fetched by id, a first full refresh on 2026-11-04 got values for
+283 of 907 stations; by bbox, all 907. A station's first refresh fetches
+its whole record; after that each night fetches the last 366 days, one
+request, and merges them in (`FMI_LOOKBACK_DAYS`). A revision older than a
+year is not picked up.
 
 | | Requests | Volume |
 |---|---|---|
-| Nightly, steady state | 2 station-list and 2 sample requests (inventory), then two per 99 stations (an id check and the 366-day window) | a few MB per request |
-| First run (backfill, once) | ~350 sample requests, then up to ~130 yearly requests per batch of 99 stations | several GB downloaded; ~907 CSVs of 0.25–0.75 MB each (four sample stations: 2.0 MB), so roughly 300–500 MB added to `data/stations/` |
+| Nightly, steady state | 2 station-list and 2 sample requests (inventory), then 1 data request | ~25 MB |
+| First run (backfill, once; measured 2026-11-04) | ~350 sample requests (2.8 min), then one per year since the earliest station (9.3 min) | 907 CSVs, 151 MB; 905 pass the daily probe |
 
 **Links**
 - Open-data WFS manual: https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services
