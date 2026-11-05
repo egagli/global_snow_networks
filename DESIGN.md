@@ -180,6 +180,13 @@ loop handles transient HTTP errors and honours `Retry-After` on 429.
   after the pipeline has actually retrieved daily(-or-better) SWE or
   snow-depth values. Advertised sensor metadata and capability flags are
   hints, never the criterion.
+- **No data, no daily flag.** An advertised candidate the source returns
+  nothing for never gets a CSV; finalize marks it `daily_or_better: false`
+  (`daily_verified: true`, a note). It stays a fetch candidate, so data that
+  appears later is verified the same night. On 2026-11-05 this covered 237
+  stations (207 CDEC, mostly monthly courses whose sensor list names snow
+  sensors; 12 Alberta, 10 SLF, 6 DataBC, 2 AWDB) that had been counted as
+  daily with nothing to chart.
 - **Regular cadence required**: one-off or sporadic measurements are not
   "daily or better" regardless of how the source labels them. The probe
   requires a genuinely regular series (≥ 30 observations and ≥ 1 obs per

@@ -713,3 +713,30 @@ def test_revision_log_month_files_and_pending_merge(tmp_path):
     assert month["code"].tolist() == ["S"] * 3 + ["T"] * 3
     assert month["kind"].eq("revised").all()
     assert any("oldest 2000-01-01" in line for line in log2.summary())
+
+
+def test_daily_candidates_without_data_are_marked_not_daily(tmp_path):
+    """A candidate the source returns nothing for never gets a CSV; it must
+    not stay daily_or_better (DESIGN.md §4).  A station with a CSV, and one
+    already settled, are left alone."""
+    from scripts.get_all_stations_data import (
+        NO_DATA_NOTE,
+        is_fetch_candidate,
+        mark_candidates_without_data,
+    )
+
+    def feat(code, **p):
+        return {"properties": {"code": code, "client": "cdec", **p}}
+
+    empty = feat("EMV", has_daily_swe=True, daily_or_better=True, daily_verified=False)
+    with_csv = feat("QUA", has_daily_swe=True, daily_or_better=True, daily_verified=True)
+    periodic = feat("HNT", has_daily_swe=False, daily_or_better=False)
+    (tmp_path / "QUA.csv").write_text("date,wteq_cm,snwd_cm\n2024-01-01,1.0,\n")
+    assert mark_candidates_without_data([empty, with_csv, periodic], tmp_path) == 1
+    p = empty["properties"]
+    assert p["daily_or_better"] is False and p["daily_verified"] is True
+    assert p["daily_provenance"] == "none" and NO_DATA_NOTE in p["notes"]
+    assert is_fetch_candidate(p)  # still tried every night
+    assert with_csv["properties"]["daily_or_better"] is True
+    # idempotent: the note is not repeated
+    assert mark_candidates_without_data([empty], tmp_path) == 0

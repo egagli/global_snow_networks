@@ -311,6 +311,46 @@ def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
     return passed
 
 
+NO_DATA_NOTE = (
+    "Probe: the source returned no daily SWE or snow depth for this "
+    "station, so it has no CSV and is not charted; retried every night."
+)
+
+
+def mark_candidates_without_data(features: list[dict], data_dir: Path) -> int:
+    """Settle advertised daily candidates whose fetch never returned data.
+
+    A station is a candidate from its source's metadata (has_daily_swe /
+    has_daily_snwd), and the probe only runs on a CSV.  A candidate the
+    source returns nothing for never gets one, so it used to keep its
+    advertised ``daily_or_better = True`` unverified and reach the map
+    with no data: 237 stations on 2026-11-05 (207 CDEC sites whose sensor
+    list names snow sensors but which are monthly courses or empty, 12
+    Alberta, 10 SLF IMIS, 6 DataBC, 2 AWDB).  DESIGN.md §4: inclusion is
+    probe-verified, so a candidate without a CSV is marked not daily.  It
+    stays a fetch candidate (has_daily_* is untouched), so data that
+    appears later is picked up and verified the same night (stations
+    retained after vanishing upstream are not fetched again, §6.4).
+    Returns the number marked.
+    """
+    marked = 0
+    for feat in features:
+        props = feat.get("properties", {})
+        code = str(props.get("code") or "")
+        if not code or props.get("daily_or_better") is not True:
+            continue
+        if station_csv_path(data_dir, code).exists():
+            continue
+        props["daily_or_better"] = False
+        props["daily_verified"] = True
+        props["daily_provenance"] = "none"
+        existing = props.get("notes") or ""
+        if NO_DATA_NOTE not in existing:
+            props["notes"] = f"{existing} {NO_DATA_NOTE}".strip()
+        marked += 1
+    return marked
+
+
 def is_fetch_candidate(props: dict) -> bool:
     """Stations worth fetching: advertised daily-or-better candidates
     plus anything previously verified (keeps inactive-but-historical
@@ -1829,6 +1869,8 @@ def finalize_from_csvs(
         f"Updated GeoJSON dates for {updated} stations "
         f"(cadence passed: {verified_ok}, failed: {verified_failed})"
     )
+    no_data = mark_candidates_without_data(features, data_dir)
+    print(f"Daily candidates with no data from their source: {no_data}")
 
     geojson.setdefault("metadata", {})
     geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
@@ -2132,6 +2174,8 @@ def main() -> None:
         return
 
     # Update GeoJSON metadata (full run only)
+    no_data = mark_candidates_without_data(features, data_dir)
+    print(f"Daily candidates with no data from their source: {no_data}")
     geojson.setdefault("metadata", {})
     geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
     geojson["metadata"]["csv_elements"] = ["wteq_cm", "snwd_cm"]
