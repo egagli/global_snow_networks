@@ -1173,10 +1173,12 @@ precipitation stations (`FMI_PRCP`) — plus 194 weather and precipitation
 stations that only FMI's public station table lists. `network_code` is the
 station's main network; `fmi_networks` lists all of them. Codes are
 `FMI-<fmisid>`.
-**With data:** 907 of them have daily snow depth on at least one sampled
-day (`fmi_served: true`), and only those are fetched. The others are
-inventoried with `fmi_served: false` and a note; many are closed stations
-the service does not know at all (HTTP 400 "Unknown 'fmisid' value!").
+**In the inventory:** only the 907 that have daily snow depth on at least
+one sampled day. The other ~1,550 have no snow series in the service at
+all (mostly closed precipitation stations), so they do not qualify
+(DESIGN.md §1) and are left out. Of the 907, 905 pass the daily probe
+(2026-11-04), and 163 of those reported in the last week; the rest are
+closed stations with a historical daily record.
 **Positions:** from the WFS station list (ETRS89). For the table-only
 stations the table rounds to 0.1°, so the exact position an observation
 response gives is used instead (`fmi_position_source: observations`, 111

@@ -188,8 +188,8 @@ def test_first_inventory_samples_the_record_later_ones_two_days(monkeypatch):
     _InventoryClient.sampled = []
     feats, daily = run_fmi_workflow(previous={}, today=date(2026, 11, 4))
     assert len(_InventoryClient.sampled) == len(fmi_sample_days(date(2026, 11, 4)))
-    served = {f["properties"]["code"]: f["properties"]["fmi_served"] for f in feats}
-    assert served == {"FMI-101932": True, "FMI-100694": False}
+    # Kitee has no snow depth in the service: not inventoried (DESIGN.md §1)
+    assert [f["properties"]["code"] for f in feats] == ["FMI-101932"]
     assert [f["properties"]["code"] for f in daily] == ["FMI-101932"]
 
     # Later: previous verdicts kept (Kitee was found before), two days sampled

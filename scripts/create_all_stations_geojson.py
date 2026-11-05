@@ -2647,12 +2647,20 @@ def run_fmi_workflow(
             positions.get(s["station_id"]),
         )
         for s in stations
+        # DESIGN.md §1: a station qualifies for the inventory only with at
+        # least one snow series. FMI's metadata lists ~1,550 stations the
+        # observation service holds no snow depth for (mostly closed
+        # precipitation stations, many unknown to it); they are left out.
+        if served[s["station_id"]]
     ]
     daily_features = [
         f for f in all_features
         if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
     ]
-    print(f"  Daily candidates: {len(daily_features):,}")
+    print(
+        f"  Inventoried: {len(all_features):,} (left out, no snow depth served: "
+        f"{len(stations) - len(all_features):,})  |  Daily candidates: {len(daily_features):,}"
+    )
     return all_features, daily_features
 
 
