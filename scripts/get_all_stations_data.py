@@ -267,6 +267,10 @@ def passed_provenance(props: dict) -> str:
     ``snih_validated_through``, or it never had a validated record.
     """
     client = str(props.get("client") or "")
+    if client == "cdec" and props.get("cdec_daily_source") in (
+        "resampled_hourly", "resampled_sub_daily"
+    ):
+        return str(props["cdec_daily_source"])
     if client == "snih":
         through = props.get("snih_validated_through")
         latest = props.get("latest_record_date")
@@ -877,12 +881,35 @@ def refresh_awdb(
 def refresh_cdec(
     stations: list[tuple[int, str]],
     writer: StationWriter,
+    today: date | None = None,
 ) -> None:
     """Refresh CDEC station CSVs.
 
-    ``stations`` is a list of (feature_index, station_id) tuples.
+    ``stations`` is a list of (feature_index, station_id) tuples.  Stations
+    with a daily snow sensor get CDEC's daily series, full record, in
+    batches.  The rest (``cdec_daily_source`` resampled_hourly /
+    resampled_sub_daily: sensor-network nodes without a daily series) are
+    resampled: see :func:`refresh_cdec_resampled`.
     """
+    features = writer.features
+    native = [
+        (i, s) for i, s in stations
+        if features[i]["properties"].get("cdec_daily_source",
+                                         "native") == "native"
+    ]
+    resampled = [(i, s) for i, s in stations if (i, s) not in set(native)]
+    refresh_cdec_native(native, writer)
+    refresh_cdec_resampled(resampled, writer, today=today)
+
+
+def refresh_cdec_native(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+) -> None:
+    """CDEC's own daily series, full record, in batches of :data:`CDEC_BATCH`."""
     stats = writer.stats
+    if not stations:
+        return
     client = CDECClient()
     station_ids = [sid for _, sid in stations]
     idx_by_id = {sid: idx for idx, sid in stations}
@@ -929,6 +956,98 @@ def refresh_cdec(
                 updated += 1
 
         print(f"updated {updated}")
+
+
+# Nightly window for resampled CDEC stations once archived: their raw
+# series are ~96 readings a day, so the full record is fetched only the
+# first time (no CSV yet) and later nights merge the last 30 days in.
+CDEC_RESAMPLED_LOOKBACK_DAYS = 30
+
+
+def cdec_daily_means(records: list[dict]) -> list[dict]:
+    """Daily means of CDEC hourly or event records, by the date CDEC gives.
+
+    CDEC timestamps are local (Pacific) times without a zone, and each
+    record already carries its local ``date``; grouping on it keeps CDEC's
+    own day, where :func:`resample_records_to_daily` would read the naive
+    times as UTC and shift every day by eight hours.
+    """
+    sums: dict[tuple[str, str, str], list[float]] = {}
+    meta: dict[tuple[str, str, str], dict] = {}
+    for r in records:
+        if r.get("value") is None:
+            continue
+        key = (str(r["station_id"]), str(r["type"]), str(r["date"])[:10])
+        sums.setdefault(key, []).append(float(r["value"]))
+        meta.setdefault(key, r)
+    return [
+        {
+            "station_id": sid, "date": day, "type": vtype,
+            "variable": meta[(sid, vtype, day)].get("variable"),
+            "value": round(sum(v) / len(v), 3),
+            "units": meta[(sid, vtype, day)].get("units"),
+            "interval": "daily",
+        }
+        for (sid, vtype, day), v in sorted(sums.items())
+    ]
+
+
+def refresh_cdec_resampled(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """CDEC stations without a daily snow sensor: daily means of their
+    hourly series (``resampled_hourly``) or, without one, of their event
+    series (``resampled_sub_daily``), one station per request.  Full
+    record the first time; later the last
+    :data:`CDEC_RESAMPLED_LOOKBACK_DAYS` days, merged in.  The client nulls
+    values outside 0–15 m; isolated daily spikes are dropped with the CEAZA
+    filter (:func:`ceaza_despike`)."""
+    stats = writer.stats
+    if not stations:
+        return
+    end = today or date.today()
+    client = CDECClient()
+    print(f"  [CDEC] Resampling {len(stations)} stations without a daily series...")
+    updated = 0
+    for feat_idx, sid in stations:
+        props = writer.features[feat_idx]["properties"]
+        interval = (
+            "hourly" if props.get("cdec_daily_source") == "resampled_hourly"
+            else "sub_daily"
+        )
+        archived = station_csv_path(writer.data_dir, sid).exists()
+        begin = (
+            (end - timedelta(days=CDEC_RESAMPLED_LOOKBACK_DAYS)).isoformat()
+            if archived else "1900-01-01"
+        )
+        try:
+            records = client.get_data(
+                station_ids=[sid], variables=["swe", "snwd"],
+                interval=interval, begin_date=begin, end_date=end.isoformat(),
+            )
+        except CDECError as exc:
+            stats.failed_batches += 1
+            print(f"  [CDEC] {sid} FAILED ({exc})")
+            continue
+        daily = cdec_daily_means(records)
+        if daily:
+            stats.fetched += 1
+        df = _station_records_to_df(daily)
+        if archived and not df.empty:
+            # Despike the merged series, as for CEAZA, so a spike on the
+            # window's edge is judged once both neighbours exist.
+            old = read_station_csv(station_csv_path(writer.data_dir, sid))
+            new = _as_numeric(df).set_index("date")
+            df = new.combine_first(old.set_index("date")).reset_index()
+        if not df.empty:
+            # Raw sensor-network data: drop isolated one-day spikes with the
+            # bounds used for CEAZA's raw series (50 cm depth, 15 cm SWE).
+            df = ceaza_despike(df)
+        if writer.store(feat_idx, sid, "cdec", df):
+            updated += 1
+    print(f"  [CDEC] resampled: updated {updated} station CSVs")
 
 
 # ── DataBC refresh ────────────────────────────────────────────────────────────

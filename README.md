@@ -572,6 +572,28 @@ they are inventoried and shown on the map's periodic overlay but get no
 CSV archive.  Their metadata includes `april1_avg_swe_cm` (April 1
 climatological average, converted from the source's inches).
 
+#### Which CDEC sites are daily
+
+CDEC's station search lists every site with a snow sensor (3, 18 or 82) at
+any duration: about 560 in November 2026. With easysnowdata ≥ 0.3.7 the
+client also records the durations each sensor is kept at, and the inventory
+uses them (`data_variables` carries one entry per sensor and duration):
+
+| Sites (2026-11-05) | Snow sensors recorded | In the archive |
+|---|---|---|
+| 145 | daily (pillows and some depth sensors) | CDEC's daily series (`cdec_daily_source: native`) |
+| 74 | hourly or event (~15-minute) only: mostly wireless snow-depth sensor networks (UC Davis, UC Merced, CW3E, EBMUD) | daily mean of the hourly, else event, readings by the date CDEC gives them (`resampled_hourly` / `resampled_sub_daily`, `day_convention: mean of day America/Los_Angeles`) |
+| ~345 | monthly only (snow courses, including some on neither CDEC course list) | not archived; periodic overlay |
+
+The resampled sites are raw, unvalidated sensor data. The client drops
+values outside 0–15 m and the pipeline removes isolated one-day spikes (the
+CEAZA filter), but sustained sensor errors remain; each such feature says so
+in `notes`. Their first refresh fetches the whole record, one station per
+request (~25 s each); later nights merge the last 30 days.
+
+Before this, every site on neither course nor pillow list was advertised
+daily, and 207 of them never had any daily data.
+
 **Station URL format:** `https://cdec.water.ca.gov/dynamicapp/staMeta?station_id={ID}`
 
 #### Comparison: CDEC vs. AWDB for CCSS
