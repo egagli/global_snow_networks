@@ -9,6 +9,9 @@ shipped invisibly (DESIGN.md §9).
 
 import json
 
+from datetime import date
+
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -219,6 +222,19 @@ def test_cadence_seasonal_station_passes():
     days = pd.date_range("2023-12-01", "2024-03-31", freq="D")
     swe_ok, _ = check_daily_cadence(_df(days.strftime("%Y-%m-%d")))
     assert swe_ok
+
+
+def test_cadence_closed_summer_only_record_fails_open_one_passes():
+    # FMI-101605: daily rows May–November only, all snow-free zeros
+    summers = [pd.date_range(f"{y}-05-01", f"{y}-10-31", freq="D") for y in (1998, 1999)]
+    days = pd.DatetimeIndex(np.concatenate([s.values for s in summers]))
+    closed = _df(days.strftime("%Y-%m-%d"))
+    assert check_daily_cadence(closed, today=date(2026, 11, 5)) == (False, False)
+    # the same summer rows from a station installed this year still pass
+    new = _df(pd.date_range("2026-06-01", "2026-10-31", freq="D").strftime("%Y-%m-%d"))
+    assert check_daily_cadence(new, today=date(2026, 11, 5))[0]
+    # a closed southern record is judged on May–October
+    assert check_daily_cadence(closed, southern=True, today=date(2026, 11, 5))[0]
 
 
 def test_cadence_too_few_observations_fail():

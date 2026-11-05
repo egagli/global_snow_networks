@@ -213,7 +213,13 @@ Features:
   station (see below)
 - Variable toggling (WTEQ/SNWD)
 - Period-of-record and normal-period comparisons
-- A date slider over the current water year (northern: 1 October to today).
+- A water-year menu (the current water year and the two before it) and a
+  date slider spanning the whole selected water year, 1 October to
+  30 September; days after today cannot be selected. A past year's values
+  load from `charts/wy_<WY>.json` when it is chosen.
+- Stations with no daily data since the start of the earliest water year
+  in the menu are hidden behind a "Historical daily stations" toggle; they
+  stay in the inventory, the CSVs and the Zarr archive (DESIGN.md §4).
   **Water years follow each station's hemisphere**: north of the equator
   1 October–30 September, named for the year it ends; south of it
   (SNIH, CEAZA) 1 April–31 March, named for the year it starts
@@ -1197,6 +1203,12 @@ series); at manual stations it is the observer's reading, at a time the
 service does not state (`day_convention: unknown`).
 **Operator:** Finnish Meteorological Institute (the four networks read are
 FMI's own; third-party networks are not read)
+
+**Status.** FMI's station list calls a station active while any of its
+networks is open, so airports that stopped measuring snow depth between
+1985 and 2010 read as active. A station is `Active` here only if FMI lists
+it as active and it reported snow depth within the last 365 days
+(`FMI_ACTIVE_DAYS`); FMI's own status is kept as `fmi_listed_status`.
 
 **Snow depth only.** FMI publishes no SWE through this service; Finnish
 snow-course SWE is Syke's, and Sodankylä's research SWE record is on FMI's

@@ -276,6 +276,50 @@ def test_southern_station_embeds_both_years_the_date_control_reaches(tmp_path):
     assert sorted(out["wy"]) == ["2026", "2027"]
 
 
+def test_past_water_years_go_to_their_own_files(tmp_path):
+    """The current northern WY is embedded; the two before it are returned
+    under ``_past`` for charts/wy_<WY>.json, keyed by northern WY."""
+    path = _season_csv(tmp_path, "N", "2010-10-01", "2026-10-20", peak_month=3)
+    out = process_station_from_csv(
+        "N", path, _meta(46.8), today=pd.Timestamp("2026-10-21"),
+    )
+    assert list(out["wy"]) == ["2027"]
+    assert sorted(out["_past"]) == ["2025", "2026"]
+    assert list(out["_past"]["2026"]) == ["2026"]
+    full = out["_past"]["2026"]["2026"]["wteq"]["d"]
+    assert full[0] == 1 and full[-1] == 365            # the whole season
+    # southern station: northern WY2026 (Oct 2025–Sep 2026) spans its
+    # water years 2025 (to 31 March 2026) and 2026 (from 1 April 2026)
+    path = _season_csv(tmp_path, "S", "2010-04-01", "2026-10-20", peak_month=8)
+    south = process_station_from_csv(
+        "S", path, _meta(-33.0), today=pd.Timestamp("2026-10-21"),
+    )
+    assert sorted(south["_past"]["2026"]) == ["2025", "2026"]
+
+
+def test_recent_flag_marks_stations_with_data_since_the_cutoff(tmp_path):
+    cutoff = pd.Timestamp("2024-10-01")
+    live = _season_csv(tmp_path, "L", "2010-10-01", "2026-10-20", peak_month=3)
+    old = _season_csv(tmp_path, "O", "1990-10-01", "2010-06-30", peak_month=3)
+    today = pd.Timestamp("2026-10-21")
+    assert process_station_from_csv("L", live, _meta(46.8), today=today,
+                                     recent_cutoff=cutoff)["rec"] is True
+    assert process_station_from_csv("O", old, _meta(46.8), today=today,
+                                    recent_cutoff=cutoff)["rec"] is False
+
+
+def test_frontend_offers_past_water_years_and_a_fixed_slider():
+    for needle in (
+        '<select id="sel-wy"',
+        "fetch(`./charts/wy_${wy}.json`)",
+        "slider.max = total;",
+        "function clampedSliderValue(el)",
+        "return st.visibleNetworks.has(s.net) && (s.rec || st.showHistorical);",
+        "Historical daily stations",
+    ):
+        assert needle in _HTML_TEMPLATE
+
+
 def test_frontend_converts_dates_per_hemisphere():
     """The page keeps one calendar date and converts it per station."""
     for needle in (
