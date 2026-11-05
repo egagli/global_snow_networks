@@ -772,7 +772,7 @@ select:focus{outline:none;border-color:#4af}
 .nlrow .net-count{font-size:10px;color:#888;margin-left:2px}
 .nshape{width:14px;height:14px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
 #date-slider-wrap{display:flex;flex-direction:column;align-items:stretch;
-                  width:min(860px, calc(100vw - 40px));margin:7px auto 0;gap:2px}
+                  width:min(860px, calc(100vw - 712px));margin:7px auto 0;gap:2px}
 #date-slider-title{font-size:10px;font-weight:600;color:#cfe5fb;text-align:center;line-height:1.2;margin-bottom:2px}
 #date-slider-row{display:flex;align-items:center;gap:8px;width:100%}
 #date-slider-track{position:relative;flex:1 1 auto;min-width:0;height:24px;--thumb-w:9px;--thumb-half:4.5px}
@@ -783,7 +783,8 @@ select:focus{outline:none;border-color:#4af}
                   display:flex;align-items:center;justify-content:center;
                   box-sizing:border-box;overflow:hidden}
 #snap-current-day:disabled{opacity:0.45;cursor:default}
-#sel-wy{flex:0 0 auto;height:24px}
+#sel-wy{flex:0 0 auto;height:24px;background:rgba(17,28,40,0.35);color:#eef7ff;
+        border:1px solid rgba(220,236,252,0.65);font-weight:700}
 #sel-date{position:absolute;inset:0;width:100%;height:24px;appearance:none;-webkit-appearance:none;
           background:#5d6773;background-repeat:no-repeat;background-position:center;
           background-size:100% 6px;border-radius:0;outline:none;z-index:2;
@@ -807,10 +808,17 @@ select:focus{outline:none;border-color:#4af}
 #date-tick-labels{width:100%;position:relative;height:16px;margin-top:5px;
                   font-size:11px;font-weight:700;color:#edf6ff;line-height:1;pointer-events:none}
 .date-tick-label{position:absolute;transform:translateX(-50%);white-space:nowrap}
-@media (max-width: 980px){
+/* Below 1240 px the clock leaves the top-right corner for the flow, so the
+   slider row (with its water-year menu) never runs under it. */
+@media (max-width: 1240px){
   #clock-block{position:static;width:auto;max-width:none;margin:0 auto;align-items:center}
   #clock-note{text-align:center}
+  #date-slider-wrap{width:min(860px, calc(100vw - 40px))}
 }
+/* The legends stay below the zoom buttons and scroll when the map is short. */
+#legend-stack{max-height:calc(100% - 110px)}
+#network-legend{overflow-y:auto;min-height:0;flex:0 1 auto}
+#legend{flex-shrink:0}
 </style>
 </head>
 <body>
