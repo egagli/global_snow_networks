@@ -46,6 +46,8 @@ CSV schema (all clients)
   SNIH: pillow SWE in mm ÷ 10 — the validated daily record, then (after
   ``snih_validated_through``) the median of the day's raw telemetry after
   the spike filter (:func:`snih_daily_from_raw`).
+  FMI: daily ``snow`` in cm (at automatic stations the 06:00 UTC reading);
+  the source's -1 for snow-free ground is written as 0. No SWE.
 
 Hydro-Québec's feed keeps only ~10 days, so its CSVs are *merged* into
 rather than replaced (``StationWriter.store(merge=True)``): the archive
@@ -80,6 +82,10 @@ from easysnowdata.stations.clients.awdb import AWDBClient, AWDBError
 from easysnowdata.stations.clients.ceaza import CEAZAClient, CEAZAError
 from easysnowdata.stations.clients.cdec import CDECClient, CDECError
 from easysnowdata.stations.clients.databc import DataBCClient, DataBCError
+from easysnowdata.stations.clients.fmi import FMIClient, FMIError
+from easysnowdata.stations.clients.fmi.fmi_client import (
+    FINLAND_BBOX as FMI_FINLAND_BBOX,
+)
 from easysnowdata.stations.clients.hydroquebec import (
     HydroQuebecClient,
     HydroQuebecError,
@@ -1607,6 +1613,134 @@ def refresh_ceaza(
         print(f"::error title=CEAZA refresh::{msg}")
 
 
+# ── FMI refresh ───────────────────────────────────────────────────────────────
+
+# Nightly window once a station is archived.  The full record is fetched
+# only the first time (no CSV yet); later nights merge the last 366 days in,
+# one request.  An older revision upstream is not picked up.
+FMI_LOOKBACK_DAYS = 366
+# Requests are whole-Finland bbox queries, one per 366 days: the service's
+# fmisid parameter rejects hundreds of stations whose data the bbox query
+# returns (fmisid=101088, Äetsä Pehula, answers "Unknown 'fmisid' value!";
+# a bbox around it returns its 1965 record).  ~20-60 MB per request.
+FMI_WINDOW_DAYS = 366
+# Earliest year asked for on a first run (Helsinki Kaisaniemi's daily snow
+# depth starts by 1895; no station has any in 1880).
+FMI_EARLIEST = date(1880, 1, 1)
+
+
+def fmi_windows(begin: date, end: date) -> list[tuple[date, date]]:
+    """``[begin, end]`` in pieces of :data:`FMI_WINDOW_DAYS` days."""
+    out: list[tuple[date, date]] = []
+    cur = begin
+    while cur <= end:
+        stop = min(cur + timedelta(days=FMI_WINDOW_DAYS - 1), end)
+        out.append((cur, stop))
+        cur = stop + timedelta(days=1)
+    return out
+
+
+def fmi_fetch_depths(
+    client: Any, keep: set[str], begin: date, end: date
+) -> dict[str, pd.DataFrame]:
+    """Daily depth for the fmisids in *keep*, ``{fmisid: {date, wteq_cm, snwd_cm}}``.
+
+    Values are gathered in compact arrays (a first run is ~900 stations ×
+    ~130 years) and turned into frames at the end.
+    """
+    from array import array
+
+    sid_idx = {s: i for i, s in enumerate(sorted(keep))}
+    sids, days, vals = array("i"), array("i"), array("f")
+    for lo, hi in fmi_windows(begin, end):
+        for r in client.get_data(
+            bbox=FMI_FINLAND_BBOX, variables=["snwd"], interval="daily",
+            begin_date=lo.isoformat(), end_date=hi.isoformat(),
+        ):
+            i = sid_idx.get(str(r["station_id"]))
+            if i is None or r.get("value") is None:
+                continue
+            sids.append(i)
+            days.append(date.fromisoformat(r["date"]).toordinal())
+            vals.append(r["value"])
+    if not sids:
+        return {}
+    frame = pd.DataFrame({
+        "sid": np.frombuffer(sids, dtype=np.int32),
+        "day": np.frombuffer(days, dtype=np.int32),
+        "snwd_cm": np.frombuffer(vals, dtype=np.float32).astype(float).round(3),
+    })
+    names = sorted(keep)
+    out: dict[str, pd.DataFrame] = {}
+    for i, grp in frame.groupby("sid"):
+        grp = grp.drop_duplicates("day", keep="last").sort_values("day")
+        out[names[i]] = pd.DataFrame({
+            "date": [date.fromordinal(int(d)).isoformat() for d in grp["day"]],
+            "wteq_cm": None,
+            "snwd_cm": grp["snwd_cm"].to_numpy(),
+        })
+    return out
+
+
+def refresh_fmi(
+    stations: list[tuple[int, str]],
+    writer: StationWriter,
+    today: date | None = None,
+) -> None:
+    """Refresh FMI snow-depth CSVs.
+
+    ``stations`` is a list of (feature_index, code) tuples; each feature's
+    ``fmi_station_id`` is the fmisid.  Stations without a CSV get their
+    full record (whole-Finland requests from the earliest new station's
+    begin, or :data:`FMI_EARLIEST`); archived ones get the last
+    :data:`FMI_LOOKBACK_DAYS` days, merged in (``merge=True``).  Depth
+    only: FMI publishes no SWE.
+    """
+    stats = writer.stats
+    if not stations:
+        return
+    end = today or date.today()
+    client = FMIClient()
+    new: dict[str, tuple[int, str]] = {}
+    old: dict[str, tuple[int, str]] = {}
+    begins: list[date] = []
+    for feat_idx, code in stations:
+        p = writer.features[feat_idx]["properties"]
+        sid = str(p.get("fmi_station_id") or code.removeprefix("FMI-"))
+        if station_csv_path(writer.data_dir, code).exists():
+            old[sid] = (feat_idx, code)
+            continue
+        new[sid] = (feat_idx, code)
+        b = p.get("begin_date") or (
+            f"{p['fmi_begin_year']}-01-01" if p.get("fmi_begin_year") else None
+        )
+        begins.append(max(FMI_EARLIEST, date.fromisoformat(b)) if b else FMI_EARLIEST)
+    print(
+        f"  [FMI] Fetching daily snow depth: {len(new)} new stations (full record), "
+        f"{len(old)} archived (last {FMI_LOOKBACK_DAYS} days)..."
+    )
+    updated = 0
+    for group, begin, merge in (
+        (new, min(begins) if begins else end, False),
+        # FMI_LOOKBACK_DAYS dates ending today: one request
+        (old, end - timedelta(days=FMI_LOOKBACK_DAYS - 1), True),
+    ):
+        if not group:
+            continue
+        try:
+            frames = fmi_fetch_depths(client, set(group), begin, end)
+        except FMIError as exc:
+            stats.failed_batches += 1
+            print(f"  [FMI] FAILED ({exc})")
+            continue
+        stats.fetched += len(frames)
+        for sid, (feat_idx, code) in group.items():
+            df = frames.get(sid, pd.DataFrame(columns=["date", "wteq_cm", "snwd_cm"]))
+            if writer.store(feat_idx, code, "fmi", df, merge=merge):
+                updated += 1
+    print(f"  [FMI] updated {updated} station CSVs")
+
+
 # ── Finalize from existing CSVs ───────────────────────────────────────────────
 
 def finalize_from_csvs(
@@ -1710,7 +1844,7 @@ def main() -> None:
         "--network",
         choices=[
             "awdb", "cdec", "databc", "nve", "yukon", "hydroquebec",
-            "alberta", "slf", "snih", "ceaza",
+            "alberta", "slf", "snih", "ceaza", "fmi",
         ],
         default=None,
         help=(
@@ -1806,6 +1940,7 @@ def main() -> None:
     slf_stations: list[tuple[int, str]] = []
     snih_stations: list[tuple[int, str]] = []
     ceaza_stations: list[tuple[int, str]] = []
+    fmi_stations: list[tuple[int, str]] = []
 
     stats = RefreshStats()
     for idx, feat in enumerate(features):
@@ -1845,6 +1980,8 @@ def main() -> None:
             snih_stations.append((idx, code))
         elif client_name == "ceaza":
             ceaza_stations.append((idx, code))
+        elif client_name == "fmi":
+            fmi_stations.append((idx, code))
         else:
             # No silent fallback (DESIGN.md §3.6): a feature without a
             # known client cannot be refreshed.  Loud, counted, skipped —
@@ -1869,6 +2006,7 @@ def main() -> None:
     run_slf = (network in (None, "slf")) and bool(slf_stations)
     run_snih = (network in (None, "snih")) and bool(snih_stations)
     run_ceaza = (network in (None, "ceaza")) and bool(ceaza_stations)
+    run_fmi = (network in (None, "fmi")) and bool(fmi_stations)
 
     total = sum([
         len(awdb_stations) if run_awdb else 0,
@@ -1881,6 +2019,7 @@ def main() -> None:
         len(slf_stations) if run_slf else 0,
         len(snih_stations) if run_snih else 0,
         len(ceaza_stations) if run_ceaza else 0,
+        len(fmi_stations) if run_fmi else 0,
     ])
 
     print("=" * 70)
@@ -1900,6 +2039,7 @@ def main() -> None:
         f"SLF: {len(slf_stations) if run_slf else 'skip'}  "
         f"SNIH: {len(snih_stations) if run_snih else 'skip'}  "
         f"CEAZA: {len(ceaza_stations) if run_ceaza else 'skip'}  "
+        f"FMI: {len(fmi_stations) if run_fmi else 'skip'}  "
         f"(total: {total:,})"
     )
     print("=" * 70)
@@ -1938,6 +2078,8 @@ def main() -> None:
         refresh_snih(snih_stations, writer)
     if run_ceaza:
         refresh_ceaza(ceaza_stations, writer)
+    if run_fmi:
+        refresh_fmi(fmi_stations, writer)
     if network == "hydroquebec" and not run_hydroquebec:
         # The inventory has no Hydro-Québec stations to refresh — e.g.
         # stage 1 could not list them.  Say so where the run summary shows it.

@@ -56,6 +56,6 @@ def test_make_feature_always_carries_it():
 
 def test_every_archived_client_has_a_convention():
     archived = {"awdb", "cdec", "databc", "nve", "yukon", "hydroquebec",
-                "alberta", "slf", "snih", "ceaza"}
+                "alberta", "slf", "snih", "ceaza", "fmi"}
     named = {key.split(":")[0] for key in DAY_CONVENTIONS}
     assert archived <= named

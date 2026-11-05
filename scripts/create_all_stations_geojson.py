@@ -34,7 +34,7 @@ import argparse
 import json
 import logging
 from collections import Counter
-from datetime import date
+from datetime import date, timedelta
 from pathlib import Path
 from typing import Any
 
@@ -61,6 +61,7 @@ from easysnowdata.stations.clients.ceaza.ceaza_client import (
 from easysnowdata.stations.clients.cdec.cdec_client import (
     SENSORS as CDEC_SENSORS,
 )
+from easysnowdata.stations.clients.fmi import FMIClient
 from easysnowdata.stations.clients.databc import DataBCClient
 from easysnowdata.stations.clients.databc.databc_client import (
     VARIABLES as DATABC_VARIABLES,
@@ -119,6 +120,7 @@ ALBERTA_GEOJSON_OUT = INVENTORY_DIR / "alberta_stations.geojson"
 SLF_GEOJSON_OUT = INVENTORY_DIR / "slf_stations.geojson"
 SNIH_GEOJSON_OUT = INVENTORY_DIR / "snih_stations.geojson"
 CEAZA_GEOJSON_OUT = INVENTORY_DIR / "ceaza_stations.geojson"
+FMI_GEOJSON_OUT = INVENTORY_DIR / "fmi_stations.geojson"
 
 # AWDB networks queried for the all-stations GeoJSON.  SNOW (manual snow
 # courses, ~2,700) and MPRC (aerial markers, ~260) carry WTEQ/SNWD at
@@ -206,6 +208,7 @@ DATA_PROVIDERS: dict[str, str] = {
     "slf": "WSL SLF (measurement-data.slf.ch, EnviDat)",
     "snih": "SNIH / SIPH Argentina (Base de Datos Hidrológica Integrada)",
     "ceaza": "CEAZA-Met (Datos provistos por el laboratorio de meteorología CEAZA)",
+    "fmi": "FMI open data (opendata.fmi.fi)",
 }
 
 # Open Government Licence – Yukon, as linked from the Open Yukon dataset pages.
@@ -517,6 +520,11 @@ DAY_CONVENTIONS: dict[str, str] = {
     # Validated days keep the day's first value; the raw telemetry after
     # snih_validated_through is a filtered median of the day.
     "snih": "first of day UTC-03:00 (validated); median of day UTC-03:00 (raw)",
+    # Checked first-hand: FMI's daily `snow` at Sodankylä Tähtelä and
+    # Helsinki Kaisaniemi equals the hourly `snow_aws` reading at 06:00 UTC
+    # (15 days, January-April 2024). Manual stations' reading time is not
+    # stated, so they stay "unknown".
+    "fmi:FMI_AWS": "instant 06:00 UTC",
 }
 
 
@@ -2435,6 +2443,227 @@ def run_ceaza_workflow(user: str) -> tuple[list[dict], list[dict]]:
     return all_features, daily_features
 
 
+# ── FMI workflow ──────────────────────────────────────────────────────────────
+
+FMI_PREFIX = "FMI-"
+FMI_OPERATOR = "Finnish Meteorological Institute"
+FMI_NOTE = (
+    "Finnish Meteorological Institute open data, CC BY 4.0. Snow depth "
+    "only (no SWE). A value of -1 upstream (snow-free ground) is archived "
+    "as 0 cm."
+)
+FMI_NOT_SERVED_NOTE = (
+    "Listed by FMI's station metadata, but the observation service "
+    "returned no daily snow depth for it on any sampled day (many such "
+    "closed stations are unknown to the service, HTTP 400 'Unknown fmisid "
+    "value!'), so it is not fetched."
+)
+
+
+def fmi_sample_days(today: date | None = None) -> list[date]:
+    """Days the first inventory samples to find FMI's daily snow stations.
+
+    A whole-Finland request for one day returns only stations with a value
+    that day, so a few days a year find every station with a daily record:
+    15 January for 1880-1958 (only a handful of stations have snow depth in
+    the service before 1959; Helsinki Kaisaniemi's starts by 1895), and the
+    15th of January, March, May and November from 1959.  About 350
+    requests of ~1 MB.
+    """
+    today = today or date.today()
+    days = [date(y, 1, 15) for y in range(1880, 1959)]
+    days += [
+        date(y, m, 15)
+        for y in range(1959, today.year + 1)
+        for m in (1, 3, 5, 11)
+        if date(y, m, 15) < today
+    ]
+    return days
+
+
+def fmi_code(station_id: str) -> str:
+    return f"{FMI_PREFIX}{station_id}"
+
+
+def fmi_previous_served(path: Path = FMI_GEOJSON_OUT) -> dict[str, bool]:
+    """``{fmisid: served}`` from the last per-client inventory.
+
+    ``served`` means the observation service returned daily snow depth for
+    the station on a sampled day.  Finding out over the whole record costs
+    ~350 requests, so earlier verdicts are carried forward and later runs
+    only sample the last two days (:func:`run_fmi_workflow`).
+    """
+    try:
+        with path.open(encoding="utf-8") as fp:
+            features = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out: dict[str, bool] = {}
+    for f in features:
+        p = f.get("properties") or {}
+        sid, served = p.get("fmi_station_id"), p.get("fmi_served")
+        if sid is not None and isinstance(served, bool):
+            out[str(sid)] = served
+    return out
+
+
+def fmi_previous_positions(path: Path = FMI_GEOJSON_OUT) -> dict[str, dict]:
+    """``{fmisid: {latitude, longitude}}`` taken from observation responses
+    on an earlier run, for stations whose listed position is coarse."""
+    try:
+        with path.open(encoding="utf-8") as fp:
+            features = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out: dict[str, dict] = {}
+    for f in features:
+        p = f.get("properties") or {}
+        if p.get("fmi_position_source") == "observations":
+            out[str(p.get("fmi_station_id"))] = {
+                "latitude": p.get("latitude"), "longitude": p.get("longitude"),
+            }
+    return out
+
+
+def fmi_station_to_feature(
+    station: dict, served: bool, position: dict | None = None
+) -> dict:
+    """Convert an FMI station dict to a feature.
+
+    ``station`` is :meth:`FMIClient.get_metadata`'s dict (the station plus
+    ``data_variables``).  A station the observation service does not
+    serve keeps no data variables, so it is never a daily candidate.
+    """
+    sid = str(station.get("station_id") or "").strip()
+    lat = station.get("latitude")
+    lon = station.get("longitude")
+    data_vars = list(station.get("data_variables") or []) if served else []
+    notes = FMI_NOTE if served else f"{FMI_NOTE} {FMI_NOT_SERVED_NOTE}"
+    # Stations only FMI's public station table lists come with positions
+    # rounded to 0.1°; an observation response gives the exact one.
+    position_source = "station_list"
+    if station.get("coordinate_precision_deg"):
+        if position and position.get("latitude") is not None:
+            lat, lon = position["latitude"], position["longitude"]
+            position_source = "observations"
+        else:
+            position_source = "station_table"
+            notes += (
+                " Position from FMI's public station table, rounded to 0.1° "
+                "(up to ~6 km off)."
+            )
+    network = station.get("network_code")
+    props: dict[str, Any] = {
+        "code": fmi_code(sid),
+        "name": station.get("name") or sid,
+        "latitude": lat,
+        "longitude": lon,
+        "elevation_m": station.get("elevation_m"),
+        # Every station is in Finland by the source, but for FMI's Antarctic
+        # station Aboa, whose region is "AQ".
+        "state": "AQ" if station.get("region") == "AQ" else "FI",
+        # The four networks read are FMI's own (third-party networks are
+        # not), so the operator is certain (DESIGN.md §5).
+        "operator": FMI_OPERATOR,
+        "client": "fmi",
+        "data_provider": DATA_PROVIDERS["fmi"],
+        "network_code": f"FMI_{network}" if network else None,
+        "notes": notes,
+        "begin_date": station.get("begin_date"),
+        "end_date": station.get("end_date"),
+        "status": station.get("status") or None,
+        "is_active": station.get("status") == "Active",
+        "station_url": None,
+        "station_image_url": None,
+        "station_camera_url": None,
+        "fmi_station_id": sid,
+        "fmi_wmo_id": station.get("wmo_id"),
+        "fmi_networks": station.get("networks") or None,
+        "fmi_served": served,
+        "fmi_position_source": position_source,
+        "fmi_begin_year": station.get("begin_year"),
+        "fmi_end_year": station.get("end_year"),
+        "metadata_fetched_at": date.today().isoformat(),
+    }
+    props.update(_daily_candidate_props(data_vars))
+    return make_feature(lon, lat, props)
+
+
+def run_fmi_workflow(
+    previous: dict[str, bool] | None = None,
+    today: date | None = None,
+) -> tuple[list[dict], list[dict]]:
+    """
+    Fetch FMI's snow-depth stations; return (all_features, daily_features).
+
+    Two requests for the station list (WFS plus the station table that
+    holds elevations), then which stations have daily snow depth at all.
+    With no previous inventory that is a sample of the whole record
+    (:func:`fmi_sample_days`, ~350 requests, ~3 minutes); otherwise the
+    previous verdicts (:func:`fmi_previous_served`) are kept and the last
+    two days are sampled, so a station that starts reporting is picked up.
+    """
+    client = FMIClient()
+    previous = previous if previous is not None else fmi_previous_served()
+    positions = dict(fmi_previous_positions()) if previous else {}
+    today = today or date.today()
+
+    print("=" * 60)
+    print("[FMI] Fetching FMI snow-depth stations (AWS, climate, weather, precipitation)")
+    try:
+        stations = client.get_all_stations()
+        print(f"  Total FMI snow-depth stations: {len(stations):,}")
+    except Exception as exc:
+        logger.error("FMI station fetch failed: %s", exc)
+        return [], []
+
+    days = (
+        [today - timedelta(days=2), today - timedelta(days=1)]
+        if previous
+        else fmi_sample_days(today)
+    )
+    print(f"  Sampling {len(days)} day(s) for stations with daily snow depth...")
+    found: set[str] = set()
+    try:
+        for d in days:
+            for sid, pos in client.reporting_stations(d).items():
+                found.add(sid)
+                if pos.get("latitude") is not None:
+                    positions.setdefault(sid, pos)
+    except Exception as exc:
+        logger.error("FMI sampling failed: %s", exc)
+        return [], []
+    served = {
+        s["station_id"]: previous.get(s["station_id"], False) or s["station_id"] in found
+        for s in stations
+    }
+    active = sum(1 for s in stations if s.get("status") == "Active")
+    print(f"  Active: {active}  |  With daily snow depth: {sum(served.values())}")
+
+    all_features = [
+        fmi_station_to_feature(
+            client.get_metadata(s["station_id"]),
+            served[s["station_id"]],
+            positions.get(s["station_id"]),
+        )
+        for s in stations
+        # DESIGN.md §1: a station qualifies for the inventory only with at
+        # least one snow series. FMI's metadata lists ~1,550 stations the
+        # observation service holds no snow depth for (mostly closed
+        # precipitation stations, many unknown to it); they are left out.
+        if served[s["station_id"]]
+    ]
+    daily_features = [
+        f for f in all_features
+        if f["properties"].get("has_daily_swe") or f["properties"].get("has_daily_snwd")
+    ]
+    print(
+        f"  Inventoried: {len(all_features):,} (left out, no snow depth served: "
+        f"{len(stations) - len(all_features):,})  |  Daily candidates: {len(daily_features):,}"
+    )
+    return all_features, daily_features
+
+
 # ── Main ──────────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -2505,6 +2734,11 @@ def main() -> None:
         "--skip-ceaza",
         action="store_true",
         help="Skip CEAZA-Met (Chile) client",
+    )
+    ap.add_argument(
+        "--skip-fmi",
+        action="store_true",
+        help="Skip FMI (Finland) client",
     )
     args = ap.parse_args()
 
@@ -2936,6 +3170,47 @@ def main() -> None:
             daily_count += len(ceaza_daily)
             print(f"[CEAZA] {len(ceaza_daily):,} daily stations added to merged GeoJSON")
 
+    # ── FMI ───────────────────────────────────────────────────────────────────
+    if not args.skip_fmi:
+        fmi_all: list[dict] = []
+        fmi_daily: list[dict] = []
+        try:
+            fmi_all, fmi_daily = run_fmi_workflow()
+        except Exception as exc:
+            logger.warning("[FMI] Workflow failed: %s", exc)
+        fmi_all, fmi_daily, fresh = keep_previous_if_empty(
+            "FMI", FMI_GEOJSON_OUT, fmi_all, fmi_daily
+        )
+        if fresh:
+            write_geojson(
+                FMI_GEOJSON_OUT,
+                fmi_all,
+                {
+                    "generated": today,
+                    "source": "FMI open-data WFS — https://opendata.fmi.fi/wfs",
+                    "client": "fmi",
+                    "license": "CC BY 4.0",
+                    "attribution": "Finnish Meteorological Institute",
+                    "description": (
+                        "Every station of FMI's four snow-depth networks "
+                        "(automatic weather, manned weather, climate and "
+                        "precipitation stations), open and closed. Daily "
+                        "snow depth, no SWE. fmi_served says whether the "
+                        "observation service knows the station; codes are "
+                        "FMI-<fmisid>."
+                    ),
+                    "references": [
+                        "https://en.ilmatieteenlaitos.fi/open-data-manual-fmi-wfs-services",
+                        "https://en.ilmatieteenlaitos.fi/open-data-licence",
+                        "https://en.ilmatieteenlaitos.fi/observation-stations",
+                    ],
+                    "total": len(fmi_all),
+                },
+            )
+        all_features_merged.extend(fmi_all)
+        daily_count += len(fmi_daily)
+        print(f"[FMI] {len(fmi_daily):,} daily candidates added to merged GeoJSON")
+
     # ── Write merged all_snow_stations.geojson ──────────────────────────────
     all_features_merged = drop_invalid_coordinates(all_features_merged)
     retained = retain_vanished_stations(
@@ -3004,7 +3279,8 @@ def main() -> None:
                 "networks), CDEC (California), DataBC (BC, Canada), NVE "
                 "(Norway), Yukon AquaCache, Hydro-Québec (Québec; CC "
                 "BY-NC 4.0, non-commercial), Alberta River Basins, SLF "
-                "(Switzerland), SNIH (Argentina) and CEAZA-Met (Chile) "
+                "(Switzerland), SNIH (Argentina), CEAZA-Met (Chile) and "
+                "FMI (Finland) "
                 "— including periodic snow "
                 "courses and other manual sites. daily_or_better marks "
                 "stations with a (probe-verified, see daily_verified) "

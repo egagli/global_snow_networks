@@ -23,7 +23,8 @@ zarr = ">=3.3"
 # not in this repo (docs/EASYSNOWDATA_MIGRATION.md). 0.3.2 is the first
 # release that reads the archive as it is published now (docs/STORAGE.md §3);
 # 0.3.3 adds the clients for the networks being wired in next (#39-#45).
-easysnowdata = ">=0.3.5"
+# 0.3.6 adds FMIClient (Finland, egagli/easysnowdata#37).
+easysnowdata = ">=0.3.6"
 
 [feature.dev.dependencies]
 jupyter = "*"
@@ -48,6 +49,7 @@ fetch-data-alberta = "python -m scripts.get_all_stations_data --network alberta"
 fetch-data-slf = "python -m scripts.get_all_stations_data --network slf"
 fetch-data-snih = "python -m scripts.get_all_stations_data --network snih"
 fetch-data-ceaza = "python -m scripts.get_all_stations_data --network ceaza"
+fetch-data-fmi = "python -m scripts.get_all_stations_data --network fmi"
 finalize-data    = "python -m scripts.get_all_stations_data --finalize-only --archive _site/all_station_csvs.tar.xz"
 build-archive    = "python -m scripts.get_all_stations_data --archive-only --archive _site/all_station_csvs.tar.xz"
 live-map         = "python -m scripts.generate_live_map"
