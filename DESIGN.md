@@ -186,8 +186,19 @@ loop handles transient HTTP errors and honours `Retry-After` on 429.
   3 days over the densest 90-day window; thresholds tunable). Irregular
   records classify as `periodic`.
 - **Inactive stations with a regular daily record stay in** — pre-downloaded,
-  archived, and on the map. Active status affects display metadata only,
-  never inclusion.
+  archived and inventoried. Active status affects display metadata only,
+  never inclusion. On the map they are hidden by default when their last
+  daily value is older than the start of the earliest water year the map
+  offers (1 October, two water years before the current one); a toggle
+  shows them (§8). Decided 2026-11-05: 1,150 of 3,140 daily stations had
+  no data in two years, 722 of them FMI.
+- **A closed record must be daily in the snow season.** When a station's
+  last row is more than two years old, the cadence test counts only its
+  snow-season rows (November–April north, May–October south). Open records
+  are spared, since a station installed this summer has only summer rows.
+  FMI's snow-free code (-1, archived as 0 cm) had let four long-closed
+  precipitation stations pass on summer zeros alone; no other network's
+  verdict changed (checked 2026-11-05).
 - Resampled stations carry provenance (`daily_provenance`: `native`,
   `resampled_hourly`, `resampled_sub_hourly`, `resampled_sub_daily` or
   `none`).
@@ -457,9 +468,16 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   egagli.github.io/maps wrapper already counts it). Events go through the
   template's `track()` helper with low-cardinality params only (network
   code, variable, control name) — no station codes, coordinates or text.
-- Default layer: `daily_or_better` stations with charts. Optional toggle
-  layer: all other point observations (distinct markers, metadata-only
-  popups).
+- Default layer: `daily_or_better` stations with charts and daily data since
+  the start of the earliest water year offered (§4). Optional toggle layers:
+  the other, historical daily stations; and all other point observations
+  (distinct markers, metadata-only popups).
+- **Date control:** a water-year menu (the current water year and the two
+  before it) and a slider spanning the whole selected water year, 1 October
+  to 30 September; days after today cannot be selected. The current year's
+  values are embedded in the page; a past year's are fetched from
+  `charts/wy_<WY>.json` when chosen, because one season of every station is
+  ~11 MB.
 - Popups show operator/data-provider per §5, real data-record dates,
   station photo and camera links, the station's **complete** variable
   inventory grouped by interval (every `data_variables` entry, not just

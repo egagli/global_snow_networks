@@ -190,6 +190,14 @@ _CADENCE_MIN_OBS = 30
 # the source labels them "daily"; seasonal pillows (winter-only) pass.
 _CADENCE_WINDOW_DAYS = 90
 _CADENCE_MIN_WINDOW_OBS = 30
+# A record that ended more than this long ago must pass the window test
+# inside the snow season (November–April north, May–October south).  An
+# open record is spared: a station installed this summer has only summer
+# rows so far.  A closed one never gets a winter, and FMI's snow-free code
+# (-1, archived as 0 cm) let four long-closed precipitation stations pass
+# on summer zeros alone (FMI-101605: 647 rows, all 0 cm, May–November).
+_CLOSED_RECORD_DAYS = 730
+_SNOW_SEASON_MONTHS = {"north": (11, 12, 1, 2, 3, 4), "south": (5, 6, 7, 8, 9, 10)}
 
 
 def _column_cadence_ok(dates: pd.Series) -> bool:
@@ -212,15 +220,34 @@ def _column_cadence_ok(dates: pd.Series) -> bool:
     return int(counts.max()) >= _CADENCE_MIN_WINDOW_OBS
 
 
-def check_daily_cadence(df: pd.DataFrame) -> tuple[bool, bool]:
-    """Per-column cadence verdict (swe_ok, snwd_ok) for a station CSV."""
+def check_daily_cadence(
+    df: pd.DataFrame,
+    southern: bool = False,
+    today: date | None = None,
+) -> tuple[bool, bool]:
+    """Per-column cadence verdict (swe_ok, snwd_ok) for a station CSV.
+
+    A record whose last row is more than :data:`_CLOSED_RECORD_DAYS` before
+    *today* is judged on its snow-season rows only.
+    """
     if df.empty:
         return False, False
-    swe = df.dropna(subset=["wteq_cm"])
-    snwd = df.dropna(subset=["snwd_cm"])
+    today = today or date.today()
+    last = pd.to_datetime(df["date"], errors="coerce").max()
+    closed = pd.notna(last) and (
+        pd.Timestamp(today) - last
+    ).days > _CLOSED_RECORD_DAYS
+    months = _SNOW_SEASON_MONTHS["south" if southern else "north"]
+
+    def dates(col: str) -> pd.Series:
+        d = df.dropna(subset=[col])["date"]
+        if closed:
+            d = d[pd.to_datetime(d, errors="coerce").dt.month.isin(months)]
+        return d
+
     return (
-        _column_cadence_ok(swe["date"]),
-        _column_cadence_ok(snwd["date"]),
+        _column_cadence_ok(dates("wteq_cm")),
+        _column_cadence_ok(dates("snwd_cm")),
     )
 
 
@@ -258,7 +285,11 @@ def verify_feature_from_csv(feature: dict, df: pd.DataFrame) -> bool:
     record and stay archived and mapped.
     """
     props = feature.setdefault("properties", {})
-    swe_ok, snwd_ok = check_daily_cadence(df)
+    try:
+        southern = float(props.get("latitude")) < 0
+    except (TypeError, ValueError):
+        southern = False
+    swe_ok, snwd_ok = check_daily_cadence(df, southern=southern)
     passed = swe_ok or snwd_ok
     props["daily_or_better"] = passed
     props["daily_verified"] = True

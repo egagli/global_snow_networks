@@ -185,6 +185,7 @@ class _InventoryClient:
 
 def test_first_inventory_samples_the_record_later_ones_two_days(monkeypatch):
     monkeypatch.setattr(casg, "FMIClient", _InventoryClient)
+    monkeypatch.setattr(casg, "fmi_previous_latest", lambda: {})
     _InventoryClient.sampled = []
     feats, daily = run_fmi_workflow(previous={}, today=date(2026, 11, 4))
     assert len(_InventoryClient.sampled) == len(fmi_sample_days(date(2026, 11, 4)))
@@ -218,3 +219,16 @@ def test_table_only_station_takes_the_observed_position():
     p = fmi_station_to_feature(SODANKYLA, served=True, position={"latitude": 1.0,
                                                                  "longitude": 1.0})
     assert p["properties"]["latitude"] == 67.36663
+
+
+def test_listed_active_without_recent_snow_depth_is_inactive():
+    oulu = {**SODANKYLA, "station_id": "101786", "name": "Oulu lentoasema",
+            "network_code": "AIRP"}
+    p = fmi_station_to_feature(oulu, served=True, reporting=False)["properties"]
+    assert p["status"] == "Inactive" and p["is_active"] is False
+    assert p["fmi_listed_status"] == "Active"
+    assert "no snow depth in the last 365 days" in p["notes"]
+    p = fmi_station_to_feature(oulu, served=True, reporting=True)["properties"]
+    assert p["status"] == "Active"
+    # without the information, FMI's own status stands
+    assert fmi_station_to_feature(oulu, served=True)["properties"]["status"] == "Active"

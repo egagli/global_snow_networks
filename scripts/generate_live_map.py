@@ -49,7 +49,11 @@ REF_PERIODS = {
     "n7100": (1971, 2000),
 }
 
-N_PAST_WYS = 0
+# Past water years the page offers in its "Water year" menu, besides the
+# current one.  Their daily values are not embedded in the page (one full
+# season of every station is ~11 MB); each is written to
+# ``charts/wy_<WY>.json`` and fetched when chosen.
+N_PAST_WYS = 2
 
 # ── Context imagery (browser-side, best-effort — DESIGN.md §8) ───────────────
 # Microsoft Planetary Computer serves a keyless, CORS-enabled STAC search plus
@@ -393,6 +397,7 @@ def process_station_from_csv(
     meta: dict,
     today: pd.Timestamp,
     n_past_wys: int = N_PAST_WYS,
+    recent_cutoff: pd.Timestamp | None = None,
 ) -> dict | None:
     df = _load_station_csv(csv_path)
     if df is None:
@@ -404,11 +409,24 @@ def process_station_from_csv(
     hemisphere = station_hemisphere(meta.get("lat"))
     today_dowy = int(day_of_water_year(today, hemisphere))
     current_wy = int(water_year(today, hemisphere))
-    # Embed every one of the station's water years that the page's date
-    # control can reach: it spans the *northern* water year(s) up to today,
-    # which for a southern station crosses 1 April once a year.
-    first_day = water_year_start(today) - pd.DateOffset(years=n_past_wys)
-    embed_wys = list(range(int(water_year(first_day, hemisphere)), current_wy + 1))
+    # The page's date control spans one *northern* water year at a time
+    # (the current one, or a past one chosen from its menu), which for a
+    # southern station crosses 1 April once a year.  The current northern
+    # year's station water years are embedded; each past northern year's
+    # go to its own file (``_past``).
+    north_start = water_year_start(today)
+    north_wy = int(water_year(today))
+
+    def station_wys(start: pd.Timestamp) -> list[int]:
+        end = min(start + pd.DateOffset(years=1) - pd.Timedelta(days=1), today)
+        return list(range(int(water_year(start, hemisphere)),
+                          int(water_year(end, hemisphere)) + 1))
+
+    embed_wys = station_wys(north_start)
+    past_wys = {
+        north_wy - k: station_wys(north_start - pd.DateOffset(years=k))
+        for k in range(1, n_past_wys + 1)
+    }
 
     df["_wy"] = water_year(df["time"], hemisphere).to_numpy()
     df["_dowy"] = day_of_water_year(df["time"], hemisphere).to_numpy()
@@ -503,24 +521,31 @@ def process_station_from_csv(
 
         chart[vk] = _build_chart_stats(pivot)
 
-    wy_data: dict = {}
-    for wy in embed_wys:
+    def wy_entry_for(wy: int) -> dict:
         wy_df = snow[snow["_wy"] == wy].sort_values("_dowy")
-        if wy_df.empty:
-            continue
-        wy_entry: dict = {}
+        entry: dict = {}
         for var, vk in (("WTEQ", "wteq"), ("SNWD", "snwd")):
             if var not in wy_df.columns:
                 continue
             sub = wy_df[["_dowy", var]].dropna()
             sub = sub[sub[var] >= 0]
             if not sub.empty:
-                wy_entry[vk] = {
+                entry[vk] = {
                     "d": sub["_dowy"].astype(int).tolist(),
                     "v": [round(float(x), 4) for x in sub[var]],
                 }
-        if wy_entry:
-            wy_data[str(wy)] = wy_entry
+        return entry
+
+    wy_data: dict = {}
+    for wy in embed_wys:
+        entry = wy_entry_for(wy)
+        if entry:
+            wy_data[str(wy)] = entry
+    past_data: dict = {}
+    for nwy, swys in past_wys.items():
+        block = {str(w): e for w in swys if (e := wy_entry_for(w))}
+        if block:
+            past_data[str(nwy)] = block
 
     network = _clean_meta_text(meta.get("network_code")) or "?"
     state_code = _clean_meta_text(meta.get("state") or "")
@@ -581,7 +606,15 @@ def process_station_from_csv(
         "stat": stat,
         **meds,
         "wy": wy_data,
+        # Daily data since the start of the earliest water year the page
+        # offers: stations without are hidden until the "historical"
+        # overlay is switched on.
+        "rec": bool(
+            recent_cutoff is None
+            or (edate and pd.Timestamp(edate) >= recent_cutoff)
+        ),
         "_chart": chart,
+        "_past": past_data,
     }
 
 
@@ -750,6 +783,7 @@ select:focus{outline:none;border-color:#4af}
                   display:flex;align-items:center;justify-content:center;
                   box-sizing:border-box;overflow:hidden}
 #snap-current-day:disabled{opacity:0.45;cursor:default}
+#sel-wy{flex:0 0 auto;height:24px}
 #sel-date{position:absolute;inset:0;width:100%;height:24px;appearance:none;-webkit-appearance:none;
           background:#5d6773;background-repeat:no-repeat;background-position:center;
           background-size:100% 6px;border-radius:0;outline:none;z-index:2;
@@ -792,6 +826,7 @@ select:focus{outline:none;border-color:#4af}
             <div id="day-ticks"></div>
             <input id="sel-date" type="range" min="1" max="366" step="1" value="1" list="date-ticks">
           </div>
+          <select id="sel-wy" title="Water year shown on the slider"></select>
           <button id="snap-current-day" type="button" title="Jump to current day">Current day</button>
         </div>
         <datalist id="date-ticks"></datalist>
@@ -892,10 +927,31 @@ const st = {
   selectedCode: null,
   chartVar: "WTEQ",
   visibleNetworks: new Set(MAP_META.available_networks),
+  // Stations without daily data since MAP_META.recent_cutoff are drawn only
+  // when the "historical" overlay is on.
+  showHistorical: false,
 };
 
 const sliderColorCache = {};
 let sliderDragFrame = null;
+
+// Water years: st.wy is the northern water year on the slider.  The current
+// one is embedded; past ones (MAP_META.past_wys) load from charts/wy_<WY>.json
+// when chosen.  The slider always spans the whole water year; days after
+// today cannot be selected.
+const loadedWys = new Set([MAP_META.current_wy]);
+function wyLength(wy) {
+  return Math.round((new Date(wy, 9, 1) - new Date(wy - 1, 9, 1)) / 864e5);
+}
+function maxSelectableDowy(wy) {
+  return wy === MAP_META.current_wy ? MAP_META.today_dowy : wyLength(wy);
+}
+function isCurrentDay() {
+  return st.wy === MAP_META.current_wy && st.dowy === MAP_META.today_dowy;
+}
+function isShown(s) {
+  return st.visibleNetworks.has(s.net) && (s.rec || st.showHistorical);
+}
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 const MONTHS = ["January","February","March","April","May","June",
@@ -1146,13 +1202,14 @@ function markerColorForObs(obs) {
 }
 
 function computeSliderAverages(variable, ref) {
-  const key = `${variable}_${ref}_${st.wy}_${MAP_META.today_dowy}`;
+  const maxDowy = maxSelectableDowy(st.wy);
+  const key = `${variable}_${ref}_${st.wy}_${maxDowy}`;
   if (sliderColorCache[key]) return sliderColorCache[key];
 
   const avgPct = [];
   const validCount = [];
   const codes = Object.keys(SD);
-  for (let dowy = 1; dowy <= MAP_META.today_dowy; dowy++) {
+  for (let dowy = 1; dowy <= maxDowy; dowy++) {
     let sum = 0;
     let n = 0;
     for (const code of codes) {
@@ -1178,17 +1235,22 @@ function updateSliderTrackColor() {
     return;
   }
 
+  // The track spans the whole water year; days after today are dark.
   const stops = [];
   const len = avgPct.length;
+  const total = wyLength(st.wy);
+  const pos = i => (total > 1 ? (i / (total - 1)) * 100 : 0);
   const step = Math.max(1, Math.floor(len / 80));
   for (let i = 0; i < len; i += step) {
-    const p = len > 1 ? (i / (len - 1)) * 100 : 0;
     const color = avgPct[i] === null ? "#6a737e" : pctColor(avgPct[i]);
-    stops.push(`${color} ${p.toFixed(2)}%`);
+    stops.push(`${color} ${pos(i).toFixed(2)}%`);
   }
   if ((len - 1) % step !== 0) {
     const color = avgPct[len - 1] === null ? "#6a737e" : pctColor(avgPct[len - 1]);
-    stops.push(`${color} 100%`);
+    stops.push(`${color} ${pos(len - 1).toFixed(2)}%`);
+  }
+  if (len < total) {
+    stops.push(`#2b333c ${pos(len - 1).toFixed(2)}%`, "#2b333c 100%");
   }
   slider.style.background = `linear-gradient(90deg, ${stops.join(",")})`;
 }
@@ -1412,6 +1474,19 @@ const periodicMarkers = {};  // "client|code" -> marker
 const periodicLayer = L.layerGroup();
 periodicLayer.on("add", raiseDailyMarkers);
 
+// An empty layer whose checkbox in the layer control switches the
+// historical daily stations on and off.
+const historicalLayer = L.layerGroup();
+historicalLayer.on("add", () => {
+  st.showHistorical = true;
+  track("historical_toggle", {on: true});
+  recolorAll();
+});
+historicalLayer.on("remove", () => {
+  st.showHistorical = false;
+  recolorAll();
+});
+
 function periodicPopupHtml(s) {
   const rows = [];
   rows.push(`<b>${s.name}</b>`);
@@ -1447,7 +1522,9 @@ function initPeriodicMarkers() {
     m.addTo(periodicLayer);
     periodicMarkers[`${s.cli}|${s.code}`] = m;
   }
+  const nHist = Object.values(SD).filter(s => !s.rec).length;
   L.control.layers(null, {
+    [`Historical daily stations (${nHist.toLocaleString()}, no daily data since ${MAP_META.recent_cutoff})`]: historicalLayer,
     [`All point observations (${PD.length.toLocaleString()} periodic / non-daily sites)`]: periodicLayer,
   }, {position: "topright", collapsed: false}).addTo(map);
 }
@@ -1467,6 +1544,7 @@ function panToStation(client, code) {
   // daily marker first (SD is keyed by code; verify the client matches)
   const s = SD[code];
   if (s && s.cli === client && leafletMarkers[code]) {
+    if (!s.rec && !st.showHistorical) map.addLayer(historicalLayer);
     map.setView([s.lat, s.lon], Math.max(map.getZoom(), 11));
     onMarkerClick(code);
     return;
@@ -1484,13 +1562,13 @@ function initMarkers() {
   markerLayer.clearLayers();
   for (const code of Object.keys(SD)) {
     const s = SD[code];
-    if (!st.visibleNetworks.has(s.net)) continue;
     const obs = getStationPct(code, st.dowy, st.wy, st.variable, st.ref);
     const color = markerColorForObs(obs);
     const m = new StationMarker([s.lat, s.lon], {
       renderer: stationRenderer, shape: stationShape(s.net, s.mtype), cam: !!s.cam,
       ...dailyStyle(color, false),
-    }).addTo(markerLayer);
+    });
+    if (isShown(s)) m.addTo(markerLayer);
     m._stationCode = code;
 
     const varSummary = formatObsSummary(code, st.variable);
@@ -1510,8 +1588,8 @@ function initMarkers() {
 function recolorAll() {
   for (const [code, m] of Object.entries(leafletMarkers)) {
     const s = SD[code];
-    // Show/hide based on network filter
-    if (st.visibleNetworks.has(s.net)) {
+    // Show/hide: network filter, and historical stations only on request
+    if (isShown(s)) {
       markerLayer.addLayer(m);
     } else {
       markerLayer.removeLayer(m);
@@ -1548,7 +1626,8 @@ function updateTitle() {
 function selectedDateLabel(dowy) {
   const dateObj = dowyToDate(dowy, st.wy);
   const south = dateToDowyWy(dateObj, "S");
-  const curTag = dowy === MAP_META.today_dowy ? " (Current)" : "";
+  const curTag = st.wy === MAP_META.current_wy && dowy === MAP_META.today_dowy
+    ? " (Current)" : "";
   return `${formatDate(dateObj)}${curTag}: DOWY ${dowy} of WY${st.wy} (north), `
        + `DOWY ${south.dowy} of WY${south.wy} (south)`;
 }
@@ -1563,74 +1642,58 @@ function updateDatePreviewLabel(dowy) {
 function updateSnapToCurrentButton() {
   const snapBtn = document.getElementById("snap-current-day");
   if (!snapBtn) return;
-  const atCurrent = st.dowy === MAP_META.today_dowy;
+  const atCurrent = isCurrentDay();
   snapBtn.disabled = atCurrent;
   snapBtn.textContent = atCurrent ? "Current day" : "Go to current day";
 }
 
-// ─── Date slider (current WY only) ──────────────────────────────────────────
+// ─── Date slider and water-year menu ─────────────────────────────────────────
+// The slider always spans the whole selected water year (1 October to 30
+// September); days after today cannot be selected.
+let renderDateTicks = () => {};
+
 function initDateSlider() {
   const slider = document.getElementById("sel-date");
-  const snapBtn = document.getElementById("snap-current-day");
+  const total = wyLength(st.wy);
+  const maxSel = maxSelectableDowy(st.wy);
   slider.min = 1;
-  slider.max = MAP_META.today_dowy;
+  slider.max = total;
+  st.dowy = Math.min(st.dowy, maxSel);
   slider.value = st.dowy;
 
   const ticks = document.getElementById("date-ticks");
   const dayTicks = document.getElementById("day-ticks");
   const tickLabels = document.getElementById("date-tick-labels");
   ticks.innerHTML = "";
-  dayTicks.innerHTML = "";
-  tickLabels.innerHTML = "";
-  const uniqueTicks = new Set([1, MAP_META.today_dowy]);
-  for (let v = 1; v <= MAP_META.today_dowy; v += 1) {
-    uniqueTicks.add(v);
-  }
-  const tickLabelByDowy = new Map();
-  for (let m = 10; m <= 12; m++) {
-    const dt = new Date(st.wy - 1, m - 1, 1);
-    const dwy = dateToDowyWy(dt);
-    if (dwy.wy === st.wy && dwy.dowy >= 1 && dwy.dowy <= MAP_META.today_dowy) {
-      tickLabelByDowy.set(dwy.dowy, `${MONTHS[dt.getMonth()].slice(0, 3)} 1`);
-    }
-  }
-  for (let m = 1; m <= 9; m++) {
-    const dt = new Date(st.wy, m - 1, 1);
-    const dwy = dateToDowyWy(dt);
-    if (dwy.wy === st.wy && dwy.dowy >= 1 && dwy.dowy <= MAP_META.today_dowy) {
-      tickLabelByDowy.set(dwy.dowy, `${MONTHS[dt.getMonth()].slice(0, 3)} 1`);
-    }
-  }
-  const orderedTicks = Array.from(uniqueTicks).sort((a, b) => a - b);
-  const monthTickSet = new Set(tickLabelByDowy.keys());
 
-  for (const v of orderedTicks) {
+  const tickLabelByDowy = new Map();
+  for (let m = 10; m <= 21; m++) {
+    const dt = new Date(st.wy - 1, m - 1, 1);  // months 13-21 roll into the next year
+    const dwy = dateToDowyWy(dt);
+    if (dwy.wy === st.wy && dwy.dowy >= 1 && dwy.dowy <= total) {
+      tickLabelByDowy.set(dwy.dowy, `${MONTHS[dt.getMonth()].slice(0, 3)} 1`);
+    }
+  }
+  const monthTickSet = new Set(tickLabelByDowy.keys());
+  for (let v = 1; v <= maxSel; v++) {
     const opt = document.createElement("option");
     opt.value = String(v);
     ticks.appendChild(opt);
   }
 
-  function renderDateTicks() {
+  renderDateTicks = () => {
     dayTicks.innerHTML = "";
     tickLabels.innerHTML = "";
-
     const trackStyles = getComputedStyle(document.getElementById("date-slider-track"));
     const thumbW = parseFloat(trackStyles.getPropertyValue("--thumb-w")) || 9;
-    const maxDowy = MAP_META.today_dowy;
-    const sliderWidth = slider.clientWidth || 0;
-    const usableWidth = Math.max(0, sliderWidth - thumbW);
-    const xForDowy = v => {
-      if (maxDowy <= 1) return thumbW / 2;
-      return (thumbW / 2) + ((v - 1) / (maxDowy - 1)) * usableWidth;
-    };
-
-    for (const v of orderedTicks) {
+    const usableWidth = Math.max(0, (slider.clientWidth || 0) - thumbW);
+    const xForDowy = v => (thumbW / 2) + ((v - 1) / Math.max(1, total - 1)) * usableWidth;
+    for (let v = 1; v <= maxSel; v++) {
       const tick = document.createElement("span");
       tick.className = "day-tick" + (monthTickSet.has(v) ? " month-tick" : "");
       tick.style.left = `${xForDowy(v)}px`;
       dayTicks.appendChild(tick);
     }
-
     for (const [v, label] of tickLabelByDowy.entries()) {
       const lbl = document.createElement("span");
       lbl.className = "date-tick-label";
@@ -1638,26 +1701,87 @@ function initDateSlider() {
       lbl.style.left = `${xForDowy(v)}px`;
       tickLabels.appendChild(lbl);
     }
-  }
-
+  };
   renderDateTicks();
-  window.addEventListener("resize", renderDateTicks);
-
-  if (snapBtn) {
-    snapBtn.onclick = () => {
-      if (st.dowy === MAP_META.today_dowy) return;
-      st.dowy = MAP_META.today_dowy;
-      track("map_time_change", {control: "current_day"});
-      slider.value = String(st.dowy);
-      updateDatePreviewLabel(st.dowy);
-      updateTitle();
-      recolorAll();
-      if (st.selectedCode) onMarkerClick(st.selectedCode);
-    };
-  }
-
   updateSliderTrackColor();
   updateSnapToCurrentButton();
+}
+window.addEventListener("resize", () => renderDateTicks());
+
+function initWyMenu() {
+  const sel = document.getElementById("sel-wy");
+  sel.innerHTML = "";
+  for (const wy of [MAP_META.current_wy, ...(MAP_META.past_wys || [])]) {
+    const opt = document.createElement("option");
+    opt.value = String(wy);
+    opt.textContent = wy === MAP_META.current_wy ? `WY${wy} (current)` : `WY${wy}`;
+    sel.appendChild(opt);
+  }
+  sel.value = String(st.wy);
+  sel.addEventListener("change", () => selectWaterYear(parseInt(sel.value)));
+}
+
+// Past water years' daily values are merged into SD the first time they
+// are chosen (one request of a few MB).
+async function loadWaterYear(wy) {
+  if (loadedWys.has(wy)) return;
+  const resp = await fetch(`./charts/wy_${wy}.json`);
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  const data = await resp.json();
+  for (const [code, block] of Object.entries(data)) {
+    if (SD[code]) SD[code].wy = Object.assign(SD[code].wy || {}, block);
+  }
+  loadedWys.add(wy);
+}
+
+async function selectWaterYear(wy) {
+  const sel = document.getElementById("sel-wy");
+  const subEl = document.getElementById("map-title-sub");
+  if (!loadedWys.has(wy)) {
+    sel.disabled = true;
+    if (subEl) subEl.textContent = `Loading WY${wy}…`;
+    try {
+      await loadWaterYear(wy);
+    } catch (err) {
+      sel.disabled = false;
+      sel.value = String(st.wy);
+      if (subEl) subEl.textContent = `Could not load WY${wy} (${err.message}). Showing WY${st.wy}.`;
+      return;
+    }
+    sel.disabled = false;
+  }
+  st.wy = wy;
+  sel.value = String(wy);
+  track("map_time_change", {control: "water_year", wy});
+  // Same day of the water year; for the current year, no later than today.
+  initDateSlider();
+  updateTitle();
+  recolorAll();
+  if (st.selectedCode) onMarkerClick(st.selectedCode);
+}
+
+function goToCurrentDay() {
+  st.dowy = MAP_META.today_dowy;
+  track("map_time_change", {control: "current_day"});
+  if (st.wy !== MAP_META.current_wy) {
+    selectWaterYear(MAP_META.current_wy);
+    return;
+  }
+  document.getElementById("sel-date").value = String(st.dowy);
+  updateDatePreviewLabel(st.dowy);
+  updateTitle();
+  recolorAll();
+  if (st.selectedCode) onMarkerClick(st.selectedCode);
+}
+document.getElementById("snap-current-day").addEventListener("click", () => {
+  if (!isCurrentDay()) goToCurrentDay();
+});
+
+// A value past the last selectable day snaps back to it.
+function clampedSliderValue(el) {
+  const val = Math.min(Math.round(parseInt(el.value)), maxSelectableDowy(st.wy));
+  el.value = String(val);
+  return val;
 }
 
 // ─── Usage analytics (GA4 tag in <head>) ─────────────────────────────────────
@@ -1894,7 +2018,7 @@ function renderChart(code, variable, stats) {
     const pad = Math.max(1, (yMax - yMin) * 0.08);
     yAxisRange = [Math.max(0, yMin - pad), yMax + pad];
   }
-  const selectedDowyText = st.dowy === MAP_META.today_dowy
+  const selectedDowyText = isCurrentDay()
     ? "<b>selected DOWY (current)</b>"
     : "<b>selected DOWY</b>";
 
@@ -2788,7 +2912,7 @@ document.getElementById("sel-ref").addEventListener("change", e => {
 });
 
 document.getElementById("sel-date").addEventListener("change", e => {
-  st.dowy = parseInt(e.target.value);
+  st.dowy = clampedSliderValue(e.target);
   track("map_time_change", {control: "slider"});
   updateTitle();
   updateSnapToCurrentButton();
@@ -2797,8 +2921,7 @@ document.getElementById("sel-date").addEventListener("change", e => {
 });
 
 document.getElementById("sel-date").addEventListener("input", e => {
-  const val = Math.round(parseInt(e.target.value));
-  e.target.value = String(val);
+  const val = clampedSliderValue(e.target);
   updateDatePreviewLabel(val);
   st.dowy = val;
   updateSnapToCurrentButton();
@@ -2843,8 +2966,9 @@ function initNetworkFilter() {
 
   // Count stations per network from SD
   const netCounts = {};
+  // Stations drawn by default: historical ones are counted on their toggle.
   for (const s of Object.values(SD)) {
-    netCounts[s.net] = (netCounts[s.net] || 0) + 1;
+    if (s.rec) netCounts[s.net] = (netCounts[s.net] || 0) + 1;
   }
 
   // Sort by netOrder first, then alphabetically
@@ -2895,6 +3019,7 @@ function initCameraLegendNote() {
 }
 
 // ─── Initialise ───────────────────────────────────────────────────────────────
+initWyMenu();
 initDateSlider();
 initCameraLegendNote();
 initNetworkFilter();
@@ -3071,6 +3196,12 @@ def main() -> None:
         f"WY{int(water_year(today_ts, 'southern'))} (south)"
     )
 
+    # A station is drawn by default only with daily data since the start of
+    # the earliest water year the page offers (1 October, N_PAST_WYS years
+    # before the current one: at least two years back).
+    recent_cutoff = water_year_start(today_ts) - pd.DateOffset(years=N_PAST_WYS)
+    past_files: dict[str, dict] = {}
+
     station_codes = sorted(meta_by_code.keys())
     logger.info(f"Processing {len(station_codes)} stations...")
 
@@ -3086,8 +3217,11 @@ def main() -> None:
             csv_path=csv_path,
             meta=meta,
             today=today_ts,
+            recent_cutoff=recent_cutoff,
         )
         if result is not None:
+            for nwy, block in result.pop("_past", {}).items():
+                past_files.setdefault(nwy, {})[code] = block
             chart_payload = result.pop("_chart", None)
             if chart_payload is not None:
                 (charts_dir / f"{code}.json").write_text(
@@ -3133,12 +3267,25 @@ def main() -> None:
             f"stations from popups"
         )
 
+    for nwy, payload in past_files.items():
+        (charts_dir / f"wy_{nwy}.json").write_text(
+            json.dumps(payload, separators=(",", ":")), encoding="utf-8"
+        )
+    n_recent = sum(1 for v in station_data.values() if v.get("rec"))
+    logger.info(
+        f"{n_recent} stations with daily data since {recent_cutoff.date()}, "
+        f"{len(station_data) - n_recent} historical; past water years "
+        f"written: {sorted(past_files)}"
+    )
+
     available_networks = sorted({v["net"] for v in station_data.values()})
     map_meta = {
         "generated": now.isoformat(),
         "today_date": str(today_ts.date()),
         "today_dowy": today_dowy,
         "current_wy": current_wy,
+        "past_wys": [current_wy - k for k in range(1, N_PAST_WYS + 1)],
+        "recent_cutoff": str(recent_cutoff.date()),
         "min_years": MIN_YEARS,
         "n_stations": len(station_data),
         "available_networks": available_networks,

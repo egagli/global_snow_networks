@@ -2525,14 +2525,45 @@ def fmi_previous_positions(path: Path = FMI_GEOJSON_OUT) -> dict[str, dict]:
     return out
 
 
+def fmi_previous_latest(path: Path = ALL_STATIONS_OUT) -> dict[str, str]:
+    """``{fmisid: latest_record_date}`` for FMI stations in the last combined
+    inventory (the archive's own record dates, stamped by the refresh)."""
+    try:
+        with path.open(encoding="utf-8") as fp:
+            features = json.load(fp).get("features") or []
+    except (OSError, json.JSONDecodeError):
+        return {}
+    out: dict[str, str] = {}
+    for f in features:
+        p = f.get("properties") or {}
+        if p.get("client") == "fmi" and p.get("latest_record_date"):
+            out[str(p.get("fmi_station_id"))] = str(p["latest_record_date"])[:10]
+    return out
+
+
+#: An FMI station counts as active only if it reported snow depth within
+#: this many days.  FMI's own list calls a station active while any of its
+#: networks is open, so airports that stopped measuring snow depth between
+#: 1985 and 2010 read as active (21 on 2026-11-05).  Automatic stations
+#: report snow-free days too (-1), so a year without a value means the
+#: station no longer measures snow depth.
+FMI_ACTIVE_DAYS = 365
+
+
 def fmi_station_to_feature(
-    station: dict, served: bool, position: dict | None = None
+    station: dict,
+    served: bool,
+    position: dict | None = None,
+    reporting: bool | None = None,
 ) -> dict:
     """Convert an FMI station dict to a feature.
 
     ``station`` is :meth:`FMIClient.get_metadata`'s dict (the station plus
     ``data_variables``).  A station the observation service does not
     serve keeps no data variables, so it is never a daily candidate.
+    ``reporting`` says whether it reported snow depth within
+    :data:`FMI_ACTIVE_DAYS`; when False, a station FMI lists as active is
+    marked Inactive.  ``None`` keeps FMI's own status.
     """
     sid = str(station.get("station_id") or "").strip()
     lat = station.get("latitude")
@@ -2553,6 +2584,13 @@ def fmi_station_to_feature(
                 "(up to ~6 km off)."
             )
     network = station.get("network_code")
+    status = station.get("status") or None
+    if status == "Active" and reporting is False:
+        status = "Inactive"
+        notes += (
+            f" FMI lists the station as active, but it has reported no snow "
+            f"depth in the last {FMI_ACTIVE_DAYS} days."
+        )
     props: dict[str, Any] = {
         "code": fmi_code(sid),
         "name": station.get("name") or sid,
@@ -2571,12 +2609,13 @@ def fmi_station_to_feature(
         "notes": notes,
         "begin_date": station.get("begin_date"),
         "end_date": station.get("end_date"),
-        "status": station.get("status") or None,
-        "is_active": station.get("status") == "Active",
+        "status": status,
+        "is_active": status == "Active",
         "station_url": None,
         "station_image_url": None,
         "station_camera_url": None,
         "fmi_station_id": sid,
+        "fmi_listed_status": station.get("status") or None,
         "fmi_wmo_id": station.get("wmo_id"),
         "fmi_networks": station.get("networks") or None,
         "fmi_served": served,
@@ -2624,10 +2663,14 @@ def run_fmi_workflow(
     )
     print(f"  Sampling {len(days)} day(s) for stations with daily snow depth...")
     found: set[str] = set()
+    recent: set[str] = set()
+    recent_from = today - timedelta(days=FMI_ACTIVE_DAYS)
     try:
         for d in days:
             for sid, pos in client.reporting_stations(d).items():
                 found.add(sid)
+                if d >= recent_from:
+                    recent.add(sid)
                 if pos.get("latitude") is not None:
                     positions.setdefault(sid, pos)
     except Exception as exc:
@@ -2637,14 +2680,24 @@ def run_fmi_workflow(
         s["station_id"]: previous.get(s["station_id"], False) or s["station_id"] in found
         for s in stations
     }
+    # Recent snow depth: on a sampled day this run, or in the archive's
+    # record (the last combined inventory's latest_record_date).
+    for sid, last in fmi_previous_latest().items():
+        if last >= recent_from.isoformat():
+            recent.add(sid)
     active = sum(1 for s in stations if s.get("status") == "Active")
-    print(f"  Active: {active}  |  With daily snow depth: {sum(served.values())}")
+    print(
+        f"  Listed active: {active}  |  Reported snow depth in "
+        f"{FMI_ACTIVE_DAYS} days: {len(recent)}  |  With daily snow depth: "
+        f"{sum(served.values())}"
+    )
 
     all_features = [
         fmi_station_to_feature(
             client.get_metadata(s["station_id"]),
             served[s["station_id"]],
             positions.get(s["station_id"]),
+            reporting=s["station_id"] in recent,
         )
         for s in stations
         # DESIGN.md §1: a station qualifies for the inventory only with at
