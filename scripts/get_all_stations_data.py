@@ -74,6 +74,7 @@ from zoneinfo import ZoneInfo
 
 import numpy as np
 import pandas as pd
+import requests
 
 from easysnowdata import auth
 from easysnowdata.auth import CredentialError
@@ -353,6 +354,41 @@ def mark_candidates_without_data(features: list[dict], data_dir: Path) -> int:
             props["notes"] = f"{existing} {NO_DATA_NOTE}".strip()
         marked += 1
     return marked
+
+
+def prune_non_daily_duplicates(features: list[dict]) -> int:
+    """Keep ``possible_duplicates`` only between daily-or-better stations.
+
+    Duplicate notes exist to warn consumers (and the map) about the same
+    physical site being charted twice; pairs involving a periodic station
+    don't need the warning.  The full matching still runs first so
+    ``borrow_operators_from_twins`` can use every pair — this prunes what
+    is *published* on the features afterwards.
+
+    Finalize runs it again after the probe and
+    :func:`mark_candidates_without_data` have settled ``daily_or_better``:
+    on 2026-11-06 BU3 (a CDEC candidate whose fetch had crashed) was marked
+    not daily there while BKL_CA_MSNT kept its link to it.
+    """
+    daily = {
+        (f["properties"].get("client"), f["properties"].get("code"))
+        for f in features
+        if f["properties"].get("daily_or_better")
+    }
+    pruned = 0
+    for f in features:
+        p = f["properties"]
+        dups = p.get("possible_duplicates")
+        if not dups:
+            continue
+        if p.get("daily_or_better"):
+            kept = [d for d in dups if (d.get("client"), d.get("code")) in daily]
+        else:
+            kept = []
+        if len(kept) != len(dups):
+            pruned += 1
+            p["possible_duplicates"] = kept or None
+    return pruned
 
 
 def is_fetch_candidate(props: dict) -> bool:
@@ -878,6 +914,13 @@ def refresh_awdb(
 
 # ── CDEC refresh ──────────────────────────────────────────────────────────────
 
+#: What one failed CDEC request can raise.  easysnowdata 0.3.7 let a cut-off
+#: JSON body escape as requests' JSONDecodeError (a ValueError), which ended
+#: the whole CDEC job at batch 3 of 8 on 2026-11-06; 0.3.8 raises CDECError.
+#: Either way one bad response now costs one batch or station, not the rest.
+CDEC_REQUEST_ERRORS = (CDECError, requests.exceptions.RequestException, ValueError)
+
+
 def refresh_cdec(
     stations: list[tuple[int, str]],
     writer: StationWriter,
@@ -932,7 +975,7 @@ def refresh_cdec_native(
                 begin_date="1900-01-01",
                 end_date=date.today().isoformat(),
             )
-        except CDECError as exc:
+        except CDEC_REQUEST_ERRORS as exc:
             stats.failed_batches += 1
             print(f"FAILED ({exc})")
             continue
@@ -1002,7 +1045,7 @@ def refresh_cdec_resampled(
     series (``resampled_sub_daily``), one station per request.  Full
     record the first time; later the last
     :data:`CDEC_RESAMPLED_LOOKBACK_DAYS` days, merged in.  The client nulls
-    values outside 0–15 m; isolated daily spikes are dropped with the CEAZA
+    hourly and event values outside 0–15 m; isolated daily spikes are dropped with the CEAZA
     filter (:func:`ceaza_despike`)."""
     stats = writer.stats
     if not stations:
@@ -1027,7 +1070,7 @@ def refresh_cdec_resampled(
                 station_ids=[sid], variables=["swe", "snwd"],
                 interval=interval, begin_date=begin, end_date=end.isoformat(),
             )
-        except CDECError as exc:
+        except CDEC_REQUEST_ERRORS as exc:
             stats.failed_batches += 1
             print(f"  [CDEC] {sid} FAILED ({exc})")
             continue
@@ -1990,6 +2033,8 @@ def finalize_from_csvs(
     )
     no_data = mark_candidates_without_data(features, data_dir)
     print(f"Daily candidates with no data from their source: {no_data}")
+    pruned = prune_non_daily_duplicates(features)
+    print(f"Duplicate links pruned to stations no longer daily: {pruned}")
 
     geojson.setdefault("metadata", {})
     geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
@@ -2295,6 +2340,8 @@ def main() -> None:
     # Update GeoJSON metadata (full run only)
     no_data = mark_candidates_without_data(features, data_dir)
     print(f"Daily candidates with no data from their source: {no_data}")
+    pruned = prune_non_daily_duplicates(features)
+    print(f"Duplicate links pruned to stations no longer daily: {pruned}")
     geojson.setdefault("metadata", {})
     geojson["metadata"]["csv_refreshed_at_utc"] = refreshed_at_utc
     geojson["metadata"]["csv_elements"] = ["wteq_cm", "snwd_cm"]

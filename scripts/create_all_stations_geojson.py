@@ -93,7 +93,11 @@ from easysnowdata.stations.clients.yukon.yukon_client import (
     VARIABLES as YUKON_VARIABLES,
 )
 
-from scripts.get_all_stations_data import ceaza_sensor_plan, ceaza_user
+from scripts.get_all_stations_data import (
+    ceaza_sensor_plan,
+    ceaza_user,
+    prune_non_daily_duplicates,
+)
 
 logging.basicConfig(
     level=logging.INFO,
@@ -528,6 +532,10 @@ DAY_CONVENTIONS: dict[str, str] = {
     # Checked first-hand: CDEC's daily (D) SWE at Dana Meadows equals the
     # hourly 05:00 reading (OBS DATE 0500), 2024-03-10 and 03-11.
     "cdec": "instant 05:00 America/Los_Angeles",
+    # Sites without a daily series: the mean of their hourly or event
+    # readings over the day as CDEC dates them (Pacific local time).  Set
+    # by cdec_station_to_feature, not looked up by network.
+    "cdec:resampled": "mean of day America/Los_Angeles",
     "databc": "instant 16:00 UTC",
     # HydAPI resolution 1440 is a daily mean; its day boundary is not
     # documented.
@@ -746,36 +754,6 @@ def annotate_possible_duplicates(
             dups, key=lambda x: x["distance_m"]
         )
     return len(links)
-
-
-def prune_non_daily_duplicates(features: list[dict]) -> int:
-    """Keep ``possible_duplicates`` only between daily-or-better stations.
-
-    Duplicate notes exist to warn consumers (and the map) about the same
-    physical site being charted twice; pairs involving a periodic station
-    don't need the warning.  The full matching still runs first so
-    ``borrow_operators_from_twins`` can use every pair — this prunes what
-    is *published* on the features afterwards.
-    """
-    daily = {
-        (f["properties"].get("client"), f["properties"].get("code"))
-        for f in features
-        if f["properties"].get("daily_or_better")
-    }
-    pruned = 0
-    for f in features:
-        p = f["properties"]
-        dups = p.get("possible_duplicates")
-        if not dups:
-            continue
-        if p.get("daily_or_better"):
-            kept = [d for d in dups if (d.get("client"), d.get("code")) in daily]
-        else:
-            kept = []
-        if len(kept) != len(dups):
-            pruned += 1
-            p["possible_duplicates"] = kept or None
-    return pruned
 
 
 def borrow_operators_from_twins(features: list[dict]) -> int:
@@ -1331,7 +1309,7 @@ def cdec_station_to_feature(station: dict) -> dict:
     props["cdec_daily_source"] = source
     if source != "native" and props.get("daily_or_better"):
         props["daily_provenance"] = source
-        props["day_convention"] = "mean of day America/Los_Angeles"
+        props["day_convention"] = DAY_CONVENTIONS["cdec:resampled"]
         props["notes"] = (
             "No daily series at CDEC: daily values are the mean of its "
             f"{'hourly' if source == 'resampled_hourly' else 'event (~15-minute)'} "

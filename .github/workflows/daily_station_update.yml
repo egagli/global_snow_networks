@@ -69,12 +69,29 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.3
 
       - name: Fetch ${{ matrix.network }} station data
+        id: fetch
         continue-on-error: true
         env:
           # Only the NVE and CEAZA clients read these; harmless for the others.
           NVE_API_KEY: ${{ secrets.NVE_API_KEY }}
           CEAZA_USER: ${{ secrets.CEAZA_USER }}
         run: pixi run fetch-data-${{ matrix.network }}
+
+      # continue-on-error keeps a crash from blocking the other networks'
+      # commit, and also keeps the job green: record the failure so
+      # network-health reports it (the CDEC job crashed unseen, 2026-11-06).
+      - name: Record a failed fetch
+        if: steps.fetch.outcome == 'failure'
+        run: |
+          echo "::error title=Fetch ${{ matrix.network }}::the fetch step failed; CSVs it did refresh are still uploaded"
+          mkdir -p /tmp/fetch-status
+          echo failed > "/tmp/fetch-status/${{ matrix.network }}"
+
+      - uses: actions/upload-artifact@v4
+        if: steps.fetch.outcome == 'failure'
+        with:
+          name: fetch-status-${{ matrix.network }}
+          path: /tmp/fetch-status/
 
       # Upload ONLY the CSVs this job actually refreshed.  The checkout
       # contains yesterday's committed CSVs for every network; uploading
@@ -173,6 +190,7 @@ jobs:
     if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     permissions:
+      actions: read  # this run's fetch-status-* artifacts
       contents: read
       issues: write
     steps:
@@ -180,12 +198,23 @@ jobs:
         with:
           ref: main
 
+      # Present only on a night a fetch step failed.
+      - name: Download failed-fetch markers
+        continue-on-error: true
+        uses: actions/download-artifact@v4
+        with:
+          pattern: fetch-status-*
+          path: /tmp/fetch-status/
+          merge-multiple: true
+
       - name: Check network freshness
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
+          failed=$(ls /tmp/fetch-status 2>/dev/null | paste -sd, -)
           python3 -m scripts.check_network_freshness \
+            --fetch-failed "$failed" \
             --run-url "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
   # ── Stage 4: run CI and deploy map (after data is committed) ───────────────
@@ -194,6 +223,8 @@ jobs:
     if: needs.finalize.result == 'success' || needs.finalize.result == 'skipped'
     # ci.yml needs no secrets: every test left in this repo is offline.
     uses: ./.github/workflows/ci.yml
+    with:
+      ref: main
 
   build-and-deploy:
     needs: finalize
