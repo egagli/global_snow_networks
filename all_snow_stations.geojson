@@ -119067,19 +119067,9 @@
         "day_convention": "unknown",
         "possible_duplicates": [
           {
-            "code": "BU3",
-            "client": "cdec",
-            "distance_m": 745
-          },
-          {
             "code": "BKL",
             "client": "cdec",
             "distance_m": 862
-          },
-          {
-            "code": "BU2",
-            "client": "cdec",
-            "distance_m": 888
           }
         ],
         "metadata_fetched_at": "2026-11-06",
@@ -138464,11 +138454,6 @@
         "daily_provenance": "native",
         "day_convention": "unknown",
         "possible_duplicates": [
-          {
-            "code": "SS2",
-            "client": "cdec",
-            "distance_m": 11
-          },
           {
             "code": "CAP",
             "client": "cdec",
@@ -208802,11 +208787,6 @@
             "code": "CSL",
             "client": "cdec",
             "distance_m": 117
-          },
-          {
-            "code": "SS1",
-            "client": "cdec",
-            "distance_m": 382
           },
           {
             "code": "SSL",
@@ -339309,29 +339289,9 @@
         "day_convention": "unknown",
         "possible_duplicates": [
           {
-            "code": "GR2",
-            "client": "cdec",
-            "distance_m": 204
-          },
-          {
             "code": "GRZ",
             "client": "cdec",
             "distance_m": 221
-          },
-          {
-            "code": "GR3",
-            "client": "cdec",
-            "distance_m": 222
-          },
-          {
-            "code": "GRB",
-            "client": "cdec",
-            "distance_m": 339
-          },
-          {
-            "code": "GR1",
-            "client": "cdec",
-            "distance_m": 375
           }
         ],
         "metadata_fetched_at": "2026-11-06",
@@ -420931,26 +420891,6 @@
             "code": "KTL",
             "client": "cdec",
             "distance_m": 0
-          },
-          {
-            "code": "KTB",
-            "client": "cdec",
-            "distance_m": 137
-          },
-          {
-            "code": "KT1",
-            "client": "cdec",
-            "distance_m": 255
-          },
-          {
-            "code": "KT2",
-            "client": "cdec",
-            "distance_m": 268
-          },
-          {
-            "code": "KT3",
-            "client": "cdec",
-            "distance_m": 376
           }
         ],
         "metadata_fetched_at": "2026-11-06",
@@ -943848,13 +943788,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "CAP_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 11
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -961852,13 +961786,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "428_CA_SNTL",
-            "client": "awdb",
-            "distance_m": 382
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -981567,13 +981495,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "KTL_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 376
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -981973,13 +981895,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "BKL_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 888
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -982042,13 +981958,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "GRZ_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 204
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -983048,13 +982958,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "BKL_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 745
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -983317,13 +983221,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "KTL_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 268
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -983660,13 +983558,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "GRZ_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 222
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -983729,13 +983621,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "KTL_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 255
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -984158,13 +984044,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "KTL_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 137
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -985331,13 +985211,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "GRZ_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 375
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
@@ -985400,13 +985274,7 @@
         "daily_verified": true,
         "daily_provenance": "none",
         "day_convention": "mean of day America/Los_Angeles",
-        "possible_duplicates": [
-          {
-            "code": "GRZ_CA_MSNT",
-            "client": "awdb",
-            "distance_m": 339
-          }
-        ],
+        "possible_duplicates": null,
         "metadata_fetched_at": "2026-11-06",
         "upstream_status": "listed",
         "missing_upstream_since": null,
