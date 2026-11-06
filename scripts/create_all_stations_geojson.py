@@ -324,6 +324,13 @@ def _awdb_data_variables(station: dict) -> list[dict]:
     return dvars
 
 
+#: CDEC duration code → interval (DESIGN.md §3.3), as easysnowdata's
+#: CDECClient labels its records ("E", event: irregular readings).
+CDEC_DURATION_INTERVALS: dict[str, str] = {
+    "D": "daily", "H": "hourly", "E": "sub_daily", "M": "monthly",
+}
+
+
 def _cdec_data_variables(station: dict) -> list[dict]:
     """Build the data_variables list for a CDEC station from its sensor list.
 
@@ -338,6 +345,13 @@ def _cdec_data_variables(station: dict) -> list[dict]:
         station.get("is_snow_course") and not station.get("is_snow_pillow")
     )
     interval = "periodic" if course_only else "daily"
+    # easysnowdata >= 0.3.7 records the CDEC durations each sensor is
+    # recorded at (staSearch dur=D/H/E/M).  With them, a sensor is daily
+    # only if CDEC records it daily: ~340 of ~560 snow stations are monthly
+    # courses and 74 record hourly or event data only, and all of them used
+    # to be advertised daily here.  Without them (older clients, or a
+    # failed duration search) the course/pillow rule above stands.
+    durations = station.get("sensor_durations")
     dvars: list[dict] = []
     for sensor in station.get("sensors", []):
         if isinstance(sensor, dict):
@@ -349,17 +363,24 @@ def _cdec_data_variables(station: dict) -> list[dict]:
         sinfo = CDEC_SENSORS.get(snum, {})
         if not sinfo:
             continue
-        dvars.append({
-            "name": sinfo.get("short_name", str(snum)),
-            "type": sinfo.get("type", "other"),
-            "interval": interval,
-            "units": sinfo.get("output_units", ""),
-            "description": sinfo.get("description", ""),
-            "notes": sinfo.get("notes", ""),
-            "begin_date": None,
-            "end_date": None,
-            "n_obs": None,
-        })
+        if durations is not None:
+            codes = durations.get(snum) or durations.get(str(snum)) or []
+            intervals = [CDEC_DURATION_INTERVALS[c] for c in codes
+                         if c in CDEC_DURATION_INTERVALS] or ["periodic"]
+        else:
+            intervals = [interval]
+        for sensor_interval in intervals:
+            dvars.append({
+                "name": sinfo.get("short_name", str(snum)),
+                "type": sinfo.get("type", "other"),
+                "interval": sensor_interval,
+                "units": sinfo.get("output_units", ""),
+                "description": sinfo.get("description", ""),
+                "notes": sinfo.get("notes", ""),
+                "begin_date": None,
+                "end_date": None,
+                "n_obs": None,
+            })
     # Snow courses with no sensors listed still have periodic manual SWE
     if not dvars and station.get("is_snow_course"):
         dvars.append({
@@ -1298,9 +1319,43 @@ def cdec_station_to_feature(station: dict) -> dict:
         "measuring_agency": station.get("measuring_agency"),
         "metadata_fetched_at": date.today().isoformat(),
     }
-    props.update(_daily_candidate_props(_cdec_data_variables(station)))
+    dvars = _cdec_data_variables(station)
+    props.update(_daily_candidate_props(dvars))
+    # Where the archive's daily values come from: CDEC's own daily series
+    # when a snow sensor is recorded daily; otherwise the mean of its
+    # hourly, or else event (~15-minute), readings over the day as CDEC
+    # dates them (DESIGN.md §4: resample only without a native daily).
+    # The 74 sites this applies to on 2026-11-05 are mostly wireless
+    # snow-depth sensor nodes (UC Davis, UC Merced, CW3E, EBMUD).
+    source = cdec_daily_source(dvars)
+    props["cdec_daily_source"] = source
+    if source != "native" and props.get("daily_or_better"):
+        props["daily_provenance"] = source
+        props["day_convention"] = "mean of day America/Los_Angeles"
+        props["notes"] = (
+            "No daily series at CDEC: daily values are the mean of its "
+            f"{'hourly' if source == 'resampled_hourly' else 'event (~15-minute)'} "
+            "readings over the day as CDEC dates them. Raw, unvalidated "
+            "sensor data: values outside 0–15 m are dropped and isolated "
+            "one-day spikes removed, but sustained sensor errors remain."
+        )
 
     return make_feature(lon, lat, props)
+
+
+def cdec_daily_source(dvars: list[dict]) -> str:
+    """``native``, ``resampled_hourly`` or ``resampled_sub_daily``: where a
+    CDEC station's daily snow values come from (``native`` also when it
+    has no sub-daily snow series either)."""
+    snow = [d for d in dvars if d.get("type") in ("swe", "snwd")]
+    intervals = {d.get("interval") for d in snow}
+    if "daily" in intervals:
+        return "native"
+    if "hourly" in intervals:
+        return "resampled_hourly"
+    if "sub_daily" in intervals:
+        return "resampled_sub_daily"
+    return "native"
 
 
 def run_cdec_workflow() -> tuple[list[dict], list[dict]]:

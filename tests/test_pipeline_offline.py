@@ -87,6 +87,30 @@ def test_cdec_pillow_is_daily_candidate():
     assert _has_daily_type(dvars, "swe")
 
 
+def test_cdec_sensor_durations_decide_the_interval():
+    """easysnowdata >= 0.3.7: a sensor is daily only if CDEC records it
+    daily.  EMV (Emigrant Valley) is on neither the course nor the pillow
+    list, so the old rule called it daily; its sensors are monthly."""
+    emv = {"sensors": [3, 18, 82], "is_snow_course": False, "is_snow_pillow": False,
+           "sensor_durations": {3: ["M"], 18: ["M"], 82: ["M"]}}
+    dvars = _cdec_data_variables(emv)
+    assert {dv["interval"] for dv in dvars} == {"monthly"}
+    assert not _has_daily_type(dvars, "swe") and not _has_daily_type(dvars, "snwd")
+    # hourly-only depth: listed, not daily
+    bu1 = {"sensors": [18], "sensor_durations": {18: ["H", "E"]}}
+    assert [dv["interval"] for dv in _cdec_data_variables(bu1)] == ["hourly", "sub_daily"]
+    # a pillow: one entry per duration, daily among them
+    qua = {"sensors": [3, 82], "is_snow_pillow": True,
+           "sensor_durations": {3: ["D", "H"], 82: ["D"]}}
+    dvars = _cdec_data_variables(qua)
+    assert [(dv["name"], dv["interval"]) for dv in dvars][:2] == [
+        (dvars[0]["name"], "daily"), (dvars[0]["name"], "hourly")]
+    assert _has_daily_type(dvars, "swe")
+    # durations unknown (older client, failed search): the old rule stands
+    assert _has_daily_type(_cdec_data_variables(
+        {"sensors": [3], "sensor_durations": None}), "swe")
+
+
 def test_cdec_course_with_no_sensors_gets_periodic_swe():
     station = {"sensors": [], "is_snow_course": True}
     dvars = _cdec_data_variables(station)
@@ -740,3 +764,71 @@ def test_daily_candidates_without_data_are_marked_not_daily(tmp_path):
     assert with_csv["properties"]["daily_or_better"] is True
     # idempotent: the note is not repeated
     assert mark_candidates_without_data([empty], tmp_path) == 0
+
+
+# ── CDEC stations without a daily series are resampled ─────────────────────
+
+def test_cdec_daily_source_and_provenance():
+    from scripts.create_all_stations_geojson import cdec_daily_source
+    from scripts.get_all_stations_data import passed_provenance
+
+    assert cdec_daily_source([{"type": "swe", "interval": "daily"},
+                              {"type": "swe", "interval": "hourly"}]) == "native"
+    assert cdec_daily_source([{"type": "snwd", "interval": "hourly"},
+                              {"type": "snwd", "interval": "sub_daily"}]) == "resampled_hourly"
+    assert cdec_daily_source([{"type": "snwd", "interval": "sub_daily"}]) == "resampled_sub_daily"
+    assert cdec_daily_source([{"type": "swe", "interval": "monthly"}]) == "native"
+    assert passed_provenance({"client": "cdec", "cdec_daily_source": "resampled_sub_daily"}) == (
+        "resampled_sub_daily")
+    assert passed_provenance({"client": "cdec", "cdec_daily_source": "native"}) == "native"
+
+
+def test_cdec_daily_means_keep_cdecs_own_dates():
+    """CDEC times are naive local times; a 23:45 reading belongs to its own
+    date, not (as UTC) to the next one."""
+    from scripts.get_all_stations_data import cdec_daily_means
+
+    recs = [
+        {"station_id": "UCB", "date": "2026-02-01", "datetime": "2026-02-01 0:00",
+         "type": "snwd", "variable": "SNOW DP", "value": 10.0, "units": "cm"},
+        {"station_id": "UCB", "date": "2026-02-01", "datetime": "2026-02-01 23:45",
+         "type": "snwd", "variable": "SNOW DP", "value": 20.0, "units": "cm"},
+        {"station_id": "UCB", "date": "2026-02-02", "datetime": "2026-02-02 0:00",
+         "type": "snwd", "variable": "SNOW DP", "value": None, "units": "cm"},
+    ]
+    out = cdec_daily_means(recs)
+    assert [(r["date"], r["value"]) for r in out] == [("2026-02-01", 15.0)]
+
+
+def test_refresh_cdec_routes_resampled_stations(tmp_path, monkeypatch):
+    import scripts.get_all_stations_data as gasd
+
+    calls = []
+
+    class Fake:
+        def get_data(self, station_ids, variables, interval, begin_date, end_date):
+            calls.append((tuple(station_ids), interval, begin_date))
+            if interval == "daily":
+                return [{"station_id": "QUA", "date": "2026-01-01", "type": "swe",
+                         "value": 30.0}]
+            return [{"station_id": station_ids[0], "date": "2026-01-01", "type": "snwd",
+                     "variable": "SNOW DP", "value": v, "units": "cm"} for v in (10.0, 20.0)]
+
+    monkeypatch.setattr(gasd, "CDECClient", Fake)
+    feats = [
+        {"properties": {"code": "QUA", "client": "cdec", "cdec_daily_source": "native"}},
+        {"properties": {"code": "UCB", "client": "cdec", "cdec_daily_source": "resampled_sub_daily"}},
+        {"properties": {"code": "ARN", "client": "cdec", "cdec_daily_source": "resampled_hourly"}},
+    ]
+    w = gasd.StationWriter(features=feats, data_dir=tmp_path, refreshed_at_utc="t",
+                           stats=gasd.RefreshStats(), revisions=gasd.RevisionLog(detected_utc="t"))
+    gasd.refresh_cdec([(0, "QUA"), (1, "UCB"), (2, "ARN")], w, today=date(2026, 11, 5))
+    assert (("QUA",), "daily", "1900-01-01") in calls
+    assert (("UCB",), "sub_daily", "1900-01-01") in calls
+    assert (("ARN",), "hourly", "1900-01-01") in calls
+    ucb = gasd.read_station_csv(tmp_path / "UCB.csv")
+    assert ucb["snwd_cm"].tolist() == [15.0]
+    # archived now: the next night asks for the last 30 days only
+    calls.clear()
+    gasd.refresh_cdec([(1, "UCB")], w, today=date(2026, 11, 5))
+    assert calls == [(("UCB",), "sub_daily", "2026-10-06")]

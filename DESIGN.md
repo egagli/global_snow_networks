@@ -237,6 +237,7 @@ or a fixed UTC offset.
 | AWDB SNTL, SNTLT, SCAN | `instant 00:00 UTC-08:00` (Alaska: `UTC-09:00`) | TSTool AWDB reference; client uses `periodRef=START` |
 | AWDB COOP, MSNT | `unknown` | manual or mirrored records, time not stated |
 | CDEC | `instant 05:00 America/Los_Angeles` | checked first-hand at Dana Meadows (daily = hourly 05:00), 2024-03 |
+| CDEC without a daily snow sensor (`cdec_daily_source` resampled) | `mean of day America/Los_Angeles` | pipeline mean of CDEC's hourly or event readings, by the date CDEC gives each reading |
 | DataBC ASWS | `instant 16:00 UTC` | client (`_DAILY_UTC_HOUR`) |
 | NVE | `mean of day (boundary not documented)` | HydAPI resolution 1440 |
 | Yukon | `mean of day UTC-07:00` | AquaCache `day_timezone` |
