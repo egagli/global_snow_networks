@@ -23,8 +23,9 @@ zarr = ">=3.3"
 # not in this repo (docs/EASYSNOWDATA_MIGRATION.md). 0.3.2 is the first
 # release that reads the archive as it is published now (docs/STORAGE.md §3);
 # 0.3.3 adds the clients for the networks being wired in next (#39-#45).
-# 0.3.6 adds FMIClient (Finland, egagli/easysnowdata#37).
-easysnowdata = ">=0.3.6"
+# 0.3.6 adds FMIClient (Finland, egagli/easysnowdata#37); 0.3.7 adds CDEC
+# sensor_durations, which decide which CDEC sites are daily (#66).
+easysnowdata = ">=0.3.7"
 
 [feature.dev.dependencies]
 jupyter = "*"
