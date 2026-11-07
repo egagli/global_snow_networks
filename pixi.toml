@@ -24,8 +24,10 @@ zarr = ">=3.3"
 # release that reads the archive as it is published now (docs/STORAGE.md §3);
 # 0.3.3 adds the clients for the networks being wired in next (#39-#45).
 # 0.3.6 adds FMIClient (Finland, egagli/easysnowdata#37); 0.3.7 adds CDEC
-# sensor_durations, which decide which CDEC sites are daily (#66).
-easysnowdata = ">=0.3.7"
+# sensor_durations, which decide which CDEC sites are daily (#66); 0.3.8
+# returns CDEC's daily series unbounded again, so archives built from it
+# stop tripping the shrink guard (#67).
+easysnowdata = ">=0.3.8"
 
 [feature.dev.dependencies]
 jupyter = "*"

@@ -12,6 +12,10 @@ daily (``daily_or_better``) and not marked missing upstream:
 
 * **stale**: the newest row in any of its CSVs is more than ``--stale-days``
   (7) days old;
+* **fetch crashed**: the network's ``fetch-data`` job step failed
+  (``--fetch-failed``). The step is ``continue-on-error`` so that other
+  networks' data is still committed, which also hid a crash: the CDEC job
+  stopped at batch 3 of 8 on 2026-11-06 and every job stayed green;
 * **dropping**: fewer than half as many of its stations reported in the last
   7 days as in the 7 days before (and at least 4 did then), which catches a
   network losing part of its stations rather than all of them.
@@ -135,6 +139,16 @@ def assess(
                 f"last {WINDOW_DAYS} days, down from {net.prior} the week before"
             )
     return networks
+
+
+def flag_failed_fetches(networks: dict[str, Network], failed: str) -> None:
+    """Add a reason for each network in *failed* (comma-separated) whose
+    fetch step failed, ahead of any staleness reason: the crash is the cause."""
+    for client in (c.strip() for c in failed.split(",")):
+        if client:
+            networks.setdefault(client, Network(client)).reasons.insert(
+                0, "the fetch-data job crashed, so part or all of it was not refreshed"
+            )
 
 
 def table(networks: dict[str, Network], today: date) -> str:
@@ -275,12 +289,17 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--repo", default=os.environ.get("GITHUB_REPOSITORY", ""))
     parser.add_argument("--run-url", default=None)
     parser.add_argument("--dry-run", action="store_true")
+    parser.add_argument(
+        "--fetch-failed", default="",
+        help="comma-separated networks whose fetch-data step failed",
+    )
     args = parser.parse_args(argv)
 
     features = json.loads(args.inventory.read_text(encoding="utf-8"))["features"]
     networks = assess(
         features, args.stations_dir, args.today, stale_days=args.stale_days
     )
+    flag_failed_fetches(networks, args.fetch_failed)
     text = table(networks, args.today)
     print(text)
     summary = os.environ.get("GITHUB_STEP_SUMMARY")

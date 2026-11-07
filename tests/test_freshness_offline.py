@@ -139,3 +139,20 @@ def test_main_dry_run_prints_an_annotation(tmp_path, capsys, monkeypatch):
     assert fresh.main(args) == 0
     out = capsys.readouterr().out
     assert "::error title=Stale network yukon::no new data for 13 days" in out
+
+
+def test_a_crashed_fetch_is_flagged_even_with_fresh_data(tmp_path, capsys, monkeypatch):
+    """The fetch step is continue-on-error, so a crash left every job green
+    (CDEC, 2026-11-06); the workflow passes the failed networks in."""
+    monkeypatch.delenv("GITHUB_STEP_SUMMARY", raising=False)
+    _csv(tmp_path, "ADM", TODAY)
+    inv = tmp_path / "inv.geojson"
+    inv.write_text(json.dumps({"features": [_feature("cdec", "ADM")]}))
+    args = ["--today", "2026-10-27", "--inventory", str(inv)]
+    args += ["--stations-dir", str(tmp_path), "--dry-run", "--fetch-failed", "cdec,"]
+    assert fresh.main(args) == 0
+    out = capsys.readouterr().out
+    assert "::error title=Stale network cdec::the fetch-data job crashed" in out
+    networks = {"cdec": fresh.Network("cdec")}
+    fresh.flag_failed_fetches(networks, "")
+    assert networks["cdec"].reasons == []

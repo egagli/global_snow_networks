@@ -766,6 +766,28 @@ def test_daily_candidates_without_data_are_marked_not_daily(tmp_path):
     assert mark_candidates_without_data([empty], tmp_path) == 0
 
 
+def test_finalize_prunes_links_to_stations_it_marks_not_daily(tmp_path):
+    """2026-11-06: BU3 was linked from BKL_CA_MSNT in stage 1, then marked
+    not daily in finalize (no CSV), and the link was published."""
+    from scripts.get_all_stations_data import (
+        mark_candidates_without_data,
+        prune_non_daily_duplicates,
+    )
+
+    bu3 = {"properties": {"code": "BU3", "client": "cdec", "daily_or_better": True,
+                          "possible_duplicates": [{"code": "BKL_CA_MSNT",
+                                                   "client": "awdb", "distance_m": 5}]}}
+    bkl = {"properties": {"code": "BKL_CA_MSNT", "client": "awdb",
+                          "daily_or_better": True,
+                          "possible_duplicates": [{"code": "BU3", "client": "cdec",
+                                                   "distance_m": 5}]}}
+    (tmp_path / "BKL_CA_MSNT.csv").write_text("date,wteq_cm,snwd_cm\n2024-01-01,1.0,\n")
+    assert mark_candidates_without_data([bu3, bkl], tmp_path) == 1
+    assert prune_non_daily_duplicates([bu3, bkl]) == 2
+    assert bkl["properties"]["possible_duplicates"] is None
+    assert bu3["properties"]["possible_duplicates"] is None
+
+
 # ── CDEC stations without a daily series are resampled ─────────────────────
 
 def test_cdec_daily_source_and_provenance():
@@ -832,3 +854,39 @@ def test_refresh_cdec_routes_resampled_stations(tmp_path, monkeypatch):
     calls.clear()
     gasd.refresh_cdec([(1, "UCB")], w, today=date(2026, 11, 5))
     assert calls == [(("UCB",), "sub_daily", "2026-10-06")]
+
+
+def test_one_unreadable_cdec_response_costs_one_batch(tmp_path, monkeypatch):
+    """2026-11-06: a cut-off JSON body (requests' JSONDecodeError, a
+    ValueError, from easysnowdata 0.3.7) ended the CDEC job at batch 3 of 8,
+    so the later batches and every resampled station were never fetched."""
+    import requests
+
+    import scripts.get_all_stations_data as gasd
+
+    calls = []
+
+    class Fake:
+        def get_data(self, station_ids, variables, interval, begin_date, end_date):
+            calls.append(tuple(station_ids))
+            if station_ids == ["QUA"] or station_ids == ["UCB"]:
+                raise requests.exceptions.JSONDecodeError("Expecting ':'", "{", 1)
+            return [{"station_id": station_ids[0], "date": "2026-01-01",
+                     "type": "snwd", "variable": "SNOW DP", "value": 10.0,
+                     "units": "cm"}]
+
+    monkeypatch.setattr(gasd, "CDECClient", Fake)
+    monkeypatch.setattr(gasd, "CDEC_BATCH", 1)
+    feats = [
+        {"properties": {"code": c, "client": "cdec", "cdec_daily_source": s}}
+        for c, s in [("QUA", "native"), ("ADM", "native"),
+                     ("UCB", "resampled_sub_daily"), ("ARN", "resampled_hourly")]
+    ]
+    stats = gasd.RefreshStats()
+    w = gasd.StationWriter(features=feats, data_dir=tmp_path, refreshed_at_utc="t",
+                           stats=stats, revisions=gasd.RevisionLog(detected_utc="t"))
+    gasd.refresh_cdec([(i, f["properties"]["code"]) for i, f in enumerate(feats)],
+                      w, today=date(2026, 11, 5))
+    assert calls == [("QUA",), ("ADM",), ("UCB",), ("ARN",)]
+    assert stats.failed_batches == 2
+    assert (tmp_path / "ADM.csv").exists() and (tmp_path / "ARN.csv").exists()

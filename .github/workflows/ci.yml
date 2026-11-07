@@ -3,12 +3,22 @@ name: CI
 on:
   push:
   workflow_call:
+    inputs:
+      ref:
+        description: Commit or branch to test (default the triggering commit)
+        type: string
+        default: ""
 
 jobs:
   test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The daily run passes main: its own commit predates the data
+          # finalize just committed, which is what the contract tests check
+          # (they missed two failures that way on 2026-11-06).
+          ref: ${{ inputs.ref || github.sha }}
 
       - uses: prefix-dev/setup-pixi@v0.8.3
         with:
