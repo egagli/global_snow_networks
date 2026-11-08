@@ -168,6 +168,26 @@ def test_build_html_survives_missing_imagery_config(offline_assets):
     assert '"imagery"' not in html.split("const SD =")[0].split("const MAP_META = ")[1]
 
 
+# ── shareable view (DESIGN.md §8) ────────────────────────────────────────────
+
+def test_share_link_contract():
+    """The wrapper page on egagli.github.io depends on these exact strings."""
+    t = _HTML_TEMPLATE
+    assert 'const SHARE_BASE = "https://egagli.github.io/maps/global-snow-networks.html";' in t
+    assert 'const SHARE_ORIGIN = "https://egagli.github.io";' in t
+    assert 'type: "egagli-map-state", search: location.search, hash: location.hash' in t
+    assert "SHARE_BASE + location.search + location.hash" in t
+    assert 'id="share-view"' in t and 'id="share-url"' in t
+
+
+def test_share_url_keys_are_documented():
+    """Every query key the page writes is listed in the comment that documents them."""
+    keys = re.search(r"const URL_KEYS = \[([^\]]*)\]", _HTML_TEMPLATE).group(1)
+    doc = _HTML_TEMPLATE.split("// ─── Shareable view")[1].split("const URL_KEYS")[0]
+    for key in re.findall(r'"([a-z]+)"', keys):
+        assert re.search(rf"\b{key}=", doc), key
+
+
 # ── live cameras ─────────────────────────────────────────────────────────────
 
 def test_camera_snapshot_url_from_slider_page():

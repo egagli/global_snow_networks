@@ -292,6 +292,35 @@ rest of the panel is unaffected (DESIGN.md §8.1). Configuration lives in
 
 Map URL: `https://egagli.github.io/global_snow_networks/`
 
+### Shareable links
+
+The map keeps its view in the page URL as you use it, so reloading or sending
+the address reopens the same view. **Share this view** (next to the
+Reference menu) copies a link to the map's page on egagli.github.io,
+`https://egagli.github.io/maps/global-snow-networks.html` plus the same query
+string; if the browser blocks clipboard access it shows the link selected
+instead, to copy by hand.
+
+| Parameter | Meaning | Omitted means |
+| --- | --- | --- |
+| `ll=<lat>,<lon>`, `z=<zoom>` | map centre and zoom | the default view |
+| `bm=esri_sat` / `esri_topo` | basemap | Esri Light Gray |
+| `var=SNWD` | map variable | SWE |
+| `ref=n9120` / `n8110` / `n7100` | reference period | period of record |
+| `date=YYYY-MM-DD` | selected date (any day in the water years on the menu) | the current day, so the link follows today |
+| `hide=SNTL,CCSS,…` | networks switched off in the legend | all on |
+| `hist=1`, `pobs=1` | historical stations / all point observations overlays | off |
+| `station=<code>`, `chart=SNWD` | open station panel and its chart variable | no panel; SWE chart |
+
+Example:
+`https://egagli.github.io/maps/global-snow-networks.html?ll=47.5123,-121.4567&z=8.25&var=SNWD&date=2026-02-07&station=1000_OR_SNTL`
+
+Invalid or out-of-range values fall back to the default, and parameters the
+map does not know are left alone. When the map is iframed it posts
+`{type: "egagli-map-state", search, hash}` to `https://egagli.github.io`
+after each URL change (and once after load), so the wrapper page can keep its
+own address bar in step (DESIGN.md §8).
+
 ---
 
 ## 5. Data Model

@@ -783,6 +783,13 @@ select:focus{outline:none;border-color:#4af}
                   display:flex;align-items:center;justify-content:center;
                   box-sizing:border-box;overflow:hidden}
 #snap-current-day:disabled{opacity:0.45;cursor:default}
+#share-view{height:22px;padding:0 9px;border:1px solid rgba(220,236,252,0.65);
+            border-radius:3px;background:rgba(17,28,40,0.35);color:#eef7ff;
+            font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;
+            min-width:13ch}
+#share-view:hover{background:rgba(17,28,40,0.6)}
+#share-url{font-size:11px;padding:3px 5px;border-radius:3px;border:1px solid #446;
+           background:#223;color:#eee;width:min(380px,60vw)}
 #sel-wy{flex:0 0 auto;height:24px;background:rgba(17,28,40,0.35);color:#eef7ff;
         border:1px solid rgba(220,236,252,0.65);font-weight:700}
 #sel-date{position:absolute;inset:0;width:100%;height:24px;appearance:none;-webkit-appearance:none;
@@ -872,6 +879,10 @@ select:focus{outline:none;border-color:#4af}
           <option value="n7100">1971-2000 Normal</option>
         </select>
       </div>
+      <div class="ctl-group">
+        <button id="share-view" type="button" title="Copy a link that reopens the map with this view">Share this view</button>
+        <input id="share-url" type="text" readonly hidden aria-label="Link to this view">
+      </div>
     </div>
   </div>
   <div id="main-area">
@@ -925,6 +936,11 @@ const PD = __PERIODIC_DATA__;  // periodic / non-daily point observations
 <script>
 "use strict";
 
+// "Share this view" links point at the map's page on egagli.github.io, which
+// iframes this app and forwards its own query string and hash to it.
+const SHARE_BASE = "https://egagli.github.io/maps/global-snow-networks.html";
+const SHARE_ORIGIN = "https://egagli.github.io";
+
 // ─── State ────────────────────────────────────────────────────────────────────
 const st = {
   variable: "WTEQ",
@@ -942,6 +958,11 @@ const st = {
 
 const sliderColorCache = {};
 let sliderDragFrame = null;
+
+// The view is mirrored into the page URL ("Shareable view" below). While a
+// shared link is being applied, nothing is written back or tracked.
+let urlRestoring = false;
+let urlUpdateTimer = null;
 
 // Water years: st.wy is the northern water year on the slider.  The current
 // one is embedded; past ones (MAP_META.past_wys) load from charts/wy_<WY>.json
@@ -1320,8 +1341,10 @@ const BASEMAPS = {
 // layers happen to be attached: the switcher swaps basemaps at runtime, and a
 // map with no explicit maxZoom reports Infinity whenever nothing attached
 // declares one.
+const DEFAULT_CENTER = [43, -112];
+const DEFAULT_ZOOM = 5;
 const map = L.map("map", {
-  center: [43, -112], zoom: 5,
+  center: DEFAULT_CENTER, zoom: DEFAULT_ZOOM,
   layers: [BASEMAPS.esri_light],
   zoomControl: true,
   minZoom: 2,
@@ -1615,6 +1638,9 @@ function recolorAll() {
 
     if (isSelected) m.bringToFront();
   }
+  // Every view change that repaints the markers ends here, so this one call
+  // keeps the URL in step with them (see "Shareable view").
+  scheduleUrlUpdate();
 }
 
 // ─── Title bar ────────────────────────────────────────────────────────────────
@@ -1795,6 +1821,7 @@ function clampedSliderValue(el) {
 // ─── Usage analytics (GA4 tag in <head>) ─────────────────────────────────────
 // Low-cardinality params only; never throws if the tag is blocked or absent.
 function track(name, params) {
+  if (urlRestoring) return;  // restoring a shared link is not a user action
   try { if (window.gtag) window.gtag("event", name, params || {}); } catch (e) {}
 }
 
@@ -2898,6 +2925,7 @@ document.getElementById("sel-basemap").addEventListener("change", e => {
   BASEMAPS[e.target.value].addTo(map);
   st.basemap = e.target.value;
   track("map_basemap_change", {basemap: e.target.value});
+  scheduleUrlUpdate();
 });
 
 document.getElementById("sel-var").addEventListener("change", e => {
@@ -2953,6 +2981,7 @@ document.getElementById("chart-btn-wteq").addEventListener("click", () => {
   document.getElementById("chart-btn-wteq").className = "chart-btn active";
   document.getElementById("chart-btn-snwd").className = "chart-btn";
   if (st.selectedCode) loadChart(st.selectedCode, "WTEQ");
+  scheduleUrlUpdate();
 });
 
 document.getElementById("chart-btn-snwd").addEventListener("click", () => {
@@ -2961,6 +2990,7 @@ document.getElementById("chart-btn-snwd").addEventListener("click", () => {
   document.getElementById("chart-btn-wteq").className = "chart-btn";
   document.getElementById("chart-btn-snwd").className = "chart-btn active";
   if (st.selectedCode) loadChart(st.selectedCode, "SNWD");
+  scheduleUrlUpdate();
 });
 
 // ─── Network legend (interactive filter) ─────────────────────────────────────
@@ -2995,7 +3025,7 @@ function initNetworkFilter() {
     const count = netCounts[net] || 0;
 
     const row = document.createElement("div");
-    row.className = "nlrow";
+    row.className = "nlrow" + (st.visibleNetworks.has(net) ? "" : " net-off");
     row.dataset.net = net;
     row.innerHTML = `<div class="nshape"><svg width="12" height="12">${shapeSvg}</svg></div>`
       + `<span class="net-label">${label}</span>`
@@ -3026,7 +3056,168 @@ function initCameraLegendNote() {
   el.style.display = "flex";
 }
 
+// ─── Shareable view (URL state) ───────────────────────────────────────────────
+// The view lives in the query string, so a link reopens the same map:
+//   ll=<lat>,<lon>  z=<zoom>     map centre and zoom (omitted at the default)
+//   bm=esri_sat|esri_topo        basemap (omitted for esri_light)
+//   var=SNWD                     map variable (omitted for WTEQ)
+//   ref=n9120|n8110|n7100        reference period (omitted for por)
+//   date=YYYY-MM-DD              selected date (omitted on the current day,
+//                                so a link without it follows today)
+//   hide=NET,NET                 networks switched off in the legend
+//   hist=1  pobs=1               historical / periodic overlays switched on
+//   station=<code>  chart=SNWD   open station panel and its chart variable
+// Missing or invalid values fall back to the defaults, so a bare URL is the
+// default map. Unknown parameters are left in place.
+const URL_KEYS = ["ll", "z", "bm", "var", "ref", "date", "hide", "hist", "pobs", "station", "chart"];
+
+function isoDate(d) {
+  const pad = n => String(n).padStart(2, "0");
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+
+function readUrlState() {
+  const p = new URLSearchParams(location.search);
+  const u = {};
+  const ll = (p.get("ll") || "").split(",").map(Number);
+  if (ll.length === 2 && ll.every(Number.isFinite) && Math.abs(ll[0]) <= 90) u.center = ll;
+  const z = parseFloat(p.get("z"));
+  if (Number.isFinite(z)) u.zoom = Math.min(map.getMaxZoom(), Math.max(map.getMinZoom(), z));
+  if (BASEMAPS[p.get("bm")]) u.basemap = p.get("bm");
+  if (["WTEQ", "SNWD"].includes(p.get("var"))) u.variable = p.get("var");
+  if (["WTEQ", "SNWD"].includes(p.get("chart"))) u.chartVar = p.get("chart");
+  const refs = Array.from(document.getElementById("sel-ref").options, o => o.value);
+  if (refs.includes(p.get("ref"))) u.ref = p.get("ref");
+  const m = /^([0-9]{4})-([0-9]{2})-([0-9]{2})$/.exec(p.get("date") || "");
+  if (m) {
+    const {wy, dowy} = dateToDowyWy(new Date(+m[1], +m[2] - 1, +m[3]));
+    const offered = [MAP_META.current_wy, ...(MAP_META.past_wys || [])];
+    if (offered.includes(wy) && dowy >= 1 && dowy <= maxSelectableDowy(wy)) {
+      u.wy = wy;
+      u.dowy = dowy;
+    }
+  }
+  if (p.has("hide")) u.hide = p.get("hide").split(",").filter(Boolean);
+  u.hist = p.get("hist") === "1";
+  u.pobs = p.get("pobs") === "1";
+  if (SD[p.get("station")]) u.station = p.get("station");
+  return u;
+}
+
+// Before the controls and markers are built: plain settings only.
+function applyUrlStateEarly(u) {
+  if (u.variable) st.variable = u.variable;
+  if (u.ref) st.ref = u.ref;
+  if (u.chartVar) st.chartVar = u.chartVar;
+  document.getElementById("sel-var").value = st.variable;
+  document.getElementById("sel-ref").value = st.ref;
+  if (u.basemap) {
+    Object.values(BASEMAPS).forEach(l => map.removeLayer(l));
+    BASEMAPS[u.basemap].addTo(map);
+    st.basemap = u.basemap;
+    document.getElementById("sel-basemap").value = u.basemap;
+  }
+  for (const net of u.hide || []) st.visibleNetworks.delete(net);
+  if (u.wy === MAP_META.current_wy) st.dowy = u.dowy;
+  if (u.center) map.setView(u.center, u.zoom ?? map.getZoom(), {animate: false});
+  else if (u.zoom !== undefined) map.setZoom(u.zoom, {animate: false});
+}
+
+// After the markers and layer control exist: overlays, a past water year
+// (fetched), then the station panel.
+async function applyUrlStateLate(u) {
+  if (u.hist) map.addLayer(historicalLayer);
+  if (u.pobs) map.addLayer(periodicLayer);
+  if (u.wy && u.wy !== MAP_META.current_wy) {
+    const dowyBefore = st.dowy;
+    st.dowy = u.dowy;
+    await selectWaterYear(u.wy);
+    if (st.wy !== u.wy) st.dowy = dowyBefore;  // that year failed to load
+  }
+  if (u.station) onMarkerClick(u.station);
+}
+
+function postMapState() {
+  if (window.parent === window) return;
+  try {
+    window.parent.postMessage(
+      {type: "egagli-map-state", search: location.search, hash: location.hash},
+      SHARE_ORIGIN
+    );
+  } catch (e) {}
+}
+
+function writeUrlNow() {
+  clearTimeout(urlUpdateTimer);
+  if (urlRestoring) return;
+  const p = new URLSearchParams(location.search);
+  URL_KEYS.forEach(k => p.delete(k));
+  const c = map.getCenter().wrap();
+  const z = Math.round(map.getZoom() * 100) / 100;
+  const ll = `${c.lat.toFixed(4)},${c.lng.toFixed(4)}`;
+  const llDefault = `${DEFAULT_CENTER[0].toFixed(4)},${DEFAULT_CENTER[1].toFixed(4)}`;
+  if (ll !== llDefault || z !== DEFAULT_ZOOM) {
+    p.set("ll", ll);
+    p.set("z", String(z));
+  }
+  if (st.basemap !== "esri_light") p.set("bm", st.basemap);
+  if (st.variable !== "WTEQ") p.set("var", st.variable);
+  if (st.ref !== "por") p.set("ref", st.ref);
+  if (!isCurrentDay()) p.set("date", isoDate(dowyToDate(st.dowy, st.wy)));
+  const hidden = MAP_META.available_networks.filter(n => !st.visibleNetworks.has(n));
+  if (hidden.length) p.set("hide", hidden.join(","));
+  if (st.showHistorical) p.set("hist", "1");
+  if (map.hasLayer(periodicLayer)) p.set("pobs", "1");
+  if (st.selectedCode) {
+    p.set("station", st.selectedCode);
+    if (st.chartVar !== "WTEQ") p.set("chart", st.chartVar);
+  }
+  // Commas are legal in a query string; keep ll= and hide= readable.
+  const qs = p.toString().replace(/%2C/gi, ",");
+  const next = location.pathname + (qs ? `?${qs}` : "") + location.hash;
+  if (next !== location.pathname + location.search + location.hash) {
+    history.replaceState(history.state, "", next);
+    document.getElementById("share-url").hidden = true;  // a shown link is now stale
+  }
+  postMapState();
+}
+
+// Debounced: map moves and slider drags fire many times a second.
+function scheduleUrlUpdate() {
+  if (urlRestoring) return;
+  clearTimeout(urlUpdateTimer);
+  urlUpdateTimer = setTimeout(writeUrlNow, 300);
+}
+
+let shareResetTimer = null;
+document.getElementById("share-view").addEventListener("click", async () => {
+  writeUrlNow();  // flush a pending update so the link matches the screen
+  const url = SHARE_BASE + location.search + location.hash;
+  const btn = document.getElementById("share-view");
+  const field = document.getElementById("share-url");
+  try {
+    await navigator.clipboard.writeText(url);
+    field.hidden = true;
+    btn.textContent = "Link copied";
+    clearTimeout(shareResetTimer);
+    shareResetTimer = setTimeout(() => { btn.textContent = "Share this view"; }, 2000);
+    track("share_view", {result: "copied"});
+  } catch (e) {
+    // No clipboard access (permissions, insecure context, old browser):
+    // show the link selected so it can be copied by hand.
+    field.value = url;
+    field.hidden = false;
+    field.focus();
+    field.select();
+    track("share_view", {result: "manual"});
+  }
+});
+document.getElementById("share-url").addEventListener("focus", e => e.target.select());
+
 // ─── Initialise ───────────────────────────────────────────────────────────────
+const urlState = readUrlState();
+urlRestoring = true;
+applyUrlStateEarly(urlState);
 initWyMenu();
 initDateSlider();
 initCameraLegendNote();
@@ -3036,6 +3227,12 @@ initPeriodicMarkers();
 updateClockPanel();
 setInterval(updateClockPanel, 1000);
 updateTitle();
+applyUrlStateLate(urlState).finally(() => {
+  urlRestoring = false;
+  map.on("moveend", scheduleUrlUpdate);
+  periodicLayer.on("add remove", scheduleUrlUpdate);
+  writeUrlNow();  // normalise the URL and tell an embedding page
+});
 </script>
 </body>
 </html>
