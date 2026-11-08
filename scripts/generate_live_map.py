@@ -3057,7 +3057,7 @@ function initCameraLegendNote() {
 }
 
 // ─── Shareable view (URL state) ───────────────────────────────────────────────
-// The view lives in the query string, so a link reopens the same map:
+// The view lives in the URL hash, so a link reopens the same map:
 //   ll=<lat>,<lon>  z=<zoom>     map centre and zoom (omitted at the default)
 //   bm=esri_sat|esri_topo        basemap (omitted for esri_light)
 //   var=SNWD                     map variable (omitted for WTEQ)
@@ -3069,6 +3069,13 @@ function initCameraLegendNote() {
 //   station=<code>  chart=SNWD   open station panel and its chart variable
 // Missing or invalid values fall back to the defaults, so a bare URL is the
 // default map. Unknown parameters are left in place.
+//
+// The hash, not the query string: GA4's enhanced measurement logs a page_view
+// for every history.replaceState that changes the query, but not for a
+// hash-only change, so every map move would otherwise count as a page view
+// (here and on the wrapper page, which mirrors this URL). Links made before
+// the move carried these keys in the query string; they are still read, and
+// moved into the hash on load (migrateLegacyQuery).
 const URL_KEYS = ["ll", "z", "bm", "var", "ref", "date", "hide", "hist", "pobs", "station", "chart"];
 
 function isoDate(d) {
@@ -3076,8 +3083,43 @@ function isoDate(d) {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
 }
 
+function hasViewKeys(params) {
+  return URL_KEYS.some(k => params.has(k));
+}
+
+function hashParams() {
+  return new URLSearchParams(location.hash.replace(/^#/, ""));
+}
+
+// Commas are legal in a query string and a fragment; keep ll= and hide= readable.
+function paramString(params) {
+  return params.toString().replace(/%2C/gi, ",");
+}
+
+function urlWith(search, hash) {
+  return location.pathname + (search ? `?${search}` : "") + (hash ? `#${hash}` : "");
+}
+
+// The view keys from the hash or, for an older link, from the query string.
+function viewParams() {
+  const h = hashParams();
+  if (hasViewKeys(h)) return h;
+  return new URLSearchParams(location.search);
+}
+
+// An older link's view keys move from the query string into the hash, in one
+// replaceState; other query parameters (utm_* and the like) stay where they are.
+function migrateLegacyQuery() {
+  const q = new URLSearchParams(location.search);
+  if (!hasViewKeys(q)) return;
+  const h = hashParams();
+  if (!hasViewKeys(h)) URL_KEYS.forEach(k => { if (q.has(k)) h.set(k, q.get(k)); });
+  URL_KEYS.forEach(k => q.delete(k));
+  history.replaceState(history.state, "", urlWith(paramString(q), paramString(h)));
+}
+
 function readUrlState() {
-  const p = new URLSearchParams(location.search);
+  const p = viewParams();
   const u = {};
   const ll = (p.get("ll") || "").split(",").map(Number);
   if (ll.length === 2 && ll.every(Number.isFinite) && Math.abs(ll[0]) <= 90) u.center = ll;
@@ -3150,7 +3192,7 @@ function postMapState() {
 function writeUrlNow() {
   clearTimeout(urlUpdateTimer);
   if (urlRestoring) return;
-  const p = new URLSearchParams(location.search);
+  const p = hashParams();
   URL_KEYS.forEach(k => p.delete(k));
   const c = map.getCenter().wrap();
   const z = Math.round(map.getZoom() * 100) / 100;
@@ -3172,9 +3214,8 @@ function writeUrlNow() {
     p.set("station", st.selectedCode);
     if (st.chartVar !== "WTEQ") p.set("chart", st.chartVar);
   }
-  // Commas are legal in a query string; keep ll= and hide= readable.
-  const qs = p.toString().replace(/%2C/gi, ",");
-  const next = location.pathname + (qs ? `?${qs}` : "") + location.hash;
+  // Only the hash changes here (see "Shareable view" for why).
+  const next = urlWith(location.search.slice(1), paramString(p));
   if (next !== location.pathname + location.search + location.hash) {
     history.replaceState(history.state, "", next);
     document.getElementById("share-url").hidden = true;  // a shown link is now stale
@@ -3216,6 +3257,7 @@ document.getElementById("share-url").addEventListener("focus", e => e.target.sel
 
 // ─── Initialise ───────────────────────────────────────────────────────────────
 const urlState = readUrlState();
+migrateLegacyQuery();
 urlRestoring = true;
 applyUrlStateEarly(urlState);
 initWyMenu();

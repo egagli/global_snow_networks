@@ -495,9 +495,13 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   hand-maintained in the template.
 - **The view lives in the URL.** Map centre/zoom, basemap, variable,
   reference, date, network filter, overlays and the open station are written
-  to the query string (`history.replaceState`, debounced) and restored on
-  load; defaults are left out, invalid values fall back to the default, and
-  unknown parameters are kept (parameter table in README §4). **Share this
+  to the URL hash (`history.replaceState`, debounced) and restored on load;
+  defaults are left out, invalid values fall back to the default, and
+  unknown parameters are kept (parameter table in README §4). The hash, not
+  the query string, because GA4 enhanced measurement counts a page view for
+  each query-string `replaceState` and none for a hash-only one. Older links
+  with the keys in the query string are read and moved into the hash on load.
+  **Share this
   view** copies `SHARE_BASE` (the egagli.github.io/maps wrapper page) plus
   that query string and hash. When iframed, the page posts
   `{type: "egagli-map-state", search, hash}` to origin

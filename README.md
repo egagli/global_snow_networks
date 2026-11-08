@@ -294,14 +294,21 @@ Map URL: `https://egagli.github.io/global_snow_networks/`
 
 ### Shareable links
 
-The map keeps its view in the page URL as you use it, so reloading or sending
+The map keeps its view in the URL hash as you use it, so reloading or sending
 the address reopens the same view. **Share this view** (next to the
 Reference menu) copies a link to the map's page on egagli.github.io,
 `https://egagli.github.io/maps/global-snow-networks.html` plus the same query
-string; if the browser blocks clipboard access it shows the link selected
-instead, to copy by hand.
+string and hash; if the browser blocks clipboard access it shows the link
+selected instead, to copy by hand.
 
-| Parameter | Meaning | Omitted means |
+The view is in the hash rather than the query string because GA4's enhanced
+measurement records a page view whenever `history.replaceState` changes the
+query string, but not when only the hash changes; with the query string,
+every pan or zoom would count as a page view. Links that carry these keys in
+the query string still work: the keys are read from there and moved into the
+hash on load, and any other query parameters are kept.
+
+| Hash key | Meaning | Omitted means |
 | --- | --- | --- |
 | `ll=<lat>,<lon>`, `z=<zoom>` | map centre and zoom | the default view |
 | `bm=esri_sat` / `esri_topo` | basemap | Esri Light Gray |
@@ -313,7 +320,7 @@ instead, to copy by hand.
 | `station=<code>`, `chart=SNWD` | open station panel and its chart variable | no panel; SWE chart |
 
 Example:
-`https://egagli.github.io/maps/global-snow-networks.html?ll=47.5123,-121.4567&z=8.25&var=SNWD&date=2026-02-07&station=1000_OR_SNTL`
+`https://egagli.github.io/maps/global-snow-networks.html#ll=47.5123,-121.4567&z=8.25&var=SNWD&date=2026-02-07&station=1000_OR_SNTL`
 
 Invalid or out-of-range values fall back to the default, and parameters the
 map does not know are left alone. When the map is iframed it posts
