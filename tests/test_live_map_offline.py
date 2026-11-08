@@ -180,6 +180,17 @@ def test_share_link_contract():
     assert 'id="share-view"' in t and 'id="share-url"' in t
 
 
+def test_view_state_is_written_to_the_hash():
+    """A query-string replaceState is a GA4 page_view; a hash-only one is not."""
+    t = _HTML_TEMPLATE
+    write = t.split("function writeUrlNow()")[1].split("\nfunction ")[0]
+    assert "const p = hashParams();" in write
+    assert "urlWith(location.search.slice(1), paramString(p))" in write
+    # Older links carried the keys in the query string: still read, then moved.
+    assert "migrateLegacyQuery();" in t.split("// ─── Initialise")[-1]
+    assert "return new URLSearchParams(location.search);" in t.split("function viewParams()")[1]
+
+
 def test_share_url_keys_are_documented():
     """Every query key the page writes is listed in the comment that documents them."""
     keys = re.search(r"const URL_KEYS = \[([^\]]*)\]", _HTML_TEMPLATE).group(1)
