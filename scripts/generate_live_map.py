@@ -1662,8 +1662,8 @@ function selectedDateLabel(dowy) {
   const south = dateToDowyWy(dateObj, "S");
   const curTag = st.wy === MAP_META.current_wy && dowy === MAP_META.today_dowy
     ? " (Current)" : "";
-  return `${formatDate(dateObj)}${curTag}: DOWY ${dowy} of WY${st.wy} (north), `
-       + `DOWY ${south.dowy} of WY${south.wy} (south)`;
+  return `${formatDate(dateObj)}${curTag}: DOWY ${dowy} of WY${st.wy} (n. hemisphere), `
+       + `DOWY ${south.dowy} of WY${south.wy} (s. hemisphere)`;
 }
 
 function updateDatePreviewLabel(dowy) {
@@ -3438,9 +3438,9 @@ def main() -> None:
     current_wy = int(water_year(today_ts))
 
     logger.info(
-        f"Today: {today_ts.date()}, DOWY {today_dowy}, WY{current_wy} (north); "
+        f"Today: {today_ts.date()}, DOWY {today_dowy}, WY{current_wy} (n. hemisphere); "
         f"DOWY {int(day_of_water_year(today_ts, 'southern'))}, "
-        f"WY{int(water_year(today_ts, 'southern'))} (south)"
+        f"WY{int(water_year(today_ts, 'southern'))} (s. hemisphere)"
     )
 
     # A station is drawn by default only with daily data since the start of

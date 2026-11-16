@@ -226,8 +226,10 @@ Features:
   (easysnowdata's `processing.wateryear`). The slider picks a calendar
   date, and each station converts it to its own water year, so medians,
   percent of normal and chart curves for a southern station run 1 April to
-  31 March and are not split mid-season. Southern charts label their
-  water year with its months, e.g. "WY2026 (Apr 2026–Mar 2027)".
+  31 March and are not split mid-season. The slider's date label gives
+  the day of water year in both hemispheres, e.g. "DOWY 47 of WY2027
+  (n. hemisphere), DOWY 230 of WY2026 (s. hemisphere)". Southern charts
+  label their water year with its months, e.g. "WY2026 (Apr 2026–Mar 2027)".
 - A toggleable overlay of **all other point observations** (snow
   courses, aerial markers, non-daily sites) with metadata-only popups
 - "Potentially duplicated station" links that pan to the same physical
