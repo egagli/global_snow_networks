@@ -239,6 +239,17 @@ Features:
   courses, aerial markers, non-daily sites) with metadata-only popups
 - "Potentially duplicated station" links that pan to the same physical
   site's other access paths
+- No zoom buttons: pinch, the scroll wheel, double-click and the keyboard
+  (+/−) zoom the map
+- **Phones and tablets** (below 1024 px wide, or a touch screen under
+  520 px tall) get the map full-bleed with everything else in one sheet:
+  a peek (title, date, date slider, compact colour legend), half and full
+  heights, cycled by tapping the sheet's header or dragged. The station
+  panel opens in the same sheet under the title and slider, with today's
+  values and the chart first; a horizontal drag on the chart moves its
+  readout, a vertical one scrolls the sheet. Tablets get a floating card
+  up to 600 px wide, landscape phones a card docked on the left. Map
+  credits sit behind an (i) button
 
 ### Context imagery
 

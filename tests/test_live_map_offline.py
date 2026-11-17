@@ -380,3 +380,32 @@ def test_analytics_events_are_guarded():
     assert 'if (window.gtag) window.gtag("event"' in _HTML_TEMPLATE
     direct = re.findall(r"gtag\('event'|gtag\(\"event\"", _HTML_TEMPLATE)
     assert len(direct) == 1, "call track() rather than gtag('event', ...) directly"
+
+
+# ── Phone / tablet sheet (DESIGN.md §8) ──────────────────────────────────────
+
+SHEET_QUERY = "(max-width: 1023px), (pointer: coarse) and (max-height: 520px)"
+
+
+def test_sheet_css_and_js_use_one_breakpoint():
+    """The sheet's CSS and its script must switch at the same width, or a
+    tablet gets half a layout."""
+    assert f"@media {SHEET_QUERY} {{" in _HTML_TEMPLATE
+    assert f'matchMedia("{SHEET_QUERY}")' in _HTML_TEMPLATE
+    # every phone rule is gated on the class the script sets once built
+    assert 'root.classList.add("m-on")' in _HTML_TEMPLATE
+
+
+def test_map_has_no_zoom_buttons():
+    """Zoom is pinch, wheel, double-click and keyboard only (round 3)."""
+    assert "zoomControl: false" in _HTML_TEMPLATE
+    assert "zoomControl: true" not in _HTML_TEMPLATE
+
+
+def test_station_chart_is_touch_friendly_on_the_sheet():
+    """On the sheet the chart has no zoom box or pinch/scroll zoom, so a
+    vertical swipe scrolls the sheet, and it keeps the app's own handlers."""
+    assert "dragmode: false" in _HTML_TEMPLATE
+    assert "scrollZoom: false, doubleClick: false" in _HTML_TEMPLATE
+    assert "touch-action: pan-y" in _HTML_TEMPLATE
+    assert "if (sheetUI.on) sheetUI.attachChart(chartDiv);" in _HTML_TEMPLATE

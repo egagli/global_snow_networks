@@ -844,10 +844,250 @@ select:focus{outline:none;border-color:#4af}
   #clock-note{text-align:center}
   #date-slider-wrap{width:min(860px, calc(100vw - 40px))}
 }
-/* The legends stay below the zoom buttons and scroll when the map is short. */
-#legend-stack{max-height:calc(100% - 110px)}
+/* The legends scroll when the map is short. Top room: the map has no zoom
+   buttons (pinch, wheel, double-click and keys zoom), only a small margin. */
+#legend-stack{max-height:calc(100% - 44px)}
 #network-legend{overflow-y:auto;min-height:0;flex:0 1 auto}
 #legend{flex-shrink:0}
+/* Overlay toggles carry a long label (desktop) and a short one (phone sheet). */
+.ov-short{display:none}
+/* Phone / tablet sheet (see sheetUI in the script). Same query as sheetUI;
+   html.m-on is set once the sheet is built, so nothing here touches desktop. */
+@media (max-width: 1023px), (pointer: coarse) and (max-height: 520px) {
+  html.m-on {
+    --m-vis: 140px;
+    --m-bg: #1a2a3a;          /* the app's own header colour */
+    --m-bg2: #223348;         /* raised controls on the sheet */
+    --m-line: #3f5165;
+    --m-edge: #4b6078;
+    --m-ink: #e8f3ff;
+    --m-mute: #b3c7dc;        /* 8.3:1 on --m-bg */
+    --m-accent: #d0e8ff;
+    --m-ease: cubic-bezier(.2,.8,.2,1);
+  }
+
+  /* Full-bleed map: the top bar is emptied into the sheet. */
+  html.m-on #topbar { display: none; }
+  html.m-on #main-area { position: relative; }
+  html.m-on #map { width: 100%; }
+  html.m-on #legend-stack { display: none; }
+
+  /* ── Sheet ───────────────────────────────────────────────────── */
+  #m-sheet {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 1100;
+    display: flex; flex-direction: column; overflow: hidden;
+    background: var(--m-bg); color: var(--m-ink);
+    border-radius: 16px 16px 0 0; box-shadow: 0 -4px 16px rgba(0,0,0,.25);
+    transition: transform 220ms var(--m-ease); will-change: transform;
+    font-size: 14px; line-height: 1.35;
+  }
+  #m-sheet.m-card { transition: height 220ms var(--m-ease); }
+  #m-sheet.m-dragging { transition: none; }
+  #m-top { flex: 0 0 auto; padding: 0 12px 6px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right)); }
+  #m-header { position: relative; display: flex; align-items: flex-start; min-height: 48px; }
+  #m-hzone {
+    flex: 1 1 auto; min-width: 0; display: flex; align-items: flex-start; gap: 4px;
+    padding: 15px 0 2px; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+    border-radius: 8px; outline: none;
+  }
+  #m-hzone:focus-visible, #m-sheet button:focus-visible, #m-sheet select:focus-visible, #m-sheet input:focus-visible {
+    outline: 2px solid #7cc0ff; outline-offset: 2px;
+  }
+  .m-grip {
+    position: absolute; top: 8px; left: 50%; width: 36px; height: 4px; margin-left: -18px;
+    border-radius: 2px; background: #6f849a;
+  }
+  #m-titles { flex: 1 1 auto; min-width: 0; }
+  html.m-on #map-title-main {
+    font-size: 17px; font-weight: 600; line-height: 1.25; text-align: left; color: var(--m-accent);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  #m-date-short { font-size: 13px; color: var(--m-mute); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .m-chev { flex: 0 0 auto; margin: 1px -2px 0 0; color: var(--m-mute); transition: transform 220ms var(--m-ease); }
+  #m-hzone[data-dir="down"] .m-chev { transform: rotate(180deg); }
+
+  /* Slider */
+  html.m-on #date-slider-wrap { width: 100%; margin: 4px 0 0; gap: 0; }
+  html.m-on #date-slider-title { display: none; }
+  html.m-on #date-slider-row { gap: 0; }
+  html.m-on #date-slider-track { height: 32px; --thumb-w: 16px; --thumb-half: 8px; }
+  html.m-on #sel-date { height: 32px; border-radius: 4px; touch-action: pan-y; }
+  html.m-on #sel-date::-webkit-slider-runnable-track { height: 32px; }
+  html.m-on #sel-date::-webkit-slider-thumb { width: 16px; height: 32px; margin-top: 0; border-width: 3px; border-radius: 4px; }
+  html.m-on #sel-date::-moz-range-thumb { width: 16px; height: 32px; border-width: 3px; }
+  html.m-on #day-ticks { top: 13px; }
+  html.m-on .day-tick:not(.month-tick) { display: none; }
+  html.m-on .day-tick.month-tick { height: 32px; top: -13px; transform: translateX(-0.5px); background: rgba(255,255,255,.35); }
+  html.m-on #date-tick-labels { height: 14px; margin-top: 3px; font-size: 12px; font-weight: 600; color: var(--m-mute); }
+  html.m-on .date-tick-label:nth-child(even) { display: none; }
+  html.m-on .date-tick-label:first-child { transform: none; }
+
+  /* Compact legend */
+  #m-legend { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
+  #m-legend[hidden] { display: none; }
+  #m-legend .m-unit { font-size: 12px; font-weight: 700; color: var(--m-mute); }
+  #m-legend .m-bar { flex: 1 1 auto; display: flex; height: 20px; border-radius: 4px; overflow: hidden; min-width: 0; }
+  #m-legend .m-bar span { flex: 1 1 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; line-height: 1; white-space: nowrap; min-width: 0; }
+  #m-legend > span:last-child { display: inline-flex; gap: 6px; }
+  #m-legend .m-chip { display: inline-flex; align-items: center; gap: 3px; font-size: 12px; color: var(--m-mute); white-space: nowrap; }
+  #m-legend .m-chip i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; border: 1px solid rgba(255,255,255,.35); }
+
+  /* Station open: the header names the station and gets a close button. */
+  #m-st-title { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  #m-st-title[hidden] { display: none; }
+  #m-sheet.m-station #map-title-main { display: none; }
+  #m-st-dot { width: 12px; height: 12px; border-radius: 50%; flex: 0 0 auto; border: 1.5px solid #fff; }
+  #m-st-name { flex: 1 1 auto; min-width: 0; font-size: 17px; font-weight: 600; line-height: 1.25; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  #m-st-close { flex: 0 0 44px; width: 44px; height: 44px; margin: 6px 0 0 8px; border: 0; border-radius: 22px; background: rgba(255,255,255,.08); color: var(--m-ink); display: grid; place-items: center; cursor: pointer; }
+  #m-st-close[hidden] { display: none; }
+
+  /* Body */
+  #m-body {
+    flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch; border-top: 1px solid var(--m-line);
+    padding: 0 12px 16px; padding-left: max(12px, env(safe-area-inset-left)); padding-right: max(12px, env(safe-area-inset-right));
+  }
+  #m-sheet[data-state="peek"] #m-body { visibility: hidden; }
+  .m-sec { padding: 16px 0 8px; border-bottom: 1px solid rgba(63,81,101,.6); }
+  .m-sec:last-child { border-bottom: 0; }
+  #m-date-sec { padding-top: 12px; }
+  .m-sec-h { font-size: 14px; font-weight: 700; color: var(--m-accent); margin: 0 0 8px; }
+  .m-sec-h small { font-weight: 500; color: var(--m-mute); font-size: 12px; margin-left: 8px; }
+  .m-row { display: flex; gap: 8px; }
+  html.m-on #map-title-sub { font-size: 13px; color: var(--m-mute); text-align: left; margin-bottom: 8px; }
+  html.m-on select, html.m-on #share-url, html.m-on #m-sheet input[type=text] { font-size: 16px; }
+  html.m-on #m-sheet select {
+    height: 44px; padding: 0 8px; border-radius: 8px; background: var(--m-bg2); color: #eef7ff;
+    border: 1px solid var(--m-edge); font-weight: 600;
+  }
+  html.m-on #sel-wy { flex: 1 1 0; min-width: 0; }
+  html.m-on #snap-current-day {
+    flex: 1 1 0; width: auto; height: 44px; font-size: 14px; border-radius: 8px; background: #2a5a8a; border-color: #4a8acb;
+  }
+  html.m-on #snap-current-day:disabled { background: transparent; border-color: var(--m-edge); opacity: .7; }
+  html.m-on #top-controls { display: grid; grid-template-columns: 1fr; gap: 8px; justify-content: stretch; }
+  html.m-on .ctl-group { display: grid; grid-template-columns: 84px 1fr; align-items: center; gap: 8px; }
+  html.m-on .ctl-label { font-size: 13px; color: var(--m-mute); }
+  html.m-on .ctl-group:last-child { grid-template-columns: 1fr; }
+  html.m-on .var-btns { display: grid; grid-template-columns: 1fr 1fr; }
+  html.m-on .var-btn { height: 44px; font-size: 14px; padding: 0 8px; }
+  html.m-on .var-btn:first-child { border-radius: 8px 0 0 8px; }
+  html.m-on .var-btn:last-child { border-radius: 0 8px 8px 0; }
+  html.m-on #share-view { height: 44px; width: 100%; font-size: 14px; border-radius: 8px; border-color: var(--m-edge); background: var(--m-bg2); }
+  html.m-on #share-url { width: 100%; height: 44px; }
+
+  html.m-on #network-legend { background: none; border: 0; padding: 0; min-width: 0; font-size: 13px; overflow: visible; }
+  html.m-on #network-legend > h3 { display: none; }
+  html.m-on #network-legend-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+  html.m-on .nlrow { margin: 0; min-height: 44px; padding: 4px 8px; border: 1px solid var(--m-edge); border-radius: 8px; background: var(--m-bg2); }
+  html.m-on .nlrow.net-off { opacity: .5; background: transparent; }
+  html.m-on .nlrow .net-label { color: var(--m-ink); font-size: 13px; white-space: normal; line-height: 1.2; }
+  html.m-on .nlrow .net-count { color: var(--m-mute); font-size: 12px; }
+  html.m-on #network-legend .cam-note { color: var(--m-ink); font-size: 12px; border-top-color: var(--m-line); }
+
+  #m-overlays .leaflet-control-layers { background: none; border: 0; box-shadow: none; padding: 0; margin: 0; color: var(--m-ink); font-size: 14px; }
+  #m-overlays .leaflet-control-layers-expanded { padding: 0; }
+  #m-overlays .leaflet-control-layers-separator, #m-overlays .leaflet-control-layers-base { display: none; }
+  #m-overlays .leaflet-control-layers-overlays label { display: block; margin: 0 0 8px; }
+  #m-overlays .leaflet-control-layers-overlays label > span, #m-overlays .leaflet-control-layers-overlays label > div {
+    display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 8px 12px;
+    border: 1px solid var(--m-edge); border-radius: 8px; background: var(--m-bg2); line-height: 1.3;
+  }
+  #m-overlays .ov-long { display: none; }
+  #m-overlays .ov-short { display: inline; }
+  #m-overlays .ov-short small { display: block; font-size: 12px; color: var(--m-mute); }
+  #m-overlays input[type=checkbox] { width: 22px; height: 22px; flex: 0 0 auto; margin: 0; accent-color: #4a9ae8; }
+
+  html.m-on #legend { background: none; border: 0; padding: 0; min-width: 0; font-size: 13px; color: var(--m-ink); }
+  html.m-on #legend > h3 { display: none; }
+  html.m-on #legend .legend-row { margin: 4px 0; }
+  html.m-on #clock-block { position: static; max-width: none; width: 100%; margin: 0; align-items: stretch; border: 0; background: none; padding: 0; gap: 4px; }
+  html.m-on #clock-now, html.m-on #clock-utc, html.m-on #clock-pt { font-size: 12px; white-space: normal; }
+  html.m-on #clock-note { font-size: 12px; text-align: left; color: var(--m-mute); }
+
+  /* ── Station mode: header + slider stay dark, details below are light ── */
+  #m-sheet.m-station #m-controls { display: none; }
+  #m-sheet.m-station #m-body { visibility: visible; background: #f5f7fa; color: #222; border-top: 0; padding-left: 0; padding-right: 0; }
+  html.m-on #station-panel { width: 100%; max-width: none; border-left: 0; padding: 12px 12px 16px; overflow: visible; background: transparent; }
+  html.m-on #close-btn { display: none; }                 /* the station bar has the close button */
+  /* Flatten #station-info so values and chart can come before the metadata. */
+  html.m-on #station-info { display: contents; font-size: 14px; line-height: 1.5; }
+  html.m-on #station-panel > *, html.m-on #station-info > * { order: 20; }
+  html.m-on #station-info > h2 { display: none; }        /* name is in the station bar */
+  html.m-on #station-info > .swe-line { order: 1; margin-top: 0; }
+  html.m-on #station-info > .snwd-line { order: 2; }
+  html.m-on #chart-controls { order: 3; }
+  html.m-on #chart-loading { order: 4; }
+  html.m-on #chart-div { order: 5; }
+  html.m-on #chart-shading-legend { order: 6; margin-bottom: 12px !important; }
+  html.m-on #station-photo-wrap { order: 10; }
+  html.m-on #imagery-section { order: 30; }
+  html.m-on #station-info .info-key { min-width: 112px; flex: 0 0 112px; }
+  html.m-on #station-info .info-row { font-size: 13px; }
+  html.m-on #station-info .info-row span { overflow-wrap: anywhere; }
+  html.m-on #station-info [style*="font-size:11px"], html.m-on #station-photo-credit, html.m-on #chart-shading-legend { font-size: 12px !important; }
+  html.m-on #station-info a { padding: 4px 0; }
+  html.m-on #station-photo, html.m-on #station-camera-img { height: 180px; }
+  html.m-on #chart-controls { gap: 8px; margin: 8px 0; }
+  html.m-on .chart-btn { min-height: 44px; padding: 0 16px; font-size: 14px; border-radius: 8px; flex: 1 1 0; }
+  html.m-on #chart-div { min-height: 260px; width: 100%; touch-action: pan-y; }
+  html.m-on #chart-div .nsewdrag, html.m-on #chart-div .draglayer rect { touch-action: pan-y; }
+  /* The pinned readout is dismissed by tapping it (its click bubbles to the app's unfreeze handler). */
+  html.m-on #chart-frozen-tip { max-width: min(260px, calc(100% - 16px)); font-size: 13px; pointer-events: auto; cursor: pointer; padding-right: 26px; }
+  html.m-on #chart-frozen-tip::after { content: "×"; position: absolute; top: 2px; right: 8px; font-size: 18px; color: #555; }
+  html.m-on .imagery-controls select { height: 44px; font-size: 16px; }
+  html.m-on .imagery-extent-ctl { min-height: 44px; }
+  html.m-on .imagery-extent-ctl input[type=range] { height: 32px; width: 140px; }
+  html.m-on .imagery-thumb { width: 96px; }
+  html.m-on .imagery-thumb .th-date, html.m-on .imagery-thumb .th-cloud, html.m-on .imagery-credit,
+  html.m-on .imagery-scalebar span, html.m-on #imagery-extent-val, html.m-on .imagery-note { font-size: 12px; }
+
+  /* ── Floating map controls ───────────────────────────────────── */
+  html.m-on .leaflet-top .leaflet-control { margin-top: max(12px, env(safe-area-inset-top)); }
+  html.m-on .leaflet-left .leaflet-control { margin-left: max(12px, env(safe-area-inset-left)); }
+  html.m-on .leaflet-right .leaflet-control { margin-right: max(12px, env(safe-area-inset-right)); }
+  html.m-on .leaflet-bottom { bottom: calc(var(--m-vis) + 12px); transition: bottom 220ms var(--m-ease); }
+  html.m-on .leaflet-bottom.leaflet-right { display: flex; flex-direction: column-reverse; align-items: flex-end; padding-right: max(6px, env(safe-area-inset-right)); }
+  html.m-on .leaflet-control-attribution { display: none; margin: 0 !important; }
+  html.m-on .leaflet-control-attribution.m-open {
+    display: block; max-width: calc(100vw - 24px); font-size: 12px; line-height: 1.35; padding: 6px 8px;
+    border-radius: 8px; background: rgba(255,255,255,.96); margin-bottom: 4px !important;
+  }
+  #m-attr-btn {
+    pointer-events: auto; width: 44px; height: 44px; padding: 0; border: 0; background: transparent;
+    display: grid; place-items: center; cursor: pointer;
+  }
+  #m-attr-btn span {
+    width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center;
+    background: rgba(255,255,255,.94); color: #1a2a3a; border: 1px solid rgba(0,0,0,.2);
+    font: italic 700 16px/1 Georgia, serif; box-shadow: 0 1px 4px rgba(0,0,0,.25);
+  }
+}
+
+/* Tablet portrait: a floating card, max 600px, centred. */
+@media (min-width: 721px) and (max-width: 1023px) {
+  html.m-on #m-sheet { left: 12px; right: 12px; bottom: 12px; max-width: 600px; margin: 0 auto; border-radius: 16px; }
+}
+@media (min-width: 721px) and (max-width: 1023px) and (pointer: coarse) and (max-height: 520px) and (orientation: landscape) {
+  html.m-on #m-sheet { margin: 0; }
+}
+
+/* Landscape phones: docked on the left, full height; controls move right. */
+@media (pointer: coarse) and (max-height: 520px) and (orientation: landscape) {
+  html.m-on #m-sheet { left: 12px; right: auto; top: auto; bottom: 12px; width: min(380px, 50%); max-width: none; border-radius: 16px; box-shadow: 0 4px 16px rgba(0,0,0,.25); }
+  html.m-on .m-grip { display: none; }
+  html.m-on #m-hzone { padding-top: 10px; }
+  html.m-on .leaflet-bottom { bottom: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #m-sheet, .m-chev, html.m-on .leaflet-bottom { transition: none !important; }
+}
+
+/* Very narrow phones: grey chips only in the full legend. */
+@media (max-width: 359px) {
+  #m-legend .m-chip { display: none; }
+}
 </style>
 </head>
 <body>
@@ -1376,7 +1616,7 @@ const DEFAULT_ZOOM = 5;
 const map = L.map("map", {
   center: DEFAULT_CENTER, zoom: DEFAULT_ZOOM,
   layers: [BASEMAPS.esri_light],
-  zoomControl: true,
+  zoomControl: false,  // no +/- buttons: pinch, wheel, double-click and keys zoom
   minZoom: 2,
   maxZoom: 19,
   zoomSnap: 0.25,
@@ -1584,8 +1824,10 @@ function initPeriodicMarkers() {
   }
   const nHist = Object.values(SD).filter(s => !s.rec).length;
   L.control.layers(null, {
-    [`Historical daily stations (${nHist.toLocaleString()}, no daily data since ${MAP_META.recent_cutoff})`]: historicalLayer,
-    [`All point observations (${PD.length.toLocaleString()} periodic / non-daily sites)`]: periodicLayer,
+    [`<span class="ov-long">Historical daily stations (${nHist.toLocaleString()}, no daily data since ${MAP_META.recent_cutoff})</span>`
+      + `<span class="ov-short">Historical stations (${nHist.toLocaleString()})<small>no daily data since ${MAP_META.recent_cutoff}</small></span>`]: historicalLayer,
+    [`<span class="ov-long">All point observations (${PD.length.toLocaleString()} periodic / non-daily sites)</span>`
+      + `<span class="ov-short">Non-daily sites (${PD.length.toLocaleString()})<small>snow courses and other periodic points</small></span>`]: periodicLayer,
   }, {position: "topright", collapsed: false}).addTo(map);
 }
 
@@ -1683,6 +1925,7 @@ function updateTitle() {
   const subEl = document.getElementById("map-title-sub");
   if (mainEl) mainEl.textContent = `${varLabel} % of ${refLabel}`;
   if (subEl) subEl.textContent = selectedDateLabel(st.dowy);
+  sheetUI.syncTitle();
 }
 
 // The selected date with its DOWY and water year in both hemispheres.
@@ -1700,6 +1943,7 @@ function updateDatePreviewLabel(dowy) {
   const dateLabelEl = document.getElementById("map-title-sub");
   if (dateLabelEl) dateLabelEl.textContent = dateLabel;
   updateSnapToCurrentButton();
+  sheetUI.syncTitle();
 }
 
 function updateSnapToCurrentButton() {
@@ -1760,7 +2004,8 @@ function initDateSlider() {
     for (const [v, label] of tickLabelByDowy.entries()) {
       const lbl = document.createElement("span");
       lbl.className = "date-tick-label";
-      lbl.textContent = label;
+      // "Oct 1" -> "Oct" in the narrow phone sheet (which also shows every other month)
+      lbl.textContent = sheetUI.on ? label.split(" ")[0] : label;
       lbl.style.left = `${xForDowy(v)}px`;
       tickLabels.appendChild(lbl);
     }
@@ -1964,6 +2209,8 @@ function onMarkerClick(code, opts = {}) {
 
   // Keep explanatory legend visible for all stations when panel is open.
   document.getElementById("chart-shading-legend").style.display = "block";
+
+  sheetUI.stationChanged();
 
   // Trigger chart load
   loadChart(code, st.chartVar);
@@ -2388,7 +2635,10 @@ function renderChart(code, variable, stats) {
     _clearFrozenTip();
   }
 
-  Plotly.newPlot(chartDiv, traces, layout, {responsive:true, displayModeBar:false});
+  if (sheetUI.on) sheetUI.chartLayout(layout);
+  Plotly.newPlot(chartDiv, traces, layout, {responsive:true, displayModeBar:false,
+                                            ...(sheetUI.on ? sheetUI.chartConfig : {})});
+  if (sheetUI.on) sheetUI.attachChart(chartDiv);
 
   function _focusPoint(value, dowy) {
     return value != null ? {x:[dowy], y:[value]} : {x:[], y:[]};
@@ -3048,6 +3298,7 @@ document.getElementById("close-btn").addEventListener("click", () => {
   st.selectedCode = null;
   imgClear();
   recolorAll();
+  sheetUI.stationChanged();
 });
 
 for (const [id, v] of [["chart-btn-wteq", "WTEQ"], ["chart-btn-snwd", "SNWD"]]) {
@@ -3338,6 +3589,419 @@ document.getElementById("share-view").addEventListener("click", async () => {
 });
 document.getElementById("share-url").addEventListener("focus", e => e.target.select());
 
+// ─── Phone / tablet sheet ────────────────────────────────────────────────────
+// Below 1024 px, or on a short touch screen, the top bar, legends, overlay
+// toggles and station panel move into one sheet over a full-bleed map, with
+// three heights: peek (title, date, slider, compact legend), half and full.
+// A phone gets a sheet on the bottom edge (moved with transform); a tablet a
+// floating card at most 600 px wide; a landscape phone a card docked on the
+// left. Everything moves back when the query stops matching, so desktop
+// keeps its own layout. Sheet state is transient UI and stays out of the URL.
+const sheetUI = (() => {
+  const MQ = matchMedia("(max-width: 1023px), (pointer: coarse) and (max-height: 520px)");
+  const DOCK = matchMedia("(pointer: coarse) and (max-height: 520px) and (orientation: landscape)");
+  const WIDE = matchMedia("(min-width: 721px)");
+  const ORDER = ["peek", "half", "full"];
+  const $ = id => document.getElementById(id);
+  const root = document.documentElement;
+  const moved = [];
+  const api = {on: false};
+  let sheet, top, body, header, state = "peek", stationMode = false, visible = 0;
+  let pad = {left: 0, bottom: 0};
+
+  // Remember where each moved node came from, so teardown can put it back.
+  function move(el, dest, before) {
+    if (!el || el.parentNode === dest) return;
+    moved.push([el, el.parentNode, el.nextSibling]);
+    dest.insertBefore(el, before || null);
+  }
+
+  // ── Geometry ──
+  const docked = () => DOCK.matches;
+  const gap = () => (docked() || WIDE.matches ? 12 : 0);  // cards float 12 px clear
+  const cardMode = () => gap() > 0;
+  const area = () => $("main-area").clientHeight;
+  const fullH = () => (docked() ? area() - 24 : Math.round(area() * 0.88) - gap());
+  const peekH = () => Math.min(140, Math.ceil(top.offsetHeight));
+  function stateH(s) {
+    if (s === "peek") return peekH();
+    if (docked() || s === "full") return fullH();
+    return Math.max(peekH(), Math.round(area() * 0.5) - gap());
+  }
+  // A card changes height (keeps its bottom gap and corners); the edge sheet
+  // keeps its full height and slides, which is cheaper to animate.
+  function apply(px, animate) {
+    sheet.classList.toggle("m-dragging", !animate);
+    sheet.classList.toggle("m-card", cardMode());
+    if (cardMode()) {
+      sheet.style.height = px + "px";
+      sheet.style.transform = "";
+    } else {
+      sheet.style.height = fullH() + "px";
+      sheet.style.transform = `translateY(${Math.max(0, fullH() - px)}px)`;
+    }
+    visible = px;
+    root.style.setProperty("--m-vis", (docked() ? 0 : px + gap()) + "px");
+  }
+  function settle() {
+    // What is below the visible part of a slid sheet must stay scrollable-to.
+    body.style.paddingBottom = (cardMode() ? 16 : fullH() - visible + 16) + "px";
+    updateMapPadding();
+    resizeChart();
+  }
+  function labels() {
+    const collapse = state === "full" || (docked() && state !== "peek");
+    const t = stationMode ? $("m-st-name").textContent : $("map-title-main").textContent;
+    header.setAttribute("aria-expanded", String(state !== "peek"));
+    header.setAttribute("aria-label", `${t}. ${collapse ? "Collapse" : "Expand"} panel`);
+    header.dataset.dir = collapse ? "down" : "up";
+  }
+  let settleTimer = null;
+  function setState(s, animate = true) {
+    state = s;
+    sheet.dataset.state = s;
+    labels();
+    apply(stateH(s), animate);
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      settle();
+      if (stationMode) revealSelected();
+    }, animate ? 240 : 0);
+  }
+  function cycle() {
+    if (docked()) setState(state === "peek" ? "full" : "peek");
+    else setState(ORDER[(ORDER.indexOf(state) + 1) % 3]);
+  }
+
+  // ── Map padding: Leaflet has none, so popups autopan clear of the sheet and
+  // an opened station is panned into the part of the map that shows. ──
+  function updateMapPadding() {
+    pad = docked() && state !== "peek"
+      ? {left: sheet.offsetWidth + 12, bottom: 0}
+      : {left: 0, bottom: visible + gap()};
+    const P = L.Popup.prototype.options;
+    P.autoPanPaddingTopLeft = L.point(pad.left + 12, 12);
+    P.autoPanPaddingBottomRight = L.point(12, pad.bottom + 12);
+    map.invalidateSize({pan: false});
+  }
+  function revealSelected() {
+    const m = leafletMarkers[st.selectedCode];
+    if (!m) return;
+    m.closeTooltip();  // a tap leaves the hover tooltip open
+    const sz = map.getSize(), p = map.latLngToContainerPoint(m.getLatLng());
+    const x0 = pad.left, y1 = sz.y - pad.bottom;
+    if (p.x > x0 + 24 && p.x < sz.x - 24 && p.y > 60 && p.y < y1 - 24) return;
+    map.panBy([p.x - (x0 + (sz.x - x0) / 2), p.y - Math.max(70, y1 * 0.45)]);
+  }
+
+  // ── Compact legend, built from the full legend's rows ──
+  function buildLegendRow() {
+    const rows = [...document.querySelectorAll("#legend .legend-row")];
+    const short = ["<50", "50+", "70+", "90+", "110+", "130+", ">150"];
+    const wrap = document.createElement("div");
+    wrap.id = "m-legend";
+    wrap.setAttribute("role", "img");
+    wrap.setAttribute("aria-label",
+      "Colour: percent of normal. " + rows.map(r => r.textContent.trim()).join("; "));
+    const dot = r => r.querySelector(".legend-dot").style.background;
+    const bar = rows.slice(0, 7).map((r, i) =>
+      `<span style="background:${dot(r)};color:${luminance(dot(r)) > 0.4 ? "#111" : "#fff"}">${short[i]}</span>`
+    ).join("");
+    const chips = rows.slice(7).map(r =>
+      `<span class="m-chip"><i style="background:${dot(r)}"></i>${r.textContent.includes("0 cm") ? "0 cm" : "no data"}</span>`
+    ).join("");
+    wrap.innerHTML = `<span class="m-unit" aria-hidden="true">%</span>`
+      + `<div class="m-bar" aria-hidden="true">${bar}</div><span aria-hidden="true">${chips}</span>`;
+    return wrap;
+  }
+  function luminance(css) {
+    const c = (css.match(/[0-9]+/g) || [0, 0, 0]).slice(0, 3).map(v => {
+      v /= 255;
+      return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4;
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  function section(title, id) {
+    const s = document.createElement("section");
+    s.className = "m-sec";
+    if (id) s.id = id;
+    if (title) s.innerHTML = `<h3 class="m-sec-h">${title}</h3>`;
+    return s;
+  }
+
+  // ── Station chart on touch ──
+  // 400 px, or less on a short landscape screen so the plot fits the sheet.
+  const chartH = () => Math.max(260, Math.min(400, (docked() ? fullH() : Math.round(area() * 0.88)) - 130));
+  function resizeChart() {
+    const cd = $("chart-div");
+    if (!cd || !cd._fullLayout || !cd.offsetWidth) return;
+    // Explicit width: Plotly's autosize keeps the old width once height is relaid.
+    if (cd._fullLayout.width !== cd.clientWidth || cd._fullLayout.height !== chartH()) {
+      Plotly.relayout(cd, {width: cd.clientWidth, height: chartH()});
+    }
+  }
+  // No zoom box (a drag scrubs or scrolls), fixed axes, fonts of 12 px and up,
+  // and a title cut to the reference line: the station name is in the sheet
+  // header and the variable on the buttons.
+  api.chartLayout = layout => Object.assign(layout, {
+    dragmode: false,
+    xaxis: Object.assign({}, layout.xaxis, {fixedrange: true, tickfont: {size: 12}}),
+    yaxis: Object.assign({}, layout.yaxis, {fixedrange: true, tickfont: {size: 12}}),
+    legend: Object.assign({}, layout.legend, {font: {size: 12}}),
+    hoverlabel: Object.assign({}, layout.hoverlabel, {font: {size: 13, color: "#111"}}),
+    title: {text: String(layout.title.text).split("<br>").pop(), font: {size: 12, color: "#444"}},
+    margin: Object.assign({}, layout.margin, {l: 46, r: 12, t: 34}),
+    height: chartH(),
+  });
+  api.chartConfig = {scrollZoom: false, doubleClick: false};
+  // A horizontal drag scrubs the hover line; a vertical one scrolls the sheet
+  // (touch-action: pan-y). A tap keeps the chart's own tap-to-pin readout.
+  api.attachChart = cd => {
+    // Keep Plotly's label (anchored at the median) and the pinned readout
+    // inside the visible part of the sheet. Plotly redraws labels after a
+    // restyle, so watch the layers rather than the hover event.
+    const visibleBox = () => {
+      const c = cd.getBoundingClientRect(), b = body.getBoundingClientRect();
+      return {top: Math.max(c.top, b.top) + 4, bottom: Math.min(c.bottom, b.bottom, innerHeight) - 4};
+    };
+    const hl = cd.querySelector(".hoverlayer");
+    if (hl) new MutationObserver(() => {
+      const v = visibleBox();
+      hl.querySelectorAll(".hovertext").forEach(g => {
+        const r = g.getBoundingClientRect();
+        const xy = (g.getAttribute("transform") || "").match(/translate[(]([-0-9.e]+)[ ,]+([-0-9.e]+)[)]/);
+        if (r.bottom <= v.bottom || !xy) return;
+        const dy = Math.max(v.bottom - r.bottom, v.top - r.top);
+        g.setAttribute("transform", `translate(${xy[1]},${+xy[2] + dy})`);
+      });
+    }).observe(hl, {childList: true});
+    const tip = $("chart-frozen-tip");
+    if (tip) new MutationObserver(() => {
+      if (tip.style.display !== "block") return;
+      const r = tip.getBoundingClientRect(), v = visibleBox();
+      if (r.bottom <= v.bottom + 1) return;
+      const next = `${Math.round(parseFloat(tip.style.top || 0) + Math.max(v.bottom - r.bottom, v.top - r.top))}px`;
+      if (next !== tip.style.top) tip.style.top = next;
+    }).observe(tip, {attributes: true, attributeFilter: ["style"]});
+
+    if (cd.dataset.touch) return;  // the div outlives each plot; listeners once
+    cd.dataset.touch = "1";
+    let t0 = null, scrubbing = false, lastT = 0, pending = null, timer = null;
+    const xval = clientX => {
+      const xa = cd._fullLayout && cd._fullLayout.xaxis;
+      if (!xa) return null;
+      const x = Math.max(0, Math.min(xa._length, clientX - cd.getBoundingClientRect().left - xa._offset));
+      return Math.max(1, Math.min(366, Math.round(xa.p2l(x))));
+    };
+    // Plotly throttles hover to one call per 50 ms and the chart's hover
+    // handler restyles, which drops queued calls: pace them, last one wins.
+    const hover = v => {
+      lastT = Date.now();
+      if (cd._fullLayout && cd._fullLayout.hovermode !== false) Plotly.Fx.hover(cd, {xval: v}, "xy");
+    };
+    const hoverAt = v => {
+      pending = v;
+      const wait = 70 - (Date.now() - lastT);
+      if (wait <= 0) { clearTimeout(timer); timer = null; hover(v); }
+      else if (!timer) timer = setTimeout(() => { timer = null; hover(pending); }, wait);
+    };
+    // Captured here and kept from Plotly: its own touch handling turns a tap
+    // into a click on the previous hover point, so a tap after a scrub would
+    // pin and unpin at once. A tap still reaches it as mouse events.
+    cd.addEventListener("touchstart", e => {
+      e.stopPropagation();
+      t0 = e.touches.length === 1 ? {x: e.touches[0].clientX, y: e.touches[0].clientY} : null;
+      scrubbing = false;
+    }, {passive: true, capture: true});
+    cd.addEventListener("touchmove", e => {
+      if (!t0 || e.touches.length !== 1) return;
+      const dx = e.touches[0].clientX - t0.x, dy = e.touches[0].clientY - t0.y;
+      if (!scrubbing && Math.abs(dx) > 8 && Math.abs(dx) > Math.abs(dy) * 1.2) scrubbing = true;
+      const v = scrubbing ? xval(e.touches[0].clientX) : null;
+      if (v != null) hoverAt(v);
+    }, {passive: true, capture: true});
+    cd.addEventListener("touchend", () => { t0 = null; scrubbing = false; }, {passive: true, capture: true});
+  };
+  function clearChartHover() {
+    const cd = $("chart-div");
+    if (cd && cd._fullLayout) Plotly.Fx.unhover(cd);
+  }
+
+  // ── Hooks called by the rest of the page ──
+  // Peek line: the date, "today", and the water-year day.
+  api.syncTitle = () => {
+    if (!api.on) return;
+    $("m-date-short").textContent = /^Loading|^Could not/.test($("map-title-sub").textContent)
+      ? $("map-title-sub").textContent
+      : `${formatDate(dowyToDate(st.dowy, st.wy))}${isCurrentDay() ? " · today" : ""} · WY${st.wy} day ${st.dowy}`;
+    labels();
+  };
+  api.stationChanged = () => {
+    if (!api.on) return;
+    const on = $("station-panel").classList.contains("visible");
+    if (on) {
+      $("m-st-name").textContent = SD[st.selectedCode] ? SD[st.selectedCode].name : "Station";
+      const m = leafletMarkers[st.selectedCode];
+      $("m-st-dot").style.background = (m && m.options.fillColor) || "#888";
+    }
+    if (on === stationMode) { if (on) revealSelected(); return; }
+    stationMode = on;
+    sheet.classList.toggle("m-station", on);
+    $("m-st-title").hidden = !on;
+    $("m-st-close").hidden = !on;
+    $("m-legend").hidden = on;
+    body.scrollTop = 0;
+    clearChartHover();
+    setState(on ? (state === "full" ? "full" : "half") : "peek");
+  };
+
+  function build() {
+    api.on = true;
+    root.classList.add("m-on");
+    sheet = document.createElement("section");
+    sheet.id = "m-sheet";
+    sheet.setAttribute("aria-label", "Map panel");
+    sheet.innerHTML = `
+      <div id="m-top">
+        <div id="m-header">
+          <div id="m-hzone" role="button" tabindex="0" aria-controls="m-body" aria-expanded="false">
+            <span class="m-grip" aria-hidden="true"></span>
+            <div id="m-titles">
+              <div id="m-st-title" hidden><span id="m-st-dot" aria-hidden="true"></span><span id="m-st-name"></span></div>
+              <div id="m-date-short"></div>
+            </div>
+            <svg class="m-chev" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M6 15l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <button id="m-st-close" type="button" hidden aria-label="Close station details"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></button>
+        </div>
+        <div id="m-peekctl"></div>
+      </div>
+      <div id="m-body"><div id="m-controls"></div></div>`;
+    $("main-area").appendChild(sheet);
+    top = $("m-top"); body = $("m-body"); header = $("m-hzone");
+    const ctl = $("m-controls");
+
+    move($("map-title-main"), $("m-titles"), $("m-st-title"));
+    move($("date-slider-wrap"), $("m-peekctl"));
+    $("m-peekctl").appendChild(buildLegendRow());
+
+    const dateSec = section(null, "m-date-sec");
+    ctl.appendChild(dateSec);
+    move($("map-title-sub"), dateSec);
+    const dateRow = document.createElement("div");
+    dateRow.className = "m-row";
+    dateSec.appendChild(dateRow);
+    move($("sel-wy"), dateRow);
+    move($("snap-current-day"), dateRow);
+
+    const viewSec = section("Map");
+    ctl.appendChild(viewSec);
+    move($("top-controls"), viewSec);
+    const netSec = section("Networks <small>tap to show or hide</small>");
+    ctl.appendChild(netSec);
+    move($("network-legend"), netSec);
+    const ovSec = section("More stations", "m-overlays");
+    ctl.appendChild(ovSec);
+    move(document.querySelector(".leaflet-control-layers"), ovSec);
+    const legSec = section("Colour legend");
+    ctl.appendChild(legSec);
+    move($("legend"), legSec);
+    const aboutSec = section("About the data");
+    ctl.appendChild(aboutSec);
+    move($("clock-block"), aboutSec);
+    move($("station-panel"), body);
+
+    // Attribution behind an (i) toggle that rides on the sheet.
+    const attr = document.querySelector(".leaflet-control-attribution");
+    const ib = document.createElement("button");
+    ib.id = "m-attr-btn";
+    ib.type = "button";
+    ib.innerHTML = '<span aria-hidden="true">i</span>';
+    ib.setAttribute("aria-label", "Map data attribution");
+    ib.setAttribute("aria-expanded", "false");
+    attr.parentNode.insertBefore(ib, attr);
+    L.DomEvent.disableClickPropagation(ib);
+    ib.addEventListener("click", () => ib.setAttribute("aria-expanded", String(attr.classList.toggle("m-open"))));
+
+    $("m-st-close").addEventListener("click", () => $("close-btn").click());
+    header.addEventListener("keydown", e => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); cycle(); }
+    });
+    sheet.addEventListener("keydown", e => {
+      if (e.key === "Escape" && state !== "peek") { setState("peek"); header.focus(); }
+    });
+    // Tap the header to cycle; drag it to resize, snapping (a flick moves one step).
+    let drag = null;
+    header.addEventListener("pointerdown", e => {
+      drag = {y: e.clientY, v: visible, moved: false};
+      header.setPointerCapture(e.pointerId);
+    });
+    header.addEventListener("pointermove", e => {
+      if (!drag) return;
+      const dy = drag.y - e.clientY;
+      if (Math.abs(dy) > 6) drag.moved = true;
+      if (drag.moved) apply(Math.max(peekH(), Math.min(stateH("full"), drag.v + dy)), false);
+    });
+    const end = e => {
+      if (!drag) return;
+      const d = drag;
+      drag = null;
+      if (!d.moved) return cycle();
+      const opts = docked() ? ["peek", "full"] : ORDER;
+      let best = opts.reduce((a, s) => (Math.abs(stateH(s) - visible) < Math.abs(stateH(a) - visible) ? s : a));
+      const fling = d.y - e.clientY;
+      if (Math.abs(fling) > 40 && best === state) {
+        best = opts[Math.max(0, Math.min(opts.length - 1, opts.indexOf(state) + (fling > 0 ? 1 : -1)))];
+      }
+      setState(best);
+    };
+    header.addEventListener("pointerup", end);
+    header.addEventListener("pointercancel", end);
+
+    api.syncTitle();
+    renderDateTicks();
+    api.stationChanged();
+    if (st.selectedCode && $("chart-div")._fullLayout) loadChart(st.selectedCode, st.chartVar);  // phone chart
+    requestAnimationFrame(() => setState(stationMode ? "half" : "peek", false));
+  }
+
+  function teardown() {
+    api.on = false;
+    for (let i = moved.length - 1; i >= 0; i--) {
+      const [el, parent, next] = moved[i];
+      parent.insertBefore(el, next && next.parentNode === parent ? next : null);
+    }
+    moved.length = 0;
+    $("m-attr-btn").remove();
+    document.querySelector(".leaflet-control-attribution").classList.remove("m-open");
+    sheet.remove();
+    stationMode = false;
+    state = "peek";
+    root.classList.remove("m-on");
+    root.style.removeProperty("--m-vis");
+    const P = L.Popup.prototype.options;
+    P.autoPanPaddingTopLeft = P.autoPanPaddingBottomRight = null;
+    renderDateTicks();
+    map.invalidateSize();
+    const cd = $("chart-div");
+    if (cd && cd._fullLayout && st.selectedCode) loadChart(st.selectedCode, st.chartVar);  // back to the desktop chart
+  }
+
+  api.init = () => {
+    const sync = () => (MQ.matches ? (api.on || build()) : (api.on && teardown()));
+    MQ.addEventListener("change", sync);
+    DOCK.addEventListener("change", () => api.on && setState(state === "half" ? "full" : state, false));
+    window.addEventListener("resize", () => api.on && setState(state, false));
+    new ResizeObserver(resizeChart).observe($("station-panel"));  // chart follows the sheet's width
+    map.on("click", () => {
+      document.querySelector(".leaflet-control-attribution").classList.remove("m-open");
+      if (api.on) clearChartHover();
+    });
+    sync();
+  };
+  return api;
+})();
+
 // ─── Initialise ───────────────────────────────────────────────────────────────
 const urlState = readUrlState();
 migrateLegacyQuery();
@@ -3352,6 +4016,7 @@ initPeriodicMarkers();
 updateClockPanel();
 setInterval(updateClockPanel, 1000);
 updateTitle();
+sheetUI.init();
 applyUrlStateLate(urlState).finally(() => {
   urlRestoring = false;
   map.on("moveend", scheduleUrlUpdate);

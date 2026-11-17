@@ -493,6 +493,14 @@ the USBR *Emerging Snow Monitoring Technologies* appendix) is indexed in
   the twin marker.
 - Network label/shape vocabularies are generated from the inventory, not
   hand-maintained in the template.
+- **Layout.** Desktop: a top bar, floating legends and a station side
+  panel; no zoom buttons (pinch, wheel, double-click and keys zoom).
+  Below 1024 px wide, or on a touch screen under 520 px tall, the same
+  controls move into one sheet over a full-bleed map, with peek, half and
+  full heights; the station panel opens inside it, under the title and
+  date slider. Both layouts are one page, switched by one media query
+  shared by the CSS and the script (`sheetUI`), and the sheet's state is
+  transient UI, so it stays out of the URL.
 - **The view lives in the URL.** Map centre/zoom, basemap, variable,
   reference, date, network filter, overlays and the open station are written
   to the URL hash (`history.replaceState`, debounced) and restored on load;
