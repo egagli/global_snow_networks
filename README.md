@@ -211,7 +211,12 @@ Features:
   provider, live satellite camera link where available)
 - **Context imagery**: recent Sentinel-2 chips centred on the selected
   station (see below)
-- Variable toggling (WTEQ/SNWD)
+- SWE / Snow Depth buttons choose the map variable. Opening a station
+  opens its chart on the same variable; a variable the station has no
+  record of is hatched in the panel, and when that is the one selected,
+  the other variable's button pulses
+- A network legend that switches networks on and off (FMI's five station
+  types and SNIH's two networks each share one row and one marker shape)
 - Period-of-record and normal-period comparisons
 - A water-year menu (the current water year and the two before it) and a
   date slider spanning the whole selected water year, 1 October to
@@ -319,7 +324,7 @@ hash on load, and any other query parameters are kept.
 | `date=YYYY-MM-DD` | selected date (any day in the water years on the menu) | the current day, so the link follows today |
 | `hide=SNTL,CCSS,…` | networks switched off in the legend | all on |
 | `hist=1`, `pobs=1` | historical stations / all point observations overlays | off |
-| `station=<code>`, `chart=SNWD` | open station panel and its chart variable | no panel; SWE chart |
+| `station=<code>`, `chart=SNWD` | open station panel and its chart variable | no panel; chart on the map variable |
 
 Example:
 `https://egagli.github.io/maps/global-snow-networks.html#ll=47.5123,-121.4567&z=8.25&var=SNWD&date=2026-02-07&station=1000_OR_SNTL`

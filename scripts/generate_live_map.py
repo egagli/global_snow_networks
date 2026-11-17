@@ -519,7 +519,9 @@ def process_station_from_csv(
             meds[f"pm_{rk}_{vk}"] = med_arr
             meds[f"pn_{rk}_{vk}"] = n_arr
 
-        chart[vk] = _build_chart_stats(pivot)
+        # A column that is all gaps leaves an empty pivot: no chart, not an
+        # all-null one, so the panel can tell the variable is missing.
+        chart[vk] = _build_chart_stats(pivot) if not pivot.empty else None
 
     def wy_entry_for(wy: int) -> dict:
         wy_df = snow[snow["_wy"] == wy].sort_values("_dowy")
@@ -652,6 +654,13 @@ html,body{height:100%;overflow:hidden}
 #top-controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px}
 .ctl-group{display:flex;align-items:center;gap:4px}
 .ctl-label{font-size:11px;color:#aac;white-space:nowrap}
+.var-btns{display:inline-flex}
+.var-btn{padding:2px 10px;border:1px solid #5a6e85;background:#24384d;color:#cfe0f2;
+  font-size:12px;cursor:pointer;line-height:1.4}
+.var-btn:first-child{border-radius:3px 0 0 3px}
+.var-btn:last-child{border-radius:0 3px 3px 0;border-left:none}
+.var-btn:hover{background:#2f4862}
+.var-btn.active{background:#d0e8ff;color:#1a2a3a;border-color:#d0e8ff;font-weight:600}
 #clock-block{position:absolute;top:6px;right:12px;display:flex;flex-direction:column;align-items:flex-start;gap:2px;
   padding:6px 8px;border:1px solid #3f5165;border-radius:4px;background:rgba(18,34,52,0.72);
   width:fit-content;max-width:min(36vw, 330px)}
@@ -747,6 +756,19 @@ select:focus{outline:none;border-color:#4af}
 .chart-btn{padding:4px 10px;border:1px solid #889;border-radius:3px;background:#fff;
            font-size:12px;cursor:pointer;color:#444}
 .chart-btn.active{background:#1a2a3a;color:#fff;border-color:#1a2a3a}
+/* Variable with no record at this station: hatched and greyed. */
+.chart-btn.unavail{color:#888;border-style:dashed;
+  background-image:repeating-linear-gradient(45deg,rgba(0,0,0,0.22) 0 2px,transparent 2px 6px)}
+.chart-btn.active.unavail{color:#ddd;background-color:#56616d;border-color:#56616d;
+  background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.3) 0 2px,transparent 2px 6px)}
+/* The other variable, when it has data and the selected one does not. */
+.chart-btn.suggest{border-color:#0a84ff;color:#0a5cc2;font-weight:600;
+  animation:chart-btn-pulse 1.4s ease-in-out infinite}
+@keyframes chart-btn-pulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(10,132,255,0.65)}
+  50%{box-shadow:0 0 0 6px rgba(10,132,255,0)}}
+@media (prefers-reduced-motion: reduce){
+  .chart-btn.suggest{animation:none;box-shadow:0 0 0 3px rgba(10,132,255,0.45)}}
 #chart-loading{color:#666;font-style:italic;font-size:12px;margin:8px 0}
 #chart-div{min-height:380px;position:relative}
 #chart-frozen-tip{position:absolute;top:8px;right:8px;z-index:20;background:rgba(255,255,255,0.98);
@@ -865,10 +887,10 @@ select:focus{outline:none;border-color:#4af}
       </div>
       <div class="ctl-group">
         <span class="ctl-label">Variable:</span>
-        <select id="sel-var">
-          <option value="WTEQ">SWE</option>
-          <option value="SNWD">Snow Depth</option>
-        </select>
+        <div class="var-btns" role="group" aria-label="Map variable">
+          <button type="button" class="var-btn active" data-var="WTEQ" aria-pressed="true">SWE</button>
+          <button type="button" class="var-btn" data-var="SNWD" aria-pressed="false">Snow Depth</button>
+        </div>
       </div>
       <div class="ctl-group">
         <span class="ctl-label">Reference:</span>
@@ -1023,6 +1045,19 @@ const NET_LABELS = {
   FMI_AIRP:"FMI airport weather station",
 };
 
+// The network legend shows one row per group: toggling it toggles every
+// member network, and members share the group's marker shape. Tooltips and
+// the station panel keep the member network's own label.
+const NET_GROUPS = {
+  FMI: ["FMI_AWS", "FMI_CLIM", "FMI_WS", "FMI_PRCP", "FMI_AIRP"],
+  SNIH: ["RHN", "RMET"],
+};
+const NET_GROUP_LABELS = {FMI: "FMI (Finland)", SNIH: "SNIH (Argentina)"};
+const NET_GROUP_OF = {};
+for (const [g, members] of Object.entries(NET_GROUPS)) {
+  for (const n of members) NET_GROUP_OF[n] = g;
+}
+
 // SVG shape markup for each network code (12×12 viewBox)
 const NET_SHAPES = {
   SNTL:'<circle cx="6" cy="6" r="5" fill="#666" stroke="#fff" stroke-width="0.5"/>',
@@ -1040,15 +1075,10 @@ const NET_SHAPES = {
   ARB:'<polygon points="6.00,1.00 9.21,2.17 10.92,5.13 10.33,8.50 7.71,10.70 4.29,10.70 1.67,8.50 1.08,5.13 2.79,2.17" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   IMIS:'<polygon points="11.00,6.00 8.50,10.33 3.50,10.33 1.00,6.00 3.50,1.67 8.50,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   BEOB:'<polygon points="6.00,1.00 8.94,1.95 10.76,4.45 10.76,7.55 8.94,10.05 6.00,11.00 3.06,10.05 1.24,7.55 1.24,4.45 3.06,1.95" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  RHN:'<polygon points="6.00,11.00 1.24,7.55 3.06,1.95 8.94,1.95 10.76,7.55" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  RMET:'<polygon points="6.00,11.00 2.09,9.12 1.13,4.89 3.83,1.50 8.17,1.50 10.87,4.89 9.91,9.12" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  SNIH:'<polygon points="6.00,11.00 1.24,7.55 3.06,1.95 8.94,1.95 10.76,7.55" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   CEAZA:'<polygon points="1.00,6.00 8.50,1.67 8.50,10.33" fill="#666" stroke="#fff" stroke-width="0.5"/>',
   HQ:'<polygon points="6.00,1.00 9.91,2.88 10.87,7.11 8.17,10.50 3.83,10.50 1.13,7.11 2.09,2.88" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  FMI_AWS:'<polygon points="6.00,1.00 8.70,1.79 10.55,3.92 10.95,6.71 9.78,9.27 7.41,10.80 4.59,10.80 2.22,9.27 1.05,6.71 1.45,3.92 3.30,1.79" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  FMI_CLIM:'<polygon points="6.00,1.00 8.50,1.67 10.33,3.50 11.00,6.00 10.33,8.50 8.50,10.33 6.00,11.00 3.50,10.33 1.67,8.50 1.00,6.00 1.67,3.50 3.50,1.67" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  FMI_WS:'<polygon points="11.00,6.00 7.55,10.76 1.95,8.94 1.95,3.06 7.55,1.24" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  FMI_PRCP:'<polygon points="11.00,6.00 9.12,9.91 4.89,10.87 1.50,8.17 1.50,3.83 4.89,1.13 9.12,2.09" fill="#666" stroke="#fff" stroke-width="0.5"/>',
-  FMI_AIRP:'<polygon points="11.00,6.00 9.83,9.21 6.87,10.92 3.50,10.33 1.30,7.71 1.30,4.29 3.50,1.67 6.87,1.08 9.83,2.79" fill="#666" stroke="#fff" stroke-width="0.5"/>',
+  FMI:'<polygon points="6.00,1.00 8.70,1.79 10.55,3.92 10.95,6.71 9.78,9.27 7.41,10.80 4.59,10.80 2.22,9.27 1.05,6.71 1.45,3.92 3.30,1.79" fill="#666" stroke="#fff" stroke-width="0.5"/>',
 };
 
 function pctColor(pct) {
@@ -1406,12 +1436,11 @@ const NET_POLYGONS = {
   SNTLT: [3, -90], CCSS: [3, 90], BCSS: [6, -90], SNOW: [4, -45],
   MSNT: [5, -90], SCAN: [6, -90], NVE: [4, 0], YSS: [8, -90], YKEC: [3, 0],
   HQ: [7, -90], ARB: [9, -90], IMIS: [6, 0], BEOB: [10, -90],
-  RHN: [5, 90], RMET: [7, 90], CEAZA: [3, 180],
-  FMI_AWS: [11, -90], FMI_CLIM: [12, -90], FMI_WS: [5, 0], FMI_PRCP: [7, 0],
-  FMI_AIRP: [9, 0],
+  SNIH: [5, 90], CEAZA: [3, 180], FMI: [11, -90],
 };
 
 function stationShape(network, measurementType) {
+  network = NET_GROUP_OF[network] || network;
   if (NET_POLYGONS[network] || network === "MPRC" || network === "COOP") return network;
   if (network === "SNTL") return "circle";
   return measurementType === "manual" ? "MPRC" : "circle";
@@ -1826,8 +1855,11 @@ function track(name, params) {
 }
 
 // ─── Station popup ───────────────────────────────────────────────────────────
-function onMarkerClick(code) {
+// opts.keepChartVar: keep st.chartVar (a shared link's chart=) instead of
+// opening the chart on the map's variable.
+function onMarkerClick(code, opts = {}) {
   const isNewStation = st.selectedCode !== code;
+  if (isNewStation && !opts.keepChartVar) st.chartVar = st.variable;
   st.selectedCode = code;
   recolorAll();  // highlight selected
   if (isNewStation) imgClear();
@@ -1928,10 +1960,7 @@ function onMarkerClick(code) {
 
   // Chart controls
   document.getElementById("chart-controls").style.display = "flex";
-  document.getElementById("chart-btn-wteq").className =
-    "chart-btn" + (st.chartVar === "WTEQ" ? " active" : "");
-  document.getElementById("chart-btn-snwd").className =
-    "chart-btn" + (st.chartVar === "SNWD" ? " active" : "");
+  updateChartButtons(chartCache[code] || null);
 
   // Keep explanatory legend visible for all stations when panel is open.
   document.getElementById("chart-shading-legend").style.display = "block";
@@ -1946,10 +1975,35 @@ function onMarkerClick(code) {
 // ─── Chart rendering (payload fetched lazily from charts/*.json) ─────────────
 const chartCache = {};  // code -> chart payload
 
+const CHART_VARS = {
+  WTEQ: {key: "wteq", label: "SWE", btn: "chart-btn-wteq"},
+  SNWD: {key: "snwd", label: "Snow Depth", btn: "chart-btn-snwd"},
+};
+
+function chartHasData(stats) {
+  return !!stats && (stats.maxs || []).some(v => v !== null);
+}
+
+// Highlight the chart variable; once the station's payload is known, hatch
+// a variable it has no record of and, when the selected one is the missing
+// one, pulse the other.
+function updateChartButtons(payload) {
+  const has = v => !payload || chartHasData(payload[CHART_VARS[v].key]);
+  for (const [v, c] of Object.entries(CHART_VARS)) {
+    const other = v === "WTEQ" ? "SNWD" : "WTEQ";
+    const btn = document.getElementById(c.btn);
+    btn.classList.toggle("active", v === st.chartVar);
+    btn.classList.toggle("unavail", !has(v));
+    btn.classList.toggle("suggest", v !== st.chartVar && has(v) && !has(other));
+    btn.title = has(v) ? "" : `No ${c.label} record at this station`;
+  }
+}
+
 async function loadChart(code, variable) {
   document.getElementById("chart-loading").textContent =
     "Loading chart data…";
   document.getElementById("chart-div").innerHTML = "";
+  updateChartButtons(chartCache[code] || null);
 
   let payload = chartCache[code];
   if (!payload) {
@@ -1965,11 +2019,18 @@ async function loadChart(code, variable) {
     }
   }
 
-  const key = variable === "WTEQ" ? "wteq" : "snwd";
-  const stats = payload[key] || null;
-  if (!stats) {
-    document.getElementById("chart-loading").textContent =
-      "No chart data available.";
+  // A slower fetch for a station or variable since replaced is dropped.
+  if (code !== st.selectedCode || variable !== st.chartVar) return;
+  updateChartButtons(payload);
+
+  const stats = payload[CHART_VARS[variable].key] || null;
+  if (!chartHasData(stats)) {
+    const label = CHART_VARS[variable].label;
+    const other = CHART_VARS[variable === "WTEQ" ? "SNWD" : "WTEQ"];
+    document.getElementById("chart-loading").textContent = chartHasData(payload[other.key])
+      ? `No ${label} record at this station. ${other.label} is available: `
+        + `select it above.`
+      : "No chart data available.";
     return;
   }
 
@@ -2928,15 +2989,29 @@ document.getElementById("sel-basemap").addEventListener("change", e => {
   scheduleUrlUpdate();
 });
 
-document.getElementById("sel-var").addEventListener("change", e => {
-  st.variable = e.target.value;
-  track("map_layer_change", {layer: e.target.value});
-  updateTitle();
-  updateSliderTrackColor();
-  recolorAll();
-  // Also update popup stats if open
-  if (st.selectedCode) onMarkerClick(st.selectedCode);
-});
+function syncVarButtons() {
+  for (const b of document.querySelectorAll(".var-btn")) {
+    const on = b.dataset.var === st.variable;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", String(on));
+  }
+}
+
+for (const b of document.querySelectorAll(".var-btn")) {
+  b.addEventListener("click", () => {
+    if (b.dataset.var === st.variable) return;
+    st.variable = b.dataset.var;
+    // An open station's chart follows the map variable.
+    st.chartVar = st.variable;
+    track("map_layer_change", {layer: st.variable});
+    syncVarButtons();
+    updateTitle();
+    updateSliderTrackColor();
+    recolorAll();
+    // Also update popup stats if open
+    if (st.selectedCode) onMarkerClick(st.selectedCode);
+  });
+}
 
 document.getElementById("sel-ref").addEventListener("change", e => {
   st.ref = e.target.value;
@@ -2975,23 +3050,15 @@ document.getElementById("close-btn").addEventListener("click", () => {
   recolorAll();
 });
 
-document.getElementById("chart-btn-wteq").addEventListener("click", () => {
-  st.chartVar = "WTEQ";
-  track("chart_variable_change", {variable: "WTEQ"});
-  document.getElementById("chart-btn-wteq").className = "chart-btn active";
-  document.getElementById("chart-btn-snwd").className = "chart-btn";
-  if (st.selectedCode) loadChart(st.selectedCode, "WTEQ");
-  scheduleUrlUpdate();
-});
-
-document.getElementById("chart-btn-snwd").addEventListener("click", () => {
-  st.chartVar = "SNWD";
-  track("chart_variable_change", {variable: "SNWD"});
-  document.getElementById("chart-btn-wteq").className = "chart-btn";
-  document.getElementById("chart-btn-snwd").className = "chart-btn active";
-  if (st.selectedCode) loadChart(st.selectedCode, "SNWD");
-  scheduleUrlUpdate();
-});
+for (const [id, v] of [["chart-btn-wteq", "WTEQ"], ["chart-btn-snwd", "SNWD"]]) {
+  document.getElementById(id).addEventListener("click", () => {
+    st.chartVar = v;
+    track("chart_variable_change", {variable: v});
+    if (st.selectedCode) loadChart(st.selectedCode, v);
+    else updateChartButtons(null);
+    scheduleUrlUpdate();
+  });
+}
 
 // ─── Network legend (interactive filter) ─────────────────────────────────────
 function initNetworkFilter() {
@@ -3002,15 +3069,23 @@ function initNetworkFilter() {
   ];
   const available = MAP_META.available_networks;
 
-  // Count stations per network from SD
+  // One legend row per network, or per group (NET_GROUPS) of networks.
+  const members = {};
+  for (const net of available) {
+    const key = NET_GROUP_OF[net] || net;
+    (members[key] = members[key] || []).push(net);
+  }
+
+  // Count stations per legend row from SD
   const netCounts = {};
   // Stations drawn by default: historical ones are counted on their toggle.
   for (const s of Object.values(SD)) {
-    if (s.rec) netCounts[s.net] = (netCounts[s.net] || 0) + 1;
+    const key = NET_GROUP_OF[s.net] || s.net;
+    if (s.rec) netCounts[key] = (netCounts[key] || 0) + 1;
   }
 
   // Sort by netOrder first, then alphabetically
-  const sorted = available.slice().sort((a, b) => {
+  const sorted = Object.keys(members).sort((a, b) => {
     const ia = netOrder.indexOf(a), ib = netOrder.indexOf(b);
     if (ia !== -1 && ib !== -1) return ia - ib;
     if (ia !== -1) return -1;
@@ -3021,29 +3096,36 @@ function initNetworkFilter() {
   for (const net of sorted) {
     const shapeSvg = NET_SHAPES[net]
       || '<circle cx="6" cy="6" r="5" fill="#666" stroke="#fff" stroke-width="0.5"/>';
-    const label = NET_LABELS[net] || net;
+    const label = NET_GROUP_LABELS[net] || NET_LABELS[net] || net;
     const count = netCounts[net] || 0;
+    const nets = members[net];
+    const isOn = () => nets.some(n => st.visibleNetworks.has(n));
 
     const row = document.createElement("div");
-    row.className = "nlrow" + (st.visibleNetworks.has(net) ? "" : " net-off");
+    row.className = "nlrow" + (isOn() ? "" : " net-off");
     row.dataset.net = net;
     row.innerHTML = `<div class="nshape"><svg width="12" height="12">${shapeSvg}</svg></div>`
       + `<span class="net-label">${label}</span>`
       + `<span class="net-count">(${count})</span>`;
     row.addEventListener("click", () => {
-      const on = st.visibleNetworks.has(net);
-      if (on) {
-        st.visibleNetworks.delete(net);
-        row.classList.add("net-off");
-      } else {
-        st.visibleNetworks.add(net);
-        row.classList.remove("net-off");
+      const on = isOn();
+      for (const n of nets) {
+        if (on) st.visibleNetworks.delete(n);
+        else st.visibleNetworks.add(n);
       }
+      row.classList.toggle("net-off", on);
       track("network_filter", {network: net, visible: !on});
       recolorAll();
     });
     container.appendChild(row);
   }
+
+  // The legends sit inside the map container: without this, two quick
+  // clicks on a row reach the map as a double-click and zoom it in, and the
+  // wheel over a scrolling legend zooms the map.
+  const stack = document.getElementById("legend-stack");
+  L.DomEvent.disableClickPropagation(stack);
+  L.DomEvent.disableScrollPropagation(stack);
 }
 
 function initCameraLegendNote() {
@@ -3067,6 +3149,7 @@ function initCameraLegendNote() {
 //   hide=NET,NET                 networks switched off in the legend
 //   hist=1  pobs=1               historical / periodic overlays switched on
 //   station=<code>  chart=SNWD   open station panel and its chart variable
+//                                (chart= only when it differs from var)
 // Missing or invalid values fall back to the defaults, so a bare URL is the
 // default map. Unknown parameters are left in place.
 //
@@ -3150,8 +3233,8 @@ function readUrlState() {
 function applyUrlStateEarly(u) {
   if (u.variable) st.variable = u.variable;
   if (u.ref) st.ref = u.ref;
-  if (u.chartVar) st.chartVar = u.chartVar;
-  document.getElementById("sel-var").value = st.variable;
+  st.chartVar = u.chartVar || st.variable;
+  syncVarButtons();
   document.getElementById("sel-ref").value = st.ref;
   if (u.basemap) {
     Object.values(BASEMAPS).forEach(l => map.removeLayer(l));
@@ -3176,7 +3259,7 @@ async function applyUrlStateLate(u) {
     await selectWaterYear(u.wy);
     if (st.wy !== u.wy) st.dowy = dowyBefore;  // that year failed to load
   }
-  if (u.station) onMarkerClick(u.station);
+  if (u.station) onMarkerClick(u.station, {keepChartVar: true});
 }
 
 function postMapState() {
@@ -3212,7 +3295,7 @@ function writeUrlNow() {
   if (map.hasLayer(periodicLayer)) p.set("pobs", "1");
   if (st.selectedCode) {
     p.set("station", st.selectedCode);
-    if (st.chartVar !== "WTEQ") p.set("chart", st.chartVar);
+    if (st.chartVar !== st.variable) p.set("chart", st.chartVar);
   }
   // Only the hash changes here (see "Shareable view" for why).
   const next = urlWith(location.search.slice(1), paramString(p));
